@@ -104,6 +104,7 @@ code { font-family: var(--bs-font-monospace); }
 pre { overflow-x: scroll; margin-top: 0; }
 .font-monospace { font-family: var(--bs-font-monospace) !important; }
 .text-gray-main { color: rgba(var(--rgb-dark-gray), var(--no-opacity)) !important; }
+.text-lightgray { color: rgba(var(--rgb-light-gray), var(--no-opacity)) !important; }
 .text-dark-green-main { color: rgba(var(--rgb-dark-green), var(--no-opacity)) !important; }
 .text-gray-side {
     font-family: var(--font-style-side);
@@ -130,6 +131,27 @@ pre { overflow-x: scroll; margin-top: 0; }
 .text-green-pure { color: rgba(var(--rgb-pure-green), var(--no-opacity)) !important; }
 .text-green-dyna { color: rgba(var(--rgb-dark-green), var(--no-opacity)) !important; }
 .text-gold-resv { color: rgba(var(--rgb-dark-gold), var(--no-opacity)) !important; }
+
+/* Cb Cr Text color */
+.text-fade-y {
+    background: linear-gradient(to bottom right, black, white);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.text-fade-cb {
+    background: linear-gradient(to bottom right, #80AB00, #8054FF);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.text-fade-cr {
+    background: linear-gradient(to bottom right, #00DB80, #FF2480);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 
 /* Borders */
 .border-main { border: solid 2px var(--hex-light-gray) !important;  }
@@ -358,6 +380,9 @@ table thead { border-bottom: 1.25px solid var(--hex-light-grayblue); }
     border-left: 1px solid #dee2e6 !important;
     border-right: 1px solid #dee2e6 !important;
 }
+.square { aspect-ratio: 1/1; }
+.twoByOne { aspect-ratio: 2/1; }
+.fourByOne { aspect-ratio: 4/1; }
 
 /* Margin for all lists, and fix list discs not showing */
 li {

@@ -39,7 +39,7 @@
                 <li>音频封装文件可以储存歌手，乐队，封面图片等元数据</li>
             </ul>
 
-            <h4>视音频的编解码</h4>
+            <h4>编解码</h4>
             <ul class="overflow-auto">
                 <li>编码 Encoding：数据格式的转换。压缩是一种编码的目的</li>
                 <li>解码 Decoding：还原被压缩的信号，或播放，解压缩。理论上压缩越高解码越慢</li>
@@ -83,46 +83,25 @@
                 <p class="text-gray-side mt-0">图：色彩的波形频率变化，见<a href="https://en.wikipedia.org/wiki/Electromagnetic_spectrum">维基百科</a>。</p>
             </div>
 
-            <h4>物理亮度/硬件亮度 - 明度 Brightness</h4>
-            <p>可见光电磁波的振幅。能量/电压越高，亮度/可见光波形的振幅越大。一般灯泡用流明 lumen/lm 或坎德拉 candela/cd 计量。1cd/1lm 大致为一支普通蜡烛的亮度。</p>
-
-            <h4>对比度 Contrast</h4>
-            <p>一般音量冷热距离等两种程度的差异调节，图像/显示器中则代表最亮到最暗的显示亮度限制。对比度低的图片看起来发灰是因为当前亮度设定在这个灰度上。在黑暗中看同样的视频时，有的场景过亮而有的场景太暗，此时降低对比度就可以解决；在阳光下看同样的视频，即使最大亮度也无法看清暗部场景，此时降低对比度并提高亮度就能解决（同时十分建议手机厂商在亮度条下加上对比度条）。</p>
-
-            <h4>灰度/灰阶 Grayscale</h4>
-            <p>将色彩去除，只保留黑 - 灰 - 白的单一通道图像。</p>
-
-            <h4>饱和度 Saturation</h4>
-            <p>一般指液体在特定压力和温度下能溶解某种粉剂的程度。图像中代表颜色接近 100% 纯色的程度。最小得灰阶图像；最大得纯色图像。调整物理/硬件对比度会影响物理/硬件饱和度，调整软件对比度会影响软件饱和度。</p>
-
-            <h4>像素 Pixel / pix / pel</h4>
-            <p>组成图像的最小单位，决定图像的物理大小。分为屏幕的硬件像素大小，以及图片视频的软件像素大小。软件小于硬件时，显示 100% 大小的图片会变小，或者用滤镜将图片放大；反过来若硬件小于软件；软件则会用滤镜将图片超采样缩小至合适大小，或直接溢出屏幕；软件像素由位置，色彩两组数据构成。</p>
-
-            <h4>每英寸像素 Pixel Per Inch / PPI</h4>
-            <p>主要指屏幕或印刷设备的物理密度。软件上主要用于算出图像的像素大小和分辨率。矢量图形没有这种概念。</p>
-
-            <h4>软件亮度 - 伽马 gamma/γ/Y</h4>
-            <p>指图像仅灰度部分的像素值，一般用到图像编辑软件或滤镜调整。</p>
-
-            <h4>伽马曲线/伽马映射与矫正</h4>
-            <p>硬件上代表屏幕电压最小到最大，与亮度最小到最大间的曲线关系；生理上代表人眼认为最小到最大，与亮度最小到最大的曲线关系。其中线性的亮度变化会使人眼觉得“发白”，因为人眼最为重视低中亮度变化，难以识别中高亮度变化。</p>
-            <p>因此，伽马矫正分为消除硬件缺陷的“白化”，以及“矫正”线性亮度 RAW 的“黑化”两种意思，例如：</p>
+            <h4>亮度</h4>
             <ul>
-                <li>CRT 显示屏要放大电压到 <span class="text-blue-math">\( v^{2.2} \)</span> 才能线性地显示灰阶</li>
-                <li>sRGB 标准则因为 CRT 显示器已将画面黑化，所以在录制过程就将画面白化：<span class="text-blue-math">\( \gamma^{\frac{1}{2.2}} \)</span>
-                    <ul>
-                        <li>编辑 RAW 图像的软件若不打开 Adobe 软件默认关闭的「按伽马系数混合 RGB 颜色，伽马值 1」设定，图像就会变得脏乱难看</li>
+                <li>物理亮度：可见光电磁波的强度或振幅，如灯泡电压越高越亮，火药能量越高越亮：
+                    <ul class="text-gray-side">
+                        <li>以流明 lumen/lm 或坎德拉 candela/cd 计量。1cd/1lm 大约为一支普通蜡烛的亮度。</li>
                     </ul>
                 </li>
-                <li>在很多游戏的初始设置中“调整滑块至能看清左侧暗部图像”就是最常见的手动伽马矫正</li>
+                <li>软硬件亮度/伽马 gamma/Y 灰度像素值，最小 0 为黑：
+                    <ul class="text-gray-side">
+                        <li>4bit 位深下最大 15 或 0xF 为白</li>
+                        <li>8bit 位深下最大 255 或 0xFF 为白</li>
+                        <li>10bit 位深下最大 1023 或 0x3FF 为白</li>
+                    </ul>
+                </li>
             </ul>
-            <p class="text-red-emph">至此，接下来的内容会将伽马，亮度，灰度混为一谈。</p>
-
-            <h4>位图 Bitmap 与矢量图 Vector</h4>
-            <p>前者用像素和元数据（如 x 个像素后换行）表示，后者用图形函数代码表示（如 JavaFX，SVG）。由于换一套平台就要重写矢量图渲染器，且图形复杂一点就要成倍增加代码字数，更无法保证跨平台渲染器的颜色和大小一致，所以后者较为少见... 若不将“文本”算作矢量图的话。</p>
-
+            <p>YUV / YCbCr 色彩空间的视频中，将亮度与色度分为独立的平面后，亮度面也可以叫伽马平面。</p>
+            
             <h4>色深 Depth</h4>
-            <p>代表亮度从 0 黑到 1 白间过渡的细分密度，由于计算机用二进制所以写作如 4bit 16 色深（<span class="text-blue-math">\( 2^4 \)</span>），8bit 256 色深（<span class="text-blue-math">\( 2^8 \)</span>），10bit 1024 色深。早期模拟电视用 <span class="text-blue-math">\( 0 \text{mV} ~ 700 \text{mV} \)</span> 的电压表示，而考虑到电视台调制以及受一定干扰的信号会超出最大电压（烧显像电子枪或老化屏幕荧光粉），所以又在这个区间限制了色深。</p>
+            <p>代表软硬件亮度从 0 黑到 1 白间过渡的细分密度，由于计算机用二进制所以写作如 4bit 16 色深（<span class="text-blue-math">\( 2^4 \)</span>），8bit 256 色深（<span class="text-blue-math">\( 2^8 \)</span>），10bit 1024 色深。早期模拟电视用 <span class="text-blue-math">\( 0 \text{mV} ~ 700 \text{mV} \)</span> 的电压表示，而考虑到电视台调制以及受一定干扰的信号会超出最大电压（烧显像电子枪或老化屏幕荧光粉），所以又在这个区间限制了色深。</p>
             <p>限制后的色深会被重新从缩减的信号范围里映射到最暗—最亮，即色深密度的降低。数字电视的 Bt.601 标准考虑到用质量参差不齐的 DVD 播放机传模拟信号到电视，所以也搞了个有限色深。其中：</p>
             <ul class="overflow-auto">
                 <li>完整 Full：代表如 8bit 下 0~255 的完整 256 深区间，密度偏高，适合游戏，网页的矢量图场景</li>
@@ -137,32 +116,391 @@
                 <img src="files/image3.png" alt="Color Depth" class="img-medium" >
                 <p class="text-gray-side mt-0">图：完整色深 Fullrange 与有限/TV 色深 Limited，包括上述说明的更优版本见<a href="https://www.youtube.com/watch?v=8sAJWtgQ2t8">硬件茶谈</a>。</p>
             </div>
+
+            <h4>伽马曲线/伽马映射</h4>
+            <ul class="overflow-auto">
+                <li>生理伽马映射：人眼认为亮度最小到最大，与线性物理亮度最小到最大的曲线关系
+                    <ul class="text-gray-side">
+                        <li>人眼重视低中亮度变化，基本忽略中高亮度变化 - 直线的内容亮度变化会使人觉得“发白”</li>
+                        <li>很多游戏的初始设置中「调整滑块至能看清左侧暗部图像」就是在调节伽马曲线</li>
+                        <li>相机 CMOS 所捕获的线性亮度（RAW 直出格式）在人眼看来发白，需“黑化”矫正</li>
+                    </ul>
+                </li>
+                <li>软硬件伽马映射：屏幕电压最小到最大，与线性物理亮度最小到最大间的曲线关系
+                    <ul class="text-gray-side">
+                        <li>CRT 显示屏要放大电压到 <span class="text-blue-math">\( v^{2.2} \)</span> 才能直线地显示亮度变化</li>
+                        <li>sRGB 标准则因为 CRT 显示器已将画面黑化，所以在录制过程就将画面白化：<span class="text-blue-math">\( \gamma^{\frac{1}{2.2}} \)</span></li>
+                        <li>编辑 RAW 图像的软件若不打开 Adobe 软件默认关闭的「按伽马系数混合 RGB 颜色，伽马值 1」设定，图层透明通道间就会脏乱难看</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>伽马矫正</h4>
+            <p>分“白化”的向上提亮缩放和“黑化”的向下变暗缩放。算式为“输出 = 缩放值×输入^(矫正值)”： <span class="text-blue-math">\( s = cr^\gamma \)</span></p>
+            <div class="align-items-center">
+                <img src="files/image4.png" alt="Gamma Correction" class="" >
+                <p class="text-gray-side mt-0">图：伽马矫正的指数算式，见<a href="https://www.desmos.com/calculator/shseuk9jcb?lang=zh-CN">desmos 互动例</a>。</p>
+            </div>
             
-            <h4>滤镜/滤波器 Filter</h4>
-            <p>一般代表过滤水和空气的网，或作用于一维音频，二维视频信号的算法。</p>
+            <h4>对比度 Contrast</h4>
+            <p>一般音量冷热距离等两种程度的差异调节，图像/显示器中则代表最亮到最暗的显示亮度限制。对比度低的图片看起来发灰是因为当前亮度设定在这个灰度上。在黑暗中看同样的视频时，有的场景过亮而有的场景太暗，此时降低对比度就可以解决；在阳光下看同样的视频，即使最大亮度也无法看清暗部场景，此时降低对比度并提高亮度就能解决（同时十分建议手机厂商在亮度条下加上对比度条）。</p>
+
+            <h4>灰度/灰阶 Grayscale</h4>
+            <p>将色彩去除，只保留黑 - 灰 - 白的单一通道图像。</p>
+
+            <h4>饱和度 Saturation</h4>
+            <p>一般指液体在特定压力和温度下能溶解某种粉剂的程度。图像中代表颜色接近 100% 纯色的程度。最小得灰阶图像；最大得纯色图像。调整物理/硬件对比度会影响物理/硬件饱和度，调整软件对比度会影响软件饱和度。</p>
+
+            <h4>像素 Pixel / pix / pel / px</h4>
+            <p>组成图像的最小单位，决定图像的物理大小。分为屏幕的硬件像素大小，以及图片视频的软件像素大小。软件小于硬件时，显示 100% 大小的图片会变小，或者用滤镜将图片放大；反过来若硬件像素大小小于软件，则用滤镜将图片缩小至合适，或溢出屏幕；软件像素由位置，色彩两组数据构成。</p>
+
+            <h4>每英寸像素 Pixel Per Inch / PPI</h4>
+            <p>主要指屏幕或印刷设备的物理密度。软件上主要用于算出图像的像素大小和分辨率。矢量图形没有这种概念。</p>
+
+            <h4>位图 Bitmap 与矢量图 Vector</h4>
+            <p>前者用像素和元数据（如 x 个像素后换行）表示，后者用图形函数代码表示（如 JavaFX，SVG）。由于换一套平台就要重写矢量图渲染器，且图形复杂一点就要成倍增加代码字数，更无法保证跨平台渲染器的颜色和大小一致，所以后者较为少见... 若不将“文本”算作矢量图的话。</p>
+
+            <h4>色彩空间 Color Space</h4>
+            <div class="row">
+                <p id="LR-UD-001" class="col-10">一种分别用于录制，储存与显示图像的数据格式。因用途多样所以种类多，但目前通常分为硬件与操作系统系统的 RGB 色彩空间和储存的 YUV 色彩空间。YCbCr 色彩空间特指数字信号，YUV 则特指模拟信号，但两者表达的东西完全一样，所以常常混淆。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
+                <img src="files/image5.png" alt="RGB to YCbCr to RGB" id="LR-UD-002" class="img-small img-right col-2 mb-auto" >
+            </div>
+            <table class="table-center">
+                <thead>
+                    <tr>
+                        <th>🎆色彩格式</th>
+                        <th>构成色</th>
+                        <th>特点</th>
+                        <th>存在原因</th>
+                        <th>支持范围</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-bottom">
+                        <td class="px-1"><span style="color:red">R</span><span style="color:lime">G</span><span style="color:blue">B</span></td>
+                        <td class="px-1">红绿蓝</td>
+                        <td class="px-1">通用</td>
+                        <td class="px-1">使显示器/照相机通用</td>
+                        <td class="px-1">几乎所有可视媒体</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="px-1"><span style="color:#BFBFBF">A</span><span style="color:red">R</span><span
+                                style="color:lime">G</span><span style="color:blue">B</span></td>
+                        <td class="px-1">α 红绿蓝</td>
+                        <td class="px-1">透明通道</td>
+                        <td class="px-1">便于图层化编辑</td>
+                        <td class="px-1">图片，部分视频</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="px-1"><span style="color:aqua">C</span><span style="color:fuchsia">M</span><span
+                                style="color:yellow">Y</span><span style="color:black">K</span></td>
+                        <td class="px-1">湛 zhàn 洋黄黑</td>
+                        <td class="px-1">减法色彩</td>
+                        <td class="px-1">卖墨盒</td>
+                        <td class="px-1">打印纸</td>
+                    </tr>
+                    <tr>
+                        <td class="tx-1"><span class="text-fade-y">Y</span><span class="text-fade-cb">Cb</span><span class="text-fade-cr">Cr</span> (YUV，似 YPbPr)</td>
+                        <td class="px-1">白蓝 - 黄红 - 绿</td>
+                        <td class="px-1">压缩</td>
+                        <td class="px-1">压缩视频图片</td>
+                        <td class="px-1">所有有损压缩</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>色度采样</h4>
+            <p>在 YCbCr 色彩空间下，利用人眼看不出色度细节的特性，降低色度平面的分辨率来换取压缩率。如 4:4:4 代表色度完整分辨率，A:B:C 代表微观每个长 A 像素，高 2 像素的空间，第一行缩到 B 个色度像素，第二行缩到 C 个色度像素。如 4:2:2 代表色度平面的每个 4x2 微观区间中，第一行留 2 像素，第二行留 2 像素。详见下表：</p>
+            <div class="overflow-auto">
+                <table class="table-center align-items-center text-smaller">
+                    <thead class="thead-no-border">
+                        <tr class="t-invert-dark">
+                            <th class="px-1">👾采样</th>
+                            <th class="px-1">1920x1080 下宏观</th>
+                            <th class="px-0" colspan="4">色度 4x2 微观</th>
+                            <th class="px-1">特点</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-light-gray" rowspan="2">4:4:4</td>
+                            <td class="px-1" rowspan="2">亮度，色度皆 1920x1080</td>
+                            <td class="px-0 t-light-gray square">色素</td>
+                            <td class="px-0 t-invert-light square">色素</td>
+                            <td class="px-0 t-light-gray square">色素</td>
+                            <td class="px-0 t-invert-light square">色素</td>
+                            <td rowspan="2">逐行扫描，直接读写亮色度而不用算，所以剪视频最快</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-0 t-invert-dark">色素</td>
+                            <td class="px-0 text-lightgray">色素</td>
+                            <td class="px-0 t-invert-dark">色素</td>
+                            <td class="px-0 text-lightgray">色素</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-light-gray" rowspan="2">4:2:2</td>
+                            <td class="px-1" rowspan="2">亮度不变，色度 960x1080</td>
+                            <td class="px-0 t-light-gray twoByOne" colspan="2">色素 ←</td>
+                            <td class="px-0 t-invert-light twoByOne" colspan="2">色素 ←</td>
+                            <td class="px-1 t-light-gray" rowspan="3">逐行 progressive，颜色像素靠插值还原。直接读写亮度所以剪视频比 RGB 快</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-0 t-invert-dark twoByOne" colspan="2">色素 ←</td>
+                            <td class="px-0 text-lightgray twoByOne" colspan="2">色素 ←</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-light-gray">4:2:0</td>
+                            <td class="px-1">亮度不变，色度半宽半高 960x540</td>
+                            <td class="px-0 t-light-gray square" colspan="2">色素 ←<br>↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬉</td>
+                            <td class="px-0 t-invert-light square" colspan="2">色素 ←<br>↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬉</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-light-gray" rowspan="2">4:1:1</td>
+                            <td class="px-1" rowspan="2">亮度不变，色度 1/4 宽全高 480x1080</td>
+                            <td class="px-0 t-light-gray fourByOne" colspan="4">色素 ← ← ← ←</td>
+                            <td class="px-1" rowspan="4">交错 interlaced，横着扫就不会把另一场的帧参考而浪费算力了</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-0 t-invert-dark fourByOne" colspan="4">色素 ← ← ← ←</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-invert-light" rowspan="2">4:1:1-par4:3</td>
+                            <td class="px-1" rowspan="2">亮度 3/4 宽全高，1440x1080 色度 3/16 宽全高，360x1080</td>
+                            <td class="px-0 t-light-gray fourByOne" colspan="4">色度像素 5.333×←</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-0 t-invert-dark fourByOne" colspan="4">色度像素 5.333×←</td>
+                        </tr>
+                        <tr>
+                            <td class="px-1 t-invert-light">4:2:0-par4:3</td>
+                            <td class="px-1">亮度 3/4 宽全高，1440x1080 色度 3/8 宽半高，720x540</td>
+                            <td class="px-0 t-light-gray square" colspan="2">2.667 ←<br>↑ 2.848 ⬉</td>
+                            <td class="px-0 t-invert-light square" colspan="2">2.667 ←<br>↑ 2.848 ⬉</td>
+                            <td class="px-1 t-light-gray">逐行扫描，非方形亮度像素，par 通常是 4:3 <del class="text-lightgray">要不然太烧脑了</del></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>压缩的策略</h4>
+            <p>根据硬件的算力和带宽两种限制选择有损压缩，无损压缩和未压缩。一种（图/视/音频）编码可集成全部三种策略。不准确的说，同段信号用：</p>
+            <ul>
+                <li>有损高压缩——带宽压力最小，解码难度大</li>
+                <li>有损低压缩——带宽压力中等，解码难度小</li>
+                <li>无损高压缩——带宽压力大，解码难度中等</li>
+                <li>无损低压缩——带宽压力大，解码难度小</li>
+                <li>未压缩————带宽压力最大，解码难度最小</li>
+            </ul>
+            <ul>
+                <li>算力 Computing Power：处理器或硬件解码器的速度和效率，低于解码难度（编码复杂度）则不能流畅播放。</li>
+                <li>带宽 Bandwidth：网速，硬盘读写和内存传输带宽，低于带宽压力（Mbps）则不能流畅播放。</li>
+                <li>DVD 播放机，蓝光播放机为确保流畅，也会和网络传输一样限制带宽。</li>
+            </ul>
+            <p>只要录制，剪辑，调色，混音，导出中一个环节用错了录制设备，采样率/色深，色彩空间，分辨率，像素宽高比，颜色混合，伽马映射等设定，损失就已成定局，此时选择有损或无损编码就不再有意义。</p>
+
+            <h4>音频格式（一维）</h4>
+            <p>最简单的结构为：脉冲编码调制 Pulse-code modulation PCM 信号</p>
+            <table class="table-center align-items-center text-smaller">
+                <thead class="thead-no-border">
+                    <tr class="t-invert-dark">
+                        <th class="px-1">🎶压缩</th>
+                        <th class="px-1">格式</th>
+                        <th class="px-1">音质</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-bottom">
+                        <td class="px-1 t-light-gray">有损</td>
+                        <td class="px-1">mp3，aac，ogg（vorbis/opus）</td>
+                        <td class="px-1 t-light-gray" rowspan="3">取决于耳机/音响，混音，声场。分为 HiFi 音频和监听音频两种质量参考</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="px-1 t-invert-light">无损</td>
+                        <td class="px-1">flac，alac，ape，it</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 t-invert-dark">未压缩</td>
+                        <td class="px-1">wav（PCM）</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h4>图像格式（二维）</h4>
+            <p>最简单的结构为 PCM 信号 + 每 n 个像素换行的元数据</p>
+            <div class="overflow-auto">
+                <table class="table-center align-items-center text-smaller">
+                    <thead class="thead-no-border">
+                        <tr class="t-invert-dark">
+                            <th class="px-1">📷压缩</th>
+                            <th class="px-1">格式</th>
+                            <th class="px-1">最大 RGB 色深</th>
+                            <th class="px-1">最大 YUV 色深</th>
+                            <th class="px-1">最大 CMYK 色深</th>
+                            <th class="px-1">动图</th>
+                            <th class="px-1">HDR</th>
+                            <th class="px-1">透明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-light-gray">有损</td>
+                            <td class="px-1">jpg</td>
+                            <td class="px-1 t-light-gray">8 <span class="text-lightgray">8 8</span></td>
+                            <td class="px-1">8 <span class="text-lightgray">8 8</span></td>
+                            <td class="px-1 t-light-gray">24 <span class="text-lightgray">24 24 24</span></td>
+                            <td class="px-1"> </td>
+                            <td class="px-1"> </td>
+                            <td class="px-1"> </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-light-gray" rowspan="4">有~无损</td>
+                            <td class="px-1">gif（编码无损，颜色少了）</td>
+                            <td class="px-1 t-light-gray">24×3 中取 8×3</td>
+                            <td class="px-1"> </td>
+                            <td class="px-1 t-light-gray"> </td>
+                            <td class="px-1">√</td>
+                            <td class="px-1"> </td>
+                            <td class="px-1">仅 1bit</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1">webp</td>
+                            <td class="px-1 t-light-gray">8 <span class="text-lightgray">8 8</span></td>
+                            <td class="px-1">8 <span class="text-lightgray">8 8</span></td>
+                            <td class="px-1 t-light-gray"> </td>
+                            <td class="px-1">√</td>
+                            <td class="px-1"> </td>
+                            <td class="px-1">√</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1">jpg-XR（兼容 jpg）</td>
+                            <td class="px-1 t-light-gray">32 <span class="text-lightgray">32 32</span></td>
+                            <td class="px-1">8 <span class="text-lightgray">8 8</span></td>
+                            <td class="px-1 t-light-gray">16 <span class="text-lightgray">16 16 16</span></td>
+                            <td class="px-1">√</td>
+                            <td class="px-1">√</td>
+                            <td class="px-1">√</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1">avif，heif/heic，filf</td>
+                            <td class="px-1 t-light-gray">32 <span class="text-lightgray">32 32</span></td>
+                            <td class="px-1">16 <span class="text-lightgray">16 16</span></td>
+                            <td class="px-1 t-light-gray"> </td>
+                            <td class="px-1">√</td>
+                            <td class="px-1">√</td>
+                            <td class="px-1">√</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-invert-light">无损</td>
+                            <td class="px-1">pdf，jpg-LS，png</td>
+                            <td class="px-1 t-light-gray">16 <span class="text-lightgray">16 16</span></td>
+                            <td class="px-1"> </td>
+                            <td class="px-1 t-light-gray">32 <span class="text-lightgray">32 32 32</span></td>
+                            <td class="px-1">仅 mng</td>
+                            <td class="px-1"> </td>
+                            <td class="px-1">√</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-invert-light">有损~无损~未压</td>
+                            <td class="px-1">tif</td>
+                            <td class="px-1 t-light-gray">16 <span class="text-lightgray">16 16</span></td>
+                            <td class="px-1">8 <span class="text-lightgray">8 8</span></td>
+                            <td class="px-1 t-light-gray">128 <span class="text-lightgray">128 128 128</span></td>
+                            <td class="px-1"> </td>
+                            <td class="px-1">√</td>
+                            <td class="px-1">√</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-invert-dark" rowspan="2">未压缩</td>
+                            <td class="px-1">raw，bmp</td>
+                            <td class="px-1 t-light-gray">24 <span class="text-lightgray">24 24</span></td>
+                            <td class="px-1"> </td>
+                            <td class="px-1 t-light-gray"> </td>
+                            <td class="px-1">仅 raw</td>
+                            <td class="px-1">√</td>
+                            <td class="px-1">√</td>
+                        </tr>
+                        <tr>
+                            <td class="px-1">dpx</td>
+                            <td class="px-1 t-light-gray">64 <span class="text-lightgray">64 64</span></td>
+                            <td class="px-1">16 <span class="text-lightgray">16 16</span></td>
+                            <td class="px-1 t-light-gray"> </td>
+                            <td class="px-1">√</td>
+                            <td class="px-1">√</td>
+                            <td class="px-1"> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>视频格式（三维）</h4>
+            <p>最简单的结构为一组图片。</p>
+            <div class="overflow-auto">
+                <table class="table-center align-items-center text-smaller">
+                    <thead class="thead-no-border">
+                        <tr class="t-invert-dark">
+                            <th class="px-1">🎥压缩</th>
+                            <th class="px-1">格式</th>
+                            <th class="px-1">RGB/YUV 色深</th>
+                            <th class="px-1">HDR</th>
+                            <th class="px-1">透明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-light-gray">有~无损</td>
+                            <td class="px-1">qt，<a href="https://x265.readthedocs.io/">hevc</a>，avc，vvc，vp8/9，DNxHR/HD，prores</td>
+                            <td class="px-1 t-light-gray">12 <span class="text-lightgray">12 12</span></td>
+                            <td class="px-1">除 avc，vp8</td>
+                            <td class="px-1">仅 prores</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1 t-invert-light" rowspan="2">无损</td>
+                            <td class="px-1">rawvideo</td>
+                            <td class="px-1 t-light-gray">32 <span class="text-lightgray">32 32</span></td>
+                            <td class="px-1"> </td>
+                            <td class="px-1"><a href="https://www.tablesgenerator.com/html_tables#_%E7%94%9F%E6%88%90%E9%80%8F%E6%98%8Erawvideo">√</a>
+                            </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1"><a href="https://github.com/marksfink/cfenc">cineform</a></td>
+                            <td class="px-1 t-light-gray">16 <span class="text-lightgray">16 16</span></td>
+                            <td class="px-1">√</td>
+                            <td class="px-1"> </td>
+                        </tr>
+                        <tr>
+                            <td class="px-1 t-invert-dark">有损~无损~未压</td>
+                            <td class="px-1">Flash 动画</td>
+                            <td class="px-1 t-light-gray" colspan="4">内嵌图片决定</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>滤镜/滤波器 Filter 与滤镜工具</h4>
+            <p>一般代表过滤水和空气的网，或作用于一维音频，二维视频信号的算法。滤镜工具即支持套用滤镜到信号的软件或插件，如 Premiere，After Effects，ffmpeg，DaVinci Resolve，FL Studio，Reaper，Ableton，Audition，GIMP，Photoshop，LightRoom，OpenCV 等一切图像视频音频的编辑方案。AviSynth(+)，VapourSynth 严格说是帧服务器（需连接一个编码器才能导出视音频）。</p>
 
             <h4>抖动滤镜 Dither Filter</h4>
-            <p>早期显示器能显示的颜色有限，所以通过高频闪烁两色的处理。图像与音频以及低端显示器中则代表「用分辨率或采样率换位深」的加噪补偿手段，即通过两种位深间隔几个像素就调亮/调暗一个像素的颜色，或音频在两个采样点间快速摆动（加方形波）所产生的更高位深。主要还是欺骗大脑。</p>
+            <p>早期显示器能显示的颜色有限，所以通过高频闪烁两色的处理。图像与音频以及低端显示器中则代表「用分辨率或采样率换位深」的加噪补偿手段，即通过两种位深间隔几个像素就调亮/调暗一个像素的颜色，或音频在两个采样点间快速摆动（加方形波）所产生的更高位深。主要还是欺骗大脑，但因为好看所以衍生出了 Ditherpunk 抖动朋克美术，一种特殊的像素风格。</p>
             <div class="align-items-center">
-                <img src="files/image4.png" alt="Audio Sample Dots" class="img-medium" >
-                <p class="text-gray-side mt-0">图：音频的采样点，音频的抖动科普见。</p>
-                <img src="files/image5.webp" alt="Audio Dither" class="img-medium" >
-                <p class="text-gray-side mt-0">图：下采样 24bit 音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
-                <img src="files/image6.png" alt="Image Dither" class="img-medium" >
-                <p class="text-gray-side mt-0">图：下采样 8bit 色彩开抖动滤镜后的效果。</p>
+                <img src="files/image6.png" alt="Audio Dither" class="img-medium">
+                <p class="text-gray-side mt-0">图：音频的采样点，以及下采样音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
+                <img src="files/image7.png" alt="Image Dither 1" class="">
+                <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
             </div>
-            <ul>
-                <li>另外，抖动滤镜的效果本身可以作为游戏引擎的材质，例如利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声/黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a>等不同的加噪算法作为抖动滤镜就可以做出 Ditherpunk 抖动朋克美术，最典型的如 1bit 游戏“奥博拉丁的回归”。</li>
+            <p>抖动滤镜的效果本身可以作为游戏引擎的材质，例如利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声/黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法作为抖动滤镜。典型如贯彻了抖动朋克的 1bit 游戏「奥博拉丁的回归」。</p>
             </ul>
-            <p>另外</p>
+            <div class="align-items-center">
+                <img src="files/image8.png" alt="Image Dither 2" class="img-medium">
+                <p class="text-gray-side mt-0">图：图像噪声算法</p>
+            </div>
 
-
-
-
-
-
-
-
+            <h4>宽高比/展弦比 Aspect Ratio</h4>
+            <p>固定翼飞机或者矩形的最小两边分量。被忽略的“长”是因为飞机相对地面，屏幕相对人眼的 z 轴。而换算长短边如 16:9 高 720 的方形像素视频，其宽就是 <span class="text-blue-math">\( 720 \div 9 \times 16 = 1280 \)</span>。</p>
+            <div class="align-items-center">
+                <img src="files/image9.png" alt="Aspect Ratio 16 by 9" class="img-medium">
+                <p class="text-gray-side">图：16:9 的矩形整数偶数放大后的图像分辨率</p>
+            </div>
+            <p>图片格式一般支持奇数分辨率，视频一般仅支持偶数分辨率。</p>
 
             <h2>分块</h2>
             <p>HEVC 中，帧下结构按面积大小分为<span class="text-blue-emph">帧 → 瓦 tile → 条带 slice → 条带分段 ss → ctu 树单元 → cu 单元</span>。</p>
@@ -194,7 +532,7 @@
 
             <h2>变换</h2>
             <div class="row">
-                <div id="LR-UD-001" class="col-8">
+                <div class="col-8">
                     <h4>一维傅里叶变换 1D Fourier Transform</h4>
                     <p>给出与原信号波形等高，从最长的频率周期开始不断缩窄（周期增加）并根据源信号调整相位的参考余弦。在参考余弦波变化的过程中，记下两条波形吻合度变化的曲线 - 不同波形周期的振幅，得频域信号。反过来将频域所对应的波形加回去就是逆变换。为将源波形中反相（上下颠倒）的余弦也考虑在内，所以计算过程含取立方转正。</p>
                     <p>
@@ -207,7 +545,7 @@
                     <h4>二维傅里叶变换 2D-FT</h4>
                     <p>宽高上单拆出线来分别进行 1DFT，以双求和/双积分 ΣΣ/∫∫ 整合。在频域中相当于每个像素的变换结果相加或干涉。亮则振幅大，距中心远则频率高。强在可编辑性，可以消除打印喷头，抖动等均匀噪声。</p>
                 </div>
-                <img src="files/image4.png" alt="Fourier Transform Phenomenons" id="LR-UD-002" class="img-medium img-right col-4 mb-auto" >
+                <img src="files/image4.png" alt="Fourier Transform Phenomenons" >
                 <div id="LR-UD-003" class="col-8">
                     <h4>二维离散余弦变换 2D Descrete Cosine Transform</h4>
                     <p>用预制的二维波形模具，穷举加减列出各波形格子的使用次数，比 2DFT 更快。</p>
