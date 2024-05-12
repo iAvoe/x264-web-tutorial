@@ -2,9 +2,9 @@
 
 ## ...内容施工中...
 
-## [点此打开]("https://iavoe.github.io/x264-web-tutorial/HTML/index.html")
+## [点此打开](https://iavoe.github.io/x264-web-tutorial/HTML/index.html)
 
-- 建立于[x264-x265-QAAC-ffprobe-Ultimatetutorial]("https://github.com/iAvoe/x264-x265-QAAC-ffprobe-Ultimatetutorial")的 x264 教程 2024.45 版，并大幅改进了内容
+- 建立于[x264-x265-QAAC-ffprobe-Ultimatetutorial](https://github.com/iAvoe/x264-x265-QAAC-ffprobe-Ultimatetutorial)的 x264 教程 2024.45 版，并大幅改进了内容
 
 ### HTML 版特点
 
