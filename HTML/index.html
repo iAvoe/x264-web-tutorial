@@ -161,9 +161,13 @@
             <p>前者用像素和元数据（如 x 个像素后换行）表示，后者用图形函数代码表示（如 JavaFX，SVG）。由于换一套平台就要重写矢量图渲染器，且图形复杂一点就要成倍增加代码字数，更无法保证跨平台渲染器的颜色和大小一致，所以后者较为少见... 若不将“文本”算作矢量图的话。</p>
 
             <h4>色彩空间 Color Space</h4>
+            <div class="align-items-center">
+                <img src="files/image5.jpg" alt="Color Space Handling" class="">
+                <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换以及场合</p>
+            </div>
             <div class="row">
-                <p id="LR-UD-001" class="col-10">一种分别用于录制，储存与显示图像的数据格式。因用途多样所以种类多，但目前通常分为硬件与操作系统系统的 RGB 色彩空间和储存的 YUV 色彩空间。YCbCr 色彩空间特指数字信号，YUV 则特指模拟信号，但两者表达的东西完全一样，所以常常混淆。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
-                <img src="files/image5.png" alt="RGB to YCbCr to RGB" id="LR-UD-002" class="img-small img-right col-2 mb-auto" >
+                <p id="LR-UD-001" class="col-10">因用途多样所以种类繁多的数据格式，但目前通常分为硬件与操作系统系统的 RGB 色彩空间和储存的 YUV 色彩空间。YCbCr 特指数字信号，YUV 则特指模拟信号（但后者打字更快所以反而常用）。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
+                <img src="files/image6.png" alt="RGB to YCbCr to RGB" id="LR-UD-002" class="img-small img-right col-2 mb-auto" >
             </div>
             <table class="table-center">
                 <thead>
@@ -229,7 +233,7 @@
                             <td class="px-0 t-invert-light square">色素</td>
                             <td class="px-0 t-light-gray square">色素</td>
                             <td class="px-0 t-invert-light square">色素</td>
-                            <td rowspan="2">逐行扫描，直接读写亮色度而不用算，所以剪视频最快</td>
+                            <td rowspan="2">逐行扫描 Progressive，直接读写亮色度而不用算，所以剪视频最快</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-0 t-invert-dark">色素</td>
@@ -242,7 +246,7 @@
                             <td class="px-1" rowspan="2">亮度不变，色度 960x1080</td>
                             <td class="px-0 t-light-gray twoByOne" colspan="2">色素 ←</td>
                             <td class="px-0 t-invert-light twoByOne" colspan="2">色素 ←</td>
-                            <td class="px-1 t-light-gray" rowspan="3">逐行 progressive，颜色像素靠插值还原。直接读写亮度所以剪视频比 RGB 快</td>
+                            <td class="px-1 t-light-gray" rowspan="4">逐行扫描，颜色像素靠插值还原。直接读写亮度所以剪视频比 RGB 快</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-0 t-invert-dark twoByOne" colspan="2">色素 ←</td>
@@ -255,10 +259,18 @@
                             <td class="px-0 t-invert-light square" colspan="2">色素 ←<br>↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬉</td>
                         </tr>
                         <tr class="border-bottom">
+                            <td class="px-1 t-light-gray">4:4:0</td>
+                            <td class="px-1">亮度不变，色度全宽半高 1920x540</td>
+                            <td class="px-0 t-light-gray OneByTwo">色素<br>↑</td>
+                            <td class="px-0 t-invert-light OneByTwo">色素<br>↑</td>
+                            <td class="px-0 t-invert-dark OneByTwo">色素<br>↑</td>
+                            <td class="px-0 text-lightgray OneByTwo">色素<br>↑</td>
+                        </tr>
+                        <tr class="border-bottom">
                             <td class="px-1 t-light-gray" rowspan="2">4:1:1</td>
                             <td class="px-1" rowspan="2">亮度不变，色度 1/4 宽全高 480x1080</td>
                             <td class="px-0 t-light-gray fourByOne" colspan="4">色素 ← ← ← ←</td>
-                            <td class="px-1" rowspan="4">交错 interlaced，横着扫就不会把另一场的帧参考而浪费算力了</td>
+                            <td class="px-1" rowspan="4">交错扫描 Interlaced，横着扫就不会把另一场的帧参考而浪费算力了</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-0 t-invert-dark fourByOne" colspan="4">色素 ← ← ← ←</td>
@@ -299,7 +311,7 @@
             <p>只要录制，剪辑，调色，混音，导出中一个环节用错了录制设备，采样率/色深，色彩空间，分辨率，像素宽高比，颜色混合，伽马映射等设定，损失就已成定局，此时选择有损或无损编码就不再有意义。</p>
 
             <h4>音频格式（一维）</h4>
-            <p>最简单的结构为：脉冲编码调制 Pulse-code modulation PCM 信号</p>
+            <p>最简单的结构为：<a href="https://zh.wikipedia.org/wiki/%E8%84%88%E8%A1%9D%E7%B7%A8%E7%A2%BC%E8%AA%BF%E8%AE%8A">脉冲编码调制 Pulse-code modulation</a> PCM 信号</p>
             <table class="table-center align-items-center text-smaller">
                 <thead class="thead-no-border">
                     <tr class="t-invert-dark">
@@ -482,22 +494,22 @@
             <h4>抖动滤镜 Dither Filter</h4>
             <p>早期显示器能显示的颜色有限，所以通过高频闪烁两色的处理。图像与音频以及低端显示器中则代表「用分辨率或采样率换位深」的加噪补偿手段，即通过两种位深间隔几个像素就调亮/调暗一个像素的颜色，或音频在两个采样点间快速摆动（加方形波）所产生的更高位深。主要还是欺骗大脑，但因为好看所以衍生出了 Ditherpunk 抖动朋克美术，一种特殊的像素风格。</p>
             <div class="align-items-center">
-                <img src="files/image6.png" alt="Audio Dither" class="img-medium">
+                <img src="files/image7.png" alt="Audio Dither" class="img-medium">
                 <p class="text-gray-side mt-0">图：音频的采样点，以及下采样音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
-                <img src="files/image7.png" alt="Image Dither 1" class="">
+                <img src="files/image8.png" alt="Image Dither 1" class="">
                 <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
             </div>
             <p>抖动滤镜的效果本身可以作为游戏引擎的材质，例如利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声/黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法作为抖动滤镜。典型如贯彻了抖动朋克的 1bit 游戏「奥博拉丁的回归」。</p>
             </ul>
             <div class="align-items-center">
-                <img src="files/image8.png" alt="Image Dither 2" class="img-medium">
+                <img src="files/image9.png" alt="Image Dither 2" class="img-medium">
                 <p class="text-gray-side mt-0">图：图像噪声算法</p>
             </div>
 
             <h4>宽高比/展弦比 Aspect Ratio</h4>
             <p>固定翼飞机或者矩形的最小两边分量。被忽略的“长”是因为飞机相对地面，屏幕相对人眼的 z 轴。而换算长短边如 16:9 高 720 的方形像素视频，其宽就是 <span class="text-blue-math">\( 720 \div 9 \times 16 = 1280 \)</span>。</p>
             <div class="align-items-center">
-                <img src="files/image9.png" alt="Aspect Ratio 16 by 9" class="img-medium">
+                <img src="files/image10.png" alt="Aspect Ratio 16 by 9" class="img-medium">
                 <p class="text-gray-side">图：16:9 的矩形整数偶数放大后的图像分辨率</p>
             </div>
             <p>图片格式一般支持奇数分辨率，视频一般仅支持偶数分辨率。</p>
@@ -505,6 +517,9 @@
             <h2>分块</h2>
             <p>HEVC 中，帧下结构按面积大小分为<span class="text-blue-emph">帧 → 瓦 tile → 条带 slice → 条带分段 ss → ctu 树单元 → cu 单元</span>。</p>
             <p>cu，cb 由同帧的 ctu 经动态搜索 ME 与运动补偿 MC 隔离所得。其 U/unit 代表 YCbCr 整体块；B/block 则单指 Y，Cb 或 Cr 块，区分亮度色度。ipcm-cu 代表跳过 MEMC，直达环路滤波的「帧内编码 pcm 波形 cu」intra pulse code modulation cu，因为“块”是一串像素值的波形，只是用元数据“换行”到二维而已。</p>
+
+
+
 
 
             <h4 class="same-line">PU - 预测单元：</h4>

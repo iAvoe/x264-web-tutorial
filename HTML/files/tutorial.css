@@ -152,7 +152,6 @@ pre { overflow-x: scroll; margin-top: 0; }
     -webkit-text-fill-color: transparent;
 }
 
-
 /* Borders */
 .border-main { border: solid 2px var(--hex-light-gray) !important;  }
 .border-top { border-top: 1px solid #dee2e6 !important; }
@@ -381,6 +380,7 @@ table thead { border-bottom: 1.25px solid var(--hex-light-grayblue); }
     border-right: 1px solid #dee2e6 !important;
 }
 .square { aspect-ratio: 1/1; }
+.OneByTwo { aspect-ratio: 1/2; }
 .twoByOne { aspect-ratio: 2/1; }
 .fourByOne { aspect-ratio: 4/1; }
 
