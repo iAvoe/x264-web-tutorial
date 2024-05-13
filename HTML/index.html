@@ -138,7 +138,7 @@
             <h4>伽马矫正</h4>
             <p>分“白化”的向上提亮缩放和“黑化”的向下变暗缩放。算式为“输出 = 缩放值×输入^(矫正值)”： <span class="text-blue-math">\( s = cr^\gamma \)</span></p>
             <div class="align-items-center">
-                <img src="files/image4.png" alt="Gamma Correction" class="" >
+                <img src="files/image4.png" alt="Gamma Correction" class="img-medium" >
                 <p class="text-gray-side mt-0">图：伽马矫正的指数算式，见<a href="https://www.desmos.com/calculator/shseuk9jcb?lang=zh-CN">desmos 互动例</a>。</p>
             </div>
             
@@ -161,10 +161,6 @@
             <p>前者用像素和元数据（如 x 个像素后换行）表示，后者用图形函数代码表示（如 JavaFX，SVG）。由于换一套平台就要重写矢量图渲染器，且图形复杂一点就要成倍增加代码字数，更无法保证跨平台渲染器的颜色和大小一致，所以后者较为少见... 若不将“文本”算作矢量图的话。</p>
 
             <h4>色彩空间 Color Space</h4>
-            <div class="align-items-center">
-                <img src="files/image5.jpg" alt="Color Space Handling" class="">
-                <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换以及场合</p>
-            </div>
             <div class="row">
                 <p id="LR-UD-001" class="col-10">因用途多样所以种类繁多的数据格式，但目前通常分为硬件与操作系统系统的 RGB 色彩空间和储存的 YUV 色彩空间。YCbCr 特指数字信号，YUV 则特指模拟信号（但后者打字更快所以反而常用）。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
                 <img src="files/image6.png" alt="RGB to YCbCr to RGB" id="LR-UD-002" class="img-small img-right col-2 mb-auto" >
@@ -212,6 +208,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="align-items-center mt-3">
+                <img src="files/image5.jpg" alt="Color Space Handling" class="">
+                <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换以及场合</p>
+            </div>
 
             <h4>色度采样</h4>
             <p>在 YCbCr 色彩空间下，利用人眼看不出色度细节的特性，降低色度平面的分辨率来换取压缩率。如 4:4:4 代表色度完整分辨率，A:B:C 代表微观每个长 A 像素，高 2 像素的空间，第一行缩到 B 个色度像素，第二行缩到 C 个色度像素。如 4:2:2 代表色度平面的每个 4x2 微观区间中，第一行留 2 像素，第二行留 2 像素。详见下表：</p>
@@ -309,6 +309,16 @@
                 <li>DVD 播放机，蓝光播放机为确保流畅，也会和网络传输一样限制带宽。</li>
             </ul>
             <p>只要录制，剪辑，调色，混音，导出中一个环节用错了录制设备，采样率/色深，色彩空间，分辨率，像素宽高比，颜色混合，伽马映射等设定，损失就已成定局，此时选择有损或无损编码就不再有意义。</p>
+
+            <h4>视频压制</h4>
+            <p>一种追求画质，压缩率和速度的视频编码器使用逻辑。因为单纯或追求速度的压缩并未发挥出编码器的最大压缩能力。很多人只是一开始看到硬件编码器速度快，就忽视了软件编码器的高压缩率。</p>
+
+            <h4>视频压制三角定律</h4>
+            <p>判断压缩策略和设备购置的方法。专用编码目的单一而难以控制妥协损失；通用编码目的广泛而容易控制妥协损失；算力高适合通用策略，算力低则适合专用策略。</p>
+            <div class="align-items-center">
+                <img src="files/image13.png" alt="The Video Compression Trade-off Triangle" class="img-medium">
+                <p class="text-gray-side">图：缺一不可的三种出发点构成的三角形。其“完美中心点”的存在和必要性取决于软硬件和用户</p>
+            </div>
 
             <h4>音频格式（一维）</h4>
             <p>最简单的结构为：<a href="https://zh.wikipedia.org/wiki/%E8%84%88%E8%A1%9D%E7%B7%A8%E7%A2%BC%E8%AA%BF%E8%AE%8A">脉冲编码调制 Pulse-code modulation</a> PCM 信号</p>
@@ -525,13 +535,20 @@
             <p>命令行交互 Commandline interface CLI：在 Terminal，Bash，CMD，PowerShell 上手动输入命令，然后敲回车看结果。基本上只要输出结果有一定的文字排版就能看。用多了则会发现它其实比 GUI 还要方便。而很多时候因为命令太长，所以会写成批处理 Batch，Shell 之类的命令脚本文件。例如<a href="https://nazorip.site/archives/835/">PowerShell 一站式检测系统 - 硬件 - 驱动，跑分，附函数模组示例</a>的脚本。</p>
             <p>应用编程交互 Application programming interface API：所有 CLI 的映射源。当开发者<del>懒到</del>没有写 CLI 参数，或 GUI 界面的时候就只能自己想办法调用的东西。所以不是给人用的，也都说确实不是给人用的。</p>
 
-            <h4>逐行 Progressive 与交错 Interlaced 扫描</h4>
-            <p>其中逐行就是正常一行行刷新像素得到完整图片的屏幕刷新方式。而交错扫描用 YUV 4:1:1 采样，将一块屏幕的奇数像素行视为上场，偶数像素行视为下场。然后从录制时间上错开两场，就在模拟电视上得到了体感 60fps 的视频，详见教程尾。</p>
+            <h4>帧率 Frame Rate / Frames per second FPS</h4>
+            <p>帧 Frame 一般用来描述连续图片中的一张。帧率即画面的帧数每秒，而越高则大范围的背景变化越流畅。所以同样是游戏，「微软模拟飞行」，「极限着陆」这类模拟客机，背景变化不大的游戏，或「电影运镜」这种故意限制背景变化速度的“流畅”位于 30fps 左右（每秒更新 30 张画面），而反观模拟赛车等背景高速运动的游戏，即使是手机平台最低也不能少于 120fps；同是动漫场景，如「进击的巨人」之类背景高速移动变化时若低于 60fps 就会大减观看体验；而换做其他动漫，本来（为了降低成本而）设计出，利用视觉暂留原理的顿挫画面就会损坏。</p>
 
+            <h4>逐行 Progressive 与交错 Interlaced 扫描</h4>
+            <p>其中逐行就是正常一行行刷新像素得到完整图片的屏幕刷新方式。而交错扫描用 YUV 4:1:1 采样，将一块屏幕的奇数像素行视为上场，偶数像素行视为下场。然后从录制时间上错开两场，就在模拟电视上得到了体感 60fps 的视频，详见教程尾。至于为什么交错，是因为模拟电视信号像收音机一样接收电台信号（<span class="text-blue-math">\(525 \text{行} \times 30\text{fps} = 15.75 \text{MHz}\)</span>），所以频段区间很宝贵。分行用时间换空间，几乎将每个台的频宽降了一半。</p>
+
+            <h4>小数帧率 / 丢帧</h4>
+            <p>NTSC 模拟电视每个台按标准大约为 6MHz（<del>但受财之迫所以</del>仅宽 4.5MHz）。接下来发生的事谁都没预料到——彩色电视出现了，谁不做谁倒闭。结果就是原本频宽完全不够用（两台间的信号边界相干涉），频宽和扫描线的大小因为电视都卖出去了所以不能改，最后剩下了每 30fps 丢一帧，然后加速（1 秒变 1.1001 秒）对齐（此时 YUV 色彩空间也搞出来了），标准炸了，但码率够了。而数字视频的丢帧单纯是兼容模拟电视用的。<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji
+            </a>。</p>
+            <p>所以大篇幅讲小数帧率的原因是要强调「没事别录丢帧视频，特别是剪辑素材」。剪辑视频需要很多素材，而帧率不同会出现对齐问题</p>
 
             <p>------------------------未完成内容------------------------</p>
-            <h4>测试</h4>
-            <p><a href="../../x265-web-tutorial/HTML/index.html">测试交叉打开 x265 教程网页版</a></p>
+            <h4>测试 - 成功：</h4>
+            <p><a href="../../x265-web-tutorial/HTML/index.html">交叉（../../）打开 x265 教程网页版</a></p>
 
             <h4 class="same-line">PU - 预测单元：</h4>
             <p class="same-line">Prediction unit 是编码完，用做参考源的块。支持 CU 上对称 Rectangle，非对称 Asymmetric 划分，以更好的隔离动静态。亮度与色度上的分裂法可以不同，小至 4x4 像素。</p>
