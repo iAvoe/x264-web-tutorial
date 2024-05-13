@@ -208,12 +208,8 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="align-items-center mt-3">
-                <img src="files/image5.jpg" alt="Color Space Handling" class="">
-                <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换以及场合</p>
-            </div>
 
-            <h4>色度采样</h4>
+            <h4>色度采样 Chroma Subsampling</h4>
             <p>在 YCbCr 色彩空间下，利用人眼看不出色度细节的特性，降低色度平面的分辨率来换取压缩率。如 4:4:4 代表色度完整分辨率，A:B:C 代表微观每个长 A 像素，高 2 像素的空间，第一行缩到 B 个色度像素，第二行缩到 C 个色度像素。如 4:2:2 代表色度平面的每个 4x2 微观区间中，第一行留 2 像素，第二行留 2 像素。详见下表：</p>
             <div class="overflow-auto">
                 <table class="table-center align-items-center text-smaller">
@@ -294,6 +290,11 @@
                 </table>
             </div>
 
+            <div class="align-items-center mt-3">
+                <img src="files/image5.jpg" alt="Color Space Handling" class="">
+                <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换，色度采样的使用及编解码与录制，传输，显示的关系</p>
+            </div>
+
             <h4>压缩的策略</h4>
             <p>根据硬件的算力和带宽两种限制选择有损压缩，无损压缩和未压缩。一种（图/视/音频）编码可集成全部三种策略。不准确的说，同段信号用：</p>
             <ul>
@@ -311,13 +312,13 @@
             <p>只要录制，剪辑，调色，混音，导出中一个环节用错了录制设备，采样率/色深，色彩空间，分辨率，像素宽高比，颜色混合，伽马映射等设定，损失就已成定局，此时选择有损或无损编码就不再有意义。</p>
 
             <h4>视频压制</h4>
-            <p>一种追求画质，压缩率和速度的视频编码器使用逻辑。因为单纯或追求速度的压缩并未发挥出编码器的最大压缩能力。很多人只是一开始看到硬件编码器速度快，就忽视了软件编码器的高压缩率。</p>
+            <p>一种追求画质，压缩率和速度的视频编码器用户逻辑。因为单纯或追求速度的压缩并未发挥出编码器的最大压缩能力。很多人只是一开始看到硬件编码器速度快，就忽视了软件编码器的高压缩率。英文中没有对应的词汇。</p>
 
             <h4>视频压制三角定律</h4>
             <p>判断压缩策略和设备购置的方法。专用编码目的单一而难以控制妥协损失；通用编码目的广泛而容易控制妥协损失；算力高适合通用策略，算力低则适合专用策略。</p>
             <div class="align-items-center">
                 <img src="files/image13.png" alt="The Video Compression Trade-off Triangle" class="img-medium">
-                <p class="text-gray-side">图：缺一不可的三种出发点构成的三角形。其“完美中心点”的存在和必要性取决于软硬件和用户</p>
+                <p class="text-gray-side">图：三种关键出发点构成的三角形。其“完美中心点”的存在和必要性取决于软硬件和用户</p>
             </div>
 
             <h4>音频格式（一维）</h4>
