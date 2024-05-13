@@ -492,14 +492,14 @@
             <p>一般代表过滤水和空气的网，或作用于一维音频，二维视频信号的算法。滤镜工具即支持套用滤镜到信号的软件或插件，如 Premiere，After Effects，ffmpeg，DaVinci Resolve，FL Studio，Reaper，Ableton，Audition，GIMP，Photoshop，LightRoom，OpenCV 等一切图像视频音频的编辑方案。AviSynth(+)，VapourSynth 严格说是帧服务器（需连接一个编码器才能导出视音频）。</p>
 
             <h4>抖动滤镜 Dither Filter</h4>
-            <p>早期显示器能显示的颜色有限，所以通过高频闪烁两色的处理。图像与音频以及低端显示器中则代表「用分辨率或采样率换位深」的加噪补偿手段，即通过两种位深间隔几个像素就调亮/调暗一个像素的颜色，或音频在两个采样点间快速摆动（加方形波）所产生的更高位深。主要还是欺骗大脑，但因为好看所以衍生出了 Ditherpunk 抖动朋克美术，一种特殊的像素风格。</p>
+            <p>早期显示器能显示的颜色有限，所以通过高频闪烁两色的处理。图像与音频以及低端显示器中则代表「用分辨率或采样率换位深」的加噪补偿手段，即通过两种位深间隔几个像素就调亮/调暗一个像素的颜色，或音频在两个采样点间快速摆动（加方形波）所产生的更高位深。</p>
             <div class="align-items-center">
                 <img src="files/image7.png" alt="Audio Dither" class="img-medium">
                 <p class="text-gray-side mt-0">图：音频的采样点，以及下采样音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
                 <img src="files/image8.png" alt="Image Dither 1" class="">
                 <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
             </div>
-            <p>抖动滤镜的效果本身可以作为游戏引擎的材质，例如利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声/黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法作为抖动滤镜。典型如贯彻了抖动朋克的 1bit 游戏「奥博拉丁的回归」。</p>
+            <p>抖动滤镜的效果主要还是欺骗大脑，但因为好看所以衍生出了 Ditherpunk 抖动朋克美术，典型如贯彻了抖动朋克的 1bit 游戏「奥博拉丁的回归」，原理是利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声/黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法作为游戏引擎的材质。</p>
             </ul>
             <div class="align-items-center">
                 <img src="files/image9.png" alt="Image Dither 2" class="img-medium">
@@ -514,13 +514,25 @@
             </div>
             <p>图片格式一般支持奇数分辨率，视频一般仅支持偶数分辨率。</p>
 
+            <h4>程序的交互界面 Interface</h4>
+            <p>图形界面交互 Graphic user interface GUI：开关旋钮滑块，上手容易，但程序越复杂就越难做。因此只有利润高，看重美术，有设计人才的行业才会催生好看的图形界面，尽管好看不一定代表好用。当然很多时候有 GUI 就不错了。</p>
+            <div class="align-items-center">
+                <img src="files/image11.png" alt="FL Studio GUI Demonstration" class="img-medium">
+                <p class="text-gray-side">图：音频插件宿主软件 FL Studio，外加一堆免费和“免费”音频插件随便摆放的外观</p>
+                <img src="files/image12.png" alt="XMAPP GUI Demonstration" class="img-medium">
+                <p class="text-gray-side">图：网页服务器宿主软件 XMAPP 的 GUI（左下为 CLI），作为跨行业对比</p>
+            </div>
+            <p>命令行交互 Commandline interface CLI：在 Terminal，Bash，CMD，PowerShell 上手动输入命令，然后敲回车看结果。基本上只要输出结果有一定的文字排版就能看。用多了则会发现它其实比 GUI 还要方便。而很多时候因为命令太长，所以会写成批处理 Batch，Shell 之类的命令脚本文件。例如<a href="https://nazorip.site/archives/835/">PowerShell 一站式检测系统 - 硬件 - 驱动，跑分，附函数模组示例</a>的脚本。</p>
+            <p>应用编程交互 Application programming interface API：所有 CLI 的映射源。当开发者<del>懒到</del>没有写 CLI 参数，或 GUI 界面的时候就只能自己想办法调用的东西。所以不是给人用的，也都说确实不是给人用的。</p>
+
+            <h4>逐行 Progressive 与交错 Interlaced 扫描</h4>
+            <p>其中逐行就是正常一行行刷新像素得到完整图片的屏幕刷新方式。而交错扫描用 YUV 4:1:1 采样，将一块屏幕的奇数像素行视为上场，偶数像素行视为下场。然后从录制时间上错开两场，就在模拟电视上得到了体感 60fps 的视频，详见教程尾。</p>
+
+
+            <p>------------------------未完成内容------------------------</p>
             <h2>分块</h2>
             <p>HEVC 中，帧下结构按面积大小分为<span class="text-blue-emph">帧 → 瓦 tile → 条带 slice → 条带分段 ss → ctu 树单元 → cu 单元</span>。</p>
             <p>cu，cb 由同帧的 ctu 经动态搜索 ME 与运动补偿 MC 隔离所得。其 U/unit 代表 YCbCr 整体块；B/block 则单指 Y，Cb 或 Cr 块，区分亮度色度。ipcm-cu 代表跳过 MEMC，直达环路滤波的「帧内编码 pcm 波形 cu」intra pulse code modulation cu，因为“块”是一串像素值的波形，只是用元数据“换行”到二维而已。</p>
-
-
-
-
 
             <h4 class="same-line">PU - 预测单元：</h4>
             <p class="same-line">Prediction unit 是编码完，用做参考源的块。支持 CU 上对称 Rectangle，非对称 Asymmetric 划分，以更好的隔离动静态。亮度与色度上的分裂法可以不同，小至 4x4 像素。</p>
