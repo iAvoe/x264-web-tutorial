@@ -225,17 +225,17 @@
                         <tr class="border-bottom">
                             <td class="px-1 t-light-gray" rowspan="2">4:4:4</td>
                             <td class="px-1" rowspan="2">亮度，色度皆 1920x1080</td>
-                            <td class="px-0 t-light-gray square">色素</td>
-                            <td class="px-0 t-invert-light square">色素</td>
-                            <td class="px-0 t-light-gray square">色素</td>
-                            <td class="px-0 t-invert-light square">色素</td>
-                            <td rowspan="2">逐行扫描 Progressive，直接读写亮色度而不用算，所以剪视频最快</td>
+                            <td class="px-0 t-light-gray square" nowrap="nowrap">色素</td>
+                            <td class="px-0 t-invert-light square" nowrap="nowrap">色素</td>
+                            <td class="px-0 t-light-gray square" nowrap="nowrap">色素</td>
+                            <td class="px-0 t-invert-light square" nowrap="nowrap">色素</td>
+                            <td rowspan="2">逐行，读写亮色度而不用从 RGB 转——剪视频快</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-0 t-invert-dark">色素</td>
-                            <td class="px-0 text-lightgray">色素</td>
-                            <td class="px-0 t-invert-dark">色素</td>
-                            <td class="px-0 text-lightgray">色素</td>
+                            <td class="px-0 t-invert-dark" nowrap="nowrap">色素</td>
+                            <td class="px-0 text-lightgray" nowrap="nowrap">色素</td>
+                            <td class="px-0 t-invert-dark" nowrap="nowrap">色素</td>
+                            <td class="px-0 text-lightgray" nowrap="nowrap">色素</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1 t-light-gray" rowspan="2">4:2:2</td>
@@ -245,8 +245,8 @@
                             <td class="px-1 t-light-gray" rowspan="4">逐行扫描，颜色像素靠插值还原。直接读写亮度所以剪视频比 RGB 快</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-0 t-invert-dark twoByOne" colspan="2">色素 ←</td>
-                            <td class="px-0 text-lightgray twoByOne" colspan="2">色素 ←</td>
+                            <td class="px-0 t-invert-dark twoByOne" colspan="2" nowrap="nowrap">色素 ←</td>
+                            <td class="px-0 text-lightgray twoByOne" colspan="2" nowrap="nowrap">色素 ←</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1 t-light-gray">4:2:0</td>
@@ -257,33 +257,33 @@
                         <tr class="border-bottom">
                             <td class="px-1 t-light-gray">4:4:0</td>
                             <td class="px-1">亮度不变，色度全宽半高 1920x540</td>
-                            <td class="px-0 t-light-gray OneByTwo">色素<br>↑</td>
-                            <td class="px-0 t-invert-light OneByTwo">色素<br>↑</td>
-                            <td class="px-0 t-invert-dark OneByTwo">色素<br>↑</td>
-                            <td class="px-0 text-lightgray OneByTwo">色素<br>↑</td>
+                            <td class="px-0 t-light-gray OneByTwo" nowrap="nowrap">色素<br>↑</td>
+                            <td class="px-0 t-invert-light OneByTwo" nowrap="nowrap">色素<br>↑</td>
+                            <td class="px-0 t-invert-dark OneByTwo" nowrap="nowrap">色素<br>↑</td>
+                            <td class="px-0 text-lightgray OneByTwo" nowrap="nowrap">色素<br>↑</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1 t-light-gray" rowspan="2">4:1:1</td>
                             <td class="px-1" rowspan="2">亮度不变，色度 1/4 宽全高 480x1080</td>
-                            <td class="px-0 t-light-gray fourByOne" colspan="4">色素 ← ← ← ←</td>
+                            <td class="px-0 t-light-gray fourByOne" colspan="4" nowrap="nowrap">色素 ← ← ← ←</td>
                             <td class="px-1" rowspan="4">交错扫描 Interlaced，横着扫就不会把另一场的帧参考而浪费算力了</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-0 t-invert-dark fourByOne" colspan="4">色素 ← ← ← ←</td>
+                            <td class="px-0 t-invert-dark fourByOne" colspan="4" nowrap="nowrap">色素 ← ← ← ←</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1 t-invert-light" rowspan="2">4:1:1-par4:3</td>
                             <td class="px-1" rowspan="2">亮度 3/4 宽全高，1440x1080 色度 3/16 宽全高，360x1080</td>
-                            <td class="px-0 t-light-gray fourByOne" colspan="4">色度像素 5.333×←</td>
+                            <td class="px-0 t-light-gray fourByOne" colspan="4" nowrap="nowrap">色度像素 5.333×←</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-0 t-invert-dark fourByOne" colspan="4">色度像素 5.333×←</td>
+                            <td class="px-0 t-invert-dark fourByOne" colspan="4" nowrap="nowrap">色度像素 5.333×←</td>
                         </tr>
                         <tr>
                             <td class="px-1 t-invert-light">4:2:0-par4:3</td>
                             <td class="px-1">亮度 3/4 宽全高，1440x1080 色度 3/8 宽半高，720x540</td>
-                            <td class="px-0 t-light-gray square" colspan="2">2.667 ←<br>↑ 2.848 ⬉</td>
-                            <td class="px-0 t-invert-light square" colspan="2">2.667 ←<br>↑ 2.848 ⬉</td>
+                            <td class="px-0 t-light-gray square" colspan="2" nowrap="nowrap">2.667 ←<br>↑ 2.848 ⬉</td>
+                            <td class="px-0 t-invert-light square" colspan="2" nowrap="nowrap">2.667 ←<br>↑ 2.848 ⬉</td>
                             <td class="px-1 t-light-gray">逐行扫描，非方形亮度像素，par 通常是 4:3 <del class="text-lightgray">要不然太烧脑了</del></td>
                         </tr>
                     </tbody>
