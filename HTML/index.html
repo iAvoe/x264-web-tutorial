@@ -322,7 +322,7 @@
             </div>
 
             <h4>音频格式（一维）</h4>
-            <p>最简单的结构为：<a href="https://zh.wikipedia.org/wiki/%E8%84%88%E8%A1%9D%E7%B7%A8%E7%A2%BC%E8%AA%BF%E8%AE%8A">脉冲编码调制 Pulse-code modulation</a> PCM 信号</p>
+            <p>最简单的结构为：脉冲编码调制<a href="https://zh.wikipedia.org/wiki/%E8%84%88%E8%A1%9D%E7%B7%A8%E7%A2%BC%E8%AA%BF%E8%AE%8A">Pulse-code modulation PCM</a>信号</p>
             <table class="table-center align-items-center text-smaller">
                 <thead class="thead-no-border">
                     <tr class="t-invert-dark">
@@ -498,9 +498,10 @@
                     </tbody>
                 </table>
             </div>
+            <p>图片与视频之间还有图像序列，动图两种中间格式。图像序列直接储存视频为大量图像，一般用于录制素材；动图如 .gif，.mng 则几乎和视频流一致，就是未封装而储存了帧率的数据流。</p>
 
             <h4>滤镜/滤波器 Filter 与滤镜工具</h4>
-            <p>一般代表过滤水和空气的网，或作用于一维音频，二维视频信号的算法。滤镜工具即支持套用滤镜到信号的软件或插件，如 Premiere，After Effects，ffmpeg，DaVinci Resolve，FL Studio，Reaper，Ableton，Audition，GIMP，Photoshop，LightRoom，OpenCV 等一切图像视频音频的编辑方案。AviSynth(+)，VapourSynth 严格说是帧服务器（需连接一个编码器才能导出视音频）。</p>
+            <p>一般代表过滤水和空气的网，或作用于一维音频，二维视频信号的算法。滤镜工具即支持套用滤镜到信号的软件或插件，如 Adobe Premiere Pro，After Effects，<a href="https://ffmpeg.org/">ffmpeg</a>，<a href="https://www.blackmagicdesign.com">DaVinci Resolve</a>，<a href="https://www.screentogif.com/">ScreenToGIF</a>，<a href="https://www.image-line.com">FL Studio</a>，<a href="https://www.reaper.fm/">Reaper</a>，<a href="https://www.ableton.com/">Ableton</a>，Audition，<a href="https://www.gimp.org/">GIMP</a>，Photoshop，LightRoom，OpenCV 等一切图像视频音频的编辑方案。<a href="https://avs-plus.net/">AviSynth(+)</a>，VapourSynth 严格说是帧服务器（需连接一个编码器才能导出视音频）。</p>
 
             <h4>抖动滤镜 Dither Filter</h4>
             <p>早期显示器能显示的颜色有限，所以通过高频闪烁两色的处理。图像与音频以及低端显示器中则代表「用分辨率或采样率换位深」的加噪补偿手段，即通过两种位深间隔几个像素就调亮/调暗一个像素的颜色，或音频在两个采样点间快速摆动（加方形波）所产生的更高位深。</p>
@@ -546,22 +547,24 @@
             </a>。</p>
             <p>所以大篇幅讲小数帧率的原因是要强调「没事别录丢帧视频，特别是剪辑素材」。剪辑视频需要很多素材，而帧率不同会出现对齐问题</p>
 
+            <h4>恒定 Constant 与可变 Variable 帧率</h4>
+            <p>所有情况下恒定帧率的播放与剪辑兼容性最好，但可变帧率缓解了手机录像和屏幕发热费电的问题，但转换到恒定帧率需要重新编码。因此录制上据电量和散热能力选择，剪辑上选恒定帧率、</p>
+
             <h4>视频的加载</h4>
             <ol class="text-smaller">
                 <li>鼠标双击视频文件，将打开命令发给操作系统</li>
                 <li>操作系统查找默认视频播放器应用，发给文件系统</li>
-                <li>文件系统定位到硬盘中播放器应用的数据，发给处理器</li>
-                <li>处理器将播放器应用的数据拷入内存</li>
-                <li>处理器读取内存中播放器应用的文件头 Header 以获取正确打开方式（如 32bit/64bit，内存分配）</li>
-                <li>处理器将打开的播放器（有图形界面则一并）返回给操作系统</li>
-                <li>操作系统分配内存空间，绑定 CPU 占用时间（CPU Time），创建新进程 Process，显示打开的播放器</li>
-                <li>操作系统重复类似上述的步骤，加载视频封装的数据到播放器应用的内存空间</li>
-                <li>播放器现在绑定了 CPU 占用，因此逻辑上作为程序。</li>
-                <li>播放器读取内存中封装文件的文件头，获取文件列表，视频帧率，音频对齐，色彩空间，色深等正确的解封装以及播放数据</li>
+                <li>文件系统定位到硬盘中播放器应用的数据，将其中的文件头/头文件 Header 返回给操作系统</li>
+                <li>操作系统读取头文件（如 32/64bit，内存占用，用户设置）后，用处理器将需要的应用数据拷入内存</li>
+                <li>处理器将打开的播放器（和图形界面数据）返回给操作系统</li>
+                <li>操作系统分配内存空间，绑定 CPU 用时（CPU Time），创建新进程 Process</li>
+                <li>操作系统根据图形界面数据绘制并显示出播放器的图形界面</li>
+                <li>此时播放器绑定了 CPU 占用，因此逻辑上不再是数据，而是程序</li>
+                <li>播放器读取视频封装文件的文件头，获取文件列表，视频帧率，音频对齐，色彩空间，色深等正确的解封装以及播放数据</li>
                 <li>播放器确认封装文件中含一条视频轨，12 条音轨，10 条字幕轨和 8 个（共四种）字体文件</li>
-                <li>播放器加载封装中的数据到内存并解码视频，音频为原始未压缩数据，传给显卡和声卡</li>
-                <li>显卡将数据发给显示器；声卡将数据发给扬声器</li>
-                <li>显示器更新画面，扬声器更新喇叭的振动频率</li>
+                <li>播放器加载封装中的当前需要的数据，以及默认第一个轨道的多轨流文件到内存</li>
+                <li>播放器调用符合视频格式的解码器，将内存中的视音频解码为未压缩数据，传给显卡和声卡（DAC）</li>
+                <li>显卡将数据发给显示器，声卡将数据发给扬声器；显示器更新画面，扬声器改变振动频率</li>
             </ol>
 
             <p>------------------------未完成内容------------------------</p>
