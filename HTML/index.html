@@ -103,7 +103,7 @@
             <h4>色深 Depth</h4>
             <p>代表软硬件亮度从 0 黑到 1 白间过渡的细分密度，由于计算机用二进制所以写作如 4bit 16 色深（<span class="text-blue-math">\( 2^4 \)</span>），8bit 256 色深（<span class="text-blue-math">\( 2^8 \)</span>），10bit 1024 色深。早期模拟电视用 <span class="text-blue-math">\( 0 \text{mV} ~ 700 \text{mV} \)</span> 的电压表示，而考虑到电视台调制以及受一定干扰的信号会超出最大电压（烧显像电子枪或老化屏幕荧光粉），所以又在这个区间限制了色深。</p>
             <p>限制后的色深会被重新从缩减的信号范围里映射到最暗—最亮，即色深密度的降低。数字电视的 Bt.601 标准考虑到用质量参差不齐的 DVD 播放机传模拟信号到电视，所以也搞了个有限色深。其中：</p>
-            <ul class="overflow-auto">
+            <ul class=" text-smaller overflow-auto">
                 <li>完整 Full：代表如 8bit 下 0~255 的完整 256 深区间，密度偏高，适合游戏，网页的矢量图场景</li>
                 <li>有限/模拟/TV Limited：代表如 8bit 下 16~235 的缩减区间，密度偏低，用于模拟信号电视</li>
                 <li>Fullrange 硬件上显示 Limited/TV range 源，或 Limited 硬件上显示 Fullrange 源，则渲染器会自动做色域伸张以缩放回完整</li>
@@ -118,7 +118,7 @@
             </div>
 
             <h4>伽马曲线/伽马映射</h4>
-            <ul class="overflow-auto">
+            <ul class="text-smaller overflow-auto">
                 <li>生理伽马映射：人眼认为亮度最小到最大，与线性物理亮度最小到最大的曲线关系
                     <ul class="text-gray-side">
                         <li>人眼重视低中亮度变化，基本忽略中高亮度变化 - 直线的内容亮度变化会使人觉得“发白”</li>
@@ -297,14 +297,14 @@
 
             <h4>压缩的策略</h4>
             <p>根据硬件的算力和带宽两种限制选择有损压缩，无损压缩和未压缩。一种（图/视/音频）编码可集成全部三种策略。不准确的说，同段信号用：</p>
-            <ul>
+            <ul class="text-smaller">
                 <li>有损高压缩——带宽压力最小，解码难度大</li>
                 <li>有损低压缩——带宽压力中等，解码难度小</li>
                 <li>无损高压缩——带宽压力大，解码难度中等</li>
                 <li>无损低压缩——带宽压力大，解码难度小</li>
                 <li>未压缩————带宽压力最大，解码难度最小</li>
             </ul>
-            <ul>
+            <ul class="text-smaller">
                 <li>算力 Computing Power：处理器或硬件解码器的速度和效率，低于解码难度（编码复杂度）则不能流畅播放。</li>
                 <li>带宽 Bandwidth：网速，硬盘读写和内存传输带宽，低于带宽压力（Mbps）则不能流畅播放。</li>
                 <li>DVD 播放机，蓝光播放机为确保流畅，也会和网络传输一样限制带宽。</li>
@@ -511,7 +511,6 @@
                 <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
             </div>
             <p>抖动滤镜的效果主要还是欺骗大脑，但因为好看所以衍生出了 Ditherpunk 抖动朋克美术，典型如贯彻了抖动朋克的 1bit 游戏「奥博拉丁的回归」，原理是利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声/黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法作为游戏引擎的材质。</p>
-            </ul>
             <div class="align-items-center">
                 <img src="files/image9.png" alt="Image Dither 2" class="img-medium">
                 <p class="text-gray-side mt-0">图：图像噪声算法</p>
@@ -546,6 +545,24 @@
             <p>NTSC 模拟电视每个台按标准大约为 6MHz（<del>但受财之迫所以</del>仅宽 4.5MHz）。接下来发生的事谁都没预料到——彩色电视出现了，谁不做谁倒闭。结果就是原本频宽完全不够用（两台间的信号边界相干涉），频宽和扫描线的大小因为电视都卖出去了所以不能改，最后剩下了每 30fps 丢一帧，然后加速（1 秒变 1.1001 秒）对齐（此时 YUV 色彩空间也搞出来了），标准炸了，但码率够了。而数字视频的丢帧单纯是兼容模拟电视用的。<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji
             </a>。</p>
             <p>所以大篇幅讲小数帧率的原因是要强调「没事别录丢帧视频，特别是剪辑素材」。剪辑视频需要很多素材，而帧率不同会出现对齐问题</p>
+
+            <h4>视频的加载</h4>
+            <ol class="text-smaller">
+                <li>鼠标双击视频文件，将打开命令发给操作系统</li>
+                <li>操作系统查找默认视频播放器应用，发给文件系统</li>
+                <li>文件系统定位到硬盘中播放器应用的数据，发给处理器</li>
+                <li>处理器将播放器应用的数据拷入内存</li>
+                <li>处理器读取内存中播放器应用的文件头 Header 以获取正确打开方式（如 32bit/64bit，内存分配）</li>
+                <li>处理器将打开的播放器（有图形界面则一并）返回给操作系统</li>
+                <li>操作系统分配内存空间，绑定 CPU 占用时间（CPU Time），创建新进程 Process，显示打开的播放器</li>
+                <li>操作系统重复类似上述的步骤，加载视频封装的数据到播放器应用的内存空间</li>
+                <li>播放器现在绑定了 CPU 占用，因此逻辑上作为程序。</li>
+                <li>播放器读取内存中封装文件的文件头，获取文件列表，视频帧率，音频对齐，色彩空间，色深等正确的解封装以及播放数据</li>
+                <li>播放器确认封装文件中含一条视频轨，12 条音轨，10 条字幕轨和 8 个（共四种）字体文件</li>
+                <li>播放器加载封装中的数据到内存并解码视频，音频为原始未压缩数据，传给显卡和声卡</li>
+                <li>显卡将数据发给显示器；声卡将数据发给扬声器</li>
+                <li>显示器更新画面，扬声器更新喇叭的振动频率</li>
+            </ol>
 
             <p>------------------------未完成内容------------------------</p>
             <h4>测试 - 成功：</h4>
@@ -701,7 +718,7 @@
                 <img src="files/image10.png" alt="7tap 8tap interpolation 1" class="img-medium" >
             </div>
             <p class="text-gray-side mt-0">图：Y 平面 FIR 插值和 subme 并行，调用 8²或 16²块的横/纵向参考源。若 subme 所得动态的：</p>
-            <ul>
+            <ul class="text-smaller">
                 <li>向量横分量==0: [d][n] 分别用 7tapα或β采样整像素 [A]</li>
                 <li>向量横分量!=0: [f][q] 分别用 7tapα或β采样子像素 [b]</li>
                 <li>向量纵分量==0: [a][c] 分别用 7tapα或β采样整像素 [A]</li>
