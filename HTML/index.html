@@ -131,7 +131,7 @@
                         <li>相机 CMOS 所捕获的线性亮度（RAW 直出格式）在人眼看来发白，需“黑化”矫正</li>
                     </ul>
                 </li>
-                <li>软硬件伽马映射：屏幕电压最小到最大，与线性物理亮度最小到最大间的曲线关系
+                <li>软硬件伽马映射：屏幕电压最小到最大，与线性亮度最小到最大变化的曲线关系
                     <ul class="text-gray-side">
                         <li>CRT 显示屏要放大电压到 <span class="text-blue-math">\( v^{2.2} \)</span> 才能直线地显示亮度变化</li>
                         <li>sRGB 标准则因为 CRT 显示器已将画面黑化，所以在录制过程就将画面白化：<span class="text-blue-math">\( \gamma^{\frac{1}{2.2}} \)</span></li>
@@ -520,7 +520,7 @@
             </div>
 
             <h3>缩放滤镜 Resize Filter</h3>
-            <p>更改图像大小的各种算法，主要分为纯计算缩放滤镜，以 2x2 缩放到 8x8 为例：</p>
+            <p>更改图像大小的各种算法，最简单的例如缩放算法滤镜。</p>
             <h5>临近取样插值 Nearest Neighbour interpolation（NN）：</h5>
             <ol class="text-smaller">
                 <li>2x2 的四个像素点移动到缩放后的四个位置</li>
@@ -530,27 +530,13 @@
             <ol class="text-smaller">
                 <li>2x2 的四个像素点移动到缩放后的四个位置</li>
                 <li>横向和纵向的点（像素值）间各连一条线</li>
-                <li>线段上采样出中间的插值像素点，完成四边</li>
+                <li>线段采样出中间的像素，完成四边的插值</li>
                 <li>四边之间再次分为横向与纵向边缘</li>
                 <li>横向和纵向的边（像素值）间再各连一条线，六横六纵</li>
                 <li>所有线段再次采样出中间的插值像素点，且在横纵线的两种插值之间取平均</li>
             </ol>
-            <h5>样条插值 Spline interpolation：</h5>
-            <p class="text-smaller">“样条”指软木条，通过铁钉应力和样条弹性的相互作用得到连续曲线（数学上指二阶导数连续，见<a href="https://www.youtube.com/watch?v=jvPPXbo87ds">电子游戏设计——曲线的连续</a>）。</p>
-            <ul class="text-smaller">
-                <li>“铁钉”或“已知像素值”用 <span class="text-blue-math">\( x_0, x_1, x_2, x_3 \)</span>表示</li>
-                <li>“铁钉的区间”用 <span class="text-blue-math">\( (x_0, x_1), (x_1, x_2), ... \)</span>表示</li>
-                <li>“受应力的样条结果”或“插值像素值”用 <span class="text-blue-math">\( (x_0, x_1), (x_1, x_2), ... \)</span>表示</li>
-                <li>缩放信号只需 4 个采样点。如 2x2 的缩放区间需要 4x4 的采样范围。</li>
-                
 
-                <li>由于可以用三次函数描述，所以叫 bicubic / spline 插值</li>
-            </ul>
-            <ol class="text-smaller">
-                <li>2x2 的四个像素点移动到缩放后的四个位置</li>
-                <li>参考 2x2 的四个像素点之外环绕的像素点</li>
-            </ol>
-            <p>以及神经网络缩放滤镜：</p>
+            <h4>神经网络缩放滤镜：</h4>
             <ul class="text-smaller">
                 <li></li>
             </ul>
