@@ -581,6 +581,7 @@
             </div>
 
             <h3>缩放滤镜 Resize Filter</h3>
+            <p>Windows 系统一般用双线性缩放放大 PPI 小的软件，视频视频播放器一般用 bicubic 或 lanczos 插值</p>
             <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：更改图像大小的各种算法，可略</button>
             <div class="coll-content">
                 <h5>临近取样插值 Nearest Neighbour interpolation（NN）：</h5>
@@ -588,7 +589,7 @@
                     <li>2x2 的四个像素点移动到缩放后的四个位置</li>
                     <li>待插值的像素中，距离哪四个点近的像素就取哪个像素的值</li>
                 </ol>
-                <h5>双线性插值 Bi-linear interpolation（Bi-lerp）：</h5>
+                <h5>双线性插值 Bi-linear interpolation（Bi-lerp / Bilinear）：</h5>
                 <ol class="text-smaller">
                     <li>2x2 的四个像素点移动到缩放后的四个位置</li>
                     <li>横向和纵向的点（像素值）间各连一条线</li>
@@ -602,7 +603,8 @@
                     <li>“样条”代表软木条，通过铁钉塑形结合木条的应力做出连贯且一致的曲线</li>
                     <li>这种性质可以用多项式准确描述，而图像中的“铁钉”就是像素值</li>
                     <li>图像中的“木条”就是在 n 个“铁钉”构成的 n-1 个区间里各画一条曲线</li>
-                    <li>常见如三次多项式插值 cubic interpolation，在 4 点的 3 个 区间中连线</li>
+                    <li>二次多项式插值 quadratic interpolation 代表三个点间用二次多项式插值</li>
+                    <li>三次多项式插值 cubic interpolation 代表四个点间用三次多项式插值，适用于放大图像</li>
                     <li>连起的线必须平滑连贯，数学上叫做“二阶导数连续”
                         <ul>
                             <li>因此，放大一个 2x2 的区间需要 4x4 范围的采样点</li>
@@ -610,10 +612,10 @@
                     </li>
                     <li>插值的与逻辑和双线性插值一致，同时是三次多项式插值，则是双三次多项式插值 bi-cubic interpolation</li>
                 </ol>
+                <h5>Lanczos 插值：</h5>
+                <p class="text-smaller">使用 sinc 函数取近似，且引入了窗函数来矫正 sinc 函数，同时要计算 lanczos 核实现插值。计算量大，准确度略高于 bicubic 插值。</p>
                 <h5>神经网络缩放滤镜：</h5>
-                <ul class="text-smaller">
-                    <li>通过认知大量训练数据，在其中找出更高维度规律的情况下，利用这些规律推断像素值</li>
-                </ul>
+                <p class="text-smaller">通过认知大量训练数据，在其中找出更高维度规律的情况下，利用这些规律推断像素值。计算量极大，准确度时高时低。</p>
             </div>
 
             <h3>宽高比/展弦比 Aspect Ratio</h3>
