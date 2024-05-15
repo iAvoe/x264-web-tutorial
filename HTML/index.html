@@ -24,42 +24,55 @@
             <h2>必备常识</h2>
             <h3>封装与解封装 - Multiplex/De-multiplex</h3>
             <ul class="overflow-auto">
-                <li>封装文件：类似于 .zip .rar 文件将多个文件（视频，音频，字幕，字体）合为一个</li>
-                <li>信号处理：电台将多股音频流封装为一段模拟信号，收音端调整接收频率以获取其一</li>
-                <li>视频封装文件记录播放所需的元数据，如视频帧率，视音频对齐，色彩标识等
+                <li>文件格式中，类似于 .zip .rar 文件将多个文件（视频，音频，字幕，字体）合并为一个文件</li>
+                <li>信号处理中，电台将多路音频流封装为一段模拟信号，接收端通过调整接收频率来接收其中一路信号，每路信号占据一定的频宽/带宽</li>
+                <li>视频封装文件记录播放所需的元数据，如视频帧率、音视频同步、色彩标识等：
                     <ul class="text-gray-side overflow-auto">
-                        <li><span class="text-blue-emph">MP4</span> 最常见，适合网站与本地播放，对字幕文件的支持性较差</li>
-                        <li><span class="text-blue-emph">MKV</span> 可封装几乎所有的已知视频/音频/字幕格式，就是不能直接导入视频编辑软件</li>
-                        <li><span class="text-blue-emph">FLV</span> 是针对轻量化封装，更适合网站播放，以及定时切分的录制格式</li>
-                        <li><span class="text-blue-emph">MOV</span> 由苹果公司研发用于兼容自家软硬件，也最适合 Adobe Premiere 剪辑软件</li>
-                        <li><span class="text-blue-emph">M4A</span>（MPEG for Audio）支持多种音频流的封装，支持封面图片和详细的艺术家信息</li>
+                        <li><span class="text-blue-emph">MP4</span> 是最常见的格式，适用于网站和本地播放，但对字幕文件的支持性较差。</li>
+                        <li><span class="text-blue-emph">MKV</span> 可以封装几乎所有已知的视频/音频/字幕格式，但无法直接导入视频编辑软件</li>
+                        <li><span class="text-blue-emph">FLV</span> 是一种轻量级封装格式，更适合网站播放，以及需要定时切分录制的格式。</li>
+                        <li><span class="text-blue-emph">MOV</span> 是由苹果公司开发，用于与其软件和硬件兼容，也是 Adobe Premiere 剪辑软件最适用的格式之一</li>
+                        <li><span class="text-blue-emph">M4A</span> （MPEG for Audio）是一种音频流封装文件，支持多种音频流，封面图片，详细艺术家，乐队信息元数据封装的格式</li>
                         <li><span class="text-blue-emph">M3U</span> 由苹果公司研发，用于在线播放音频的封装（然后被用于视频封装），M3U8 指 UTF-8</li>
                     </ul>
                 </li>
-                <li>音频封装文件可以储存歌手，乐队，封面图片等元数据</li>
             </ul>
+
+            <h3>元数据 Metadata</h3>
+            <p>描述数据的数据，例如食品包装上的标题、成分表、图片、营养信息、教你如何正确打开包装的附注就是一种元数据。视音频封装文件中的元数据并不是视音频本身，但播放器需要其中的一些信息才能以正确的帧率、音视频对齐、色彩标准，使用正确的视频解码器，音频解码器，以正确的打开“包装”。</p>
 
             <h3>编解码</h3>
             <ul class="overflow-auto">
-                <li>编码 Encoding：数据格式的转换。压缩是一种编码的目的</li>
-                <li>解码 Decoding：还原被压缩的信号，或播放，解压缩。理论上压缩越高解码越慢</li>
-                <li>软解 Software Decoding：用同价格更高兼容性，更高发热的通用电路播放流文件</li>
-                <li>硬解 Hardware Decoding：用同价格更低兼容性，更低发热的专用电路替代软解
+                <li>编码 Encoding：是数据格式的转换。压缩是编码的一种形式</li>
+                <li>解码 Decoding：是将被压缩的信号还原或播放的解压缩。一般来说，压缩程度越高，解码速度越慢</li>
+                <li>软解 Software Decoding：使用通用电路播放流文件，通常具有更高的兼容性，更高的能耗/发热</li>
+                <li>硬解 Hardware Decoding：使用专用电路替代软解，通常具有更低的兼容性，更低的能耗/发热
                     <ul class="text-gray-side">
-                        <li>如：libmxv, opencl, MMAL, direct3D</li>
+                        <li>例如：libmxv, opencl, MMAL, direct3D</li>
                     </ul>
                 </li>
-                <li>软编 Software Encoding：用同价格更完整功能，更高发热，速度更慢的通用电路编码流文件</li>
-                <li>硬编 Hardware Encoding：用同价格更少数功能，更低发热，速度更快的专用电路编码流文件
+                <li>软编 Software Encoding：使用通用电路编码流文件，通常具有更完整的压缩功能但速度较慢，能耗/发热较高，同码率下的画质比硬编更高</li>
+                <li>硬编 Hardware Encoding：使用专用电路编码流文件，通常具有较少的功能但速度更快，发热更低
                     <ul class="text-gray-side">
-                        <li>如：NVENC，MMF/Venus，Intel-QSV，Conexant，elgato</li>
+                        <li>例如：NVENC，MMF/Venus，Intel-QSV，Conexant，elgato</li>
                     </ul>
                 </li>
-                <li>由于编解码器程序复杂，所以软硬编解码方案于同价格下的差距大（说到底，取决于预算，速度与画质）</li>
+                <li>由于编解码器的复杂性，软硬编解码方案在相同价格下存在较大差异，因此最终取决于预算、速度和画质要求</li>
             </ul>
 
             <h3>数据大小单位</h3>
-            <p>文件体积，单位 bit，Byte，kilo-bit（Kb），kilo-Byte（KB），mega-bit（Mb），mega-Byte（MB），giga-bit（Gb），giga-Byte（GB）等。其中 <span class="text-blue-math">\(1 \text{bit} = \frac{1}{8} \text{Byte}\)</span>，<span class="text-blue-math">\(1 \text{K} = 1000\)</span>，<span class="text-blue-math">\(1 \text{M} = 1000 \text{K}\)</span>，<span class="text-blue-math">\(1 \text{G} = 1000 \text{M}\)</span>。</p>
+            <div class="overflow-auto">
+                <ul>
+                    <li>bit（比特）：最小的计量单位，<span class="text-blue-math">\(1 \text{bit} = \frac{1}{8} \text{Byte}\)</span>，衡量传输流量</li>
+                    <li>Byte（字节）：<span class="text-blue-math">\(8 \text{bit} = 1 \text{Byte}\)</span>，衡量文件大小</li>
+                    <li>kilo-bit（Kb，千比特）：1000 比特</li>
+                    <li>kilo-Byte（KB，千字节）：1000 字节</li>
+                    <li>mega-bit（Mb，兆比特）：1000<sup>2</sup> 比特，或 1024<sup>2</sup> = 1048576 比特</li>
+                    <li>mega-Byte（MB，兆字节）：1000<sup>2</sup> 字节，或 1024<sup>2</sup> = 1048576 字节</li>
+                    <li>giga-bit（Gb，吉比特）：1000<sup>3</sup> 比特，或 1024<sup>3</sup> = 1073741824 比特</li>
+                    <li>giga-Byte（GB，吉字节）：1000<sup>3</sup> 字节，或 1024<sup>3</sup> = 1073741824 字节</li>
+                </ul>
+            </div>
             <div class="align-items-center">
                 <img src="files/image1.png" alt="Bit To Byte Conversion" class="img-medium" >
                 <p class="text-gray-side mt-0">图：bit 与 byte 的转换</p>
@@ -68,16 +81,16 @@
             <h3>码率/比特率 Bitrate</h3>
             <p>文件体积每秒，单位 bps，Bps，Kbps，KBps，Mbps，MBps，Gbps，GBps 等。“ps”即 per second，也可写作“Kb/s，Mb/s”等。</p>
             <ul>
-                <li>长 1 分钟，10MB 的视频文件平均的码率为<span class="text-blue-math">\( (10 \div 1 \times 60) \times 8 \text{bit} = 1333.3 \text{Kbps} \)</span></li>
+                <li>长 1 分钟，10MB 大小的视频文件的平均码率为<span class="text-blue-math">\( (10 \div 1 \times 60) \times 8 \text{bit} = 1333.3 \text{Kbps} \)</span></li>
                 <li>同样 10MB 的视频下载 1 分钟，平均下来网速即<span class="text-blue-math">\( \frac{10}{1 \times 60}=166.67 \text{KBps} \)</span>，<span class="text-blue-math">\( 166.67\times 8 \text{bit} = 1333.33 \text{Kbps} \)</span>
                     <ul class="text-gray-side">
-                        <li>其中 ÷1 代表缩放到一分钟范围，×60 代表缩放到一秒，×8bit 代表 1 Byte 转 8 bit。</li>
+                        <li>这里的 ÷1 代表缩放到一分钟范围，×60 代表缩放到一秒，×8bit 代表 1 Byte 转 8 bit。</li>
                     </ul>
                 </li>
             </ul>
 
             <h3>色彩</h3>
-            <p>人眼感光细胞所捕获特定强度电磁波（可见光），再经过脑补而产生的幻觉，实际的色彩只有一个标量——频率。</p>
+            <p>人眼感光细胞捕获特定强度的电磁波（可见光），然后通过大脑处理，产生了我们所看到的幻觉。实际上，色彩只有一个标量属性，即频率。</p>
             <div class="align-items-center">
                 <img src="files/image2.png" alt="Color Spectrum" class="img-medium" >
                 <p class="text-gray-side mt-0">图：色彩的波形频率变化，见<a href="https://en.wikipedia.org/wiki/Electromagnetic_spectrum">维基百科</a>。</p>
@@ -88,34 +101,38 @@
                 <li>物理亮度：可见光电磁波的强度或振幅，以流明 lumen/lm，坎德拉/烛光量 candela/cd，或尼特 nits/cdm<sup>2</sup> 计量：
                     <ul class="text-gray-side">
                         <li>1cd/lm 大约为一支普通蜡烛的亮度。</li>
-                        <li>因为是强度，所以如一般灯泡电压越高越亮，一般火药能量密度越高越亮</li>
-                        <li>nits 代表投射一米到一平方米区间的 1cd 亮度，大约为 1 nits = 3.426 lm</li>
+                        <li>由于是强度，一般来说，灯泡电压越高、火药能量密度越高，发光就越明亮
+                            <ul>
+                                <li>因此定义：能量和光强的相关性呈正比</li>
+                            </ul>
+                        </li>
+                        <li>Nits 代表 1cd 光源投射到一平方米（一般情况下距离一米）区域后所剩的亮度，主要用于显示器的亮度设定。一般来说，1 nit ≈ 3.426 lm，但实际的换算关系取决于光源和测量仪器的不同与误差。</li>
                     </ul>
                 </li>
-                <li>软硬件亮度：灰度像素值的大小，值越大内容越亮，内容最大亮度受硬件限制。伽马 gamma/Y，最小 0 为黑：
+                <li>软硬件亮度：代表灰度像素值的大小，值越大表示像素点越亮，但最大亮度受硬件和用户设定限制。伽马 gamma/Y 值定义了像素的亮度范围，最小值 0 为黑色：
                     <ul class="text-gray-side">
-                        <li>4bit 位深下最大 15 或 0xF 为白</li>
-                        <li>8bit 位深下最大 255 或 0xFF 为白</li>
-                        <li>10bit 位深下最大 1023 或 0x3FF 为白</li>
+                        <li>位深 4bit 下，最大值为 15（或 0xF），代表白色</li>
+                        <li>位深 8bit 下，最大值为 255（或 0xFF），代表白色</li>
+                        <li>位深 10bit 下，最大值为 1023（或 0x3FF），代表白色</li>
                     </ul>
                 </li>
             </ul>
-            <p>YUV / YCbCr 色彩空间图像的亮度平面 Y，或者 RGB 图像分离出的亮度/灰度平面也可以叫伽马平面或 Y 平面。</p>
+            <p>YUV / YCbCr 色彩空间图像的亮度平面 Y，或者 RGB 图像分离出的亮度/灰度平面，有时也被称为伽马平面或 Y 平面。</p>
             
             <h3>灰度/灰阶 Grayscale</h3>
-            <p>将色彩去除，只保留黑 - 灰 - 白的单一通道图像。</p>
+            <p>代表将色彩信息去除，只保留黑、灰、白色的单通道图像。</p>
             
             <h3>色深 Depth</h3>
-            <p>代表软硬件亮度从 0 黑到 1 白间过渡的细分密度，由于计算机用二进制所以写作如 4bit 16 色深（<span class="text-blue-math">\( 2^4 \)</span>），8bit 256 色深（<span class="text-blue-math">\( 2^8 \)</span>），10bit 1024 色深。早期模拟电视用 <span class="text-blue-math">\( 0 \text{mV} ~ 700 \text{mV} \)</span> 的电压表示，而考虑到电视台调制以及受一定干扰的信号会超出最大电压（烧显像电子枪或老化屏幕荧光粉），所以又在这个区间限制了色深。</p>
-            <p>限制后的色深会被重新从缩减的信号范围里映射到最暗—最亮，即色深密度的降低。数字电视的 Bt.601 标准考虑到用质量参差不齐的 DVD 播放机传模拟信号到电视，所以也搞了个有限色深。其中：</p>
+            <p>色深代表软硬件亮度从黑到白之间过渡的密度细分。由于计算机使用二进制表示，因此通常以如 4bit 表示 16 色深（<span class="text-blue-math">\( 2^4 \)</span>）、8bit 表示 256 色深（<span class="text-blue-math">\( 2^8 \)</span>）、10bit 表示 1024 色深（2^10）的形式呈现。早期模拟电视使用 <span class="text-blue-math">\( 0 \text{mV} ~ 700 \text{mV} \)</span> 的电压表示色深，但考虑到电视台调制，以及受一定干扰的信号可能超出最大电压（导致烧坏显像电子枪或老化屏幕荧光粉），因此在这个区间内限制了色深的范围。</p>
+            <p>限制后的色深将被重新映射到缩减的信号范围内，导致色深的密度降低。数字电视的 Bt.601 标准考虑到了质量不一的 DVD 播放机传输模拟信号到模拟电视的情况，因此也定义了有限的色深范围。其中：</p>
             <ul class=" text-smaller overflow-auto">
-                <li>完整 Full：代表如 8bit 下 0~255 的完整 256 深区间，密度偏高，适合游戏，网页的矢量图场景</li>
-                <li>有限/模拟/TV Limited：代表如 8bit 下 16~235 的缩减区间，密度偏低，用于模拟信号电视</li>
-                <li>Fullrange 硬件上显示 Limited/TV range 源，或 Limited 硬件上显示 Fullrange 源，则渲染器会自动做色域伸张以缩放回完整</li>
-                <li>Limited/TV 硬件连接 Fullrange 硬件，如显卡用 HDMI 线连接显示器，则会缺失最暗到最亮的色域，使显示器看起来发灰，需要额外设置才能纠正</li>
-                <li>Fullrange 硬件连接 Limited 硬件，如电视设置为 Full 而连接它的 PS4/Xbox 设置为 Limited，则会错误显示出过亮，过暗，且饱和度过高的画面</li>
-                <li>因此，如果整个显示方案都支持完整色域，就都按此设置；否则都设置为有限，而录制视频素材则要为了兼容而设置为有限</li>
-                <li>抖动滤镜可以创造色深增加的错觉</li>
+                <li>完整（Full：8 位色深下，色彩范围从 0 到 255 的完整 256 色深区间，密度较高，适用于游戏，软件和网页的矢量图场景</li>
+                <li>有限/模拟/电视（Limited/Analog/TV Limited）：8 位色深下，色彩范围缩减至 16 到 235 的有限区间，密度较低，通常用于模拟信号电视，但因为跨平台兼容性最高，所以仍是推荐用于处理多媒体的色深</li>
+                <li>当 Limited/TV 范围的硬件连接到 Fullrange 硬件（使用 HDMI 连接显示器时），显示器总是会缺失最暗到最亮的色彩范围，呈现出灰蒙蒙的画面，需要额外设置才能纠正</li>
+                <li>当 Fullrange 的硬件连接到 Limited 范围的硬件时（例如电视设置为 Full，但连接到设置为 Limited 的 PS4/Xbox 时），可能会出现画面过亮、过暗、饱和度过高的错误显示</li>
+                <li>因此，若整个显示系统（操作系统，显示驱动，显示器）都支持完整色域，则应设置为完整；否则一律设置为有限</li>
+                <li>录制视频素材时，为了兼容所有多媒体平台（如网页浏览器，视频网站），通常会将其设置为有限范围</li>
+                <li>抖动滤镜可以创造色深增加的错觉，以改善色彩平滑度</li>
             </ul>
             <div class="align-items-center">
                 <img src="files/image3.png" alt="Color Depth" class="img-medium" >
@@ -124,48 +141,55 @@
 
             <h3>伽马曲线/伽马映射</h3>
             <ul class="text-smaller overflow-auto">
-                <li>生理伽马映射：人眼认为亮度最小到最大，与线性物理亮度最小到最大的曲线关系
+                <li>生理伽马映射：人眼对于亮度的感知与物理亮度的线性变化所异
                     <ul class="text-gray-side">
-                        <li>人眼重视低中亮度变化，基本忽略中高亮度变化 - 直线的内容亮度变化会使人觉得“发白”</li>
-                        <li>很多游戏的初始设置中「调整滑块至能看清左侧暗部图像」就是在调节伽马曲线</li>
-                        <li>相机 CMOS 所捕获的线性亮度（RAW 直出格式）在人眼看来发白，需“黑化”矫正</li>
+                        <li>人眼敏感于低至中等亮度的变化，而对中高亮度的变化则相对不太敏感。因此，当内容的亮度变化呈直线关系时，人们会感觉到“发白”</li>
+                        <li>许多游戏的初始设置中，“将滑块调节到能清晰看到左侧暗部图像”实际上就是在调节伽马曲线，而且是生理伽马曲线</li>
+                        <li>相机 CMOS 捕获的线性亮度（RAW 直出格式）在人眼看来会显得过亮“发白”，需要进行“黑化”校正</li>
                     </ul>
                 </li>
-                <li>软硬件伽马映射：屏幕电压最小到最大，与线性亮度最小到最大变化的曲线关系
+                <li>软硬件伽马映射：屏幕电压与线性亮度变化之间的关系并非线性
                     <ul class="text-gray-side">
-                        <li>CRT 显示屏要放大电压到 <span class="text-blue-math">\( v^{2.2} \)</span> 才能直线地显示亮度变化</li>
-                        <li>sRGB 标准则因为 CRT 显示器已将画面黑化，所以在录制过程就将画面白化：<span class="text-blue-math">\( \gamma^{\frac{1}{2.2}} \)</span></li>
-                        <li>编辑 RAW 图像的软件若不打开 Adobe 软件默认关闭的「按伽马系数混合 RGB 颜色，伽马值 1」设定，图层透明通道间就会脏乱难看</li>
+                        <li>CRT 显示屏一般需要放大电压到 <span class="text-blue-math">\( v^{2.2} \)</span> 才能够直线地显示亮度变化</li>
+                        <li>sRGB 标准则因为 CRT 显示器的特性相当于已经对图像进行了“黑化”处理，因此在录制过程中就会将图像进行“白化”处理：<span class="text-blue-math">\( \gamma^{\frac{1}{2.2}} \)</span></li>
+                        <li>若编辑 RAW 直出图像的软件未打开 Adobe 软件默认关闭的“按伽马系数混合 RGB 颜色，伽马值为 1”的设定，图层透明通道之间的过渡会显得杂乱不堪。</li>
                     </ul>
                 </li>
             </ul>
 
             <h3>伽马矫正</h3>
-            <p>分“白化”的向上提亮缩放和“黑化”的向下变暗缩放。算式为“输出 = 缩放值×输入^(矫正值)”： <span class="text-blue-math">\( s = cr^\gamma \)</span></p>
+            <p>分为两种方式：向上提亮缩放“白化”和向下变暗缩放“黑化”。矫正的算式为：<span class="text-blue-math">\( s = cr^\gamma \)</span></p>
             <div class="align-items-center">
                 <img src="files/image4.png" alt="Gamma Correction" class="img-medium" >
                 <p class="text-gray-side mt-0">图：伽马矫正的指数算式，见<a href="https://www.desmos.com/calculator/shseuk9jcb?lang=zh-CN">desmos 互动例</a>。</p>
             </div>
             
             <h3>对比度 Contrast</h3>
-            <p>一般音量冷热距离等两种程度的差异调节，图像/显示器中则代表最亮到最暗的显示亮度限制。对比度低的图片看起来发灰是因为当前亮度设定在这个灰度上。在黑暗中看同样的视频时，有的场景过亮而有的场景太暗，此时降低对比度就可以解决；在阳光下看同样的视频，即使最大亮度也无法看清暗部场景，此时降低对比度并提高亮度就能解决（同时十分建议手机厂商在亮度条下加上对比度条）。</p>
+            <p>通常情况下，表示对音量、冷热、远近等两种程度的差异大小缩放。在图像/显示器中，对比度则代表最亮和最暗的显示亮度差异。图片的对比度低会显得发灰，因为当前的亮度设置位于这个灰度水平上。</p>
+            <p>人眼在黑暗中观看同样的视频时，有些场景会显得过亮，有些场景则会显得太暗。这种情况下，降低对比度即可解决该问题；而在阳光下观看同样的视频时，即使将手机电脑调到最大亮度，也无法清晰看到暗部场景。这种情况下，降低对比度并增加亮度即可解决该问题。（因此十分建议手机厂商在亮度条下加上对比度条，以便用户根据环境调节显示的对比度）。</p>
 
             <h3>饱和度 Saturation</h3>
-            <p>一般指液体在特定压力和温度下溶解了某种成分的程度，达最高时会沉积而不再溶解。图像中代表颜色接近 100% 纯色的程度。最小得灰阶图像；最大得纯色图像，可理解为色彩的对比度或彩度。</p>
+            <p>一般指液体在特定压力和温度下溶解了某种成分的程度，达到最高时会沉积而不再溶解。图像中则代表颜色接近 100% 纯色的程度或“彩度”，饱和度越高则图像越鲜艳，为零时得到灰阶图像；最大时得到纯色图像。对比度接近饱和度，但不是饱和度。</p>
 
             <h3>像素 Pixel / pix / pel / px</h3>
-            <p>组成图像的最小单位，决定图像的物理大小。分为屏幕的硬件像素大小，以及图片视频的软件像素大小。软件小于硬件时，显示 100% 大小的图片会变小，或者用滤镜将图片放大；反过来若硬件像素大小小于软件，则用滤镜将图片缩小至合适，或溢出屏幕；软件像素由位置，色彩两组数据构成。</p>
+            <p>像素是组成图像的最小单位，决定了图像的物理大小和分辨率。一般情况下分为屏幕的硬件像素大小，和图片/视频的软件像素大小两种。当软件像素小于硬件像素时，显示 100% 大小的图片会变小，或者通过缩放滤镜将图片放大以适应屏幕。反之，如果硬件像素大小小于软件像素，则会使用缩放滤镜将图片缩小至合适的尺寸，或者图片会溢出屏幕。图像中的每个像素都有位置和颜色两份信息。</p>
 
             <h3>每英寸像素 Pixel Per Inch / PPI</h3>
-            <p>主要指屏幕或印刷设备的物理密度，大小取决于设计观看距离。软件上主要用于算出图像的像素大小和分辨率。矢量图形没有这种概念。高 PPI 的显示器是新规格，导致老软件的显示问题，见<a href="https://www.youtube.com/watch?v=jfAH4Ym5D6Q">硬件茶谈</a></p>
+            <p>指屏幕或印刷设备上的物理像素密度，这取决于设计时预期的观看距离。屏幕的 PPI 高则适合近距离观看，因为物理像素更密集。在印刷设备的 PPI 越高，打印出的图像就越细腻。软件的 PPI 主要用于计算新建图像的像素大小和分辨率，以确保图像有着适当的大小和清晰度。</p>
+            <p>矢量图形通常不涉及 PPI 概念，因为它们以数学方式描述图像，可以无限放大而不失真。</p>
+            <p>高 PPI 的显示器是一种较新的规格，旧的软件在这些显示器上会出现模糊，或界面过小的问题，见<a href="https://www.youtube.com/watch?v=jfAH4Ym5D6Q">硬件茶谈</a>。</p>
 
             <h3>位图 Bitmap 与矢量图 Vector</h3>
-            <p>前者用像素和元数据（如 x 个像素后换行）表示，后者用图形函数代码表示（如 JavaFX，SVG）。由于换一套平台就要重写矢量图渲染器，且图形复杂一点就要成倍增加代码字数，更无法保证跨平台渲染器的颜色和大小一致，所以后者较为少见... 若不将“文本”算作矢量图的话。</p>
+            <p>位图使用像素和元数据（例如 n 个像素后换行）来表示图像。每个像素都包含特定的颜色信息，通常表示为 RGB 或 YCbCr 值。用于描述照片和复杂图像，但当放大时会失真，因为像素的信息已经固定，而放大只是用滤镜在其中插值填空的结果。</p>
+            <p>矢量图使用图形函数代码（例如 JavaFX，SVG）来描述图像。它们以函数定义图像的形状、线条和颜色。矢量图可以被放大而不失真，并且可以在不同的尺寸和分辨率下保持清晰度，因为它们是基于数学公式的。</p>
+            <p>尽管矢量图优点明显，但它们相对较少见，因为需要编写复杂的渲染器来处理它们，而且难以确保在不同平台上的一致性。然而，如果我们将“文本”视为一种矢量图形式的话，位图在实际应用中反而才是更为少见的。</p>
 
             <h3>色彩空间 Color Space</h3>
             <div class="row">
-                <p id="LR-UD-001" class="col-10">因用途多样所以种类繁多的数据格式，但目前通常分为硬件与操作系统系统的 RGB 色彩空间和储存的 YUV 色彩空间。YCbCr 特指数字信号，YUV 则特指模拟信号（但后者打字更快所以反而常用）。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
-                <img src="files/image6.png" alt="RGB to YCbCr to RGB" id="LR-UD-002" class="img-small img-right col-2 mb-auto" >
+                <p id="LR-UD-001" class="col-10">用于表示和处理图像颜色的数据格式，具有适用于各种不同应用场景的多种类型。最常用的是分为硬件和操作系统的 RGB 色彩空间，以及内容的 YUV/YCbCr 色彩空间。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
+                <p>RGB 色彩空间由红色 Red、绿色 Green、蓝色 Blue 三个通道组成，每个通道的数值表示相应颜色的强度，对应着显示器红色 LED，绿色 LED 和蓝色 LED。常用于显示器、摄像头和图形处理等硬件和软件系统中。</p>
+                <p>YUV/YCbCr 色彩空间是另一种常见的色彩表示方式，用于存储和传输视频数据。Y 代表亮度 Luminance，而 U、V 代表色度 Chrominance。YCbCr 特指数字信号，YUV 特指模拟信号，再无区别。由于后者字数更少且不需要频繁切换大小写，打字更容易，所以 YUV 拼写后来逐渐被当做讨论用的“平替”。</p>
+                <img src="files/image5.jpg" alt="RGB to YCbCr to RGB" id="LR-UD-002" class="img-small img-right col-2 mb-auto" >
             </div>
             <table class="table-center">
                 <thead>
@@ -212,7 +236,8 @@
             </table>
 
             <h3>色度采样 Chroma Subsampling</h3>
-            <p>在 YCbCr 色彩空间下，利用人眼看不出色度细节的特性，降低色度平面的分辨率来换取压缩率。如 4:4:4 代表色度完整分辨率，A:B:C 代表微观每个长 A 像素，高 2 像素的空间，第一行缩到 B 个色度像素，第二行缩到 C 个色度像素。如 4:2:2 代表色度平面的每个 4x2 微观区间中，第一行留 2 像素，第二行留 2 像素。详见下表：</p>
+            <p>YUV/YCbCr 色彩空间下，利用人眼对色度细节不敏感的特性（见下图全分辨率和半分辨率的色度面），降低色度平面的分辨率，从而压缩图像。色度采样格式通常用三个数字表示，例如 4:4:4、4:2:2 等。</p>
+            <p>A:B:C 代表微观分辨率下，每个长 A 像素，高 2 像素的空间，第一行缩到 B 个色度像素，第二行缩到 C 个色度像素。如 4:2:2 代表色度平面的每个 4x2 微观区间中，第一行的色度分量保留 2 个像素，第二行的色度分量也保留 2 个像素。色度采样详见下表：</p>
             <div class="overflow-auto">
                 <table class="table-center align-items-center text-smaller" style="white-space: nowrap;">
                     <thead class="thead-no-border">
@@ -293,33 +318,68 @@
             </div>
 
             <div class="align-items-center mt-3">
-                <img src="files/image5.jpg" alt="Color Space Handling" class="">
+                <img src="files/image6.png" alt="Color Space Handling" class="">
                 <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换，色度采样的使用及编解码与录制，传输，显示的关系</p>
             </div>
 
             <h3>压缩的策略</h3>
-            <p>根据硬件的算力和带宽两种限制选择有损压缩，无损压缩和未压缩。一种（图/视/音频）编码可集成全部三种策略。不准确的说，同段信号用：</p>
-            <ul class="text-smaller">
-                <li>有损高压缩——带宽压力最小，解码难度大</li>
-                <li>有损低压缩——带宽压力中等，解码难度小</li>
-                <li>无损高压缩——带宽压力大，解码难度中等</li>
-                <li>无损低压缩——带宽压力大，解码难度小</li>
-                <li>未压缩————带宽压力最大，解码难度最小</li>
-            </ul>
+            <p>根据硬件的算力和带宽两种限制选择有损压缩，无损压缩和未压缩。一种（图/视/音频）编码可集成全部三种策略。</p>
             <ul class="text-smaller">
                 <li>算力 Computing Power：处理器或硬件解码器的速度和效率，低于解码难度（编码复杂度）则不能流畅播放。</li>
                 <li>带宽 Bandwidth：网速，硬盘读写和内存传输带宽，低于带宽压力（Mbps）则不能流畅播放。</li>
                 <li>DVD 播放机，蓝光播放机为确保流畅，也会和网络传输一样限制带宽。</li>
             </ul>
+            <table class="table-center">
+                <thead>
+                    <tr>
+                        <th class="px-1"></th>
+                        <th class="px-1">编码强度设定</th>
+                        <th class="px-1">带宽负载</th>
+                        <th class="px-1">解码负载</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-bottom">
+                        <td class="px-1">未压缩</td>
+                        <td class="px-1">无</td>
+                        <td class="px-1">最高</td>
+                        <td class="px-1">最低</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="px-1">无损压缩</td>
+                        <td class="px-1">低</td>
+                        <td class="px-1">高</td>
+                        <td class="px-1">低</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="px-1">无损压缩</td>
+                        <td class="px-1">高</td>
+                        <td class="px-1">中~高</td>
+                        <td class="px-1">中~低</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td class="px-1">有损压缩</td>
+                        <td class="px-1">低</td>
+                        <td class="px-1">高</td>
+                        <td class="px-1">低</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1">有损压缩</td>
+                        <td class="px-1">高</td>
+                        <td class="px-1">低</td>
+                        <td class="px-1">高</td>
+                    </tr>
+                </tbody>
+            </table>
             <p>只要录制，剪辑，调色，混音，导出中一个环节用错了录制设备，采样率/色深，色彩空间，分辨率，像素宽高比，颜色混合，伽马映射等设定，损失就已成定局，此时选择有损或无损编码就不再有意义。</p>
 
             <h3>视频压制</h3>
-            <p>一种追求画质，压缩率和速度的视频编码器用户逻辑。因为单纯或追求速度的压缩并未发挥出编码器的最大压缩能力。很多人只是一开始看到硬件编码器速度快，就忽视了软件编码器的高压缩率。英文中没有对应的词汇。</p>
+            <p>视频压制是视频编码器用户追求画质、压缩率和速度的逻辑。单纯地追求速度并不能发挥编码器的最大压缩能力。很多人一开始只看到硬件编码器速度快，就忽视了软件编码器的高压缩率。</p>
 
             <h3>视频压制三角定律</h3>
-            <p>判断压缩策略和设备购置的方法。专用编码目的单一而难以控制妥协损失；通用编码目的广泛而容易控制妥协损失；算力高适合通用策略，算力低则适合专用策略。</p>
+            <p>确定压缩策略和设备购买的方法。专用编码器通常用于单一目的，但难以控制损失；通用编码器用途广泛，但损失易于控制。高算力适合通用策略，而低算力则适合专用策略。</p>
             <div class="align-items-center">
-                <img src="files/image13.png" alt="The Video Compression Trade-off Triangle" class="img-medium">
+                <img src="files/image7.png" alt="The Video Compression Trade-off Triangle" class="img-medium">
                 <p class="text-gray-side mt-0">图：三种关键出发点构成的三角形。其“完美中心点”的存在和必要性取决于软硬件和用户</p>
             </div>
 
@@ -503,93 +563,109 @@
             <p>图片与视频之间还有图像序列，动图两种中间格式。图像序列直接储存视频为大量图像，一般用于录制素材；动图如 .gif，.mng 则几乎和视频流一致，就是未封装而储存了帧率的数据流。</p>
 
             <h3>滤镜/滤波器 Filter 与滤镜工具</h3>
-            <p>一般代表过滤水和空气的网，或作用于一维音频，二维视频信号的算法。滤镜工具即支持套用滤镜到信号的软件或插件，如 Adobe Premiere Pro，After Effects，<a href="https://ffmpeg.org/">ffmpeg</a>，<a href="https://www.blackmagicdesign.com">DaVinci Resolve</a>，<a href="https://www.screentogif.com/">ScreenToGIF</a>，<a href="https://www.image-line.com">FL Studio</a>，<a href="https://www.reaper.fm/">Reaper</a>，<a href="https://www.ableton.com/">Ableton</a>，Audition，<a href="https://www.gimp.org/">GIMP</a>，Photoshop，<a href="https://www.faststone.org/FSCaptureDetail.htm">FSCapture</a>，LightRoom，OpenCV 等一切图像视频音频的编辑方案。<a href="https://avs-plus.net/">AviSynth(+)</a>，VapourSynth 严格说是帧服务器（需连接一个编码器才能导出视音频）。</p>
+            <p>通常用于过滤水和净化空气。在信号中代表处理一维音频和二维视频信号的算法。滤镜工具代表能够将滤镜应用到信号上的软件或插件，比如 Adobe Premiere Pro，After Effects，<a href="https://ffmpeg.org/">ffmpeg</a>，<a href="https://www.blackmagicdesign.com">DaVinci Resolve</a>，<a href="https://www.screentogif.com/">ScreenToGIF</a>，<a href="https://www.image-line.com">FL Studio</a>，<a href="https://www.reaper.fm/">Reaper</a>，<a href="https://www.ableton.com/">Ableton</a>，Audition，<a href="https://www.gimp.org/">GIMP</a>，Photoshop，<a href="https://www.faststone.org/FSCaptureDetail.htm">FSCapture</a>，LightRoom，OpenCV 等编辑图像、视频和音频的工具。<a href="https://avs-plus.net/">AviSynth(+)</a>和 VapourSynth 严格上称为帧服务器，因为需要连接一个编码器才能导出视音频。</p>
 
             <h3>抖动滤镜 Dither Filter</h3>
-            <p>早期显示器能显示的颜色有限，所以通过高频闪烁两色的处理。图像与音频以及低端显示器中则代表「用分辨率或采样率换位深」的加噪补偿手段，即通过两种位深间隔几个像素就调亮/调暗一个像素的颜色，或音频在两个采样点间快速摆动（加方形波）所产生的更高位深。</p>
+            <p>源自早期操作系统只能显示有限数量的颜色，因此采用了高频闪烁两种颜色的方法来欺骗视觉（副作用是使人感到晕眩）。在图像、音频和低端显示器中，抖动滤镜代表通过分辨率或采样率来换取位深的加噪补偿手段。</p>
+            <p>具体来说，通过间隔几个像素就调亮/调暗一个像素的颜色，使得宏观整体上看起来像是淡化或加深；在音频位深分量两端的采样点间成比例的（以方形波或三角波信号）快速摆动，从而利用扬声器反应速度，起到淡化或深化偏移宏观上位深的效果。</p>
             <div class="align-items-center">
-                <img src="files/image7.png" alt="Audio Dither" class="img-medium">
+                <img src="files/image8.png" alt="Audio Dither" class="img-medium">
                 <p class="text-gray-side mt-0">图：音频的采样点，以及下采样音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
-                <img src="files/image8.png" alt="Image Dither 1" class="">
+                <img src="files/image9.png" alt="Image Dither 1" class="">
                 <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
             </div>
-            <p>抖动滤镜的效果主要还是欺骗大脑，但因为好看所以衍生出了 Ditherpunk 抖动朋克美术，典型如贯彻了抖动朋克的 1bit 游戏「奥博拉丁的回归」，原理是利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声/黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法作为游戏引擎的材质。</p>
+            <p>抖动滤镜的效果主要是欺骗视觉，但因为效果独特，所以衍生出了 Ditherpunk 抖动朋克美术。典型如 1bit 游戏「奥博拉丁的回归」贯彻了这种美学。其原理是利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声，黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法来定义游戏引擎的材质。</p>
             <div class="align-items-center">
-                <img src="files/image9.png" alt="Image Dither 2" class="img-medium">
+                <img src="files/image10.png" alt="Image Dither 2" class="img-medium">
                 <p class="text-gray-side mt-0">图：图像噪声算法</p>
             </div>
 
             <h3>缩放滤镜 Resize Filter</h3>
-            <p>更改图像大小的各种算法，最简单的例如缩放算法滤镜。</p>
+            <p>更改图像大小的各种算法，可略</p>
             <h5>临近取样插值 Nearest Neighbour interpolation（NN）：</h5>
             <ol class="text-smaller">
                 <li>2x2 的四个像素点移动到缩放后的四个位置</li>
-                <li>待插值的像素中，距离哪四个点近的像素就填充哪个像素的值</li>
+                <li>待插值的像素中，距离哪四个点近的像素就取哪个像素的值</li>
             </ol>
             <h5>双线性插值 Bi-linear interpolation（Bi-lerp）：</h5>
             <ol class="text-smaller">
                 <li>2x2 的四个像素点移动到缩放后的四个位置</li>
                 <li>横向和纵向的点（像素值）间各连一条线</li>
-                <li>线段采样出中间的像素，完成四边的插值</li>
-                <li>四边之间再次分为横向与纵向边缘</li>
-                <li>横向和纵向的边（像素值）间再各连一条线，六横六纵</li>
-                <li>所有线段再次采样出中间的插值像素点，且在横纵线的两种插值之间取平均</li>
+                <li>采样得到中间的像素，完成四边的插值</li>
+                <li>四边之间接着分为横向与纵向边缘</li>
+                <li>横向和纵向的边（像素值）间各连一条线，共六横六纵</li>
+                <li>所有线段接着采样得到中间的插值像素点，且在横纵线的两种插值之间取平均</li>
             </ol>
-
-            <h4>神经网络缩放滤镜：</h4>
+            <h5>样条插值 Spline interpolation（spline）：</h5>
+            <ol class="text-smaller">
+                <li>“样条”代表软木条，通过铁钉塑形结合木条的应力做出连贯且一致的曲线</li>
+                <li>这种性质可以用多项式准确描述，而图像中的“铁钉”就是像素值</li>
+                <li>图像中的“木条”就是在 n 个“铁钉”构成的 n-1 个区间里各画一条曲线</li>
+                <li>常见如三次多项式插值 cubic interpolation，在 4 点的 3 个 区间中连线</li>
+                <li>连起的线必须平滑连贯，数学上叫做“二阶导数连续”
+                    <ul>
+                        <li>因此，放大一个 2x2 的区间需要 4x4 范围的采样点</li>
+                    </ul>
+                </li>
+                <li>插值的与逻辑和双线性插值一致，同时是三次多项式插值，则是双三次多项式插值 bi-cubic interpolation</li>
+            </ol>
+            <h5>神经网络缩放滤镜：</h5>
             <ul class="text-smaller">
-                <li></li>
+                <li>通过认知大量训练数据，在其中找出更高维度规律的情况下，利用这些规律推断像素值</li>
             </ul>
 
             <h3>宽高比/展弦比 Aspect Ratio</h3>
             <p>固定翼飞机或者矩形的最小两边分量。被忽略的“长”是因为飞机相对地面，屏幕相对人眼的 z 轴。而换算长短边如 16:9 高 720 的方形像素视频，其宽就是 <span class="text-blue-math">\( 720 \div 9 \times 16 = 1280 \)</span>。</p>
             <div class="align-items-center">
-                <img src="files/image10.png" alt="Aspect Ratio 16 by 9" class="img-medium">
+                <img src="files/image11.png" alt="Aspect Ratio 16 by 9" class="img-medium">
                 <p class="text-gray-side mt-0">图：16:9 的矩形整数偶数放大后的图像分辨率</p>
             </div>
             <p>图片格式一般支持奇数分辨率，视频一般仅支持偶数分辨率。</p>
 
             <h3>程序的交互界面 Interface</h3>
-            <p>图形界面交互 Graphic user interface GUI：开关旋钮滑块，上手容易，但程序越复杂就越难做。因此只有利润高，看重美术，有设计人才的行业才会催生好看的图形界面，尽管好看不一定代表好用。当然很多时候有 GUI 就不错了。</p>
+            <p>图形界面交互 Graphic user interface GUI：通过图形元素（如按钮、滑块、菜单等）进行用户交互的界面设计。随着程序复杂度的增加，设计出好用的界面会变得更加困难。因此，只有在利润丰厚、注重美学设计、且拥有设计人才的行业才会推出外观精美的 GUI。然而，外观好看并不一定意味着好用、再而，很多时候有外观用都是一种奢求。
+            </p>
             <div class="align-items-center">
-                <img src="files/image11.png" alt="FL Studio GUI Demonstration" class="img-medium">
+                <img src="files/image12.png" alt="FL Studio GUI Demonstration" class="img-medium">
                 <p class="text-gray-side mt-0">图：音频插件宿主软件 FL Studio，外加一堆免费和“免费”音频插件随便摆放的外观</p>
-                <img src="files/image12.png" alt="XMAPP GUI Demonstration" class="img-medium">
+                <img src="files/image13.png" alt="XMAPP GUI Demonstration" class="img-medium">
                 <p class="text-gray-side mt-0">图：网页服务器宿主软件 XMAPP 的 GUI（左下为 CLI），作为跨行业对比</p>
             </div>
-            <p>命令行交互 Commandline interface CLI：在 Terminal，Bash，CMD，PowerShell 上手动输入命令，然后敲回车看结果。基本上只要输出结果有一定的文字排版就能看。用多了则会发现它其实比 GUI 还要方便。而很多时候因为命令太长，所以会写成批处理 Batch，Shell 之类的命令脚本文件。例如<a href="https://nazorip.site/archives/835/">PowerShell 一站式检测系统 - 硬件 - 驱动，跑分，附函数模组示例</a>的脚本。</p>
-            <p>应用编程交互 Application programming interface API：所有 CLI 的映射源。当开发者<del>懒到</del>没有写 CLI 参数，或 GUI 界面的时候就只能自己想办法调用的东西。所以不是给人用的，也都说确实不是给人用的。</p>
+            <p>命令行交互 Commandline interface CLI：在如 Terminal、Bash、CMD 和 PowerShell 的终端环境中，用户可以手动输入命令并按回车键查看结果。通常，只要输出结果有一定的文本排版，就可以轻松阅读。随着使用的增加，CLI 可能反而会变得比 GUI 更方便。然而，由于某些命令太长，而且需要储存变量，因此为了简化操作，人们会将其写作批处理、Shell 等命令脚本文件。例如<a href="https://nazorip.site/archives/835/">PowerShell 一站式系统硬件检测</a>的脚本。</p>
+            <p>应用编程交互 Application programming interface API：定义了软件应用程序如何相互通信的规则和工具。用于使开发人员和从程序的外部访问，以便在自己的应用程序中集成其中的功能。API 可以被看作是 CLI 的映射源，当开发者没有编写 CLI 参数或 GUI 时，可以退而求 API 来调用所需的功能。尽管 API 通常不直接面向最终用户，但它们在软件开发中非常重要</p>
 
             <h3>帧率 Frame Rate / Frames per second FPS</h3>
-            <p>帧 Frame 一般用来描述连续图片中的一张。帧率即画面的帧数每秒，而越高则大范围的背景变化越流畅。所以同样是游戏，「微软模拟飞行」，「极限着陆」这类模拟客机，背景变化不大的游戏，或「电影运镜」这种故意限制背景变化速度的“流畅”位于 30fps 左右（每秒更新 30 张画面），而反观模拟赛车等背景高速运动的游戏，即使是手机平台最低也不能少于 120fps；同是动漫场景，如「进击的巨人」之类背景高速移动变化时若低于 60fps 就会大减观看体验；而换做其他动漫，本来（为了降低成本而）设计出，利用视觉暂留原理的顿挫画面就会损坏。</p>
+            <p>帧 Frame 通常用来描述连续图片序列中的单张图片。帧率 Frame Rate 是指每秒显示/刷新的图像帧数。帧率越高，则连续背景变化越流畅。因此，在游戏中，例如微软模拟飞行、极限着陆等模拟客机的游戏，以及电影运镜等故意限制背景变化程度的场景，其帧率一般只需要 30fps 左右（每秒更新 30 张画面）。而对于背景高速运动的游戏，比如模拟赛车等，即使是在手机平台上，最低帧率也不能低于 120fps。</p>
+            <p>在动漫中，如果背景高速移动变化时的帧率低于 60fps，观看体验会大大降低，例如《进击的巨人》中的部分场景。相反，对于一些其他动漫，如果设计师本意是为了降低成本而利用视觉暂留原理来创建顿挫画面，那么低帧率反而会破坏观赏体验。</p>
 
             <h3>逐行 Progressive 与交错 Interlaced 扫描</h3>
-            <p>其中逐行就是正常一行行刷新像素得到完整图片的屏幕刷新方式。而交错扫描用 YUV 4:1:1 采样，将一块屏幕的奇数像素行视为上场，偶数像素行视为下场。然后从录制时间上错开两场，就在模拟电视上得到了体感 60fps 的视频，详见教程尾。至于为什么交错，是因为模拟电视信号像收音机一样接收电台信号（<span class="text-blue-math">\(525 \text{行} \times 30\text{fps} = 15.75 \text{MHz}\)</span>），所以频段区间很宝贵。分行用时间换空间，几乎将每个台的频宽降了一半。</p>
+            <p>逐行扫描通过一行行从左到右地刷新像素来构建图像，是最为常用的屏幕刷新方式。交错扫描的方法不同，它使用 YUV 4:1:1 采样，将屏幕的奇数像素行视为一个场，偶数像素行视为另一个场。这两个场在录制时错开一定时间，这样在模拟电视上观看时会产生 60fps 的视觉效果。交错扫描的原理是为了节省模拟电视信号的频段区间（与收音机接收电台信号一样）。因此，通过在时间上分隔行来节省空间，可以几乎将每个频道的频宽减半，例如（<span class="text-blue-math">\(525 \text{行} \times 30\text{fps} = 15.75 \text{MHz}\)</span>）。</p>
 
             <h3>小数帧率 / 丢帧</h3>
-            <p>NTSC 模拟电视每个台按标准大约为 6MHz（<del>但受财之迫所以</del>仅宽 4.5MHz）。接下来发生的事谁都没预料到——彩色电视出现了，谁不做谁倒闭。结果就是原本频宽完全不够用（两台间的信号边界相干涉），频宽和扫描线的大小因为电视都卖出去了所以不能改，最后剩下了每 30fps 丢一帧，然后加速（1 秒变 1.1001 秒）对齐（此时 YUV 色彩空间也搞出来了），标准炸了，但码率够了。而数字视频的丢帧单纯是兼容模拟电视用的。<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji
+            <p>NTSC 模拟电视每个频道的标准带宽大约为 6MHz（但实际宽度仅为 4.5MHz）。接下来发生的事谁都没有预料到——彩色电视出现了。结果是原本的频宽完全放不下彩色电视台信号，而且由于电视机已经售出，不可能更改用户家里电视的频宽和扫描线的数量。最终解决方案是在每秒 30 帧的基础上丢掉一帧，并加速 1 秒到 1.1001 秒，以保持与帧率的对齐（同时也引入了 YUV 4:2:0 色彩空间）。经过这般折腾，码率/频宽总算被压缩了下来，但后继影响了数字视频的丢帧帧率标准——为了与模拟电视兼容<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji
             </a>。</p>
-            <p>所以大篇幅讲小数帧率的原因是要强调「没事别录丢帧视频，特别是剪辑素材」。剪辑视频需要很多素材，而帧率不同会出现对齐问题</p>
+            <p>在视频编辑中，对齐帧率不同视频是极其困难的操作，而这个天大的难题只需更改录制设定（点击两三个按钮）即可解决。</p>
+            <div class="align-items-center">
+                <img src="files/image14.jpg" alt="Aligning framerates" class="img-small">
+                <p class="text-gray-side mt-0">图：不同帧率的对齐地狱，见<a href="https://www.youtube.com/watch?v=p3Jb3UPAw-w">Taran Van Hemert</a></p>
+            </div>
 
             <h3>恒定 Constant 与可变 Variable 帧率</h3>
-            <p>所有情况下恒定帧率的播放与剪辑兼容性最好，但可变帧率缓解了手机录像和屏幕发热费电的问题，但转换到恒定帧率需要重新编码。因此录制上据电量和散热能力选择，剪辑上选恒定帧率、</p>
+            <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率有助于解决手机录像时的发热和耗电速度快的问题，同时，将可变帧率转换为恒定帧率以正常剪辑视频时则需要重新编码。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
 
             <h3>视频的加载</h3>
             <ol class="text-smaller">
-                <li>鼠标双击视频文件，将打开命令发给操作系统</li>
-                <li>操作系统查找默认视频播放器应用，发给文件系统</li>
-                <li>文件系统定位到硬盘中播放器应用的数据，将其中的文件头/头文件 Header 返回给操作系统</li>
-                <li>操作系统读取头文件（如 32/64bit，内存占用，用户设置）后，用处理器将需要的应用数据拷入内存</li>
-                <li>处理器将打开的播放器（和图形界面数据）返回给操作系统</li>
-                <li>操作系统分配内存空间，绑定 CPU 用时（CPU Time），创建新进程 Process</li>
-                <li>操作系统根据图形界面数据绘制并显示出播放器的图形界面</li>
-                <li>此时播放器绑定了 CPU 占用，因此逻辑上不再是数据，而是程序</li>
-                <li>播放器读取视频封装文件的文件头，获取文件列表，视频帧率，音频对齐，色彩空间，色深等正确的解封装以及播放数据</li>
-                <li>播放器确认封装文件中含一条视频轨，12 条音轨，10 条字幕轨和 8 个（共四种）字体文件</li>
-                <li>播放器加载封装中的当前需要的数据，以及默认第一个轨道的多轨流文件到内存</li>
-                <li>播放器调用符合视频格式的解码器，将内存中的视音频解码为未压缩数据，传给显卡和声卡（DAC）</li>
-                <li>显卡将数据发给显示器，声卡将数据发给扬声器；显示器更新画面，扬声器改变振动频率</li>
+                <li>用户点击打开视频文件</li>
+                <li>操作系统根据文件扩展名，查找默认的应用程序</li>
+                <li>应用程序根据文件路径，在文件系统中定位视频，并读取文件的元数据，包括文件头和其他格式信息</li>
+                <li>应用程序根据文件的元数据确定所需的解码器和其他资源，然后在计算机的内存中分配空间</li>
+                <li>应用程序调用适当的解码器来解析视频文件，并将视频和音频数据解码为未压缩的原始数据</li>
+                <li>解码后的视频数据传递给图形处理芯片 GPU，而音频数据则传递给声音转换芯片 DAC。</li>
+                <li>GPU 将图像信号转换为图像，输出到显示器</li>
+                <li>显示器上的芯片将图像数据转换为对每个像素上电路的控制，并显示出来</li>
+                <li>DAC 将音频信号转换为模拟信号，并通过扬声器播放出来</li>
             </ol>
+            <p>此步骤涵盖了基本的视频打开过程，在实际情况下会因为软硬件，用户设定，以及操作系统逻辑的不同而有出入。</p>
 
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
