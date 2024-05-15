@@ -187,10 +187,10 @@
             <h3>色彩空间 Color Space</h3>
             <div class="row">
                 <p id="LR-UD-001" class="col-10">用于表示和处理图像颜色的数据格式，具有适用于各种不同应用场景的多种类型。最常用的是分为硬件和操作系统的 RGB 色彩空间，以及内容的 YUV/YCbCr 色彩空间。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
-                <p>RGB 色彩空间由红色 Red、绿色 Green、蓝色 Blue 三个通道组成，每个通道的数值表示相应颜色的强度，对应着显示器红色 LED，绿色 LED 和蓝色 LED。常用于显示器、摄像头和图形处理等硬件和软件系统中。</p>
-                <p>YUV/YCbCr 色彩空间是另一种常见的色彩表示方式，用于存储和传输视频数据。Y 代表亮度 Luminance，而 U、V 代表色度 Chrominance。YCbCr 特指数字信号，YUV 特指模拟信号，再无区别。由于后者字数更少且不需要频繁切换大小写，打字更容易，所以 YUV 拼写后来逐渐被当做讨论用的“平替”。</p>
                 <img src="files/image5.png" alt="RGB to YCbCr to RGB" id="LR-UD-002" class="img-small img-right col-2 mb-auto" >
             </div>
+            <p>RGB 色彩空间由红色 Red、绿色 Green、蓝色 Blue 三个通道组成，每个通道的数值表示相应颜色的强度，对应着显示器红色 LED，绿色 LED 和蓝色 LED。常用于显示器、摄像头和图形处理等硬件和软件系统中。</p>
+            <p>YUV/YCbCr 色彩空间是另一种常见的色彩表示方式，用于存储和传输视频数据。Y 代表亮度 Luminance，而 U、V 代表色度 Chrominance。YCbCr 特指数字信号，YUV 特指模拟信号，再无区别。由于后者字数更少且不需要频繁切换大小写，打字更容易，所以 YUV 拼写后来逐渐被当做讨论用的“平替”。</p>
             <table class="table-center">
                 <thead>
                     <tr>
@@ -581,38 +581,40 @@
             </div>
 
             <h3>缩放滤镜 Resize Filter</h3>
-            <p>更改图像大小的各种算法，可略</p>
-            <h5>临近取样插值 Nearest Neighbour interpolation（NN）：</h5>
-            <ol class="text-smaller">
-                <li>2x2 的四个像素点移动到缩放后的四个位置</li>
-                <li>待插值的像素中，距离哪四个点近的像素就取哪个像素的值</li>
-            </ol>
-            <h5>双线性插值 Bi-linear interpolation（Bi-lerp）：</h5>
-            <ol class="text-smaller">
-                <li>2x2 的四个像素点移动到缩放后的四个位置</li>
-                <li>横向和纵向的点（像素值）间各连一条线</li>
-                <li>采样得到中间的像素，完成四边的插值</li>
-                <li>四边之间接着分为横向与纵向边缘</li>
-                <li>横向和纵向的边（像素值）间各连一条线，共六横六纵</li>
-                <li>所有线段接着采样得到中间的插值像素点，且在横纵线的两种插值之间取平均</li>
-            </ol>
-            <h5>样条插值 Spline interpolation（spline）：</h5>
-            <ol class="text-smaller">
-                <li>“样条”代表软木条，通过铁钉塑形结合木条的应力做出连贯且一致的曲线</li>
-                <li>这种性质可以用多项式准确描述，而图像中的“铁钉”就是像素值</li>
-                <li>图像中的“木条”就是在 n 个“铁钉”构成的 n-1 个区间里各画一条曲线</li>
-                <li>常见如三次多项式插值 cubic interpolation，在 4 点的 3 个 区间中连线</li>
-                <li>连起的线必须平滑连贯，数学上叫做“二阶导数连续”
-                    <ul>
-                        <li>因此，放大一个 2x2 的区间需要 4x4 范围的采样点</li>
-                    </ul>
-                </li>
-                <li>插值的与逻辑和双线性插值一致，同时是三次多项式插值，则是双三次多项式插值 bi-cubic interpolation</li>
-            </ol>
-            <h5>神经网络缩放滤镜：</h5>
-            <ul class="text-smaller">
-                <li>通过认知大量训练数据，在其中找出更高维度规律的情况下，利用这些规律推断像素值</li>
-            </ul>
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：更改图像大小的各种算法，可略</button>
+            <div class="coll-content">
+                <h5>临近取样插值 Nearest Neighbour interpolation（NN）：</h5>
+                <ol class="text-smaller">
+                    <li>2x2 的四个像素点移动到缩放后的四个位置</li>
+                    <li>待插值的像素中，距离哪四个点近的像素就取哪个像素的值</li>
+                </ol>
+                <h5>双线性插值 Bi-linear interpolation（Bi-lerp）：</h5>
+                <ol class="text-smaller">
+                    <li>2x2 的四个像素点移动到缩放后的四个位置</li>
+                    <li>横向和纵向的点（像素值）间各连一条线</li>
+                    <li>采样得到中间的像素，完成四边的插值</li>
+                    <li>四边之间接着分为横向与纵向边缘</li>
+                    <li>横向和纵向的边（像素值）间各连一条线，共六横六纵</li>
+                    <li>所有线段接着采样得到中间的插值像素点，且在横纵线的两种插值之间取平均</li>
+                </ol>
+                <h5>样条插值 Spline interpolation（spline）：</h5>
+                <ol class="text-smaller">
+                    <li>“样条”代表软木条，通过铁钉塑形结合木条的应力做出连贯且一致的曲线</li>
+                    <li>这种性质可以用多项式准确描述，而图像中的“铁钉”就是像素值</li>
+                    <li>图像中的“木条”就是在 n 个“铁钉”构成的 n-1 个区间里各画一条曲线</li>
+                    <li>常见如三次多项式插值 cubic interpolation，在 4 点的 3 个 区间中连线</li>
+                    <li>连起的线必须平滑连贯，数学上叫做“二阶导数连续”
+                        <ul>
+                            <li>因此，放大一个 2x2 的区间需要 4x4 范围的采样点</li>
+                        </ul>
+                    </li>
+                    <li>插值的与逻辑和双线性插值一致，同时是三次多项式插值，则是双三次多项式插值 bi-cubic interpolation</li>
+                </ol>
+                <h5>神经网络缩放滤镜：</h5>
+                <ul class="text-smaller">
+                    <li>通过认知大量训练数据，在其中找出更高维度规律的情况下，利用这些规律推断像素值</li>
+                </ul>
+            </div>
 
             <h3>宽高比/展弦比 Aspect Ratio</h3>
             <p>固定翼飞机或者矩形的最小两边分量。被忽略的“长”是因为飞机相对地面，屏幕相对人眼的 z 轴。而换算长短边如 16:9 高 720 的方形像素视频，其宽就是 <span class="text-blue-math">\( 720 \div 9 \times 16 = 1280 \)</span>。</p>
@@ -654,7 +656,7 @@
             <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率有助于解决手机录像时的发热和耗电速度快的问题，同时，将可变帧率转换为恒定帧率以正常剪辑视频时则需要重新编码。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
 
             <h3>视频的加载</h3>
-            <ol class="text-smaller">
+            <ol>
                 <li>用户点击打开视频文件</li>
                 <li>操作系统根据文件扩展名，查找默认的应用程序</li>
                 <li>应用程序根据文件路径，在文件系统中定位视频，并读取文件的元数据，包括文件头和其他格式信息</li>
