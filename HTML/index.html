@@ -567,17 +567,20 @@
 
             <h3>抖动滤镜 Dither Filter</h3>
             <p>源自早期操作系统只能显示有限数量的颜色，因此采用了高频闪烁两种颜色的方法来欺骗视觉（副作用是使人感到晕眩）。在图像、音频和低端显示器中，抖动滤镜代表通过分辨率或采样率来换取位深的加噪补偿手段。</p>
-            <p>具体来说，通过间隔几个像素就调亮/调暗一个像素的颜色，使得宏观整体上看起来像是淡化或加深；在音频位深分量两端的采样点间成比例的（以方形波或三角波信号）快速摆动，从而利用扬声器反应速度，起到淡化或深化偏移宏观上位深的效果。</p>
-            <div class="align-items-center">
-                <img src="files/image8.png" alt="Audio Dither" class="img-medium">
-                <p class="text-gray-side mt-0">图：音频的采样点，以及下采样音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
-                <img src="files/image9.png" alt="Image Dither 1" class="">
-                <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
-            </div>
-            <p>抖动滤镜的效果主要是欺骗视觉，但因为效果独特，所以衍生出了 Ditherpunk 抖动朋克美术。典型如 1bit 游戏「奥博拉丁的回归」贯彻了这种美学。其原理是利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声，黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法来定义游戏引擎的材质。</p>
-            <div class="align-items-center">
-                <img src="files/image10.png" alt="Image Dither 2" class="img-medium">
-                <p class="text-gray-side mt-0">图：图像噪声算法</p>
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：常用的抖动滤镜，可略</button>
+            <div class="coll-content">
+                <p>具体来说，通过间隔几个像素就调亮/调暗一个像素的颜色，使得宏观整体上看起来像是淡化或加深；在音频位深分量两端的采样点间成比例的（以方形波或三角波信号）快速摆动，从而利用扬声器反应速度，起到淡化或深化偏移宏观上位深的效果。</p>
+                <div class="align-items-center">
+                    <img src="files/image8.png" alt="Audio Dither" class="img-medium">
+                    <p class="text-gray-side mt-0">图：音频的采样点，以及下采样音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
+                    <img src="files/image9.png" alt="Image Dither 1" class="">
+                    <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
+                </div>
+                <p>抖动滤镜的效果主要是欺骗视觉，但因为效果独特，所以衍生出了 Ditherpunk 抖动朋克美术。典型如 1bit 游戏「奥博拉丁的回归」贯彻了这种美学。其原理是利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声，黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法来定义游戏引擎的材质。</p>
+                <div class="align-items-center">
+                    <img src="files/image10.png" alt="Image Dither 2" class="img-medium">
+                    <p class="text-gray-side mt-0">图：图像噪声算法</p>
+                </div>
             </div>
 
             <h3>缩放滤镜 Resize Filter</h3>
