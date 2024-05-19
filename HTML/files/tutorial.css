@@ -99,6 +99,7 @@
 body {
     font-family: var(--font-style-main);
     background-color: #dee2e6;
+    margin: 0;
 }
 code { font-family: var(--bs-font-monospace); }
 pre { overflow: auto; margin: 0; }
@@ -183,6 +184,10 @@ pre { overflow: auto; margin: 0; }
 .px-5 {
     padding-right: 3rem !important;
     padding-left: 3rem !important;
+}
+.px-7 {
+    padding-right: 5rem !important;
+    padding-left: 5rem !important;
 }
 .py-3 {
     padding-top: 1rem !important;
@@ -358,7 +363,7 @@ table thead { border-bottom: 1.25px solid var(--hex-light-grayblue); }
     color: white;
 }
 .thead-no-border { border-bottom: 0px; }
-.border-lr td {
+.border-lr td, .border-lr th {
     border-left: 1px solid #dee2e6 !important;
     border-right: 1px solid #dee2e6 !important;
 }
@@ -390,8 +395,7 @@ button.collapsible {
     padding: 0.55rem 1.25rem;
     text-align: left;
     overflow-anchor: none;
-    margin-top: 0.5rem !important;
-    margin-bottom: 0.5rem !important;
+    border: none;
 }
 
 .coll-content {
