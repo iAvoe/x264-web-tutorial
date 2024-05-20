@@ -751,7 +751,7 @@
                 <img src="files/image15.png" alt="Video Endocing Process" class="img-medium">
             </div>
 
-            <h3>视频编码的标准（来源：<a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs">MDN Docs）</a></h3>
+            <h3>视频编码的标准（来源：<a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs">MDN Docs</a>）</h3>
             <p>“编码”一般称为 coding 或 codec。其中 code 即代码，其末尾加 c 是一种名词化的形容词，如 politic/political，magic/magical，electric/electrical。</p>
             <div class="overflow-auto">
                 <table class="table-center align-items-center text-smaller">
@@ -832,8 +832,44 @@
             </ul>
 
             <h3>视频中的数据结构</h3>
-            <p>在 Advanced Video Coding AVC 中，帧的下级结构按照分辨率大小分为宏块</p>
-            <p>在 High Efficiency Video Coding HEVC 中，帧的下级结构按照分辨率大小分为帧 → 瓦 tile → 条带 slice → 条带分段 slice segment（ss）→ CTU 树单元 Coding Tree Unit → 编码单元 Coding Unit CU</p>
+            <p>在 Advanced Video Coding AVC 中，帧的下级结构按照分辨率大小分为条带组 slice group → 条带 slice → 宏块 Macroblock → 块 block。从大小和功能上细分为：</p>
+            <ul>
+                <li><b>帧 frame</b>：
+                    <ul class="text-smaller">
+                        <li><b>关键帧</b>：I 帧；</li>
+                        <li><b>参考帧</b>：P 帧、B 帧</li>
+                    </ul>
+                </li>
+                <li><b>条带组 slice group</b>：
+                    <ul class="text-smaller">
+                        <li>由灵活宏块排序 Flexible Macroblock Ordering FMO 划分</li>
+                        <li>优化解码延迟，提高压缩和参考错误恢复能力</li>
+                    </ul>
+                </li>
+                <li><b>条带 slice</b>：
+                    <ul class="text-smaller">
+                        <li><b>关键帧下</b>：I 条带</li>
+                        <li><b>参考帧下</b>：I 条带、P 条带、B 条带</li>
+                        <li>空条带：填充网络数据包中，数据不足而无法填满的空位</li>
+                        <li>冗余条带：提高数据抗丢包，抗损坏的能力</li>
+                    </ul>
+                </li>
+                <li><b>宏块 Macroblock</b>：
+                    <ul class="text-smaller">
+                        <li>粗分块，在动态搜索与补偿前完成，面积为 16x16 像素</li>
+                    </ul>
+                </li>
+                <li><b>块 Block</b>：
+                    <ul class="text-smaller">
+                        <li>细分块，在动态搜索与补偿后完成，面积为 8x8 或 4x4 像素</li>
+                        <li><b>关键帧下</b>：帧内预测块、帧间预测块</li>
+                        <li><b>参考帧下</b>：帧内预测块、帧间预测块、帧内残差块、帧间残差块</li>
+                        <li>帧间预测块：将 I 块叠加帧间动态矢量后变出的帧间预测画面</li>
+                        <li>帧内预测块：从块左侧和顶部的一排相邻像素上，叠加插值算法变出的帧内预测画面</li>
+                        <li>残差块：保存帧间和帧内预测无法还原的信息，与预测宏块叠加用。画面复杂则“残差才是本体”</li>
+                    </ul>
+                </li>
+            </ul>
 
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
