@@ -333,10 +333,10 @@
             <table class="table-center">
                 <thead>
                     <tr>
-                        <th class="px-1"></th>
-                        <th class="px-1">编码强度设定</th>
-                        <th class="px-1">带宽负载</th>
-                        <th class="px-1">解码负载</th>
+                        <th> </th>
+                        <th>编码强度设定</th>
+                        <th>带宽负载</th>
+                        <th>解码负载</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -417,14 +417,14 @@
                 <table class="table-center align-items-center text-smaller">
                     <thead class="thead-no-border">
                         <tr class="t-invert-dark">
-                            <th class="px-1">📷压缩</th>
-                            <th class="px-1">格式</th>
-                            <th class="px-1">最大 RGB 色深</th>
-                            <th class="px-1">最大 YUV 色深</th>
-                            <th class="px-1">最大 CMYK 色深</th>
-                            <th class="px-1">动图</th>
-                            <th class="px-1">HDR</th>
-                            <th class="px-1">透明</th>
+                            <th>📷压缩</th>
+                            <th>格式</th>
+                            <th>最大 RGB 色深</th>
+                            <th>最大 YUV 色深</th>
+                            <th>最大 CMYK 色深</th>
+                            <th>动图</th>
+                            <th>HDR</th>
+                            <th>透明</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -524,11 +524,11 @@
                 <table class="table-center align-items-center text-smaller">
                     <thead class="thead-no-border">
                         <tr class="t-invert-dark">
-                            <th class="px-1">🎥压缩</th>
-                            <th class="px-1">格式</th>
-                            <th class="px-1">RGB/YUV 色深</th>
-                            <th class="px-1">HDR</th>
-                            <th class="px-1">透明</th>
+                            <th>🎥压缩</th>
+                            <th>格式</th>
+                            <th>RGB/YUV 色深</th>
+                            <th>HDR</th>
+                            <th>透明</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -661,6 +661,7 @@
             <h3>恒定 Constant 与可变 Variable 帧率</h3>
             <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率有助于解决手机录像时的发热和耗电速度快的问题，同时，将可变帧率转换为恒定帧率以正常剪辑视频时则需要重新编码。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
 
+            <h2>编解码的过程</h2>
             <h3>视频的加载</h3>
             <ol>
                 <li>用户点击打开视频文件</li>
@@ -746,6 +747,93 @@
                     </ul>
                 </li>
             </ol>
+            <div class="align-items-center">
+                <img src="files/image15.png" alt="Video Endocing Process" class="img-medium">
+            </div>
+
+            <h3>视频编码的标准（来源：<a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs">MDN Docs）</a></h3>
+            <p>“编码”一般称为 coding 或 codec。其中 code 即代码，其末尾加 c 是一种名词化的形容词，如 politic/political，magic/magical，electric/electrical。</p>
+            <div class="overflow-auto">
+                <table class="table-center align-items-center text-smaller">
+                    <thead>
+                        <tr>
+                            <th scope="row">♙编码</th>
+                            <th scope="col">全程</th>
+                            <th scope="col">一般封装格式</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-bottom">
+                            <th scope="row">AV1</th>
+                            <td>AOMedia Video 1</td>
+                            <td>MP4，WebM，MKV</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th scope="row">AVC (H.264)</th>
+                            <td>Advanced Video Coding</td>
+                            <td>3GP，MP4</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th scope="row">H.263</th>
+                            <td>H.263 Video</td>
+                            <td>3GP</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th scope="row">HEVC (H.265)</th>
+                            <td>High Efficiency Video Coding</td>
+                            <td>MP4</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th scope="row">MP4V-ES</th>
+                            <td>MPEG-4 Video Elemental Stream</td>
+                            <td>3GP，MP4</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th scope="row">MPEG-1</th>
+                            <td>MPEG-1 Part 2 Visual</td>
+                            <td>MPEG，QuickTime</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th scope="row">MPEG-2</th>
+                            <td>MPEG-2 Part 2 Visual</td>
+                            <td>MP4，MPEG，QuickTime</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th scope="row">Theora</th>
+                            <td>Theora</td>
+                            <td>Ogg</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th scope="row">VP8</th>
+                            <td>Video Processor 8</td>
+                            <td>3GP，Ogg，WebM</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">VP9</th>
+                            <td>Video Processor 9</td>
+                            <td>MP4，Ogg，WebM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>其中，“H.264”的 H 代表国际电信联盟 - 电信标准化部门（ITU‑T）中的 <a href="https://www.itu.int/net/itu-t/sigdb/spevideo/Hseries-s.htm">H 系列建议指南</a>。如 <a href="Recommendation ITU-T H.810: Interoperability design guidelines for personal health systems">ITU-T H.810</a> 个人健康系统（血压计、血糖仪、体重秤之类）的交互设计建议指南。一些符合某个 H 系列视频编码建议指南的视频编码器会将这个标号写在程序名字上，就有了所谓的 x264，x265。</p>
+
+            <div class="align-items-center">
+                <img src="files/image16.png" alt="Video Endocing Standards" class="img-medium">
+            </div>
+
+            <h3>本教程中命令行参数的说明格式</h3>
+            <code><b>--参数</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关 | 整数 A~B | 浮点 A~B | 其它格式，默认值，<span class="text-red-emph">限制</span>&gt; 说明信息，特点注解，推荐<span class="text-blue-emph">这个值</span>，其它情况可设<span class="text-blue-emph">这个值</span>。</p>
+            <ul class="font-monospace pl-5 text-smaller">
+                <li>情况 1：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
+                <li>情况 2：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
+                <li>情况 3：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
+            </ul>
+
+            <h3>视频中的数据结构</h3>
+            <p>在 Advanced Video Coding AVC 中，帧的下级结构按照分辨率大小分为宏块</p>
+            <p>在 High Efficiency Video Coding HEVC 中，帧的下级结构按照分辨率大小分为帧 → 瓦 tile → 条带 slice → 条带分段 slice segment（ss）→ CTU 树单元 Coding Tree Unit → 编码单元 Coding Unit CU</p>
 
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
@@ -756,6 +844,9 @@
 
         <!-- Footer -->
         <footer class="py-3 my-4 align-items-center border-top">
+            <div class="px-1 mb-3">
+                <p>欢迎阅读！本教程仅算盲人摸象的业余分析，仅具备业余参考价值。若有什么不会的可以加群<a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>691892901</a>。<span class="text-red-emph">点击图片即可更改桌面和移动端的适配排版</span>。</p>
+            </div>
             <p>
                 联系：
                 <a href='https://github.com/iAvoe/'>Github</a>，
