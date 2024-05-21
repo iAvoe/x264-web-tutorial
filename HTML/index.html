@@ -751,7 +751,7 @@
                 <img src="files/image15.png" alt="Video Endocing Process" class="img-medium">
             </div>
 
-            <h3>视频编码的标准（来源：<a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs">MDN Docs</a>）</h3>
+            <h3>视频编码的标准（<a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs">MDN Docs</a>）</h3>
             <p>“编码”一般称为 coding 或 codec。其中 code 即代码，其末尾加 c 是一种名词化的形容词，如 politic/political，magic/magical，electric/electrical。</p>
             <div class="overflow-auto">
                 <table class="table-center align-items-center text-smaller">
@@ -821,13 +821,31 @@
                 <img src="files/image16.png" alt="Video Endocing Standards" class="img-medium">
             </div>
 
+            <h3>命令行参数</h3>
+            <p>由开发者定义，将函数或程序中的一些变量设为通过命令传递。命令行参数一般使用空格作为分隔符（也有用半角冒号，半角句号等其他情况），参数和参数值之间一般使用空格做分隔符（也有使用等于号的其他情况），多个参数值之间一般使用半角逗号或半角冒号分隔，而含有空格的参数值则使用半角直引号 "" 或 '' 连起来。</p>
+            <p>例如，x264 使用 CLI 参数的例子：</p>
+            <code>x264.exe <span class="text-blue-emph">--rc-lookahead 90 --bframes 12 --b-adapt 2 --me umh --subme 9 --merange 48 --no-fast-pskip --direct auto --weightb --keyint 360 --min-keyint 5 --ref 3 --crf 20 --qpmin 9 --chroma-qp-offset -2 --aq-mode 3 --aq-strength 0.7 --trellis 2 --deblock 0:0 --psy-rd 0.77:0.22 --fgo 10 --nr 4</span> --output ".\输出.mp4" ".\导入.mp4"</code>
+            <p>以及 ffmpeg 中使用 CLI 参数启用 libx264，通过 <code>-x264-params</code> 发送 API 参数的例子：</p>
+            <code>ffmpeg.exe -loglevel 16 -hwaccel auto -y -hide_banner -i ".\导入.mp4" -c:v libx264 -x264-params "<span class="text-blue-emph">rc-lookahead=90:bframes=12:b-adapt=2:me=umh:subme=9:merange=48:fast-pskip=0:direct=auto:weightb=1:keyint=360:min-keyint=5:ref=3:crf=20:qpmin=9:chroma-qp-offset=-2:aq-mode=3:aq-strength=0.7:trellis=2:deblock=0,0:psy-rd=0.77,0.22:nr=4</span>" -fps_mode passthrough -c:a copy ".\输出.mp4"</code>
+            <p>ffmpeg 中，导入文件由 <code>-i</code> 参数完成，因为 ffmpeg 支持导入多个文件，而每个文件后跟随一些处理命令就需要较为严格的命令添加顺序，而 x264/5 这些编码器一般只是导入一个文件，所以在末尾加一个路径到文件的字符串就代表导入文件了。</p>
+
+            <h3>本教程中命令行参数的说明格式</h3>
+            <code><b>--参数</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关 | 整数 A~B | 浮点 A~B | 其它格式，默认值，<span class="text-red-emph">限制</span>&gt; 说明信息，特点注解，推荐<span class="text-blue-emph">这个值</span>，其它情况可设<span class="text-blue-emph">这个值</span>。</p>
+            <ul class="font-monospace pl-5 text-smaller">
+                <li>情况 1：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
+                <li>情况 2：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
+                <li>情况 3：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
+            </ul>
+
+            <h2>编码</h2>
             <h3>视频中的数据结构</h3>
             <p>在 Advanced Video Coding AVC 中，帧的下级结构按照分辨率大小分为条带组 slice group → 条带 slice → 宏块 Macroblock → 块 block。从大小和功能上细分为：</p>
             <ul>
                 <li><b>帧 frame</b>：
                     <ul class="text-smaller">
-                        <li><b>关键帧</b>：I 帧；</li>
-                        <li><b>参考帧</b>：P 帧、B 帧</li>
+                        <li><b>关键帧</b>：I/i 帧</li>
+                        <li><b>参考帧</b>：P 帧、B/b 帧</li>
                     </ul>
                 </li>
                 <li><b>条带组 slice group</b>：
@@ -838,8 +856,8 @@
                 </li>
                 <li><b>条带 slice</b>：
                     <ul class="text-smaller">
-                        <li><b>关键帧下</b>：I 条带</li>
-                        <li><b>参考帧下</b>：I 条带、P 条带、B 条带</li>
+                        <li><b>关键帧下</b>：I/i 条带</li>
+                        <li><b>参考帧下</b>：I/i 条带、P 条带、B/b 条带</li>
                         <li>空条带：填充网络数据包中，数据不足而无法填满的空位</li>
                         <li>冗余条带：提高数据抗丢包，抗损坏的能力</li>
                     </ul>
@@ -860,26 +878,40 @@
                     </ul>
                 </li>
             </ul>
-
-            <h3>命令行参数</h3>
-            <p>由开发者定义，将函数或程序中的一些变量设为通过命令传递。命令行参数一般使用空格作为分隔符（也有用半角冒号，半角句号等其他情况），参数和参数值之间一般使用空格做分隔符（也有使用等于号的其他情况），多个参数值之间一般使用半角逗号或半角冒号分隔，而含有空格的参数值则使用半角直引号 "" 或 '' 连起来。</p>
-            <p>例如，x264 使用 CLI 参数的例子：</p>
-            <code>x264.exe <span class="text-blue-emph">--rc-lookahead 90 --bframes 12 --b-adapt 2 --me umh --subme 9 --merange 48 --no-fast-pskip --direct auto --weightb --keyint 360 --min-keyint 5 --ref 3 --crf 20 --qpmin 9 --chroma-qp-offset -2 --aq-mode 3 --aq-strength 0.7 --trellis 2 --deblock 0:0 --psy-rd 0.77:0.22 --fgo 10 --nr 4</span> --output ".\输出.mp4" ".\导入.mp4"</code>
-            <p>以及 ffmpeg 中使用 CLI 参数启用 libx264，通过 <code>-x264-params</code> 发送 API 参数的例子：</p>
-            <code>ffmpeg.exe -loglevel 16 -hwaccel auto -y -hide_banner -i ".\导入.mp4" -c:v libx264 -x264-params "<span class="text-blue-emph">rc-lookahead=90:bframes=12:b-adapt=2:me=umh:subme=9:merange=48:fast-pskip=0:direct=auto:weightb=1:keyint=360:min-keyint=5:ref=3:crf=20:qpmin=9:chroma-qp-offset=-2:aq-mode=3:aq-strength=0.7:trellis=2:deblock=0,0:psy-rd=0.77,0.22:nr=4</span>" -fps_mode passthrough -c:a copy ".\输出.mp4"</code>
-            <p>ffmpeg 中，导入文件由 <code>-i</code> 参数完成，因为 ffmpeg 支持导入多个文件，而每个文件后跟随一些处理命令就需要较为严格的命令添加顺序，而 x264/5 这些编码器一般只是导入一个文件，所以在末尾加一个路径到文件的字符串就代表导入文件了。</p>
-
-            <h3>本教程中命令行参数的说明格式</h3>
-            <code><b>--参数</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关 | 整数 A~B | 浮点 A~B | 其它格式，默认值，<span class="text-red-emph">限制</span>&gt; 说明信息，特点注解，推荐<span class="text-blue-emph">这个值</span>，其它情况可设<span class="text-blue-emph">这个值</span>。</p>
-            <ul class="font-monospace pl-5 text-smaller">
-                <li>情况 1：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
-                <li>情况 2：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
-                <li>情况 3：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
+            <p>而相对的，在帧之上的结构被称为图组 Group of pictures GOP。每个 GOP 的创建取决于关键帧间隔设置以及转场判断，其中都包含了 IDR 帧，i 帧，P 帧，Pyramid-B 帧以及 b 帧。一个视频中最少由一个 GOP 组成，同视频长度下 GOP 的数量越多则视频体积越大，解码难度越低。</p>
+            <ul>
+                <li><b>关键帧 IDR 帧，I 帧</b>：
+                    <ul>
+                        <li><b>I 帧 Intra-coded frame</b>独立编码，不依赖于其他帧的关键帧。也可以作为解码的起始点，只是不会刷新参考帧列表，所以强行播放可能会有一些画面错误
+                            <ul class="text-smaller">
+                                <li>“关键”代表“起到独立解码，随机访问点 Access point，传输错误后重新同步视频流，集中参考源以提高压缩率等关键作用”</li>
+                            </ul>
+                        </li>
+                        <li><b>即时解码刷新 Instantaneous Decoder Refresh 帧</b>是一种带有刷新标记的特殊 I 帧，解码器播放到 IDR 帧时会刷新参考帧列表，因此 IDR 帧之前的帧不再作为参考源，从而隔离了 GOP。</li>
+                        <li>IDR 帧一般位于 GOP（Group of Pictures）之首。用户拖动进度条时，解码器会寻找最近的 IDR 帧解码</li>
+                        <li>IDR 帧与 I 帧同为关键帧，有时会被写作 I 帧与 i 帧</li>
+                        <li>IDR 帧数量过少时，可能会导致以下问题：
+                            <ul class="text-smaller">
+                                <li>随机访问会导致参考错误 + 长时间无法纠正画面错误：P，B，b 帧会尝试参考 i 帧之前的帧</li>
+                                <li>剪辑困难：专业视频编辑软件会在剪辑视频时会插入新的 IDR 帧以保证预览流畅和准确</li>
+                                <li>随机访问困难，因为 GOP 的基础结构不存在，拖动进度条需要从视频开头解码到新的位置以后才能播放</li>
+                                <li>拖动进度条代表需要从很远的 IDR 帧（无 IDR 帧则从视频开头）解码到新的位置再继续，等待的时间变得漫长，播放设备的发热增加</li>
+                                <li>如果播放器关闭了拖动进度条的精确索引，则拖动进度条会导致进度条位置偏移到其之前很远的 IDR 帧上，或返回开头</li>
+                            </ul>
+                        </li>
+                        <li>如果 I 帧数量过少，则会有一串含有 I 条带的 P 帧替代它</li>
+                        <li>IDR 帧的数量由 Keyframe interval <code>--keyint</code> 参数和 <code>--scenecut</code> 参数决定</li>
+                        <li>I 帧的数量由 <code>--min-keyint</code> 参数决定</li>
+                    </ul>
+                </li>
+                <li><b>参考帧 P/B-Pyramid/b 帧</b>：
+                    <ul class="text-smaller">
+                        <li>参考帧 P 帧 Prediction frame 含有 I 条带与 P 条带，全部条带都可以给临近的 P，B 帧参考</li>
+                        <li>双向参考帧 Bi-directional prediction frame，b 帧含有 i，P，B 条带，只有 i 条带可以给临近的 P，B 帧参考</li>
+                        <li>尖塔 B 帧 Pyramid bi-directional prediction frame 含有 I，P，B 条带，全部条带都可以给临近的 P，B 帧参考</li>
+                    </ul>
+                </li>
             </ul>
-
-            <h2>编码</h2>
-            <h3>关键帧与参考帧</h3>
 
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
