@@ -817,19 +817,9 @@
                 </table>
             </div>
             <p>其中，“H.264”的 H 代表国际电信联盟 - 电信标准化部门（ITU‑T）中的 <a href="https://www.itu.int/net/itu-t/sigdb/spevideo/Hseries-s.htm">H 系列建议指南</a>。如 <a href="Recommendation ITU-T H.810: Interoperability design guidelines for personal health systems">ITU-T H.810</a> 个人健康系统（血压计、血糖仪、体重秤之类）的交互设计建议指南。一些符合某个 H 系列视频编码建议指南的视频编码器会将这个标号写在程序名字上，就有了所谓的 x264，x265。</p>
-
             <div class="align-items-center">
                 <img src="files/image16.png" alt="Video Endocing Standards" class="img-medium">
             </div>
-
-            <h3>本教程中命令行参数的说明格式</h3>
-            <code><b>--参数</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关 | 整数 A~B | 浮点 A~B | 其它格式，默认值，<span class="text-red-emph">限制</span>&gt; 说明信息，特点注解，推荐<span class="text-blue-emph">这个值</span>，其它情况可设<span class="text-blue-emph">这个值</span>。</p>
-            <ul class="font-monospace pl-5 text-smaller">
-                <li>情况 1：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
-                <li>情况 2：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
-                <li>情况 3：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
-            </ul>
 
             <h3>视频中的数据结构</h3>
             <p>在 Advanced Video Coding AVC 中，帧的下级结构按照分辨率大小分为条带组 slice group → 条带 slice → 宏块 Macroblock → 块 block。从大小和功能上细分为：</p>
@@ -870,6 +860,26 @@
                     </ul>
                 </li>
             </ul>
+
+            <h3>命令行参数</h3>
+            <p>由开发者定义，将函数或程序中的一些变量设为通过命令传递。命令行参数一般使用空格作为分隔符（也有用半角冒号，半角句号等其他情况），参数和参数值之间一般使用空格做分隔符（也有使用等于号的其他情况），多个参数值之间一般使用半角逗号或半角冒号分隔，而含有空格的参数值则使用半角直引号 "" 或 '' 连起来。</p>
+            <p>例如，x264 使用 CLI 参数的例子：</p>
+            <code>x264.exe <span class="text-blue-emph">--rc-lookahead 90 --bframes 12 --b-adapt 2 --me umh --subme 9 --merange 48 --no-fast-pskip --direct auto --weightb --keyint 360 --min-keyint 5 --ref 3 --crf 20 --qpmin 9 --chroma-qp-offset -2 --aq-mode 3 --aq-strength 0.7 --trellis 2 --deblock 0:0 --psy-rd 0.77:0.22 --fgo 10 --nr 4</span> --output ".\输出.mp4" ".\导入.mp4"</code>
+            <p>以及 ffmpeg 中使用 CLI 参数启用 libx264，通过 <code>-x264-params</code> 发送 API 参数的例子：</p>
+            <code>ffmpeg.exe -loglevel 16 -hwaccel auto -y -hide_banner -i ".\导入.mp4" -c:v libx264 -x264-params "<span class="text-blue-emph">rc-lookahead=90:bframes=12:b-adapt=2:me=umh:subme=9:merange=48:fast-pskip=0:direct=auto:weightb=1:keyint=360:min-keyint=5:ref=3:crf=20:qpmin=9:chroma-qp-offset=-2:aq-mode=3:aq-strength=0.7:trellis=2:deblock=0,0:psy-rd=0.77,0.22:nr=4</span>" -fps_mode passthrough -c:a copy ".\输出.mp4"</code>
+            <p>ffmpeg 中，导入文件由 <code>-i</code> 参数完成，因为 ffmpeg 支持导入多个文件，而每个文件后跟随一些处理命令就需要较为严格的命令添加顺序，而 x264/5 这些编码器一般只是导入一个文件，所以在末尾加一个路径到文件的字符串就代表导入文件了。</p>
+
+            <h3>本教程中命令行参数的说明格式</h3>
+            <code><b>--参数</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关 | 整数 A~B | 浮点 A~B | 其它格式，默认值，<span class="text-red-emph">限制</span>&gt; 说明信息，特点注解，推荐<span class="text-blue-emph">这个值</span>，其它情况可设<span class="text-blue-emph">这个值</span>。</p>
+            <ul class="font-monospace pl-5 text-smaller">
+                <li>情况 1：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
+                <li>情况 2：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
+                <li>情况 3：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
+            </ul>
+
+            <h2>编码</h2>
+            <h3>关键帧与参考帧</h3>
 
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
