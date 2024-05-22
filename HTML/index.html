@@ -933,11 +933,62 @@
 
             <h3>多参考帧</h3>
             <p>x264 首次引入了超过前后一帧长度的帧间参考范围。因此动态搜索也能更好的检查运动向量的时间一致性，从而减少动态噪点对动态搜索的干扰，同时提高了压缩。多参考帧不是越长越好，而是只要满足「一帧只要参考前后各 n 帧的信息就足以还原自身」的长度就是对的，而超过后会导致视频体积增加，同时画质降低。这个长度一般是前后各 3 帧，</p>
+
+            <h3>前瞻进程 Lookahead</h3>
+            <p>最先启动，设立关键帧和参考帧的初始编码步骤。决定了后续所有步骤的大纲：</p>
+            <ol>
+                <li><b>启动和初始化</b>：
+                    <ul>
+                        <li>从视频或 <code>--seek</code> 参数指定的位置开始，顺序导入视频帧到 Lookahead 过程</li>
+                        <li>导入的视频帧会被缩小一半以提高速度</li>
+                        <li>后续步骤发现 GOP 结尾时，当前的 Lookahead 帧列表（<code>h-&gt;Lookahead-&gt;next-&gt;list</code> ）会更新 Lookahead 起点。</li>
+                    </ul>
+                </li>
+                <li><b>软转场（Scenecut）</b>：
+                    <ul>
+                        <li>如果输入的首帧是自动 AUTO 模式或 I 帧，则设为 IDR 帧</li>
+                        <li>如果使用 <code>--no-open-gop</code>，且输入帧与之前的非 B 帧画面差距达到 <code>--scenecut</code> 阈值触发转场，则设立 IDR 帧以建立新的 GOP</li>
+                        <li>IDR 帧（或受 <code>--open-gop</code> 限制而设 I 帧）的前一帧会被强制改为 P 帧，以阻止 B 帧的双向参考特性</li>
+                    </ul>
+                </li>
+                <li><b>P/B 帧区分</b>：
+                    <ul>
+                        <li>根据 <code>--b-adapt</code> 指定的算法和 <code>--bframes</code> 的最大连续 B 帧长度，区分出 P 帧和 B 帧，得到如 PBBBPBP 的序列</li>
+                        <li><code>--b-pyramid</code> 参数允许连续 B 帧中的偶数帧作为参考帧使用，保证了长距离的连续 B 帧</li>
+                    </ul>
+                </li>
+                <li><b>MBTree 搜索</b>：
+                    <ul>
+                        <li>分析时间空间范围内的块分布，找出少见的宏块，并计算出这些块的压缩强度偏移，以提高这些块的压缩</li>
+                        <li>偏移程度的计算考虑了 Lookahead 中快速动态预测的准确度（当前和未来两帧相减，差距越大越复杂）</li>
+                        <li>偏移程度的计算还考虑了当前帧与软转场 GOP 首帧的距离，距离越远越少见，分配的压缩强度越大</li>
+                        <li>在这之前的软转场已将画面分界，所以“距离远”代表画面不变的情况下的距离远</li>
+                    </ul>
+                </li>
+                <li><b>硬转场（keyint）</b>：
+                    <ul>
+                        <li>（等 mbtree 完成后）如果使用 <code>--no-open-gop</code>，且当前 GOP 长度达 <code>--min-keyint</code> 大小，则设立 IDR 帧以建立新的 GOP</li>
+                        <li>IDR 帧（或受 <code>--open-gop</code> 限制而设 I 帧）的前一帧会被强制改为 P 帧，以阻止 B 帧的双向参考特性</li>
+                    </ul>
+                </li>
+                <li><b>量化值预设</b>：
+                    <ul>
+                        <li>根据 <code>--rc-lookahead</code> 参数指定的长度为一组，通过当前和未来两帧相减，得到差值，以大致分配压缩强度</li>
+                    </ul>
+                </li>
+                <li><b>VBV 码率限制</b>：
+                    <ul>
+                        <li>视频缓冲验证 Video buffer verifier 进程会检查 <code>--rc-lookahead</code> 范围内给出的压缩强度是否能控制码率，如果码率超标，则提高这批帧的 qp 值备用</li>
+                    </ul>
+                </li>
+            </ol>
+
             <code><b>--min-keyint</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，默认 25，<span class="text-red-emph">小于等于 keyint</span>&gt;判断新发现的转场距离上个 IDR 帧是否小于该值长短。有两种设定逻辑，而它们给出的画质都一样：</p>
             <ul class="font-monospace pl-5 text-smaller">
+                <li>一般通用，一定程度上防止硬转场干扰软转场的溯块参考冗余：<span class="text-blue-emph">keyint ÷2</span></li>
                 <li>少设一些 IDR 帧，以略微提高压缩率和编码速度<span class="text-blue-emph">5 或更高</span></li>
-                <li>快速编码/直播环境：<span class="text-blue-emph">==keyint</span></li>
+                <li>快速编码/直播环境：<span class="text-blue-emph">等于 keyint</span></li>
                 <li>多设一些 IDR 帧，一帧被判做转场本来就意味着前后溯块的价值不高。损失编码速度和压缩率，使复杂画面更接近素材视频级的图片序列，从而分配更多的码率 <span class="text-blue-emph">1 或 2</span></li>
             </ul>
             <code><b>--keyint</b></code>
@@ -964,7 +1015,6 @@
 
             <h3>测试 - 成功：</h3>
             <p>直接跳转到<a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程 - 动态搜索</a></p>
-
             
         </div>
 
