@@ -948,7 +948,7 @@
                     <ul>
                         <li>如果输入的首帧是自动 AUTO 模式或 I 帧，则设为 IDR 帧</li>
                         <li>如果使用 <code>--no-open-gop</code>，且输入帧与之前的非 B 帧画面差距达到 <code>--scenecut</code> 阈值触发转场，则设立 IDR 帧以建立新的 GOP</li>
-                        <li>IDR 帧（或受 <code>--open-gop</code> 限制而设 I 帧）的前一帧会被强制改为 P 帧，以阻止 B 帧的双向参考特性</li>
+                        <li>IDR 帧（于 <code>--min-keyint</code> 范围内则设 I 帧）的前一帧会被强制改为 P 帧，以阻止 B 帧的双向参考特性</li>
                     </ul>
                 </li>
                 <li><b>P/B 帧区分</b>：
@@ -968,7 +968,7 @@
                 <li><b>硬转场（keyint）</b>：
                     <ul>
                         <li>（等 mbtree 完成后）如果使用 <code>--no-open-gop</code>，且当前 GOP 长度达 <code>--min-keyint</code> 大小，则设立 IDR 帧以建立新的 GOP</li>
-                        <li>IDR 帧（或受 <code>--open-gop</code> 限制而设 I 帧）的前一帧会被强制改为 P 帧，以阻止 B 帧的双向参考特性</li>
+                        <li>IDR 帧（于 <code>--min-keyint</code> 范围内则设 I 帧）的前一帧会被强制改为 P 帧，以阻止 B 帧的双向参考特性</li>
                     </ul>
                 </li>
                 <li><b>量化值预设</b>：
