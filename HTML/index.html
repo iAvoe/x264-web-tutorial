@@ -920,14 +920,14 @@
             <h3>动态搜索</h3>
             <p>用于在连续帧间进行运动估计，微观上是找到当前块与参考帧同位之间的相似区域，并为每个块分配动态向量，得到一张张帧间向量表。同时，为了减少动态噪点所造成的干扰，x264 引入了不对称多六边形搜索 Uneven multiple Hexagon，从而实现多分辨率下的检查。搜索算法详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程</a>。</p> 
             <div class="align-items-center">
-                <img src="files/image18.png" alt="Video Coding Components" class="img-small">
+                <img src="files/image18.png" alt="Video Coding Components" class="img-medium">
                 <p class="text-gray-side">图：宏块上帧间的动态向量</p>
             </div>
 
             <h3>运动补偿</h3>
             <p>动态搜索的精度最高可达 1 平方像素，而运动补偿通过插值滤镜放大图像，实现子像素精度的动态向量对齐。子像素对齐后可以更完整的保留画面细节。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-6">x265 教程</a>。</p> 
             <div class="align-items-center">
-                <img src="files/image19.png" alt="Video Coding Components" class="img-small">
+                <img src="files/image19.png" alt="Video Coding Components" class="img-medium">
                 <p class="text-gray-side">图：根据动态搜索与补偿所得，完成宏块到块的细分</p>
             </div>
 
@@ -951,10 +951,73 @@
                         <li>IDR 帧（于 <code>--min-keyint</code> 范围内则设 I 帧）的前一帧会被强制改为 P 帧，以阻止 B 帧的双向参考特性</li>
                     </ul>
                 </li>
-                <li><b>P/B 帧区分</b>：
+                <li><b>启用/关闭连续 B 帧</b>：
                     <ul>
+                        <li>排除了设立 I/i 帧的可能后，还剩下 GOP 长度减 1 的帧数量没有被分配帧类型。此时不考虑 Pyramid-B 帧，所以这些帧可以是 IDR/i/P/B 帧。如果设 IDR 帧则 GOP 收尾</li>
                         <li>根据 <code>--b-adapt</code> 指定的算法和 <code>--bframes</code> 的最大连续 B 帧长度，区分出 P 帧和 B 帧，得到如 PBBBPBP 的序列</li>
                         <li><code>--b-pyramid</code> 参数允许连续 B 帧中的偶数帧作为参考帧使用，保证了长距离的连续 B 帧</li>
+                    </ul>
+                </li>
+                <li><b>维特比算法推演 P/B/b 帧（简化例子）</b>：
+                    <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：维特比算法的推演例子，可略</button>
+                    <ul class="coll-content">
+                        <li>Viterbi shortest path 是一种多起点 - 多终点，类似于 A*和 Dijkstra 的最短路径算法。假设一种成本模型：
+                            <ul>
+                                <li>I 帧成本最高，记为设立成本 <span class="text-blue-math">\(cost_I=10\)</span>；I 帧后的非 I 帧成本 +1，记为转换成本 <span class="text-blue-math">\(cost_{IS}=1\)</span></li>
+                                <li>P 帧成本次之，记为设立成本 <span class="text-blue-math">\(cost_P=5\)</span>；P 帧后的非 P 帧成本 +1，记为转换成本 <span class="text-blue-math">\(cost_{PS} = 1\)</span></li>
+                                <li>B 帧成本最低，记为设立成本 <span class="text-blue-math">\(cost_B=2\)</span>；B 帧压缩最高，记为转换成本 <span class="text-blue-math">\(cost_{BS} = 0\)</span></li>
+                                <li><code>--ref</code> 参数设定了参考帧的最远范围，使编码器不总选择成本最低的 B 帧</li>
+                            </ul>
+                        </li>
+                        <li>应用到推演各帧的可能路径图：
+                            <ul class="text-gray-side">
+                                <li>Frame 0: I0, -, -（GOP 首帧只能是路径中的 I 帧）</li>
+                                <li>Frame 1: I1, P1, B1</li>
+                                <li>Frame 2: I2, P2, B2</li>
+                                <li>Frame 3: I3, P3, B3</li>
+                                <li>Frame 4: I4, P4, B4</li>
+                                <li>...</li>
+                            </ul>
+                        </li>
+                        <li>由此推演第 0，第 1 帧的成本，其中<span class="text-blue-math">\(cost(I_0)\)</span>代表第 0 帧为 I 帧的成本，<span class="text-blue-math">\(cost(I)\)</span>代表设立 I 帧的成本，则记为转换成本（当然此处严格一些应该直接写成 1）：
+                            <ul class="text-gray-side">
+                                <li>Frame 0: <span class="text-blue-math">\(10\)</span>, <span class="text-blue-math">\(\text{-}\)</span>, <span class="text-blue-math">\(\text{-}\)</span></li>
+                                <li>Frame 1: <span class="text-blue-math">\(cost_{I0} + 10\)</span>, <span class="text-blue-math">\(cost_{P0} + cost_{IS} + 5\)</span>, <span class="text-blue-math">\(cost_{B0} + cost_{IS} + 2\)</span></li>
+                                <li>Frame 1: 20, 16, 13，或 <span class="text-blue-math">\(cost_{I1} = 20\)</span>，<span class="text-blue-math">\(cost_{P1} = 16\)</span>，<span class="text-blue-math">\(cost_{B1} = 13\)</span></li>
+                            </ul>
+                        </li>
+                        <li>正式采用维特比算法——选择每个帧的成本变为枝梢计算：设立成本 + 上帧三条路径中的最小值，推演第 2 帧及其后帧的成本：
+                            <ul>
+                                <li><span class="text-blue-math">\(I2 = min(cost_{I1} + 10, cost_{P1} + cost_{PS} + 10, cost_{B1} + 10) = min(20 + 10, 16 + 1 + 10, 13 + 10) = min(30,27,23) = 23\)</span></li>
+                                <li><span class="text-blue-math">\(P2 = min(cost_{I1} + cost_{IS} + 5, cost_{P1} + 5, cost_{B1} + 5) = min(20 + 1 + 5, 16 + 5, 13 + 5) = min(26,21,18) = 18\)</span></li>
+                                <li><span class="text-blue-math">\(B2 = min(cost_{I1} + cost_{IS} + 2, cost_{P1} + cost_{PS} + 2, cost_{B1} + 2) = min(20 + 1 + 2, 16 + 1 + 2, 13 + 2) = min(23,19,15) = 15\)</span></li>
+                                <li class="text-gray-side">Frame 2: 23, 18, 15</li>
+                                
+                                <li><span class="text-blue-math">\(I3 = min(cost_{I2} + 10, cost_{P2} + cost_{PS} + 10, cost_{B2} + 10) = min(23 + 10, 18 + 1 + 10, 15 + 10) = min(33,29,25) = 25\)</span></li>
+                                <li><span class="text-blue-math">\(P3 = min(cost_{I2} + cost_{IS} + 5, cost_{P2} + 5, cost_{B2} + 5) = min(23 + 1 + 5, 18 + 5, 15 + 5) = min(29,23,20) = 20\)</span></li>
+                                <li><span class="text-blue-math">\(B3 = min(cost_{I2} + cost_{IS} + 2, cost_{P2} + cost_{PS} + 2, cost_{B2} + 2) = min(23 + 1 + 2, 18 + 1 + 2, 15 + 2) = min(26,21,17) = 17\)</span></li>
+                                <li class="text-gray-side">Frame 3: 25, 20, 17</li>
+
+                                <li><span class="text-blue-math">\(I4 = min(cost_{I3} + 10, cost_{P3} + cost_{PS} + 10, cost_{B3} + 10) = min(25 + 10, 20 + 1 + 10, 17 + 10) = min(35,31,27) = 27\)</span></li>
+                                <li><span class="text-blue-math">\(P4 = min(cost_{I3} + cost_{IS} + 5, cost_{P3} + 5, cost_{B2} + 5) = min(25 + 1 + 5, 20 + 5, 17 + 5) = min(26,25,22) = 22\)</span></li>
+                                <li><span class="text-blue-math">\(B4 = min(cost_{I3} + cost_{IS} + 2, cost_{P3} + cost_{PS} + 2, cost_{B2} + 2) = min(25 + 1 + 2, 20 + 1 + 2, 17 + 2) = min(28,23,19) = 19\)</span></li>
+                                <li class="text-gray-side">Frame 3: 27, 22, 19</li>
+                                <li class="text-gray-side">Frame 4: 29, 24, 21</li>
+                            </ul>
+                        </li>
+                        <li>将复杂度（前后两帧画面差距）视作分母 <span class="text-blue-math">\(cplx_{0→1}\)</span>，将路径的值视作分子，就得到了该简化例子下的路径成本：
+                            <ul>
+                                <ul class="text-gray-side">
+                                    <li>Frame 0: I0, -, -（GOP 首帧只能是路径中的 I 帧）</li>
+                                    <li>Frame 1: <span class="text-blue-math">\(\frac{cplx_{1→2}}{I1}\)</span>, <span class="text-blue-math">\(\frac{cplx_{0→1}}{P1}\)</span>, <span class="text-blue-math">\(\frac{cplx_{0→1}}{B1}\)</span></li>
+                                    <li>Frame 2: <span class="text-blue-math">\(\frac{cplx_{2→3}}{I2}\)</span>, <span class="text-blue-math">\(\frac{cplx_{1→2}}{P2}\)</span>, <span class="text-blue-math">\(\frac{cplx_{1→2}}{B2}\)</span></li>
+                                    <li>Frame 3: <span class="text-blue-math">\(\frac{cplx_{3→4}}{I3}\)</span>, <span class="text-blue-math">\(\frac{cplx_{2→3}}{P3}\)</span>, <span class="text-blue-math">\(\frac{cplx_{2→3}}{B3}\)</span></li>
+                                    <li>Frame 4: <span class="text-blue-math">\(\frac{cplx_{4→5}}{I4}\)</span>, <span class="text-blue-math">\(\frac{cplx_{3→4}}{P4}\)</span>, <span class="text-blue-math">\(\frac{cplx_{3→4}}{B4}\)</span></li>
+                                    <li>...</li>
+                                </ul>
+                            </ul>
+                        </li>
+                        <li>如此一来，编码器就能得知什么时候设什么帧了</li>
                     </ul>
                 </li>
                 <li><b>MBTree 搜索</b>：
@@ -1009,6 +1072,7 @@
                 <li>YCbCr 4:4:4 片源：<span class="text-blue-emph">x264 默认会自动修改 --chroma-qp-offset，不用该这两个参数</span></li>
             </ul>
 
+            
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
             <p><a href="../../x265-web-tutorial/HTML/index.html">交叉（../../）打开 x265 教程网页版</a></p>
