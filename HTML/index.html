@@ -690,7 +690,7 @@
                                 </li>
                                 <li>如果编码器没有内置解封装解码功能，则通常会使用 ffmpeg 内部的解封装工具和编码器。
                                     <ul>
-                                        <li>可以使用 Unix Pipe 将上游如 ffmpeg、VapourSynth、avs2yuv 连接到下游如 x264/5 的编码器</li>
+                                        <li>可以使用 pipe 将上游如 ffmpeg、VapourSynth、avs2yuv 连接到下游如 x264/5 的编码器</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -837,6 +837,16 @@
                 <li>情况 2：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
                 <li>情况 3：特点如此，推荐<span class="text-blue-emph">这个值</span></li>
             </ul>
+
+            <h3>管道 Pipeline</h3>
+            <p>在进程/软件之间通信的操作系统机制。在 CLI 中表现为两个程序的命令通过链接符 <span class="text-blue-emph">|</span> 串联起来。常用于将上游程序/协议/函数输出的信息传递给下游程序/协议/函数实现过滤。最早的形式为 <a href="https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_(Unix)">Unix Pipe</a>。管道中程序/协议/函数的默认输入，输出与报错分别叫做 stdin，stdout，stderr，它们可以被手动指定到特定的路径，或作为管道传给更下游的程序/协议/函数。</p>
+            <h4>串流管道 Stream-based pipeline</h4>
+            <p>管道中的程序同步运行，持续地传输上游输出到下游。适用于串流作业和处理流数据，包括视音频和文本流。</p>
+            <h4>对象管道 Object-based pipeline</h4>
+            <p>管道中的程序按顺序接力，一个程序/协议/函数跑完后再打开下一个。适用于处理对象化的数据，面向对象的应用程序。Windows PowerShell 使用了对象管道，所以不适合处理视音频流文件。</p>
+            <h4>指定默认输入和报错</h4>
+            <p>在不默认从 stdin 读取管道上游 stdout 的程序/协议/函数，以及不默认从 stdout 输出数据流的程序/协议/函数中，需要添加“-”以特别指定上游输出到 stdout，下游从 stdin 输入，就有了这样的命令行参数：</p>
+            <code>ffmpeg -i &lt;源&gt; -an -f yuv4mpegpipe -strict unofficial <span class="text-blue-emph">- |</span> x265 --y4m <span class="text-blue-emph">-</span> --output</code>
 
             <h2 id="h2-3">编码</h2>
             <h3>视频中的数据结构</h3>
