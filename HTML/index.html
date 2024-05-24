@@ -75,8 +75,8 @@
                 </ul>
             </div>
             <div class="align-items-center">
-                <img src="files/image1.png" alt="Bit To Byte Conversion" class="img-medium" >
-                <p class="text-gray-side mt-0">图：bit 与 byte 的转换</p>
+                <img src="files/basics/Data Sizes.png" alt="image1" class="img-medium" >
+                <p class="text-gray-side mt-0">图：比特，字节与体积时间比的转换</p>
             </div>
 
             <h3>码率/比特率 Bitrate</h3>
@@ -93,7 +93,7 @@
             <h3>色彩</h3>
             <p>人眼感光细胞捕获特定强度的电磁波（可见光），然后通过大脑处理，产生了我们所看到的幻觉。实际上，色彩只有一个标量属性，即频率。</p>
             <div class="align-items-center">
-                <img src="files/image2.png" alt="Color Spectrum" class="img-medium" >
+                <img src="files/basics/Color Spectrum.png" alt="image2" class="img-medium" >
                 <p class="text-gray-side mt-0">图：色彩的波形频率变化，见<a href="https://en.wikipedia.org/wiki/Electromagnetic_spectrum">维基百科</a>。</p>
             </div>
 
@@ -136,7 +136,7 @@
                 <li>抖动滤镜可以创造色深增加的错觉，以改善色彩平滑度</li>
             </ul>
             <div class="align-items-center">
-                <img src="files/image3.png" alt="Color Depth" class="img-medium" >
+                <img src="files/basics/Full and Limited Range.png" alt="image3" class="img-medium" >
                 <p class="text-gray-side mt-0">图：完整色深 Fullrange 与有限/TV 色深 Limited，包括上述说明的更优版本见<a href="https://www.youtube.com/watch?v=8sAJWtgQ2t8">硬件茶谈</a>。</p>
             </div>
 
@@ -161,7 +161,7 @@
             <h3>伽马矫正</h3>
             <p>分为两种方式：向上提亮缩放“白化”和向下变暗缩放“黑化”。矫正的算式为：<span class="text-blue-math">\( s = cr^\gamma \)</span></p>
             <div class="align-items-center">
-                <img src="files/image4.png" alt="Gamma Correction" class="img-medium" >
+                <img src="files/basics/Gamma Correction.png" alt="image4" class="img-medium" >
                 <p class="text-gray-side mt-0">图：伽马矫正的指数算式，见<a href="https://www.desmos.com/calculator/shseuk9jcb?lang=zh-CN">desmos 互动例</a>。</p>
             </div>
             
@@ -188,7 +188,7 @@
             <h3>色彩空间 Color Space</h3>
             <div class="row">
                 <p id="LR-UD-001" class="col-10">用于表示和处理图像颜色的数据格式，具有适用于各种不同应用场景的多种类型。最常用的是分为硬件和操作系统的 RGB 色彩空间，以及内容的 YUV/YCbCr 色彩空间。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
-                <img src="files/image5.png" alt="RGB to YCbCr to RGB" id="LR-UD-002" class="img-small img-right col-2 mb-auto" >
+                <img src="files/basics/RGB to YCbCr to RGB.png" alt="image5" id="LR-UD-002" class="img-small img-right col-2 mb-auto" >
             </div>
             <p>RGB 色彩空间由红色 Red、绿色 Green、蓝色 Blue 三个通道组成，每个通道的数值表示相应颜色的强度，对应着显示器红色 LED，绿色 LED 和蓝色 LED。常用于显示器、摄像头和图形处理等硬件和软件系统中。</p>
             <p>YUV/YCbCr 色彩空间是另一种常见的色彩表示方式，用于存储和传输视频数据。Y 代表亮度 Luminance，而 U、V 代表色度 Chrominance。YCbCr 特指数字信号，YUV 特指模拟信号，再无区别。由于后者字数更少且不需要频繁切换大小写，打字更容易，所以 YUV 拼写后来逐渐被当做讨论用的“平替”。</p>
@@ -319,7 +319,7 @@
             </div>
 
             <div class="align-items-center mt-3">
-                <img src="files/image6.jpg" alt="Color Space Handling" class="image-medium">
+                <img src="files/basics/Color Space Handling.jpg" alt="image6" class="image-medium">
                 <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换，色度采样的使用及编解码与录制，传输，显示的关系</p>
             </div>
 
@@ -380,7 +380,7 @@
             <h3>视频压制三角定律</h3>
             <p>确定压缩策略和设备购买的方法。专用编码器通常用于单一目的，但难以控制损失；通用编码器用途广泛，但损失易于控制。高算力适合通用策略，而低算力则适合专用策略。</p>
             <div class="align-items-center">
-                <img src="files/image7.png" alt="The Video Compression Trade-off Triangle" class="img-medium">
+                <img src="files/basics/Encoding Trade-off Triangle.png" alt="image7" class="img-medium">
                 <p class="text-gray-side mt-0">图：三种关键出发点构成的三角形。其“完美中心点”的存在和必要性取决于软硬件和用户</p>
             </div>
 
@@ -572,14 +572,14 @@
             <div class="coll-content">
                 <p>具体来说，通过间隔几个像素就调亮/调暗一个像素的颜色，使得宏观整体上看起来像是淡化或加深；在音频位深分量两端的采样点间成比例的（以方形波或三角波信号）快速摆动，从而利用扬声器反应速度，起到淡化或深化偏移宏观上位深的效果。</p>
                 <div class="align-items-center">
-                    <img src="files/image8.png" alt="Audio Dither" class="img-medium">
+                    <img src="files/basics/Audio Dither.png" alt="image8" class="img-medium">
                     <p class="text-gray-side mt-0">图：音频的采样点，以及下采样音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
-                    <img src="files/image9.png" alt="Image Dither 1" class="">
+                    <img src="files/basics/Image Dither 1.png" alt="image9" class="">
                     <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
                 </div>
                 <p>抖动滤镜的效果主要是欺骗视觉，但因为效果独特，所以衍生出了 Ditherpunk 抖动朋克美术。典型如 1bit 游戏「奥博拉丁的回归」贯彻了这种美学。其原理是利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声，黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法来定义游戏引擎的材质。</p>
                 <div class="align-items-center">
-                    <img src="files/image10.png" alt="Image Dither 2" class="img-medium">
+                    <img src="files/basics/Image Dither 2.png" alt="image10" class="img-medium">
                     <p class="text-gray-side mt-0">图：图像噪声算法</p>
                 </div>
             </div>
@@ -625,7 +625,7 @@
             <h3>宽高比/展弦比 Aspect Ratio</h3>
             <p>固定翼飞机或者矩形的最小两边分量。被忽略的“长”是因为飞机相对地面，屏幕相对人眼的 z 轴。而换算长短边如 16:9 高 720 的方形像素视频，其宽就是 <span class="text-blue-math">\( 720 \div 9 \times 16 = 1280 \)</span>。</p>
             <div class="align-items-center">
-                <img src="files/image11.png" alt="Aspect Ratio 16 by 9" class="img-medium">
+                <img src="files/basics/Aspect Ratio 16 by 9.png" alt="image11" class="img-medium">
                 <p class="text-gray-side mt-0">图：16:9 的矩形整数偶数放大后的图像分辨率</p>
             </div>
             <p>图片格式一般支持奇数分辨率，视频一般仅支持偶数分辨率。</p>
@@ -634,9 +634,9 @@
             <p>图形界面交互 Graphic user interface GUI：通过图形元素（如按钮、滑块、菜单等）进行用户交互的界面设计。随着程序复杂度的增加，设计出好用的界面会变得更加困难。因此，只有在利润丰厚、注重美学设计、且拥有设计人才的行业才会推出外观精美的 GUI。然而，外观好看并不一定意味着好用、再而，很多时候有外观用都是一种奢求。
             </p>
             <div class="align-items-center">
-                <img src="files/image12.png" alt="FL Studio GUI Demonstration" class="img-medium">
+                <img src="files/basics/FL Studio GUI Demonstration.png" alt="image12" class="img-medium">
                 <p class="text-gray-side mt-0">图：音频插件宿主软件 FL Studio，外加一堆免费和“免费”音频插件随便摆放的外观</p>
-                <img src="files/image13.png" alt="XMAPP GUI Demonstration" class="img-medium">
+                <img src="files/basics/XMAPP GUI Demonstration.png" alt="image13" class="img-medium">
                 <p class="text-gray-side mt-0">图：网页服务器宿主软件 XMAPP 的 GUI（左下为 CLI），作为跨行业对比</p>
             </div>
             <p>命令行交互 Commandline interface CLI：在如 Terminal、Bash、CMD 和 PowerShell 的终端环境中，用户可以手动输入命令并按回车键查看结果。通常，只要输出结果有一定的文本排版，就可以轻松阅读。随着使用的增加，CLI 可能反而会变得比 GUI 更方便。然而，由于某些命令太长，而且需要储存变量，因此为了简化操作，人们会将其写作批处理、Shell 等命令脚本文件。例如<a href="https://nazorip.site/archives/835/">PowerShell 一站式系统硬件检测</a>的脚本。</p>
@@ -648,13 +648,17 @@
 
             <h3>逐行 Progressive 与交错 Interlaced 扫描</h3>
             <p>逐行扫描通过一行行从左到右地刷新像素来构建图像，是最为常用的屏幕刷新方式。交错扫描的方法不同，它使用 YUV 4:1:1 采样，将屏幕的奇数像素行视为一个场，偶数像素行视为另一个场。这两个场在录制时错开一定时间，这样在模拟电视上观看时会产生 60fps 的视觉效果。交错扫描的原理是为了节省模拟电视信号的频段区间（与收音机接收电台信号一样）。因此，通过在时间上分隔行来节省空间，可以几乎将每个频道的频宽减半，例如（<span class="text-blue-math">\(525 \text{行} \times 30\text{fps} = 15.75 \text{MHz}\)</span>）。</p>
+            <div class="align-items-center">
+                <img src="files/basics/PAL-NTSC-SECAM.svg" alt="image14" class="img-medium">
+                <p class="text-gray-side mt-0">图：NTSC，PAL 和 SECAM 播放规格的地区分布，见<a href="https://en.m.wikipedia.org/wiki/File:PAL-NTSC-SECAM.svg">维基百科</a></p>
+            </div>
 
             <h3>小数帧率 / 丢帧</h3>
             <p>NTSC 模拟电视每个频道的标准带宽大约为 6MHz（但实际宽度仅为 4.5MHz）。接下来发生的事谁都没有预料到——彩色电视出现了。结果是原本的频宽完全放不下彩色电视台信号，而且由于电视机已经售出，不可能更改用户家里电视的频宽和扫描线的数量。最终解决方案是在每秒 30 帧的基础上丢掉一帧，并加速 1 秒到 1.1001 秒，以保持与帧率的对齐（同时也引入了 YUV 4:2:0 色彩空间）。经过这般折腾，码率/频宽总算被压缩了下来，但后继影响了数字视频的丢帧帧率标准——为了与模拟电视兼容<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji
             </a>。</p>
             <p>在视频编辑中，对齐帧率不同视频是极其困难的操作，而这个天大的难题只需更改录制设定（点击两三个按钮）即可解决。</p>
             <div class="align-items-center">
-                <img src="files/image14.jpg" alt="Aligning framerates" class="img-small">
+                <img src="files/basics/Aligning framerates.jpg" alt="image15" class="img-small">
                 <p class="text-gray-side mt-0">图：不同帧率的对齐地狱，见<a href="https://www.youtube.com/watch?v=p3Jb3UPAw-w">Taran Van Hemert</a></p>
             </div>
 
@@ -748,7 +752,7 @@
                 </li>
             </ol>
             <div class="align-items-center">
-                <img src="files/image15.png" alt="Video Endocing Process" class="img-medium">
+                <img src="files/basics/Video Endocing Process.png" alt="image15" class="img-medium">
             </div>
 
             <h3>视频编码的标准（<a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs">MDN Docs</a>）</h3>
@@ -818,7 +822,7 @@
             </div>
             <p>其中，“H.264”的 H 代表国际电信联盟 - 电信标准化部门（ITU‑T）中的 <a href="https://www.itu.int/net/itu-t/sigdb/spevideo/Hseries-s.htm">H 系列建议指南</a>。如 <a href="Recommendation ITU-T H.810: Interoperability design guidelines for personal health systems">ITU-T H.810</a> 个人健康系统（血压计、血糖仪、体重秤之类）的交互设计建议指南。一些符合某个 H 系列视频编码建议指南的视频编码器会将这个标号写在程序名字上，就有了所谓的 x264，x265。</p>
             <div class="align-items-center">
-                <img src="files/image16.png" alt="Video Endocing Standards" class="img-medium">
+                <img src="files/basics/Video Endocing Standards.png" alt="image17" class="img-medium">
             </div>
 
             <h3>命令行参数</h3>
@@ -889,7 +893,7 @@
                 </li>
             </ul>
             <div class="align-items-center">
-                <img src="files/image17.png" alt="Video Coding Components" class="img-medium">
+                <img src="files/basics/Video Coding Components.png" alt="image18" class="img-medium">
             </div>
 
             <p>而相对的，在帧之上的结构被称为图组 Group of pictures GOP。每个 GOP 的创建取决于关键帧间隔设置以及转场判断，其中都包含了 IDR 帧，i 帧，P 帧，Pyramid-B 帧以及 b 帧。一个视频中最少由一个 GOP 组成，同视频长度下 GOP 的数量越多则视频体积越大，解码难度越低。</p>
@@ -930,14 +934,14 @@
             <h3>动态搜索</h3>
             <p>用于在连续帧间进行运动估计，微观上是找到当前块与参考帧同位之间的相似区域，并为每个块分配动态向量，得到一张张帧间向量表。同时，为了减少动态噪点所造成的干扰，x264 引入了不对称多六边形搜索 Uneven multiple Hexagon，从而实现多分辨率下的检查。搜索算法详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程</a>。</p> 
             <div class="align-items-center">
-                <img src="files/image18.png" alt="Video Coding Components" class="img-medium">
+                <img src="files/memc/Interframe Vector Table.png" alt="image19" class="img-medium">
                 <p class="text-gray-side">图：宏块上帧间的动态向量</p>
             </div>
 
             <h3>运动补偿</h3>
             <p>动态搜索的精度最高可达 1 平方像素，而运动补偿通过插值滤镜放大图像，实现子像素精度的动态向量对齐。子像素对齐后可以更完整的保留画面细节。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-6">x265 教程</a>。</p> 
             <div class="align-items-center">
-                <img src="files/image19.png" alt="Video Coding Components" class="img-medium">
+                <img src="files/memc/Block Spitting Stage Two.png" alt="image20" class="img-medium">
                 <p class="text-gray-side">图：根据动态搜索与补偿所得，完成宏块到块的细分</p>
             </div>
 
