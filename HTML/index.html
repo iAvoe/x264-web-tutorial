@@ -629,6 +629,10 @@
             </div>
             <p>图片格式一般支持奇数分辨率，视频一般仅支持偶数分辨率。</p>
 
+            <h3>高/低频 High/Low frequency</h3>
+            <p>假设函数 <span class="text-blue-math">\(y=\cos\left(ux\right)\)</span>。可以调节变量 u，如 <span class="text-blue-math">\(y=\cos\left(2x\right)\)</span>，<span class="text-blue-math">\(y=\cos\left(3x\right)\)</span>  等。u 越大则余弦函数周期越短——频率越高；u 越小则余弦函数周期越长——频率越低。</p>
+            <p>变换算法可以将这个 u 作为输出数轴，原始波形中从低频到高频的分量都会被准确地排列进来。</p>
+
             <h3>程序的交互界面 Interface</h3>
             <p>图形界面交互 Graphic user interface GUI：通过图形元素（如按钮、滑块、菜单等）进行用户交互的界面设计。随着程序复杂度的增加，设计出好用的界面会变得更加困难。因此，只有在利润丰厚、注重美学设计、且拥有设计人才的行业才会推出外观精美的 GUI。然而，外观好看并不一定意味着好用、再而，很多时候有外观用都是一种奢求。
             </p>
@@ -1168,15 +1172,111 @@
             <code><b class="text-red-emph">rd-refine</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;嵌入 <code>--subme 8</code> 中，x265 中可手动打开&gt; 率失真优化分析帧内预测的最佳量化和分块结果，耗时换压缩率和画质。x264 中还包括了最优动态向量的分析</p>
 
+            <h2 id="h2-7">变换</h2>
+            <div class="row">
+                <p id="LR-UD-003" class="col-10">模拟信号转换为数字信号的主要步骤之一——将音量、亮度、温度、压力等信号整理为低频到高频的分量。具体来说，这个过程根据要处理的信号和用途不同，会使用傅里叶变换，小波变换，和 x264/5 使用的二维离散余弦变换 2D Discrete cosine transform。二维离散余弦变换利用预制的二维波形模具，通过穷举加减将源信号逐步分解成不同频率的平面波形，并合成变换块。<span class="text-gray-side">图：缩放到 8x8 的波形分布，由于 cos(x) 的波形范围是 -1~1，所以图中的黑色到白色并不是 0~255 或 16~235，而是 -1~1</span> </p>
+                <img src="files/transform-quantization/DCT-Block.png" alt="image21" id="LR-UD-004" class="img-small img-right col-2 mb-auto" >
+            </div>
+            <p>变换的过程中，“DCT 像素”称为系子 coefficients。这些系子的强度可以是负值，表示反相的波形；也可以是小数，表示低强度的波形（但因为计算机浮点计算慢于整数计算，所以一般仅用于演示）。变换块左上角的系数是直流 DC 分量，代表整体亮度水平，其余的系数是交流 AC 分量，表示图像中的细节和纹理信息。</p>
+            
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：离散余弦变换的简化例子（内容有问题，临时放置于此，请忽略）</button>
+            <div class="coll-content">
+                <h3>离散余弦变换 DCT</h3>
+                <p>每个频域分量都清点计算范围内所有像素值的“共鸣程度”，计为 DCT 频域系子的分量，得到变换块。</p>
+                <span class="text-blue-math overflow-auto">\[T(u,v) = \alpha(u) \alpha(v) \sum_{x=0}^{N-1} \sum_{y=0}^{N-1} f(x,y) \cos\left(\frac{(2x+1)u\pi}{2N}\right) \cos\left(\frac{(2y+1)v\pi}{2N}\right)\]</span>
+                <h4>归一化</h4>
+                <h5>均方根 Root Mean Square</h5>
+                <p>RMS 是统计中常用的一种数据量化，用于表示一组数据平均值的平方根。对于一个包含 N 个值的数据集：<span class="text-blue-math">\( \{ x_1, x_2, \ldots, x_N \} \)</span> </p>
+                <span class="text-blue-math overflow-auto">\[ \text{RMS} = \sqrt{\frac{1}{N} \sum_{i=1}^{N} x_i^2} \]</span>
+                <p>具体到 DCT 变换，对于 N×N 块 <span class="text-blue-math">\( f(x,y) \)</span> 的均方根可以表示为：</p>
+                <span class="text-blue-math overflow-auto">\[ \text{RMS}_{f(x,y)} = \sqrt{\frac{1}{N^2} \sum_{x=0}^{N-1} \sum_{y=0}^{N-1} f(x, y)^2} \]</span>
+                <p>DCT 变换后，DCT 系子 <span class="text-blue-math">\( T(u,v) \)</span>的均方根为：</p>
+                <span class="text-blue-math overflow-auto">\[ \text{RMS}_{\text{DCT}} = \sqrt{\sum_{u=0}^{N-1} \sum_{v=0}^{N-1} C(u, v)^2} \]</span>
+                <p>为了保证变换块的能量不变，所以通过 <span class="text-blue-math">\( \alpha(u) \)</span> 和 <span class="text-blue-math">\( \alpha(v) \)</span> 两个缩放值来对齐，使得 <span class="text-blue-math">\( \text{RMS}_{\text{DCT}} = \text{RMS}_{f(x,y)} \)</span>：</p>
+                <span class="text-blue-math">\[ \alpha(u), \alpha(v) = \begin{cases} \frac{1}{\sqrt{N}} & \text{if } u,v = 0 \text{ (DC)} \\ \frac{1}{\sqrt{2N}} & \text{if } u,v \neq 0 \text{ (AC)} \end{cases} \]</span>
+                <p>而在 JPEG 中：<span class="text-blue-math">\[ \alpha(u), \alpha(v) = \begin{cases} \frac{1}{\sqrt{2}} \approx 0.7071 & \text{if } u,v = 0 \text{ (DC)} \\ 1 & \text{if } u,v \neq 0 \text{ (AC)} \end{cases} \]</span></p>
+
+                <h4>一般计算 2x2 矩阵的例子</h4>
+                <ol>
+                    <li><b>输入：</b>一个 2x2 矩阵
+                        <span class="text-blue-math">\[ C=\begin{bmatrix} 1 & 2 \\3 & 4 \end{bmatrix} \]</span>
+                    </li>
+                    <li><b>步骤 A1：</b>设定 DCT 系子
+                        设立变量 <span class="text-blue-math">\(u\)</span>，<span class="text-blue-math">\(v\)</span>，代表 DCT 空间内的横向与纵向格子
+                    </li>
+                    <li><b>步骤 A2：</b>计算平均值（DC 分量）
+                        <span class="text-blue-math">\[ DC = \frac{1}{4} \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) = \frac{1}{4} \times (1 + 2 + 3 + 4) = 2.5 \]</span>
+                    </li>
+                    <li><b>步骤 A3：</b>计算 DCT 系数
+                        <ol class="text-blue-math">
+                            <li><b>\(C(0,0)\)</b>：
+                                \[ C(0, 0) = \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left[\frac{(2x+1)0\pi}{4}\right] \cos\left[\frac{(2y+1)0\pi}{4}\right] - DC \]
+                                \[ C(0, 0) = (1 \times \cos(0) \cos(0) + 2 \times \cos(0) \cos(0) + 3 \times \cos(0) \cos(0) + 4 \times \cos(0) \cos(0)) - 2.5 \]
+                                \[ C(0, 0) = (1 + 2 + 3 + 4) - 2.5 = 7.5 - 2.5 = 5 \]
+                            </li>
+                            <li><b>\(C(0,1)\)</b>：
+                                \[ C(0, 1) = \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left[\frac{(2x+1)0\pi}{4}\right] \cos\left[\frac{(2y+1)1\pi}{4}\right] \]
+                                \[ C(0, 1) = (1 \times \cos(0) \cos(\pi/4) + 2 \times \cos(0) \cos(\pi/4) + 3 \times \cos(0) \cos(3\pi/4) + 4 \times \cos(0) \cos(3\pi/4)) \]
+                                \[ C(0, 1) = (1 \times \cos(0) \frac{\sqrt{2}}{2} + 2 \times \cos(0) \frac{\sqrt{2}}{2} + 3 \times \cos(0) \left(-\frac{\sqrt{2}}{2}\right) + 4 \times \cos(0) \left(-\frac{\sqrt{2}}{2}\right)) \]
+                                \[ C(0, 1) = (1 + 2 - 3 - 4) \frac{\sqrt{2}}{2} = -4 \frac{\sqrt{2}}{2} = -2\sqrt{2} \]
+                            </li>
+                            <li><b>\(C(1,0)\)</b>：
+                                \[ C(1, 0) = \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left[\frac{(2x+1)1\pi}{4}\right] \cos\left[\frac{(2y+1)0\pi}{4}\right] \]
+                                \[ C(1, 0) = (1 \times \cos(\pi/4) \cos(0) + 2 \times \cos(\pi/4) \cos(0) + 3 \times \cos(3\pi/4) \cos(0) + 4 \times \cos(3\pi/4) \cos(0)) \]
+                                \[ C(1, 0) = (\frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} - \frac{\sqrt{2}}{2} - \frac{\sqrt{2}}{2}) = 0 \]
+                            </li>
+                            <li><b>\(C(1,1)\)</b>：
+                                \[ C(1, 1) = \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left[\frac{(2x+1)1\pi}{4}\right] \cos\left[\frac{(2y+1)1\pi}{4}\right] \]
+                                \[ C(1, 1) = (1 \times \cos(\pi/4) \cos(\pi/4) + 2 \times \cos(\pi/4) \cos(\pi/4) + 3 \times \cos(3\pi/4) \cos(3\pi/4) + 4 \times \cos(3\pi/4) \cos(3\pi/4)) \]
+                                \[ C(1, 1) = (\frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2}) = 2\sqrt{2} \]
+                            </li>
+                        </ol>
+                    </li>
+                    <li><b>结果 A：</b>得到的 DCT 系数矩阵为：
+                        <span  class="text-blue-math"> \[ T = \begin{bmatrix} 5 & -2\sqrt{2} \\ 0 & 2\sqrt{2} \end{bmatrix} \] </span>
+                    </li>
+                </ol>
+
+                <h4>类似 JPEG 计算 2x2 矩阵的例子</h4>
+                <p>使用上述 JPEG 的缩放值对齐</p>
+                <ol>
+                    <li><b>输入：</b>一个 2x2 矩阵
+                        <span class="text-blue-math">\[ C=\begin{bmatrix} 1 & 2 \\3 & 4 \end{bmatrix} \]</span>
+                    </li>
+                    <li><b>变换 B：</b>直接计算 DCT 系数
+                        <ol class="text-blue-math">
+                            <li><b>\(C(0,0)\)</b>：
+                                \[ C(0,0) = \alpha(0) \alpha(0) \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left(\frac{(2x+1)0\pi}{4}\right) \cos\left(\frac{(2y+1)0\pi}{4}\right) \]
+                                \[ C(0,0) = 0.7071 \times 0.7071 \times (1 + 2 + 3 + 4) = 5 \]
+                            </li>
+                            <li><b>\(C(0,1)\)</b>：
+                                \[ C(0,1) = \alpha(0) \alpha(1) \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left(\frac{(2x+1)0\pi}{4}\right) \cos\left(\frac{(2y+1)1\pi}{4}\right) \]
+                                \[ C(0,1) = 0.7071 \times 1 \times (1 \times 0.7071 + 2 \times -0.7071 + 3 \times 0.7071 + 4 \times -0.7071) = -1 \]
+                            </li>
+                            <li><b>\(C(1,0)\)</b>：
+                                \[ C(1,0) = \alpha(1) \alpha(0) \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left(\frac{(2x+1)1\pi}{4}\right) \cos\left(\frac{(2y+1)0\pi}{4}\right) \]
+                                \[ C(1,0) = 1 \times 0.7071 \times (1 \times 0.7071 + 2 \times 0.7071 + 3 \times -0.7071 + 4 \times -0.7071) = -2 \]
+                            </li>
+                            <li><b>\(C(1,1)\)</b>：
+                                \[ C(1,1) = \alpha(1) \alpha(1) \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left(\frac{(2x+1)1\pi}{4}\right) \cos\left(\frac{(2y+1)1\pi}{4}\right) \]
+                                \[ C(1,1) = 1 \times 1 \times (1 \times 0.5 - 2 \times 0.5 + 3 \times -0.5 + 4 \times 0.5) = -1 \]
+                            </li>
+                        </ol>
+                    </li>
+                    <li><b>输出 B：</b> 2x2 像素块的 DCT 系数矩阵
+                        <span class="text-blue-math">\[ T = \begin{bmatrix} 5 & -1 \\ -2 & -1 \end{bmatrix} \]</span>
+                    </li>
+                </ol>
+                <p>以上两种例子都可行且都不可行，因为只要能通过逆变换还原原来的 1-2-3-4 矩阵就算能用，而不同的编码标准可能会使用不同的变换逻辑。</p>
+            </div>
+
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
             <p><a href="../../x265-web-tutorial/HTML/index.html">交叉（../../）打开 x265 教程网页版</a></p>
 
             <h3>测试 - 成功：</h3>
             <p>直接跳转到<a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程 - 动态搜索</a></p>
-            
         </div>
-
         <!-- Footer -->
         <footer class="py-3 my-4 align-items-center border-top">
             <div class="px-1 mb-3">
