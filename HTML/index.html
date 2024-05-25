@@ -1183,15 +1183,17 @@
             <div class="coll-content">
                 <h3>离散余弦变换 DCT</h3>
                 <p>每个频域分量都清点计算范围内所有像素值的“共鸣程度”，计为 DCT 频域系子的分量，得到变换块。</p>
-                <span class="text-blue-math overflow-auto">\[T(u,v) = \alpha(u) \alpha(v) \sum_{x=0}^{N-1} \sum_{y=0}^{N-1} f(x,y) \cos\left(\frac{(2x+1)u\pi}{2N}\right) \cos\left(\frac{(2y+1)v\pi}{2N}\right)\]</span>
-                <h4>归一化</h4>
-                <h5>均方根 Root Mean Square</h5>
+                <p class="overflow-auto"><span class="text-blue-math">\[T(u,v) = \alpha(u) \alpha(v) \sum_{x=0}^{N-1} \sum_{y=0}^{N-1} f(x,y) \cos\left(\frac{(2x+1)u\pi}{2N}\right) \cos\left(\frac{(2y+1)v\pi}{2N}\right)\]</span></p>
+
+                <h4>均方根 Root Mean Square</h4>
                 <p>RMS 是统计中常用的一种数据量化，用于表示一组数据平均值的平方根。对于一个包含 N 个值的数据集：<span class="text-blue-math">\( \{ x_1, x_2, \ldots, x_N \} \)</span> </p>
                 <span class="text-blue-math overflow-auto">\[ \text{RMS} = \sqrt{\frac{1}{N} \sum_{i=1}^{N} x_i^2} \]</span>
                 <p>具体到 DCT 变换，对于 N×N 块 <span class="text-blue-math">\( f(x,y) \)</span> 的均方根可以表示为：</p>
                 <span class="text-blue-math overflow-auto">\[ \text{RMS}_{f(x,y)} = \sqrt{\frac{1}{N^2} \sum_{x=0}^{N-1} \sum_{y=0}^{N-1} f(x, y)^2} \]</span>
                 <p>DCT 变换后，DCT 系子 <span class="text-blue-math">\( T(u,v) \)</span>的均方根为：</p>
                 <span class="text-blue-math overflow-auto">\[ \text{RMS}_{\text{DCT}} = \sqrt{\sum_{u=0}^{N-1} \sum_{v=0}^{N-1} C(u, v)^2} \]</span>
+
+                <h4>归一化 Normalize</h4>
                 <p>为了保证变换块的能量不变，所以通过 <span class="text-blue-math">\( \alpha(u) \)</span> 和 <span class="text-blue-math">\( \alpha(v) \)</span> 两个缩放值来对齐，使得 <span class="text-blue-math">\( \text{RMS}_{\text{DCT}} = \text{RMS}_{f(x,y)} \)</span>：</p>
                 <span class="text-blue-math">\[ \alpha(u), \alpha(v) = \begin{cases} \frac{1}{\sqrt{N}} & \text{if } u,v = 0 \text{ (DC)} \\ \frac{1}{\sqrt{2N}} & \text{if } u,v \neq 0 \text{ (AC)} \end{cases} \]</span>
                 <p>而在 JPEG 中：<span class="text-blue-math">\[ \alpha(u), \alpha(v) = \begin{cases} \frac{1}{\sqrt{2}} \approx 0.7071 & \text{if } u,v = 0 \text{ (DC)} \\ 1 & \text{if } u,v \neq 0 \text{ (AC)} \end{cases} \]</span></p>
