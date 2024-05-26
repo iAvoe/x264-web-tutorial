@@ -1562,7 +1562,7 @@
                         <li>如果出现动态位移（当前宏块的范围被切分到下帧的 4 个宏块之间时），这 4 个宏块会各自按比例拆分出各自的传播信息量</li>
                     </ul>
                 </li>
-                <li><b>分配：</b>从最远范围 <code>--rc-lookahead</code> 开始，从远到近地根据已有的 <span class="text-blue-math">\( \text{Cost}_{propagate} \)</span> 和自身的信息量 <span class="text-blue-math">\( \text{Cost}_{intra} \)</span>，通过 <span class="text-blue-math">\( \log_{2}() \)</span> 以非线性地映射到 qp，得到宏块树中每个宏块的量化值偏移：
+                <li><b>分配：</b>从最远范围 <code>--rc-lookahead</code> 开始，从远到近地根据已有的 <span class="text-blue-math">\( \text{Cost}_{propagate} \)</span> 和自身的信息量 <span class="text-blue-math">\( \text{Cost}_{intra} \)</span>，通过 <span class="text-blue-math">\( \log_{2}() \)</span> 非线性地映射到 qp，得到宏块树中每个宏块的量化值偏移：
                     <span class="text-blue-math"> \[ \Delta \text{QP} = -\text{strength} \times \log_{2}\left( \frac{\text{Cost}_{intra}}{\text{Cost}_{propagate}} \right) \div \text{Cost}_{intra} \]</span>
                 </li>
             </ol>
@@ -1576,7 +1576,7 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt; 关闭少见宏块量化偏移。可能只有近无损，<code>--crf</code> 小于 16 才用的到。</p>
 
             <h2 id="h2-9">熵编码/文本压缩</h2>
-            <p>x264 教程中不会展开，仅提及基本信息。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版 - 熵编码</a></p>
+            <p>x264 教程中仅提及最简单的形式。完成的熵编码流程见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版 - 熵编码</a>。</p>
             
             <h3>霍夫曼编码 Huffman Coding</h3>
             <p>曾经广泛应用于数据压缩的算法。步骤分为：</p>
@@ -1606,7 +1606,7 @@
                 </li>
             </ol>
 
-            <h4>霍夫曼编码的例子</h4>
+            <h4>霍夫曼编码例</h4>
             <p>来源：<a href="https://www.geeksforgeeks.org/huffman-coding-greedy-algo-3/">geekforgeeks - greedy3</a> 算法。假设第一次遍历文本得到了如下字符及其频率：</p>
 
             <table class="table-center align-items-center">
