@@ -1185,6 +1185,11 @@
                 <p>每个频域分量都清点计算范围内所有像素值的“共鸣程度”，计为 DCT 频域系子的分量，得到变换块。</p>
                 <p class="overflow-auto"><span class="text-blue-math">\[T(u,v) = \alpha(u) \alpha(v) \sum_{x=0}^{N-1} \sum_{y=0}^{N-1} f(x,y) \cos\left(\frac{(2x+1)u\pi}{2N}\right) \cos\left(\frac{(2y+1)v\pi}{2N}\right)\]</span></p>
 
+                <h4>求和计算 Summation</h4>
+                <p>上式的 <span class="text-blue-math">\(\sum_{x=0}^{N-1} \sum_{y=0}^{N-1}\)</span> 部分。等同于：</p>
+                <div class="overflow-auto"><code class="text-blue-math">for($x=0; $x&lt;$N-1; $x++) { for($y=0; $y&lt;$N-1; $y++) { $T.u+=...; $T.v+=... } }</code></div>
+                <p>因此，一个 2x2 块下，上式一共要计算 <span class="text-blue-math">(\2^2\)</span> 次，将每次的结果取和，在乘以归一化缩放值 <span class="text-blue-math">\( \alpha(u) \)</span> 和 <span class="text-blue-math">\( \alpha(v) \)</span> 完成变换。</p>
+                
                 <h4>均方根 Root Mean Square</h4>
                 <p>RMS 是统计中常用的一种数据量化，用于表示一组数据平均值的平方根。对于一个包含 N 个值的数据集：<span class="text-blue-math">\( \{ x_1, x_2, \ldots, x_N \} \)</span> </p>
                 <span class="text-blue-math overflow-auto">\[ \text{RMS} = \sqrt{\frac{1}{N} \sum_{i=1}^{N} x_i^2} \]</span>
@@ -1194,12 +1199,12 @@
                 <span class="text-blue-math overflow-auto">\[ \text{RMS}_{\text{DCT}} = \sqrt{\sum_{u=0}^{N-1} \sum_{v=0}^{N-1} C(u, v)^2} \]</span>
 
                 <h4>归一化 Normalize</h4>
-                <p>为了保证变换块的能量不变，所以通过 <span class="text-blue-math">\( \alpha(u) \)</span> 和 <span class="text-blue-math">\( \alpha(v) \)</span> 两个缩放值来对齐，使得 <span class="text-blue-math">\( \text{RMS}_{\text{DCT}} = \text{RMS}_{f(x,y)} \)</span>：</p>
+                <p>保证变换后，块的能量不变，所以通过 <span class="text-blue-math">\( \alpha(u) \)</span> 和 <span class="text-blue-math">\( \alpha(v) \)</span> 两个缩放值来对齐，使得 <span class="text-blue-math">\( \text{RMS}_{\text{DCT}} = \text{RMS}_{f(x,y)} \)</span>：</p>
                 <span class="text-blue-math">\[ \alpha(u), \alpha(v) = \begin{cases} \frac{1}{\sqrt{N}} & \text{if } u,v = 0 \text{ (DC)} \\ \frac{1}{\sqrt{2N}} & \text{if } u,v \neq 0 \text{ (AC)} \end{cases} \]</span>
                 <p>而在 JPEG 中：</p>
                 <div class="overflow-auto"><span class="text-blue-math">\[ \alpha(u), \alpha(v) = \begin{cases} \frac{1}{\sqrt{2}} \approx 0.7071 & \text{if } u,v = 0 \text{ (DC)} \\ 1 & \text{if } u,v \neq 0 \text{ (AC)} \end{cases} \]</span></div>
 
-                <h4>一般计算 2x2 矩阵的例子</h4>
+                <h4>一种变换 2x2 矩阵的例子</h4>
                 <ol>
                     <li><b>输入：</b>一个 2x2 矩阵
                         <span class="text-blue-math">\[ C=\begin{bmatrix} 1 & 2 \\3 & 4 \end{bmatrix} \]</span>
@@ -1274,7 +1279,7 @@
             </div>
 
             <h3>量化</h3>
-            <p>简单地说，是根据不同的量化强度，块类型（亮度，色度，16x16，8x8，4x4）给出对应变换块的量化表/矩阵。将变换后的块点除量化矩阵，得到剩余 DCT 系子的块，从而减少高频的 DCT 系子分量，实现压缩。公式可以写为：<span class="text-blue-math">\[ Q(u, v) = \text{round} \left( \frac{C(u, v)}{Q_m(u, v)} \right) \]</span></p>
+            <p>简单地说，是根据不同的量化强度，块类型（亮度，色度，16x16，8x8，4x4）给出对应变换块的量化表/矩阵。将变换后的块点除量化矩阵，得到剩余 DCT 系子的块，从而减少高频的 DCT 系子分量，实现压缩。</p>
             <h4>量化值 qp</h4>
             <p>Quantization Parameter 是 CRF，ABR 等码率质量控制模式算出，以及率失真优化量化、模式决策等步骤所调整的中间变量</p>
             <h4>量化步长 qStep</h4>
@@ -1345,29 +1350,88 @@
             </div>
 
             <h4>矩阵 Matrix</h4>
-            <p>一串于特定位置换行的数字，用括号括起来得到。</p>
+            <p>一串于特定位置换行的数字，用括号括起来得到。矩阵和矩阵之间可以根据情况选一种算法实现加减乘除</p>
 
-            <h4>矩阵间的点乘/内积</h4>
+            <h4>矩阵间的点乘/内积 Dot Product</h4>
             <p>两个矩阵之间，位置相对应的数相乘，得到新的矩阵。如果两个矩阵大小不一，则需要设定其它规则才能计算。</p>
             <div class="overflow-auto"><span class="text-blue-math">\[ A = \begin{bmatrix} a_{1} & a_{2} \\ a_{3} & a_{4} \end{bmatrix}, \quad B = \begin{bmatrix} b_{1} & b_{2} \\ b_{3} & b_{4} \end{bmatrix}, \quad A \cdot B = \begin{bmatrix} a_{1} \cdot b_{1} + a_{2} \cdot b_{3} & a_{1} \cdot b_{2} + a_{2} \cdot b_{4} \\a_{3} \cdot b_{1} + a_{4} \cdot b_{3} & a_{3} \cdot b_{2} + a_{4} \cdot b_{4} \end{bmatrix} \]</span></div>
 
             <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：矩阵间的行列式叉乘与外积</button>
             <div class="coll-content">
-                <h4>矩阵间的行列式叉乘</h4>
+                <h4>矩阵间的行列式叉乘 Determinant cross product</h4>
                 <p>通过一种算法（此处为行列式）将矩阵坍缩为一个数字（标量）得到。</p>
                 <div class="overflow-auto"><span class="text-blue-math">\[ A = \begin{bmatrix} a_{1} & a_{2} \\ a_{3} & a_{4} \end{bmatrix}, \quad B = \begin{bmatrix} b_{1} & b_{2} \\ b_{3} & b_{4} \end{bmatrix} \]</span></div>
                 <div class="overflow-auto"><span class="text-blue-math">\[ A \times B = (a_{1} \cdot a_{4} - a_{2} \cdot a_{3}) \cdot (b_{1} \cdot b_{4} - b_{2} \cdot b_{3}) \]</span></div>
 
-                <h4>矩阵间的外积</h4>
-                <p>通过一种算法（此处为克罗内克积 Kronecker product）将乘数矩阵乘进被乘数矩阵中的每一个值得到。</p>
+                <h4>矩阵间的外积 - 克罗内克积 Outer product</h4>
+                <p>将乘数矩阵本身乘进被乘数矩阵中的每一个值得到：</p>
                 <div class="overflow-auto"><span class="text-blue-math">\[ A \otimes B = \begin{bmatrix} a_{1}B & a_{2}B \\ a_{3}B & a_{4}B \end{bmatrix} = \begin{bmatrix} a_{1}b_{1} & a_{1}b_{2} & a_{2}b_{1} & a_{2}b_{2} \\ a_{1}b_{3} & a_{1}b_{4} & a_{2}b_{3} & a_{2}b_{4} \\ a_{3}b_{1} & a_{3}b_{2} & a_{4}b_{1} & a_{4}b_{2} \\ a_{3}b_{3} & a_{3}b_{4} & a_{4}b_{3} & a_{4}b_{4} \end{bmatrix} \]</span></div>
             </div>
 
             <h4>矩阵间的哈达玛积 Haramad product</h4>
-            <p>两个大小相同矩阵下的另一种自定义点乘/内积算法。</p>
-            <div class="overflow-auto"><span class="text-blue-math">\[ A = \begin{bmatrix} a_{1} & a_{2} \\ a_{3} & a_{4} \end{bmatrix}, \quad B = \begin{bmatrix} b_{1} & b_{2} \\ b_{3} & b_{4} \end{bmatrix}, \quad A \circ B = \begin{bmatrix} a_{11} \cdot b_{11} & a_{12} \cdot b_{12} \\ a_{21} \cdot b_{21} & a_{22} \cdot b_{22} \end{bmatrix} \]</span></div>
+            <p>两个大小相同矩阵下的一种常用的自定义点乘/内积算法。</p>
+            <div class="overflow-auto"><span class="text-blue-math">\[ A = \begin{bmatrix} a_{1} & a_{2} \\ a_{3} & a_{4} \end{bmatrix}, \quad B = \begin{bmatrix} b_{1} & b_{2} \\ b_{3} & b_{4} \end{bmatrix}, \quad A \circ B = \begin{bmatrix} a_{1} \cdot b_{1} & a_{2} \cdot b_{2} \\ a_{3} \cdot b_{3} & a_{4} \cdot b_{4} \end{bmatrix} \]</span></div>
 
-            <p>x264 中，变换与量化会通过哈达玛积合并为一个矩阵表格以节省步骤，如 4x4 亮度块下为：</p>
+            <p>x264 中，变换与量化会通过哈达玛积合并为一个矩阵表格，如 4x4 亮度块下为：</p>
+            <div class="overflow-auto"><span class="text-blue-math">\[ \text{round} \begin{bmatrix}1/4 & 1/2\sqrt{10} & 1/4 & 1/2\sqrt{10} \\1/2\sqrt{10} & 1/10 & 1/2\sqrt{10} & 1/10 \\1/4 & 1/2\sqrt{10} & 1/4 & 1/2\sqrt{10} \\1/2\sqrt{10} & 1/10 & 1/2\sqrt{10} & 1/10 \end{bmatrix} \times Q_{Step} \times 2^6 \]</span></div>
+            <p>得到 qp 为 0，1，2，4，5 下的 4x4 块变换量化合并矩阵分别为：</p>
+            <div class="overflow-auto"><span class="text-blue-math">\[ \text{QP}_0 \rightarrow \begin{bmatrix} 10&13&10&13 \\ 13&16&13&16 \\ 10&13&10&13 \\ 13&16&13&16 \end{bmatrix}, \text{QP}_1 \rightarrow \begin{bmatrix} 11&14&11&14 \\ 14&18&14&18 \\ 11&14&11&14 \\ 14&18&14&18 \end{bmatrix}, \text{QP}_2 \rightarrow \begin{bmatrix} 13&16&13&16 \\ 16&20&16&20 \\ 13&16&13&16 \\ 16&20&16&20 \end{bmatrix}, \text{QP}_4 \rightarrow \begin{bmatrix} 16&20&16&20 \\ 20&25&20&25 \\ 16&20&16&20 \\ 20&25&20&25 \end{bmatrix}, \text{QP}_5 \rightarrow \begin{bmatrix} 18&23&18&23 \\ 23&29&23&29 \\ 18&23&18&23 \\ 23&29&23&29 \end{bmatrix} \]</span></div>
+
+            <p>回到量化本身，如 JPEG 8x8 亮度变换块的量化，就是普通的矩阵除法：</p>
+            <div class="overflow-auto"><span class="text-blue-math">\[ Q(u, v) = \text{round} \left( \frac{C(u, v)}{Q_m(u, v)} \right) \]</span></div>
+            <div class="overflow-auto"><span class="text-blue-math">\[ \text{round} \left( {\begin{bmatrix} 515&65&-12&4&1&2&-8&5 \\ -16&3&2&0&0&-11&-2&3 \\ -12&6&11&-1&3&0&1&-2 \\ -8&3&-4&2&-2&-3&-5&-2 \\ 0&-2&7&-5&4&0&-1&-4 \\ 0&-3&-1&0&4&1&-1&0 \\ 3&-2&-3&3&3&-1&-1&3 \\ -2&5&-2&4&-2&2&-3&0 \end{bmatrix}}\div{ \begin{bmatrix} 16&11&10&16&24&40&51&61 \\ 12&12&14&19&26&58&60&55 \\ 14&13&16&24&40&57&69&56 \\ 14&17&22&29&51&87&80&62 \\ 18&22&37&56&68&109&103&77 \\ 24&35&55&64&81&104&113&92 \\ 49&64&78&87&103&121&120&101 \\ 72&92&95&98&112&100&103&99\end{bmatrix} } \right) = \begin{bmatrix} 32&6&-1&0&0&0&0&0 \\ -1&0&0&0&0&0&0&0 \\ -1&0&0&0&0&0&0&0 \\ -1&0&0&0&0&0&0&0 \\ 0&0&0&0&0&0&0&0 \\ 0&0&0&0&0&0&0&0 \\ 0&0&0&0&0&0&0&0 \\ 0&0&0&0&0&0&0&0 \end{bmatrix} \]</span></div>
+
+            <p>x264 中，量化值 qp 大致上存在于以下几处：</p>
+            <div class="overflow-auto">
+                <table class="table-fit-container text-xs">
+                    <thead>
+                        <tr>
+                            <th class="px-1">步骤</th>
+                            <th class="px-1">名称</th>
+                            <th class="px-1">应用</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-bottom">
+                            <td class="px-1">率控制</td>
+                            <td class="px-1">CRF/ABR</td>
+                            <td class="px-1">逐帧 qp（或 cqp → 全局 qp）</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1">I-P 帧质量比</td>
+                            <td class="px-1">I-P Ratio</td>
+                            <td class="px-1">P 帧 qp</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1">P-B 帧质量比</td>
+                            <td class="px-1">P-B Ratio</td>
+                            <td class="px-1">B 帧 qp</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1">自适应量化</td>
+                            <td class="px-1">Adaptive Quantzation AQ</td>
+                            <td class="px-1">逐块 qp</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1">（率失真优化）模式决策</td>
+                            <td class="px-1">Mode Decision MD</td>
+                            <td class="px-1">逐块 qp</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <td class="px-1">率失真优化量化</td>
+                            <td class="px-1">Rate-distortion optimized quantization RDOQ</td>
+                            <td class="px-1">逐块 qp</td>
+                        </tr>
+                        <tr>
+                            <td class="px-1">色度块 qp 偏移</td>
+                            <td class="px-1"><code>--chroma-qp-offset</code></td>
+                            <td class="px-1">亮度与色度块 qp</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 id="h2-8">率控制模式</h2>
 
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
