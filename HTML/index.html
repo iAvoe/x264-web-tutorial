@@ -1575,20 +1575,219 @@
             <code><b>--no-mbtree</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt; 关闭少见宏块量化偏移。可能只有近无损，<code>--crf</code> 小于 16 才用的到。</p>
 
+            <h2 id="h2-9">熵编码/文本压缩</h2>
+            <p>x264 教程中不会展开，仅提及基本信息。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版 - 熵编码</a></p>
+            
+            <h3>霍夫曼编码 Huffman Coding</h3>
+            <p>曾经广泛应用于数据压缩的算法。步骤分为：</p>
+            <ol>
+                <li><b>统计频率</b>：
+                    <ul>
+                        <li>在第一次遍历文本/pass1 时，只统计每个字符出现的次数，并按出现频率从小到大排序</li>
+                    </ul>
+                </li>
+                <li><b>构建初始节点</b>：
+                    <ul>
+                        <li>将每个字符和其出现频率作为一个节点，并将这些节点放入一个最小堆（优先队列）</li>
+                    </ul>
+                </li>
+                <li><b>构建霍夫曼树</b>：
+                    <ul>
+                        <li>从最小堆中取出两个频率最小的节点</li>
+                        <li>创建一个新节点，其频率是这两个节点频率之和，将这两个节点作为新节点的子节点</li>
+                        <li>将新节点插回最小堆中</li>
+                        <li>重复上述步骤，直到堆中只剩下一个节点，这个节点就是霍夫曼树的根节点</li>
+                    </ul>
+                </li>
+                <li><b>生成编码</b>：
+                    <ul>
+                        <li>通过遍历霍夫曼树，为每个字符生成霍夫曼编码。通常向左的节点表示为向 0，向右的节点表示为向 1</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>霍夫曼编码的例子</h4>
+            <p>来源：<a href="https://www.geeksforgeeks.org/huffman-coding-greedy-algo-3/">geekforgeeks - greedy3</a> 算法。假设第一次遍历文本得到了如下字符及其频率：</p>
+
+            <table class="table-center align-items-center">
+                <thead>
+                    <th class="px-3">字符</th><th class="px-3">频率</th>
+                </thead>
+                <tbody>
+                    <tr class="border-bottom">
+                        <td>A</td><td>5</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td>B</td><td>9</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td>C</td><td>12</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td>D</td><td>13</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td>E</td><td>16</td>
+                    </tr>
+                    <tr>
+                        <td>F</td><td>45</td>
+                    </tr>
+                </tbody>
+            </table>
+            <ol>
+                <li><b>统计频率</b>：已完成</li>
+                <li><b>构建初始节点</b>：
+                    <ul>
+                        <li>据出字次数从小到大排序：<span class="text-blue-math">(5,'a'),(9,'b'),(12,'c'),(13,'d'),(16,'e'),(45,'f')</span></li>
+                    </ul>
+                </li>
+                <li><b>构建霍夫曼树</b>：
+                    <ol>
+                        <li>取出字次数最小的两个元素 (5, 'a'), (9, 'b')，合为 (14, 'ab')
+                            <ul class="text-smaller">
+                                <li>得 (12, 'c'), (13, 'd'), (16, 'e'), (45, 'f'), (14, 'ab')</li>
+                                <li><img src="files/huffman-coding/1.png" alt="image22?" class="img-small" ></li>
+                            </ul>
+                        </li>
+                        <li>取出字次数最小的两个元素 (12, 'c'), (13, 'd')，合并为 (25, 'cd')
+                            <ul class="text-smaller">
+                                <li>得 (14, 'ab'), (16, 'e'), (45, 'f'), (25, 'cd')</li>
+                                <li><img src="files/huffman-coding/2.png" alt="image23?" class="img-small" ></li>
+                            </ul>
+                        </li>
+                        <li>取出字次数最小的两个元素 (14, 'ab'), (16, 'e')，合并为 (30, 'abe')
+                            <ul class="text-smaller">
+                                <li>得 (25, 'cd'), (45, 'f'), (30, 'abe')</li>
+                                <li><img src="files/huffman-coding/3.png" alt="image24?" class="img-medium" ></li>
+                            </ul>
+                        </li>
+                        <li>取出字次数最小的两个元素 (25, 'cd'), (30, 'abe')，合并为 (55, 'cdeab')
+                            <ul class="text-smaller">
+                                <li>得 (45, 'f'), (55, 'CDEAB')</li>
+                                <li><img src="files/huffman-coding/4.png" alt="image25?" class="img-medium" ></li>
+                            </ul>
+                        </li>
+                        <li>取出字次数最小的两个元素 (45, 'f'), (55, 'cdeab')，合并为 (100, 'fcdeab')
+                            <ul class="text-smaller">
+                                <li>得 (100, 'FCDEAB')</li>
+                                <li><img src="files/huffman-coding/5.png" alt="image26?" class="img-medium" ></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </li>
+                <li><b>生成编码</b>：
+                    <ul>
+                        <li>从霍夫曼树根节点开始，为每个字符生成霍夫曼编码：</li>
+                    </ul>
+                </li>
+            </ol>
+            <table class="table-center align-items-center">
+                <thead>
+                    <th class="px-3">字符</th><th class="px-3">编码</th>
+                </thead>
+                <tbody>
+                    <tr class="border-bottom">
+                        <td>F</td><td>0</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td>C</td><td>1-0-0</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td>D</td><td>1-0-1</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td>A</td><td>1-1-0-0</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td>B</td><td>1-1-0-1</td>
+                    </tr>
+                    <tr>
+                        <td>E</td><td>1-1-1</td>
+                    </tr>
+                </tbody>
+            </table>
+
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
             <p><a href="../../x265-web-tutorial/HTML/index.html">交叉（../../）打开 x265 教程网页版</a></p>
 
             <h3>测试 - 成功：</h3>
             <p>直接跳转到<a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程 - 动态搜索</a></p>
+
+            <h3>下载 x264 GUI</h3>
+            <table class="table-center">
+                <tbody>
+                    <tr class="border-bottom">
+                        <th class="t-light-gray"><a href="https://shana.pe.kr/shanaencoder_download">ShanaEncoder</a></th>
+                        <td class="px-1">ffmpeg-CLI 搭配部分 GUI，上手需要时间。ffmpeg 内嵌编码器，不能替换文件</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="t-light-gray"><a href="https://bitbucket.org/muldersoft/simple-x264-launcher/downloads/">Simple x264 Launcher</a></th>
+                        <td class="px-1">英文软件，适合批量压制，需自行封装音频。只能压视频</td>
+                    </tr>
+                    <tr>
+                        <th class="t-light-gray">小丸工具箱</th>
+                        <td class="px-1">操作简单，适合入门的中文软件。网上能搜到详细教程。内嵌 MediaInfo，mp4box，Mkvtoolnix。镜像：<a href="https://pan.baidu.com/s/1VHonGHoZ0DmQBNZaRjML2A&pwd=crhu">百度云</a> 提取码"crhu"</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>下载基本工具</h3>
+            <table class="table-center">
+                <tbody>
+                    <tr class="border-bottom">
+                        <th class="px-3 t-light-gray"><a href="http://ffmpeg.org/download.html">ffmpeg</a></th>
+                        <td class="px-1">强大的 CLI 开源视音频处理工具</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-3 t-light-gray"><a href="https://mpv.io/installation/">mpv</a></th>
+                        <td class="px-1">开源，支持便携的现代视频播放器。见<a href="https://nazorip.site/archives/1052/">安装与配置</a>教程</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-3 t-light-gray"><a href="https://www.voukoder.org/">Voukoder</a></th>
+                        <td class="px-1">开源 Premiere Vegas After Effects 压制导出插件，分为 Voukoder 和 V-Connector 两部分</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-3 t-light-gray"><a href="https://obsproject.com/zh-cn/download">OBS</a></th>
+                        <td class="px-1">强大的开源直播框架和软件，设置略比传统录屏软件复杂，但效果也更好</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-3 t-light-gray"><a href="https://mediaarea.net/zh-CN/MediaInfo">MediaInfo</a></th>
+                        <td class="px-1">开源的 GUI 媒体元数据/视音频格式读取器，用于配置正确的压制参数</td>
+                    </tr>
+                    <tr>
+                        <th class="px-3 t-light-gray"><a href="http://ffmpeg.org/download.html">ffprobe</a></th>
+                        <td class="px-1">CLI 视音频格式读取器，若检测所得信息与 MediaInfo 所异，则优先参考 ffprobe<br>见<a href="https://nazorip.site/archives/169/">基本使用</a>，以及<a href="https://nazorip.site/archives/1068/">搭配 Excel 的视频数据可视化</a>教程
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>下载 x264</h3>
+            <table class="table-center">
+                <tbody>
+                    <tr class="border-bottom">
+                        <th class="px-3 t-light-gray"><a href="https://www.mediafire.com/folder/arv5xmdqyiczc">Patman</a></th>
+                        <td class="px-1">支持 Lavf 编解码 [8~10bit]</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-3 t-light-gray"><a href="https://www.mediafire.com/?bxvu1vvld31k1">LigH</a></th>
+                        <td class="px-1">支持 Lavf 编解码 [8~10bit]</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-3 t-light-gray"><a href="https://github.com/jpsdr/x264/releases/">jspdr (tMod)</a></th>
+                        <td class="px-1">支持 Lavf 编解码，MCF 线程管理库</td>
+                    </tr>
+                    <tr>
+                        <th class="px-3 t-light-gray">x264 7mod</th>
+                        <td class="px-1">支持 Lavf 编解码，支持 hqdn3d 降噪，镜像链接：<a href="https://drive.google.com/drive/folders/1kFCeNGA_wiiLt-DSeI3cyY8vxlffgQcy?usp=sharing">谷歌盘</a>/<a href="https://pan.baidu.com/s/1sbz8WztGTz3lcLzirHW_2w">百度云</a></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <!-- Footer -->
         <footer class="py-3 my-4 align-items-center border-top">
-            <div class="px-1 mb-3">
-                <p>欢迎阅读！本教程仅算盲人摸象的业余分析，仅具备业余参考价值。若有什么不会的可以加群<a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>691892901</a>。<span class="text-red-emph">点击图片即可更改桌面和移动端的适配排版</span>。</p>
-            </div>
-            <p>
-                联系：
+            <p>联系：
                 <a href='https://github.com/iAvoe/'>Github</a>，
                 <a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>QQ 群：691892901</a>
             </p>
