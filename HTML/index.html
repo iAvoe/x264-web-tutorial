@@ -1130,7 +1130,7 @@
             <p>Sum of absolute transformed difference 为两个变换块间做差，取和，取绝对值的步骤：</p>
             <ol>
                 <li>首先计算两个块 B 的插值，记做残差块 D：<span class="text-blue-math">\(\text{D}(x,y) = B(x,y) - B\prime(x,y)\)</span></li>
-                <li>然后通过如 DCT 变换，得到变换残差块：<span class="text-blue-math">\(T(D)\)</span>
+                <li>然后通过哈达码变换（相比 DCT 节约算力），得到变换残差块：<span class="text-blue-math">\(T(D)\)</span>
                     <ul><li>省略这一步，则算法叫做绝对差 Sum of absolute difference SAD</li></ul>
                 </li>
                 <li>最后，变换残差块的每个像素取绝对值和：<span class="text-blue-math">\(\text{SATD}(B,B\prime) = \sum_{x=0}^{n-1}{\sum_{y=0}^{n-1}}| T(D(x,y)) |\)</span></li>
@@ -1196,7 +1196,8 @@
                 <h4>归一化 Normalize</h4>
                 <p>为了保证变换块的能量不变，所以通过 <span class="text-blue-math">\( \alpha(u) \)</span> 和 <span class="text-blue-math">\( \alpha(v) \)</span> 两个缩放值来对齐，使得 <span class="text-blue-math">\( \text{RMS}_{\text{DCT}} = \text{RMS}_{f(x,y)} \)</span>：</p>
                 <span class="text-blue-math">\[ \alpha(u), \alpha(v) = \begin{cases} \frac{1}{\sqrt{N}} & \text{if } u,v = 0 \text{ (DC)} \\ \frac{1}{\sqrt{2N}} & \text{if } u,v \neq 0 \text{ (AC)} \end{cases} \]</span>
-                <p>而在 JPEG 中：<span class="text-blue-math">\[ \alpha(u), \alpha(v) = \begin{cases} \frac{1}{\sqrt{2}} \approx 0.7071 & \text{if } u,v = 0 \text{ (DC)} \\ 1 & \text{if } u,v \neq 0 \text{ (AC)} \end{cases} \]</span></p>
+                <p>而在 JPEG 中：</p>
+                <div class="overflow-auto"><span class="text-blue-math">\[ \alpha(u), \alpha(v) = \begin{cases} \frac{1}{\sqrt{2}} \approx 0.7071 & \text{if } u,v = 0 \text{ (DC)} \\ 1 & \text{if } u,v \neq 0 \text{ (AC)} \end{cases} \]</span></div>
 
                 <h4>一般计算 2x2 矩阵的例子</h4>
                 <ol>
@@ -1218,19 +1219,19 @@
                             </li>
                             <li><b>\(C(0,1)\)</b>：
                                 \[ C(0, 1) = \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left[\frac{(2x+1)0\pi}{4}\right] \cos\left[\frac{(2y+1)1\pi}{4}\right] \]
-                                \[ C(0, 1) = (1 \times \cos(0) \cos(\pi/4) + 2 \times \cos(0) \cos(\pi/4) + 3 \times \cos(0) \cos(3\pi/4) + 4 \times \cos(0) \cos(3\pi/4)) \]
-                                \[ C(0, 1) = (1 \times \cos(0) \frac{\sqrt{2}}{2} + 2 \times \cos(0) \frac{\sqrt{2}}{2} + 3 \times \cos(0) \left(-\frac{\sqrt{2}}{2}\right) + 4 \times \cos(0) \left(-\frac{\sqrt{2}}{2}\right)) \]
+                                \[ C(0, 1) = 1 \times \cos(0) \cos(\pi/4) + 2 \times \cos(0) \cos(\pi/4) + 3 \times \cos(0) \cos(3\pi/4) + 4 \times \cos(0) \cos(3\pi/4) \]
+                                \[ C(0, 1) = 1 \times \cos(0) \frac{\sqrt{2}}{2} + 2 \times \cos(0) \frac{\sqrt{2}}{2} + 3 \times \cos(0) \left(-\frac{\sqrt{2}}{2}\right) + 4 \times \cos(0) \left(-\frac{\sqrt{2}}{2}\right) \]
                                 \[ C(0, 1) = (1 + 2 - 3 - 4) \frac{\sqrt{2}}{2} = -4 \frac{\sqrt{2}}{2} = -2\sqrt{2} \]
                             </li>
                             <li><b>\(C(1,0)\)</b>：
                                 \[ C(1, 0) = \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left[\frac{(2x+1)1\pi}{4}\right] \cos\left[\frac{(2y+1)0\pi}{4}\right] \]
-                                \[ C(1, 0) = (1 \times \cos(\pi/4) \cos(0) + 2 \times \cos(\pi/4) \cos(0) + 3 \times \cos(3\pi/4) \cos(0) + 4 \times \cos(3\pi/4) \cos(0)) \]
-                                \[ C(1, 0) = (\frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} - \frac{\sqrt{2}}{2} - \frac{\sqrt{2}}{2}) = 0 \]
+                                \[ C(1, 0) = 1 \times \cos(\pi/4) \cos(0) + 2 \times \cos(\pi/4) \cos(0) + 3 \times \cos(3\pi/4) \cos(0) + 4 \times \cos(3\pi/4) \cos(0) \]
+                                \[ C(1, 0) = \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} - \frac{\sqrt{2}}{2} - \frac{\sqrt{2}}{2} = 0 \]
                             </li>
                             <li><b>\(C(1,1)\)</b>：
                                 \[ C(1, 1) = \sum_{x=0}^{1} \sum_{y=0}^{1} f(x, y) \cos\left[\frac{(2x+1)1\pi}{4}\right] \cos\left[\frac{(2y+1)1\pi}{4}\right] \]
-                                \[ C(1, 1) = (1 \times \cos(\pi/4) \cos(\pi/4) + 2 \times \cos(\pi/4) \cos(\pi/4) + 3 \times \cos(3\pi/4) \cos(3\pi/4) + 4 \times \cos(3\pi/4) \cos(3\pi/4)) \]
-                                \[ C(1, 1) = (\frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2}) = 2\sqrt{2} \]
+                                \[ C(1, 1) = 1 \times \cos(\pi/4) \cos(\pi/4) + 2 \times \cos(\pi/4) \cos(\pi/4) + 3 \times \cos(3\pi/4) \cos(3\pi/4) + 4 \times \cos(3\pi/4) \cos(3\pi/4) \]
+                                \[ C(1, 1) = \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} = 2\sqrt{2} \]
                             </li>
                         </ol>
                     </li>
@@ -1271,6 +1272,102 @@
                 </ol>
                 <p>以上两种例子都可行且都不可行，因为只要能通过逆变换还原原来的 1-2-3-4 矩阵就算能用，而不同的编码标准可能会使用不同的变换逻辑。</p>
             </div>
+
+            <h3>量化</h3>
+            <p>简单地说，是根据不同的量化强度，块类型（亮度，色度，16x16，8x8，4x4）给出对应变换块的量化表/矩阵。将变换后的块点除量化矩阵，得到剩余 DCT 系子的块，从而减少高频的 DCT 系子分量，实现压缩。公式可以写为：<span class="text-blue-math">\[ Q(u, v) = \text{round} \left( \frac{C(u, v)}{Q_m(u, v)} \right) \]</span></p>
+            <h4>量化值 qp</h4>
+            <p>Quantization Parameter 是 CRF，ABR 等码率质量控制模式算出，以及率失真优化量化、模式决策等步骤所调整的中间变量</p>
+            <h4>量化步长 qStep</h4>
+            <p>Quantization Step-size 是 qp 于量化表中的映射值。规则是「qp 每 +1，则 qStep +0.125；qp 每 +6 则 qStep ×2，使其越往后增量越大」：</p>
+            <div class="overflow-auto">
+                <table class="table-center align-items-center text-smaller">
+                    <tbody>
+                        <tr class="border-lr">
+                            <th class="px-1">qp</th>
+                            <td class="px-1">0</td>
+                            <td class="px-1">1</td>
+                            <td class="px-1">2</td>
+                            <td class="px-1">3</td>
+                            <td class="px-1">4</td>
+                            <td class="px-1">5</td>
+                            <td class="px-1">6</td>
+                            <td class="px-1">7</td>
+                            <td class="px-1">8</td>
+                            <td class="px-1">9</td>
+                            <td class="px-1">10</td>
+                            <td class="px-1">12</td>
+                            <td class="px-1">14</td>
+                            <td class="px-1">16</td>
+                            <td class="px-1">18</td>
+                            <td class="px-1">20</td>
+                            <td class="px-1">22</td>
+                            <td class="px-1">24</td>
+                            <td class="px-1">26</td>
+                            <td class="px-1">28</td>
+                            <td class="px-1">30</td>
+                            <td class="px-1">32</td>
+                            <td class="px-1">34</td>
+                            <td class="px-1">36</td>
+                            <td class="px-1">38</td>
+                            <td class="px-1">40…</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>qStep</th>
+                            <td class="px-1">0.625</td>
+                            <td class="px-1">0.6875</td>
+                            <td class="px-1">0.8125</td>
+                            <td class="px-1">0.875</td>
+                            <td class="px-1">1</td>
+                            <td class="px-1">1.125</td>
+                            <td class="px-1">1.25</td>
+                            <td class="px-1">1.375</td>
+                            <td class="px-1">1.625</td>
+                            <td class="px-1">1.75</td>
+                            <td class="px-1">2</td>
+                            <td class="px-1">2.5</td>
+                            <td class="px-1">3.25</td>
+                            <td class="px-1">4</td>
+                            <td class="px-1">5</td>
+                            <td class="px-1">6.5</td>
+                            <td class="px-1">8</td>
+                            <td class="px-1">10</td>
+                            <td class="px-1">13</td>
+                            <td class="px-1">16</td>
+                            <td class="px-1">20</td>
+                            <td class="px-1">26</td>
+                            <td class="px-1">32</td>
+                            <td class="px-1">40</td>
+                            <td class="px-1">52</td>
+                            <td class="px-1">64…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>矩阵 Matrix</h4>
+            <p>一串于特定位置换行的数字，用括号括起来得到。</p>
+
+            <h4>矩阵间的点乘/内积</h4>
+            <p>两个矩阵之间，位置相对应的数相乘，得到新的矩阵。如果两个矩阵大小不一，则需要设定其它规则才能计算。</p>
+            <div class="overflow-auto"><span class="text-blue-math">\[ A = \begin{bmatrix} a_{1} & a_{2} \\ a_{3} & a_{4} \end{bmatrix}, \quad B = \begin{bmatrix} b_{1} & b_{2} \\ b_{3} & b_{4} \end{bmatrix}, \quad A \cdot B = \begin{bmatrix} a_{1} \cdot b_{1} + a_{2} \cdot b_{3} & a_{1} \cdot b_{2} + a_{2} \cdot b_{4} \\a_{3} \cdot b_{1} + a_{4} \cdot b_{3} & a_{3} \cdot b_{2} + a_{4} \cdot b_{4} \end{bmatrix} \]</span></div>
+
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：矩阵间的行列式叉乘与外积</button>
+            <div class="coll-content">
+                <h4>矩阵间的行列式叉乘</h4>
+                <p>通过一种算法（此处为行列式）将矩阵坍缩为一个数字（标量）得到。</p>
+                <div class="overflow-auto"><span class="text-blue-math">\[ A = \begin{bmatrix} a_{1} & a_{2} \\ a_{3} & a_{4} \end{bmatrix}, \quad B = \begin{bmatrix} b_{1} & b_{2} \\ b_{3} & b_{4} \end{bmatrix} \]</span></div>
+                <div class="overflow-auto"><span class="text-blue-math">\[ A \times B = (a_{1} \cdot a_{4} - a_{2} \cdot a_{3}) \cdot (b_{1} \cdot b_{4} - b_{2} \cdot b_{3}) \]</span></div>
+
+                <h4>矩阵间的外积</h4>
+                <p>通过一种算法（此处为克罗内克积 Kronecker product）将乘数矩阵乘进被乘数矩阵中的每一个值得到。</p>
+                <div class="overflow-auto"><span class="text-blue-math">\[ A \otimes B = \begin{bmatrix} a_{1}B & a_{2}B \\ a_{3}B & a_{4}B \end{bmatrix} = \begin{bmatrix} a_{1}b_{1} & a_{1}b_{2} & a_{2}b_{1} & a_{2}b_{2} \\ a_{1}b_{3} & a_{1}b_{4} & a_{2}b_{3} & a_{2}b_{4} \\ a_{3}b_{1} & a_{3}b_{2} & a_{4}b_{1} & a_{4}b_{2} \\ a_{3}b_{3} & a_{3}b_{4} & a_{4}b_{3} & a_{4}b_{4} \end{bmatrix} \]</span></div>
+            </div>
+
+            <h4>矩阵间的哈达玛积 Haramad product</h4>
+            <p>两个大小相同矩阵下的另一种自定义点乘/内积算法。</p>
+            <div class="overflow-auto"><span class="text-blue-math">\[ A = \begin{bmatrix} a_{1} & a_{2} \\ a_{3} & a_{4} \end{bmatrix}, \quad B = \begin{bmatrix} b_{1} & b_{2} \\ b_{3} & b_{4} \end{bmatrix}, \quad A \circ B = \begin{bmatrix} a_{11} \cdot b_{11} & a_{12} \cdot b_{12} \\ a_{21} \cdot b_{21} & a_{22} \cdot b_{22} \end{bmatrix} \]</span></div>
+
+            <p>x264 中，变换与量化会通过哈达玛积合并为一个矩阵表格以节省步骤，如 4x4 亮度块下为：</p>
 
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
