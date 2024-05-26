@@ -975,7 +975,7 @@
                         <li><code>--b-pyramid</code> 参数允许连续 B 帧中的偶数帧作为参考帧使用，保证了长距离的连续 B 帧</li>
                     </ul>
                 </li>
-                <li><b>维特比算法推演 P/B/b 帧（简化例子）</b>：
+                <li><b>维特比算法推演 P/B/b 帧</b>：
                     <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：维特比算法的推演例子，可略</button>
                     <ul class="coll-content">
                         <li>Viterbi shortest path 是一种多起点 - 多终点，类似于 A*和 Dijkstra 的最短路径算法。假设一种成本模型：
@@ -1075,13 +1075,6 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 1~16, 推荐 <span class="text-blue-emph">3</span> 或 <span class="text-blue-math">\(1\%\times \text{fps} + 3.4\)</span>&gt;多参考帧前后帧数半径，一图流设 <span class="text-blue-emph">1</span>。必须要在溯全尽可能多块的情况下降低参考长度，所以推荐 <span class="text-blue-emph">3</span>：</p>
             <code><b>--no-mixed-refs</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;关闭参考帧混合溯块（16×8，8×8 分块的参考）以提速，增加误参考。不推荐</p>
-            <code><b>--ipratio --pbratio</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点，默认 1.4、默认 1.3&gt;P 帧相比 IDR/i 帧，以及 B/b 帧相比 P 帧的质量偏移。默认预设是给录像视频片源用的。</p>
-            <ul class="font-monospace pl-5 text-smaller">
-                <li>低成本动漫/多静态画面/PPT 录屏画面：<span class="text-blue-emph">各降低 0.2</span></li>
-                <li>剪辑素材：<span class="text-blue-emph">提高 --crf，不用改这两个参数</span></li>
-                <li>YCbCr 4:4:4 片源：<span class="text-blue-emph">x264 默认会自动修改 --chroma-qp-offset，不用该这两个参数</span></li>
-            </ul>
             <code><b>--scenecut</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，不推荐用&gt; Lookahead 中两帧差距达到该参数值则触发转场。</p>
             <code><b>--vbv-bufsize</b></code>
@@ -1431,7 +1424,156 @@
                 </table>
             </div>
 
-            <h2 id="h2-8">率控制模式</h2>
+            <h2 id="h2-8">率控制</h2>
+            <h3>算出量化值</h3>
+            <p>根据输入的质量设定参数，以及视频数据与人眼视觉的两种特性得到压缩强度——量化值 qp 的具体步骤。其中，视频数据已从时间域分为了关键帧与参考帧（预测帧 + 残差帧）。根据这一性质就可以推断基础的质量差异，如：</p>
+            <code><b>--ipratio --pbratio</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点，默认 1.4、默认 1.3&gt;P 帧相比 IDR/i 帧，以及 B/b 帧相比 P 帧的质量偏移。默认预设是给录像视频片源用的。</p>
+            <ul class="font-monospace pl-5 text-smaller">
+                <li>低成本动漫/多静态画面/PPT 录屏画面：<span class="text-blue-emph">各降低 0.2</span></li>
+                <li>剪辑素材：<span class="text-blue-emph">提高 --crf，不用改这两个参数</span></li>
+                <li>YCbCr 4:4:4 片源：<span class="text-blue-emph">x264 默认会自动修改 --chroma-qp-offset，不用该这两个参数</span></li>
+            </ul>
+            <p>同时，“人眼视觉特性”代表人对明暗变化与画面细节程度的曲线感知。简单地说，就是人眼敏感于中低亮度的画面细节——需要非线性地根据亮度分配画面质量，以及画面细节损失的程度（量化压缩的强度）需要一个妥协平衡点——需要非线性地映射量化强度，共两个技术要求。具体的转换见 <a href="../../x265-web-tutorial/HTML/index.html#h2-11">x265 教程网页版 - 率控制</a>。</p>
+            <p>其结果就是通过 CRF/ABR 通过非线性的推演，再转换出线性的 qp 值。一般分为 1~17，18~23，和 24~69 三个阶段，分配到 qp 1~17 的画面算作低量化，分配到 qp 18~23 的画面算作中量化，分配到 qp 24~69 的画面算作高量化。</p>
+            <p>平面等本来就没有什么信息的分块就算经过高量化，也不会影响其画质；主要的损失出现在有无意地给内容复杂的纹理细节分块分配了高量化或降噪处理，导致了信息的损失。降噪处理影响画面细节的原因是噪点本身是突兀的像素值，所以只能用高频信息表示。</p>
+            <!-- x265 教程副本，更改需手动同步 { -->
+            <h3>质量呼应码率 Constant Rate Factor CRF 上层模式</h3>
+            <code><b>--crf</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;浮点范围 0~51，默认 23&gt; 据 cplxBlur，cutree，B 帧偏移给每帧分配各自 qp 的固定目标质量模式，或简称质量呼应码率模式，统称 crf。素材级画质设在 16~18，收藏~高压画质设在 19~20.5，YouTube 是 23。由于动画和录像的内容差距，动画比录像要给低点。</p>
+            <code><b>--qpmin</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;整数 0~51&gt; 由于画质和优质参考帧呈正比，所以仅高压环境建议设最高 14。</p>
+            <code><b>--qpmax</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;整数 0~51&gt; 在要用到颜色键，颜色替换等需要清晰物件边缘的滤镜时，可以设<span class="text-blue-emph">26</span>防止录屏时物件的边缘被压缩的太厉害，其他情况永远不如关 cu/mbtree。</p>
+
+    
+            <h3>平均码率 Average Bitrate ABR 上层模式</h3>
+            <p>编码器自行判断量化程度，尝试压缩到用户定义的平均码率 average bitrate 上，速度最快</p>
+
+            <code><b>--bitrate</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps&gt; 平均码率。若视频易压缩且码率给高，就会得到码率比设定的片子；反过来低了会不照顾画质强行提高量化，使码率达标。如果给太低则会得到码率不达标，同时画质差的片子。平均码率模式，除 2pass 分隔，一般推流用的"码率选项"就是这个参数，速度快但同时妥协了压缩。</p>
+    
+            <h3>SBRC 下层模式 - 可搭配 CRF/ABR/CRF-VBR/ABR-VBR</h3>
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容</button>
+            <div class="coll-content">
+                <p>分段式率控制 Segment based rate control，实现 DASH，M3U8 串流（视频平台）用。</p>
+                <code><b>--sbrc</b></code>
+                <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;开关，<span class="text-red-emph">需 min-keyint=keyint</span>，<span class="text-red-emph">no-open-gop</span>&gt; 由于提高了初始 CRF 值的利用率，所以建议搭配--cplxblur=crf 使用。</p>
+            </div>
+    
+            <h3>CQP 双层模式</h3>
+            <code><b>--qp</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;整数 0~69，<span class="text-red-emph">禁用 crf/abr+ 模式决策 + 率失真优化</span>&gt; 直接设定全局量化强度。影响其后的综合画质下降或码率暴涨，所以除非 yuv4:4:4 情况下有既定目的，都不建议。</p>
+    
+            <h3>2pass-ABR 双层模式</h3>
+            <p>先用 CRF 模式分析整个视频总结可压缩信息，后根据 ABR 模式的码率限制统一分配量化值。有 pass 2 给特别高的平均码率，输出最小损失的最小体积近无损模式，以及 pass2 给码率硬限的全局整体压缩模式</p>
+            <code><b>--pass 1</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;挡位，导出 stats 数据文件&gt;</p>
+            <code><b>--pass 2</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;挡位，导入 stats 数据文件&gt;</p>
+            <code><b>--stats</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;路径，默认在 x264/5 所在目录下&gt; 设定导出和导入 stats 数据文件的路径和文件名</p>
+            <code><b>--slow-firstpass</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;开关&gt; pass1 里不用 fast-intra no-rect no-amp early-skip ref 1 max-merge 1 me dia subme 2 rd 2，或者手动覆盖掉。</p>
+            <!-- } -->
+            
+            <h3>宏块树与量化值曲线缩放 qComp</h3>
+            <p>源自 libavcodec 以复杂动态场景的帧间参考少而应提高压缩，分码率给参考多而远的简单动态场景，以实现同码率下整体画质更高结果的逻辑。缺点则是动漫场景等「背景不动前景动」的场景被误压缩。说到底是处理精度低而非错误，应逐宏块应用这套逻辑，<a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">就有了 mbtree</a>。量化值曲线缩放 quantizer curve compression 则被贬为控制 mbtree 等一系列 qp 分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
+            <h4>量化值曲线缩放的用途</h4>
+            <ol class="overflow-auto">
+                <li>（仅 ABR 模式）根据宏块的数量与 <code>--qcomp</code> 值设置初始复杂度百分比：
+                    <span class="text-blue-math">\[ \text{Complexity} = \left( \frac{\text{Count}_{MB}}{2} \right) ×700000^{\left( \frac{qcomp}{100} \right)} \div 100 \]</span>
+                </li>
+                <li>获取当前场景的长度 <span class="text-blue-math">\( \text{Duration}_{clip} \)</span></li>
+                <li>当前帧与下一帧间的图像模糊后做 SATD，获得「模糊复杂度 <span class="text-blue-math">\( \text{Complexity}_{blurred} \)</span>」</li>
+            </ol>
+            <ul class="overflow-auto">
+                <li>（关 mbtree 时）使用 <code>--qcomp</code> 缩放模糊复杂度，以换算出当前帧的 qScale：
+                    <span class="text-blue-math">\[ \text{qScale} = \left( \text{Complexity}_{blurred} \right)^{1-qcomp} \]</span>
+                </li>
+                <li>（开 mbtree 时）据 I 帧在当前片段的权重设单帧 qp（基准单帧用时 ÷ 当前场景用时 × I 帧用时 ÷ 帧率）：
+                    <span class="text-blue-math">\[ \text{qScale} = Duration_{frame} \div Duration_{clip}\times Duration_{iframe} \div \text{fps} \]</span>
+                </li>
+            </ul>
+            <code><b>--qcomp</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto"> &lt;浮点范围 0.5~1，推荐默认 0.6&gt;模糊复杂度 cplxBlur 以及 mbtree 迭代每帧 qp 值范围的曲线抑制参数。越小则复杂度迭代越符合实际状况，抑制 CRF，mb-cutree，bframes 影响的效果就越弱，搭配高 CRF 能使码率控制接近 VBV 的程度。越大则 CRF，mb-cutree，bframes 越没用，越接近 CQP</p>
+            <ul class="font-monospace pl-5 text-smaller">
+                <li><span class="text-blue-emph">小于 0.5，中~强 mbtree</span> CRF/ABR低延迟逐帧迭代qp; 画面主前景动时用，允许 mbtree 导致零星宏块欠码</li>
+                <li><span class="text-blue-emph">0.5~0.7 中 mbtree</span> CRF/ABR中延迟逐帧迭代qp, 画面含背景动，或混合情况用，平衡优先</li>
+                <li><span class="text-blue-emph">大于 0.7 中~弱 mbtree</span> CRF, ABR 中~高延迟逐帧迭代 qp, 保留重噪点，或 FPS/STG 游戏录屏场景用</li>
+                <li><span class="text-blue-emph">小于 0.5 关 mbtree</span> 画面不分前背景，如静态图像，PPT/桌面录屏节约性能用</li>
+                <li><span class="text-blue-emph">大于 0.5 关 mbtree</span> 动态画面，不分前背景时节约性能用</li>
+                <li><span class="text-blue-emph">0</span>（if 判定）启用固定码率模式</li>
+                <li><span class="text-blue-emph">1</span>（if 判定）启用固定 qp 模式</li>
+            </ul>
+
+            <h4>宏块树 Macroblock-Tree</h4>
+            <p>如果一个宏块用作帧间参考的码率比用作帧内参考低 70%，则该宏块可视为 30% 非帧间参考和 70% 帧间参考两部分。已知帧间参考占据的部分越多，则这个宏块自身就没有多少信息；而在宏块树所运行的时间，这个宏块是位于软转场 GOP 末尾——scenecut 步骤之后，keyint 步骤之前。因此，可以增强其压缩——把更多的码率分给参考传播最远的 I 帧，以提拔整个软转场 GOP 的画质。详见 <a href="http://lazybing.github.io/blog/2021/06/22/h264-rate-control-algorithm/">x264 率控制算法</a> 及 <a href="https://huyunf.github.io/blogs/2017/12/06/x264_slice_type_decision/MBtree paper.pdf">mbtree paper</a>。</p>
+            <p>由于宏块树的步骤位于前瞻进程 Lookahead 中，而前瞻进程位于动态搜索和运动补偿之前，且 Lookahead 只使用半分辨率的视频帧，因此，此时的宏块树只能额外尝试简单的帧内和帧间预测。</p>
+            <ul>
+                <li>注：帧间参考代价只能小于等于帧内参考代价，类似于（同视频下的）P 帧体积不应大于 I 帧
+                    <ul class="text-smaller">
+                        <li>若出现帧间参考代价大于帧内参考代价的情况，就重设为「帧间参考代价等于帧内参考代价」</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>宏块帧内和帧间的参考代价记为 <span class="text-blue-math">\(\text{Cost}_{intra}\)</span> 和 <span class="text-blue-math">\(\text{Cost}_{inter}\)</span>，通过 Lookahead 中以下“搜索”步骤得到：</p>
+            <ul>
+                <li><b>简单帧内预测/宏块自身信息量预测：</b>尝试水平和垂直模式
+                    <ul class="text-smaller">
+                        <li>水平模式：得到残差为 2，代价为 4</li>
+                        <li>垂直模式：得到残差为 3，代价为 5</li>
+                        <li>选择水平模式，记 <span class="text-blue-math">\(\text{Cost}_{intra}\)</span> 代价为 4</li>
+                    </ul>
+                </li>
+                <li><b>简单帧间预测/宏块参考信息量预测：</b>以上一帧为参考，进行运动估计
+                    <ul class="text-smaller">
+                        <li>运动矢量 (1,1)：得到残差为 1，代价为 2</li>
+                        <li>运动矢量 (2,2)：得到残差为 2，代价为 3</li>
+                        <li>选择运动矢量 (1,1)，记 <span class="text-blue-math">\(\text{Cost}_{inter}\)</span> 代价为 2</li>
+                    </ul>
+                </li>
+                <li><b>宏块总代价：</b>自身代价 + 上一帧帧间预测代价 <span class="text-blue-math">\( \text{Cost}_{intra} + \text{Cost}_{inter} \)</span>
+                    <ul class="text-smaller">
+                        <li><b>上一帧帧间预测代价：</b>上一帧的宏块与当前帧宏块匹配帧间预测模式所得的代价</li>
+                    </ul>
+                </li>
+                <li><b>溯块总代价：</b>自身代价 + 下一帧帧间预测代价 <span class="text-blue-math">\( \text{Cost}_{intra} + \text{Cost}_{propagate} \)</span>
+                    <ul class="text-smaller">
+                        <li><b>下一帧帧间预测代价：</b>下一帧的宏块与当前帧宏块匹配帧间预测模式所得的代价 + <span class="text-blue-math">\(\text{Propagate}_{amount}\)</span> 累积的代价</li>
+                        <li>由于 B 帧是双向参考帧，所以不存在「上/下一帧帧间预测代价」，而是「参考帧/被参考帧间预测代价」</li>
+                    </ul>
+                </li>
+            </ul>
+            <ol>
+                <li><b>设定：</b>各个宏块自身代价与参考代价的比率，再从 100% 减掉这个比率，得到给其他宏块参考的信息比率
+                    <span class="text-blue-math"> \[ \text{propagate}_{fraction}=1-\left(\frac{\text{Cost}_{intra}}{\text{Cost}_{inter}}\right) \]</span>
+                </li>
+                <li><b>设定：</b>各个宏块传播到下游宏块的代价量 = 给其他宏块参考的信息比率 × 溯块总代价
+                    <span class="text-blue-math"> \[ \text{Propagate}_{amount} = \text{Propagate}_{fraction} \times (\text{Cost}_{intra} + \text{Cost}_{propagate}) \]</span>
+                    <ul class="text-smaller">
+                        <li><span class="text-blue-math">\( \text{Propagate}_{fraction} \)</span> 越小，传播到下游宏块的信息量就越少</li>
+                        <li><span class="text-blue-math">\( \text{Cost}_{intra} + \text{Cost}_{propagate} \)</span> 越大，传播到下游宏块的信息量就越大</li>
+                    </ul>
+                </li>
+                <li><b>计算：</b>从最远范围 <code>--rc-lookahead</code> 开始，从远到近地累积所有宏块的 <span class="text-blue-math">\( \text{Propagate}_{amount} \)</span>，作为统计列表中下一个宏块的 <span class="text-blue-math">\( \text{Cost}_{propagate} \)</span>
+                    <ul class="text-smaller">
+                        <li>这里非常绕，总之就是「传播到下游宏块的信息量 <span class="text-blue-math">\( \text{Propagate}_{amount} \)</span>」是持续更新累积的过程，而不是从当前帧往后查找传播了多少信息</li>
+                        <li>如果出现动态位移（当前宏块的范围被切分到下帧的 4 个宏块之间时），这 4 个宏块会各自按比例拆分出各自的传播信息量</li>
+                    </ul>
+                </li>
+                <li><b>分配：</b>从最远范围 <code>--rc-lookahead</code> 开始，从远到近地根据已有的 <span class="text-blue-math">\( \text{Cost}_{propagate} \)</span> 和自身的信息量 <span class="text-blue-math">\( \text{Cost}_{intra} \)</span>，通过 <span class="text-blue-math">\( \log_{2}() \)</span> 以非线性地映射到 qp，得到宏块树中每个宏块的量化值偏移：
+                    <span class="text-blue-math"> \[ \Delta \text{QP} = -\text{strength} \times \log_{2}\left( \frac{\text{Cost}_{intra}}{\text{Cost}_{propagate}} \right) \div \text{Cost}_{intra} \]</span>
+                </li>
+            </ol>
+            <p class="text-gray-side">大部分情况下 mbtree 偏移值为零，因为宏块没有溯块信息可用</p>
+            <!-- x265 教程副本，需要手动同步更改 { -->
+            <code><b>--rc-lookahead</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;帧数量，范围 1~250，推荐 keyint÷2&gt; 指定 cutree 的检索帧数，通常设在帧率的 2.5~3 倍。高则占用内存增加延迟，低则降低压缩率和平均画质。</p>
+            <p class="text-gray-side pl-5 m-0 overflow-auto">注：mbtree/cutree 会自动选择 <code>--rc-lookahead</code> 和 <span class="text-blue-math text-smaller">\( \max\left( \text{keyint}, \max\left( \text{vbv-maxrate}, \text{bitrate}\right)\div\text{vbv-bufsize} \times \text{fps} \right) \)</span> 中最小的值作为检索帧数</p>
+            <!-- } -->
+            <code><b>--no-mbtree</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt; 关闭少见宏块量化偏移。可能只有近无损，<code>--crf</code> 小于 16 才用的到。</p>
 
             <p>------------------------未完成内容------------------------</p>
             <h3>测试 - 成功：</h3>
