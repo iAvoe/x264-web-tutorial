@@ -167,7 +167,14 @@
             
             <h3>对比度 Contrast</h3>
             <p>通常情况下，表示对音量、冷热、远近等两种程度的差异大小缩放。在图像/显示器中，对比度则代表最亮和最暗的显示亮度差异。图片的对比度低会显得发灰，因为当前的亮度设置位于这个灰度水平上。</p>
-            <p>人眼在黑暗中观看同样的视频时，有些场景会显得过亮，有些场景则会显得太暗。这种情况下，降低对比度即可解决该问题；而在阳光下观看同样的视频时，即使将手机电脑调到最大亮度，也无法清晰看到暗部场景。这种情况下，降低对比度并增加亮度即可解决该问题。（因此十分建议手机厂商在亮度条下加上对比度条，以便用户根据环境调节显示的对比度）。</p>
+            <p>人眼在黑暗中观看同样的视频时，有些场景会显得过亮，有些场景则会显得太暗。这种情况下，降低对比度即可解决该问题；而在阳光下观看同样的视频时，即使将手机电脑调到最大亮度，也无法清晰看到暗部场景。这种情况下，降低对比度并增加亮度即可解决该问题。</p>
+            <p>售卖手机的厂商可以考虑让所有用手机看视频的人都需要换手机：只需在下拉状态栏的亮度滑块条 Brightness 上增加一个“暗度 Darkness”滑块：</p>
+            <ul>
+                <li>亮度与暗度的间距决定对比度</li>
+                <li>通过软件限制亮度与暗度滑块的最近距离，防止误操作</li>
+                <li>上述内容已经说明调整对比度能解决几乎所有过亮或过暗场景的问题</li>
+                <li>如果没有技术和耐心，则可以退而求其次，在亮度条的下方增加对比度条</li>
+            </ul>
 
             <h3>饱和度 Saturation</h3>
             <p>一般指液体在特定压力和温度下溶解了某种成分的程度，达到最高时会沉积而不再溶解。图像中则代表颜色接近 100% 纯色的程度或“彩度”，饱和度越高则图像越鲜艳，为零时得到灰阶图像；最大时得到纯色图像。对比度接近饱和度，但不是饱和度。</p>
@@ -565,20 +572,29 @@
             <h3>滤镜/滤波器 Filter 与滤镜工具</h3>
             <p>通常用于过滤水和净化空气。在信号中代表处理一维音频和二维视频信号的算法。滤镜工具代表能够将滤镜应用到信号上的软件或插件，比如 Adobe Premiere Pro，After Effects，<a href="https://ffmpeg.org/">ffmpeg</a>，<a href="https://www.blackmagicdesign.com">DaVinci Resolve</a>，<a href="https://www.screentogif.com/">ScreenToGIF</a>，<a href="https://www.image-line.com">FL Studio</a>，<a href="https://www.reaper.fm/">Reaper</a>，<a href="https://www.ableton.com/">Ableton</a>，Audition，<a href="https://www.gimp.org/">GIMP</a>，Photoshop，<a href="https://www.faststone.org/FSCaptureDetail.htm">FSCapture</a>，LightRoom，OpenCV 等编辑图像、视频和音频的工具。<a href="https://avs-plus.net/">AviSynth(+)</a>和 VapourSynth 严格上称为帧服务器，因为需要连接一个编码器才能导出视音频。</p>
 
+            <h3>好看与难看的噪声 Noise</h3>
+            <p>电影胶片（卤化银晶体）被投影灯放大得到胶片颗粒 Film Grain，在单独一帧胶片画面上是一种静态噪声。更广义的噪声是模拟电视使用放大电路 amplifier 放大无信号频段所产生的“雪花”画面（和声音）、暗部画面的动/静态噪声、显示器屏幕磨砂表面的静态噪声（不同厂家镀膜工艺水平不同）等等。因此，就有了好看与难看的噪声。</p>
+            <div class="align-items-center">
+                <img src="files/basics/imax-tape-projector.jpg" alt="image8" class="img-medium">
+                <p class="text-gray-side">图：正在放映 2023 年电影《奥本海默》的 70mm IMax 胶片放映机。源：<a href="https://www.cnbc.com/2023/07/19/where-to-watch-oppenheimer-in-70mm-imax-.html">Nicolas Vega</a></p>
+                <img src="files/basics/matte-vs-glossy.jpg" alt="image9" class="img-medium">
+                <p class="text-gray-side">图：磨砂镀膜与镜面镀膜显示器的微观区别。可以看到没有漫反射的镜面更加“通透”。源：<a href="https://www.youtube.com/watch?v=mZjxEcuVHlQ">The Display Guy</a></p>
+            </div>
+
             <h3>抖动滤镜 Dither Filter</h3>
             <p>源自早期操作系统只能显示有限数量的颜色，因此采用了高频闪烁两种颜色的方法来欺骗视觉（副作用是使人感到晕眩）。在图像、音频和低端显示器中，抖动滤镜代表通过分辨率或采样率来换取位深的加噪补偿手段。</p>
             <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：常用的抖动滤镜，可略</button>
             <div class="coll-content">
                 <p>具体来说，通过间隔几个像素就调亮/调暗一个像素的颜色，使得宏观整体上看起来像是淡化或加深；在音频位深分量两端的采样点间成比例的（以方形波或三角波信号）快速摆动，从而利用扬声器反应速度，起到淡化或深化偏移宏观上位深的效果。</p>
                 <div class="align-items-center">
-                    <img src="files/basics/Audio-Dither.png" alt="image8" class="img-medium">
+                    <img src="files/basics/Audio-Dither.png" alt="image10" class="img-medium">
                     <p class="text-gray-side mt-0">图：音频的采样点，以及下采样音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
-                    <img src="files/basics/Image-Dither-1.png" alt="image9" class="">
+                    <img src="files/basics/Image-Dither-1.png" alt="image11" class="">
                     <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
                 </div>
                 <p>抖动滤镜的效果主要是欺骗视觉，但因为效果独特，所以衍生出了 Ditherpunk 抖动朋克美术。典型如 1bit 游戏「奥博拉丁的回归」贯彻了这种美学。其原理是利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声，黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法来定义游戏引擎的材质。</p>
                 <div class="align-items-center">
-                    <img src="files/basics/Image-Dither-2.png" alt="image10" class="img-medium">
+                    <img src="files/basics/Image-Dither-2.png" alt="image12" class="img-medium">
                     <p class="text-gray-side mt-0">图：图像噪声算法</p>
                 </div>
             </div>
@@ -624,7 +640,7 @@
             <h3>宽高比/展弦比 Aspect Ratio</h3>
             <p>固定翼飞机或者矩形的最小两边分量。被忽略的“长”是因为飞机相对地面，屏幕相对人眼的 z 轴。而换算长短边如 16:9 高 720 的方形像素视频，其宽就是 <span class="text-blue-math">\( 720 \div 9 \times 16 = 1280 \)</span>。</p>
             <div class="align-items-center">
-                <img src="files/basics/Aspect-Ratio-16-by-9.png" alt="image11" class="img-medium">
+                <img src="files/basics/Aspect-Ratio-16-by-9.png" alt="image13" class="img-medium">
                 <p class="text-gray-side mt-0">图：16:9 的矩形整数偶数放大后的图像分辨率</p>
             </div>
             <p>图片格式一般支持奇数分辨率，视频一般仅支持偶数分辨率。</p>
@@ -637,9 +653,9 @@
             <p>图形界面交互 Graphic user interface GUI：通过图形元素（如按钮、滑块、菜单等）进行用户交互的界面设计。随着程序复杂度的增加，设计出好用的界面会变得更加困难。因此，只有在利润丰厚、注重美学设计、且拥有设计人才的行业才会推出外观精美的 GUI。然而，外观好看并不一定意味着好用、再而，很多时候有外观用都是一种奢求。
             </p>
             <div class="align-items-center">
-                <img src="files/basics/FL-Studio-GUI-Demonstration.png" alt="image12" class="img-medium">
+                <img src="files/basics/FL-Studio-GUI-Demonstration.png" alt="image14" class="img-medium">
                 <p class="text-gray-side mt-0">图：音频插件宿主软件 FL Studio，外加一堆免费和“免费”音频插件随便摆放的外观</p>
-                <img src="files/basics/XMAPP-GUI-Demonstration.png" alt="image13" class="img-medium">
+                <img src="files/basics/XMAPP-GUI-Demonstration.png" alt="image15" class="img-medium">
                 <p class="text-gray-side mt-0">图：网页服务器宿主软件 XMAPP 的 GUI（左下为 CLI），作为跨行业对比</p>
             </div>
             <p>命令行交互 Commandline interface CLI：在如 Terminal、Bash、CMD 和 PowerShell 的终端环境中，用户可以手动输入命令并按回车键查看结果。通常，只要输出结果有一定的文本排版，就可以轻松阅读。随着使用的增加，CLI 可能反而会变得比 GUI 更方便。然而，由于某些命令太长，而且需要储存变量，因此为了简化操作，人们会将其写作批处理、Shell 等命令脚本文件。例如<a href="https://nazorip.site/archives/835/">PowerShell 一站式系统硬件检测</a>的脚本。</p>
@@ -652,7 +668,7 @@
             <h3>逐行 Progressive 与交错 Interlaced 扫描</h3>
             <p>逐行扫描通过一行行从左到右地刷新像素来构建图像，是最为常用的屏幕刷新方式。交错扫描的方法不同，它使用 YUV 4:1:1 采样，将屏幕的奇数像素行视为一个场，偶数像素行视为另一个场。这两个场在录制时错开一定时间，这样在模拟电视上观看时会产生 60fps 的视觉效果。交错扫描的原理是为了节省模拟电视信号的频段区间（与收音机接收电台信号一样）。因此，通过在时间上分隔行来节省空间，可以几乎将每个频道的频宽减半，例如（<span class="text-blue-math">\(525 \text{行} \times 30\text{fps} = 15.75 \text{MHz}\)</span>）。</p>
             <div class="align-items-center">
-                <img src="files/basics/PAL-NTSC-SECAM.svg" alt="image14" class="img-medium">
+                <img src="files/basics/PAL-NTSC-SECAM.svg" alt="image16" class="img-medium">
                 <p class="text-gray-side mt-0">图：NTSC，PAL 和 SECAM 播放规格的地区分布，见<a href="https://en.m.wikipedia.org/wiki/File:PAL-NTSC-SECAM.svg">维基百科</a></p>
             </div>
 
@@ -661,7 +677,7 @@
             </a>。</p>
             <p>在视频编辑中，对齐帧率不同视频是极其困难的操作，而这个天大的难题只需更改录制设定（点击两三个按钮）即可解决。</p>
             <div class="align-items-center">
-                <img src="files/basics/Aligning-framerates.jpg" alt="image15" class="img-small">
+                <img src="files/basics/Aligning-framerates.jpg" alt="image17" class="img-small">
                 <p class="text-gray-side mt-0">图：不同帧率的对齐地狱，见<a href="https://www.youtube.com/watch?v=p3Jb3UPAw-w">Taran Van Hemert</a></p>
             </div>
 
@@ -755,7 +771,7 @@
                 </li>
             </ol>
             <div class="align-items-center">
-                <img src="files/basics/Video-Endocing-Process.png" alt="image15" class="img-medium">
+                <img src="files/basics/Video-Endocing-Process.png" alt="image18" class="img-medium">
             </div>
 
             <h3>视频编码的标准（<a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs">MDN Docs</a>）</h3>
@@ -825,7 +841,7 @@
             </div>
             <p>其中，“H.264”的 H 代表国际电信联盟 - 电信标准化部门（ITU‑T）中的 <a href="https://www.itu.int/net/itu-t/sigdb/spevideo/Hseries-s.htm">H 系列建议指南</a>。如 <a href="https://www.itu.int/rec/T-REC-H.810">ITU-T H.810</a> 个人健康系统（血压计、血糖仪、体重秤之类）的交互设计建议指南。一些符合某个 H 系列视频编码建议指南的视频编码器会将这个标号写在程序名字上，就有了所谓的 x264，x265。</p>
             <div class="align-items-center">
-                <img src="files/basics/Video-Endocing-Standards.png" alt="image17" class="img-medium">
+                <img src="files/basics/Video-Endocing-Standards.png" alt="image19" class="img-medium">
             </div>
 
             <h3>命令行参数</h3>
@@ -896,7 +912,7 @@
                 </li>
             </ul>
             <div class="align-items-center">
-                <img src="files/basics/Video-Coding-Components.png" alt="image18" class="img-medium">
+                <img src="files/basics/Video-Coding-Components.png" alt="image20" class="img-medium">
             </div>
 
             <h3>GOP 的结构</h3>
@@ -1069,7 +1085,7 @@
             <!-- x265 教程副本，更改需手动同步 { -->
             <p>Motion Estimation。用于在连续帧间进行运动估计。过程涉及逐个像素点（微观）在相邻帧之间寻找最小失真朝向/最小失真方向 Direction of minimal distortion DMD，从而在每帧之间都生成一张向量表。如果这个过程缺失或不够理想，参考帧与分块的建立就可能会出现问题，从而导致潜在的压缩率损失或画质下降。</p>
             <div class="align-items-center">
-                <img src="files/memc/Interframe-Vector-Table.png" alt="image19" class="img-medium">
+                <img src="files/memc/Interframe-Vector-Table.png" alt="image21" class="img-medium">
                 <p class="text-gray-side">图：宏块上帧间的动态向量</p>
             </div>
             <p>简化模型下，动态搜索得到帧间向量表，帧间向量表加上上帧的画面得到预测帧，原始帧减去预测帧得到残差帧，残差帧储存为参考帧，得到帧间结构。x264 使用了不对称多六边形搜索 Uneven multiple Hexagon，从而让一个搜索算法在多个分辨率下检查画面，制衡了动态噪点对传统动态搜索算法的干扰。搜索算法详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程</a>。</p>
@@ -1107,7 +1123,7 @@
             <h2 id="h2-6">子像素运动补偿</h2>
             <p>动态预测的精度最高只有 1px，在此之上还有可能被动态噪点干扰，导致了预测帧相比原画会欠缺大量的纹理细节。动态补偿 Motion Compensation MC 通过对比原画与预测块得到残差，并根据残差的分布动态向量的精度到¼子像素，使“精加工预测块”的画面残差尽可能地缩小，得到足够准确的预测帧，即大幅减少残差帧的内容。</p>
             <div class="align-items-center">
-                <img src="files/memc/Block-Spitting-Stage-Two.png" alt="image20" class="img-medium">
+                <img src="files/memc/Block-Spitting-Stage-Two.png" alt="image22" class="img-medium">
                 <p class="text-gray-side">图：根据动态搜索与补偿所得，完成宏块到块的细分</p>
             </div>
             <p>至于对抗动态噪点，大体上是允许真正移动的物件（所涵盖的分块）有运动向量，拦截噪点在静止画面上的孤立运动向量，即「允动之移，防静所变」解决，详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-6">x265 教程</a>。</p>
@@ -1146,7 +1162,7 @@
             <h2 id="h2-7">变换</h2>
             <div class="row">
                 <p id="LR-UD-003" class="col-10">模拟信号转换为数字信号的主要步骤之一——将音量、亮度、温度、压力等信号整理为低频到高频的分量。具体来说，这个过程根据要处理的信号和用途不同，会使用傅里叶变换，小波变换，和 x264/5 使用的二维离散余弦变换 2D Discrete cosine transform。二维离散余弦变换利用预制的二维波形模具，通过穷举加减将源信号逐步分解成不同频率的平面波形，并合成变换块。<span class="text-gray-side">图：缩放到 8x8 的波形分布，由于 cos(x) 的波形范围是 -1~1，所以图中的黑色到白色并不是 0~255 或 16~235，而是 -1~1</span> </p>
-                <img src="files/transform-quantization/DCT-Block.png" alt="image21" id="LR-UD-004" class="img-small img-right col-2 mb-auto" >
+                <img src="files/transform-quantization/DCT-Block.png" alt="image23" id="LR-UD-004" class="img-small img-right col-2 mb-auto" >
             </div>
             <p>变换的过程中，“DCT 像素”称为系子 coefficients。这些系子的强度可以是负值，表示反相的波形；也可以是小数，表示低强度的波形（但因为计算机浮点计算慢于整数计算，所以一般仅用于演示）。变换块左上角的系数是直流 DC 分量，代表整体亮度水平，其余的系数是交流 AC 分量，表示图像中的细节和纹理信息。</p>
             
@@ -1519,7 +1535,7 @@
             <h3>率控制模式的选择</h3>
             <p>一般情况下，用户要求在可接受的编码速度（fps 为单位）下，得到画质较高、文件体积较小的视频，构成了压制三角形。而不同的率控制模式，包括不同的视频编码器都会影响这一点。注意妥协点有三种：不省时，码率大，画质差，对应了三种不同的编码策略。</p>
             <div class="align-items-center">
-                <img src="files/rate-control/rate-control-mode-selection.png" alt="image22" class="img-medium">
+                <img src="files/rate-control/rate-control-mode-selection.png" alt="image24" class="img-medium">
                 <p class="text-gray-side">图：不同率控制模式权衡编码速度，画质，文件体积的能力不同，当然有的模式根本没得选</p>
             </div>
             <ul>
@@ -1581,8 +1597,8 @@
             <h3>去块滤镜</h3>
             <p>修复“CRF/ABR 模式在某些场景的部分区域里分配量化值过高时，宏块间出现明显横纵割痕瑕疵”的平滑滤镜。编码器内去块利用了帧内帧间搜索到的信息，而理论上相比外部滤镜误判更少（当然外部滤镜也能做动态和帧内搜索）。去块大体上是检查 1 像素宽，且此块边缘没有较大像素值变化造成的横纵边缘（所以也存在误判）。块失真源自块间不统一的量化程度，有的块量化高流就会从邻近画面里凸现出来。而去块手段是平滑滤镜，因此要降低强度才适用于高码视频，动漫，素材录屏等锐利画面。边界强度 Boundary strength（去块力度判断）</p>
             <div class="align-items-center">
-                <img src="files/deblocking/Deblock-detection-visualization.png" alt="image23" class="img-medium" >
-                <img src="files/deblocking/Deblock-edge-visualization.png" alt="image24" class="img-medium" >
+                <img src="files/deblocking/Deblock-detection-visualization.png" alt="image25" class="img-medium" >
+                <img src="files/deblocking/Deblock-edge-visualization.png" alt="image26" class="img-medium" >
                 <p class="text-gray-side">图：取最小 8x8 范围（两个 4x4 分块）间的界线举例。</p>
             </div>
 
@@ -1638,10 +1654,10 @@
                 <li><span class="text-blue-math">\(\lambda &gt; 0\)</span>则开销大于失真——保画质收益大于压缩收益，应该保画质</li>
             </ul>
             <div class="align-items-center">
-                <img src="files/rate-distorsion-optimization/x264-JM-RDO-Lambda.png" alt="image29" class="img-medium" >
-                <img src="files/rate-distorsion-optimization/RDO-Lambda-Slopes.png" alt="image30" class="img-medium" >
+                <img src="files/rate-distorsion-optimization/x264-JM-RDO-Lambda.png" alt="image27" class="img-medium" >
+                <img src="files/rate-distorsion-optimization/RDO-Lambda-Slopes.png" alt="image28" class="img-medium" >
                 <p class="text-gray-side">图：率失真优化中λ的斜度变化与效果</p>
-                <img src="files/rate-distorsion-optimization/RDO-qStep-Chart.png" alt="image31" class="img-medium" >
+                <img src="files/rate-distorsion-optimization/RDO-qStep-Chart.png" alt="image29" class="img-medium" >
                 <p class="text-gray-side">图：率 - 失真表格中不断调整并得到“×”的实际效果</p>
             </div>
             <!-- } -->
@@ -1672,7 +1688,7 @@
             <code><b>--no-psy</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;若视频量化很低，纹理清楚，没有优化的必要可以关。但大部分情况下不应该关，而是用较低的优化强度</p>
             <div class="align-items-center">
-                <img src="files/rate-distorsion-optimization//Principle-on-Image-Quality.png" alt="image32" class="img-small" >
+                <img src="files/rate-distorsion-optimization//Principle-on-Image-Quality.png" alt="image30" class="img-small" >
                 <p class="text-gray-side">图：心理视觉优化保留高频信号，同时压缩周围和其中的非高频信号</p>
             </div>
 
@@ -1845,31 +1861,31 @@
                         <li>取出字次数最小的两个元素 (5, 'a'), (9, 'b')，合为 (14, 'ab')
                             <ul class="text-smaller">
                                 <li>得 (12, 'c'), (13, 'd'), (16, 'e'), (45, 'f'), (14, 'ab')</li>
-                                <li><img src="files/huffman-coding/1.png" alt="image22?" class="img-small" ></li>
+                                <li><img src="files/huffman-coding/1.png" alt="image31" class="img-small" ></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (12, 'c'), (13, 'd')，合并为 (25, 'cd')
                             <ul class="text-smaller">
                                 <li>得 (14, 'ab'), (16, 'e'), (45, 'f'), (25, 'cd')</li>
-                                <li><img src="files/huffman-coding/2.png" alt="image23?" class="img-small" ></li>
+                                <li><img src="files/huffman-coding/2.png" alt="image32" class="img-small" ></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (14, 'ab'), (16, 'e')，合并为 (30, 'abe')
                             <ul class="text-smaller">
                                 <li>得 (25, 'cd'), (45, 'f'), (30, 'abe')</li>
-                                <li><img src="files/huffman-coding/3.png" alt="image24?" class="img-medium" ></li>
+                                <li><img src="files/huffman-coding/3.png" alt="image33" class="img-medium" ></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (25, 'cd'), (30, 'abe')，合并为 (55, 'cdeab')
                             <ul class="text-smaller">
                                 <li>得 (45, 'f'), (55, 'CDEAB')</li>
-                                <li><img src="files/huffman-coding/4.png" alt="image25?" class="img-medium" ></li>
+                                <li><img src="files/huffman-coding/4.png" alt="image34" class="img-medium" ></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (45, 'f'), (55, 'cdeab')，合并为 (100, 'fcdeab')
                             <ul class="text-smaller">
                                 <li>得 (100, 'FCDEAB')</li>
-                                <li><img src="files/huffman-coding/5.png" alt="image26?" class="img-medium" ></li>
+                                <li><img src="files/huffman-coding/5.png" alt="image35" class="img-medium" ></li>
                             </ul>
                         </li>
                     </ol>
