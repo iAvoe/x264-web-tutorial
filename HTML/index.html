@@ -2009,13 +2009,158 @@
             </ul>
             <!-- } -->
 
-            <p>------------------------未完成内容------------------------</p>
-            <h3>测试 - 成功：</h3>
-            <p><a href="../../x265-web-tutorial/HTML/index.html">交叉（../../）打开 x265 教程网页版</a></p>
+            <h2 id="h2-15">预设参数</h2>
+            <code><b>--preset</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;ultrafast/superfast/veryfast/faster/fast/medium/slow/slower/veryslow/placebo&gt;见下：</p>
+            <div class="overflow-auto">
+                <table class="table-fit-container text-xs">
+                    <thead>
+                        <tr>
+                            <th>参数\预设</th>
+                            <th>ultrafast</th>
+                            <th>superfast</th>
+                            <th>veryfast</th>
+                            <th>faster</th>
+                            <th>fast</th>
+                            <th>medium</th>
+                            <th>slow</th>
+                            <th>slower</th>
+                            <th>veryslow</th>
+                            <th>placebo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-lr">
+                            <th>b-adapt</th>
+                            <td class="px-1">0</td>
+                            <td class="px-1 t-invert-light" colspan="5">默认 1</td>
+                            <td class="px-1 t-invert-dark" colspan="4">2</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>bframes</th>
+                            <td class="px-1">0</td>
+                            <td class="px-1 t-light-gray" colspan="7">默认 3</td>
+                            <td class="px-1 t-invert-light">8</td>
+                            <td class="px-1 t-invert-dark">16</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>direct</th>
+                            <td class="px-1" colspan="6">默认 spatio</td>
+                            <td class="px-1 t-invert-dark" colspan="4">auto</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>me</th>
+                            <td class="px-1" colspan="2">dia</td>
+                            <td class="px-1 t-light-gray" colspan="4">默认 hex</td>
+                            <td class="px-1 t-invert-light" colspan="3">umh</td>
+                            <td class="px-1 t-invert-dark">tesa</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>merange</th>
+                            <td class="px-1" colspan="8">默认 16</td>
+                            <td class="px-1 t-invert-dark" colspan="2">24</td>
+                        </tr>
+                        <tr>
+                            <th>partitions</th>
+                            <td class="px-1">none</td>
+                            <td class="px-1 t-light-gray">i8x8,i4x4</td>
+                            <td class="px-1 t-invert-light" colspan="5">默认 p8x8,b8x8,i8x8,i4x4</td>
+                            <td class="px-1 t-invert-dark" colspan="3">all</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>rc-lookahead</th>
+                            <td class="px-1" colspan="2">0</td>
+                            <td class="px-1 t-light-gray">10</td>
+                            <td class="px-1 t-light-gray">20</td>
+                            <td class="px-1 t-light-gray">30</td>
+                            <td class="px-1 t-invert-light">默认 40</td>
+                            <td class="px-1 t-invert-light">50</td>
+                            <td class="px-1 t-invert-dark" colspan="3">60</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>ref</th>
+                            <td class="px-1" colspan="3">1</td>
+                            <td class="px-1 t-light-gray" colspan="2">2</td>
+                            <td class="px-1 t-invert-light">默认 3</td>
+                            <td class="px-1 t-invert-light">5</td>
+                            <td class="px-1 t-invert-light">8</td>
+                            <td class="px-1 t-invert-dark" colspan="2">16</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>subme</th>
+                            <td class="px-1">0</td>
+                            <td class="px-1 t-light-gray">1</td>
+                            <td class="px-1 t-light-gray">2</td>
+                            <td class="px-1 t-light-gray">4</td>
+                            <td class="px-1 t-invert-light">6</td>
+                            <td class="px-1 t-invert-light">默认 7</td>
+                            <td class="px-1 t-invert-light">8</td>
+                            <td class="px-1 t-invert-light">9</td>
+                            <td class="px-1 t-invert-light">10</td>
+                            <td class="px-1 t-invert-dark">11</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>trellis</th>
+                            <td class="px-1" colspan="3">0</td>
+                            <td class="px-1 t-invert-light" colspan="3">默认 1</td>
+                            <td class="px-1 t-invert-dark" colspan="4">2</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>weightp</th>
+                            <td class="px-1">0</td>
+                            <td class="px-1 t-invert-light" colspan="4">1</td>
+                            <td class="px-1 t-invert-dark" colspan="5">默认 2</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>no-weightb</th>
+                            <td class="px-1">1</td>
+                            <td class="px-1 t-invert-light" colspan="9">默认 0</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>no-8x8dct</th>
+                            <td class="px-1">1</td>
+                            <td class="px-1 t-invert-light" colspan="9">默认 0</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>no-cabac</th>
+                            <td class="px-1">1</td>
+                            <td class="px-1 t-invert-light" colspan="9">默认 0</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>no-deblock</th>
+                            <td class="px-1">1</td>
+                            <td class="px-1 t-invert-light" colspan="9">默认 0</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>no-mbtree</th>
+                            <td class="px-1" colspan="2">1</td>
+                            <td class="px-1 t-invert-light" colspan="8">默认 0</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>no-mixed-refs</th>
+                            <td class="px-1" colspan="4">1</td>
+                            <td class="px-1 t-invert-light" colspan="6">默认 0</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>scenecut</th>
+                            <td class="px-1">0</td>
+                            <td class="px-1 t-invert-light" colspan="9">默认 40</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>no-fast-pskip</th>
+                            <td class="px-1" colspan="9">默认 0</td>
+                            <td class="px-1 t-invert-light">1</td>
+                        </tr>
+                        <tr class="border-lr">
+                            <th>slow-first-pass</th>
+                            <td class="px-1" colspan="9">默认 0</td>
+                            <td class="px-1 t-invert-light">1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <h3>测试 - 成功：</h3>
-            <p>直接跳转到<a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程 - 动态搜索</a></p>
-
+            <h2 id="h2-16">工具下载</h2>
             <h3>下载 x264 GUI</h3>
             <table class="table-center">
                 <tbody>
@@ -2091,6 +2236,12 @@
                 </tbody>
             </table>
         </div>
+        
+        <p>------------------------未完成内容------------------------</p>
+        <!--
+        <h3>测试 - 成功：</h3>
+        <p>直接跳转到<a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程 - 动态搜索</a></p>
+        -->
         <!-- Footer -->
         <footer class="py-3 my-4 align-items-center border-top">
             <p>联系：
