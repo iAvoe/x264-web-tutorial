@@ -916,7 +916,7 @@
                 </li>
             </ul>
             <div class="align-items-center">
-                <img src="files/basics/Video-Coding-Components.png" alt="image20" class="img-medium">
+                <img src="files/basics/Video-Coding-Components.png" alt="image21" class="img-medium">
             </div>
 
             <h3>GOP 的结构</h3>
@@ -1099,7 +1099,7 @@
             <!-- x265 教程副本，更改需手动同步 { -->
             <p>Motion Estimation。用于在连续帧间进行运动估计。过程涉及逐个像素点（微观）在相邻帧之间寻找最小失真朝向/最小失真方向 Direction of minimal distortion DMD，从而在每帧之间都生成一张向量表。如果这个过程缺失或不够理想，参考帧与分块的建立就可能会出现问题，从而导致潜在的压缩率损失或画质下降。</p>
             <div class="align-items-center">
-                <img src="files/memc/Interframe-Vector-Table.png" alt="image21" class="img-medium">
+                <img src="files/memc/Interframe-Vector-Table.png" alt="image22" class="img-medium">
                 <p class="text-gray-side">图：宏块上帧间的动态向量</p>
             </div>
             <p>简化模型下，动态搜索得到帧间向量表，帧间向量表加上上帧的画面得到预测帧，原始帧减去预测帧得到残差帧，残差帧储存为参考帧，得到帧间结构。x264 使用了不对称多六边形搜索 Uneven multiple Hexagon，从而让一个搜索算法在多个分辨率下检查画面，制衡了动态噪点对传统动态搜索算法的干扰。搜索算法详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程</a>。</p>
@@ -1137,7 +1137,7 @@
             <h2 id="h2-6">子像素运动补偿</h2>
             <p>动态预测的精度最高只有 1px，在此之上还有可能被动态噪点干扰，导致了预测帧相比原画会欠缺大量的纹理细节。动态补偿 Motion Compensation MC 通过对比原画与预测块得到残差，并根据残差的分布动态向量的精度到¼子像素，使“精加工预测块”的画面残差尽可能地缩小，得到足够准确的预测帧，即大幅减少残差帧的内容。</p>
             <div class="align-items-center">
-                <img src="files/memc/Block-Spitting-Stage-Two.png" alt="image22" class="img-medium">
+                <img src="files/memc/Block-Spitting-Stage-Two.png" alt="image23" class="img-medium">
                 <p class="text-gray-side">图：根据动态搜索与补偿所得，完成宏块到块的细分</p>
             </div>
             <p>至于对抗动态噪点，大体上是允许真正移动的物件（所涵盖的分块）有运动向量，拦截噪点在静止画面上的孤立运动向量，即「允动之移，防静所变」解决，详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-6">x265 教程</a>。</p>
@@ -1186,7 +1186,7 @@
             <h2 id="h2-7">变换</h2>
             <div class="row">
                 <p id="LR-UD-003" class="col-10">模拟信号转换为数字信号的主要步骤之一——将音量、亮度、温度、压力等信号整理为低频到高频的分量。具体来说，这个过程根据要处理的信号和用途不同，会使用傅里叶变换，小波变换，和 x264/5 使用的二维离散余弦变换 2D Discrete cosine transform。二维离散余弦变换利用预制的二维波形模具，通过穷举加减将源信号逐步分解成不同频率的平面波形，并合成变换块。<span class="text-gray-side">图：缩放到 8x8 的波形分布，由于 cos(x) 的波形范围是 -1~1，所以图中的黑色到白色并不是 0~255 或 16~235，而是 -1~1</span> </p>
-                <img src="files/transform-quantization/DCT-Block.png" alt="image23" id="LR-UD-004" class="img-small img-right col-2 mb-auto" >
+                <img src="files/transform-quantization/DCT-Block.png" alt="image24" id="LR-UD-004" class="img-small img-right col-2 mb-auto" >
             </div>
             <p>变换的过程中，“DCT 像素”称为系子 coefficients。这些系子的强度可以是负值，表示反相的波形；也可以是小数，表示低强度的波形（但因为计算机浮点计算慢于整数计算，所以一般仅用于演示）。变换块左上角的系数是直流 DC 分量，代表整体亮度水平，其余的系数是交流 AC 分量，表示图像中的细节和纹理信息。</p>
             
@@ -1561,7 +1561,7 @@
             <h3>率控制模式的选择</h3>
             <p>一般情况下，用户要求在可接受的编码速度（fps 为单位）下，得到画质较高、文件体积较小的视频，构成了压制三角形。而不同的率控制模式，包括不同的视频编码器都会影响这一点。注意妥协点有三种：不省时，码率大，画质差，对应了三种不同的编码策略。</p>
             <div class="align-items-center">
-                <img src="files/rate-control/rate-control-mode-selection.png" alt="image24" class="img-medium">
+                <img src="files/rate-control/rate-control-mode-selection.png" alt="image25" class="img-medium">
                 <p class="text-gray-side">图：不同率控制模式权衡编码速度，画质，文件体积的能力不同，当然有的模式根本没得选</p>
             </div>
             <ul>
@@ -1623,8 +1623,8 @@
             <h3>去块滤镜</h3>
             <p>修复“CRF/ABR 模式在某些场景的部分区域里分配量化值过高时，宏块间出现明显横纵割痕瑕疵”的平滑滤镜。编码器内去块利用了帧内帧间搜索到的信息，而理论上相比外部滤镜误判更少（当然外部滤镜也能做动态和帧内搜索）。去块大体上是检查 1 像素宽，且此块边缘没有较大像素值变化造成的横纵边缘（所以也存在误判）。块失真源自块间不统一的量化程度，有的块量化高流就会从邻近画面里凸现出来。而去块手段是平滑滤镜，因此要降低强度才适用于高码视频，动漫，素材录屏等锐利画面。边界强度 Boundary strength（去块力度判断）</p>
             <div class="align-items-center">
-                <img src="files/deblocking/Deblock-detection-visualization.png" alt="image25" class="img-medium" >
-                <img src="files/deblocking/Deblock-edge-visualization.png" alt="image26" class="img-medium" >
+                <img src="files/deblocking/Deblock-detection-visualization.png" alt="image26" class="img-medium" >
+                <img src="files/deblocking/Deblock-edge-visualization.png" alt="image27" class="img-medium" >
                 <p class="text-gray-side">图：取最小 8x8 范围（两个 4x4 分块）间的界线举例。</p>
             </div>
 
@@ -1680,10 +1680,10 @@
                 <li><span class="text-blue-math">\(\lambda &gt; 0\)</span>则开销大于失真——保画质收益大于压缩收益，应该保画质</li>
             </ul>
             <div class="align-items-center">
-                <img src="files/rate-distorsion-optimization/x264-JM-RDO-Lambda.png" alt="image27" class="img-medium" >
-                <img src="files/rate-distorsion-optimization/RDO-Lambda-Slopes.png" alt="image28" class="img-medium" >
+                <img src="files/rate-distorsion-optimization/x264-JM-RDO-Lambda.png" alt="image28" class="img-medium" >
+                <img src="files/rate-distorsion-optimization/RDO-Lambda-Slopes.png" alt="image29" class="img-medium" >
                 <p class="text-gray-side">图：率失真优化中λ的斜度变化与效果</p>
-                <img src="files/rate-distorsion-optimization/RDO-qStep-Chart.png" alt="image29" class="img-medium" >
+                <img src="files/rate-distorsion-optimization/RDO-qStep-Chart.png" alt="image30" class="img-medium" >
                 <p class="text-gray-side">图：率 - 失真表格中不断调整并得到“×”的实际效果</p>
             </div>
             <!-- } -->
@@ -1714,7 +1714,7 @@
             <code><b>--no-psy</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;若视频量化很低，纹理清楚，没有优化的必要可以关。但大部分情况下不应该关，而是用较低的优化强度</p>
             <div class="align-items-center">
-                <img src="files/rate-distorsion-optimization//Principle-on-Image-Quality.png" alt="image30" class="img-small" >
+                <img src="files/rate-distorsion-optimization//Principle-on-Image-Quality.png" alt="image31" class="img-small" >
                 <p class="text-gray-side">图：心理视觉优化保留高频信号，同时压缩周围和其中的非高频信号</p>
             </div>
 
@@ -1887,31 +1887,31 @@
                         <li>取出字次数最小的两个元素 (5, 'a'), (9, 'b')，合为 (14, 'ab')
                             <ul class="text-smaller">
                                 <li>得 (12, 'c'), (13, 'd'), (16, 'e'), (45, 'f'), (14, 'ab')</li>
-                                <li><img src="files/huffman-coding/1.png" alt="image31" class="img-small" ></li>
+                                <li><img src="files/huffman-coding/1.png" alt="image32" class="img-small" ></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (12, 'c'), (13, 'd')，合并为 (25, 'cd')
                             <ul class="text-smaller">
                                 <li>得 (14, 'ab'), (16, 'e'), (45, 'f'), (25, 'cd')</li>
-                                <li><img src="files/huffman-coding/2.png" alt="image32" class="img-small" ></li>
+                                <li><img src="files/huffman-coding/2.png" alt="image33" class="img-small" ></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (14, 'ab'), (16, 'e')，合并为 (30, 'abe')
                             <ul class="text-smaller">
                                 <li>得 (25, 'cd'), (45, 'f'), (30, 'abe')</li>
-                                <li><img src="files/huffman-coding/3.png" alt="image33" class="img-medium" ></li>
+                                <li><img src="files/huffman-coding/3.png" alt="image34" class="img-medium" ></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (25, 'cd'), (30, 'abe')，合并为 (55, 'cdeab')
                             <ul class="text-smaller">
                                 <li>得 (45, 'f'), (55, 'CDEAB')</li>
-                                <li><img src="files/huffman-coding/4.png" alt="image34" class="img-medium" ></li>
+                                <li><img src="files/huffman-coding/4.png" alt="image35" class="img-medium" ></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (45, 'f'), (55, 'cdeab')，合并为 (100, 'fcdeab')
                             <ul class="text-smaller">
                                 <li>得 (100, 'FCDEAB')</li>
-                                <li><img src="files/huffman-coding/5.png" alt="image35" class="img-medium" ></li>
+                                <li><img src="files/huffman-coding/5.png" alt="image36" class="img-medium" ></li>
                             </ul>
                         </li>
                     </ol>
@@ -1979,9 +1979,9 @@
             <h3>HDR 元数据设置</h3>
             <p>x264/5 皆支持的元数据设置。但因为 HDR 分为硬件标准，软件标准，以及数据标准，所以很乱。为了保证色彩正确，必须参考片源的元数据。如：</p>
             <div class="align-items-center">
-                <img src="files/video-usability-information/Metadata-for-VUI-HDR-1.png" alt="image47" class="" >
+                <img src="files/video-usability-information/Metadata-for-VUI-HDR-1.png" alt="image37" class="" >
                 <p class="text-gray-side">图 1: cll 1000,640. master-display 由 G(13250…) 开头，L(10000000,1) 结尾</p>
-                <img src="files/video-usability-information/Metadata-for-VUI-HDR-2.png" alt="image48" class="img-medium" >
+                <img src="files/video-usability-information/Metadata-for-VUI-HDR-2.png" alt="image38" class="img-medium" >
                 <p class="text-gray-side">图 2: cll 1655,117/L(40000000,50)/colorprim bt2020/colormatrix bt2020nc/transfer smpte2084</p>
             </div>
             <!-- } -->
