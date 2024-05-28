@@ -140,9 +140,6 @@
                 <p class="text-gray-side mt-0">图：完整色深 Fullrange 与有限/TV 色深 Limited，包括上述说明的更优版本见<a href="https://www.youtube.com/watch?v=8sAJWtgQ2t8">硬件茶谈</a>。</p>
             </div>
 
-            <code><b>--fullrange</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，7mod x264 自动&gt;启用 0~255 色彩范围，而不是默认的 16~235。视频内容永远不在使用有限色域设备/软件/视频网站下播放下可以考虑开启</p>
-
             <h3>伽马曲线/伽马映射</h3>
             <ul class="text-smaller overflow-auto">
                 <li>生理伽马映射：人眼对于亮度的感知与物理亮度的线性变化所异
@@ -1082,7 +1079,17 @@
             <code><b>--no-mixed-refs</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;关闭参考帧混合溯块（16×8，8×8 分块的参考）以提速，增加误参考。不推荐</p>
             <code><b>--scenecut</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，不推荐用&gt; Lookahead 中两帧差距达到该参数值则触发转场。</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，不推荐用&gt;Lookahead 中两帧差距达到该参数值则触发转场</p>
+            <code><b>--seek</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，默认 0&gt;从第几帧开始压缩</p>
+            <code><b>--frames</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，默认全部&gt;一共压缩多少帧</p>
+            <code><b>--fps</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数或除法&gt;设定输出视频帧率，只有源视频帧率错误才用得到。制动该参数后会自动开启 <code>-force-cfr</code></p>
+            <code><b>--force-cfr</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;强制设定视频帧到整数时间码，可能用于对齐小数帧率的误差（如 23.976 或 24000/1001 变成 23.977）用</p>
+            <code><b>--fullrange</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，7mod x264 自动&gt;启用 0~255 色彩范围，而不是默认的 16~235。视频内容永远不在使用有限色域设备/软件/视频网站下播放下可以考虑开启</p>
 
             <h2 id="h2-5">动态搜索</h2>
             <!-- x265 教程副本，更改需手动同步 { -->
@@ -1511,7 +1518,7 @@
                 <li>x265 中，QP 值可以不填，代表使用上层率控制模式</li>
                 <li>x264 中，QP 值填<span class="text-blue-emph">-1</span> 代表使用上层率控制模式</li>
             </ul>
-            <p class="font-monospace pl-5 m-0 overflow-auto">qpfile 例：</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">qpfile.txt 例：</p>
             <ul class="font-monospace pl-5 text-smaller list-dotless">
                 <li>0 I 18</li>
                 <li>1 P 20</li>
@@ -2160,6 +2167,51 @@
                 </table>
             </div>
 
+            <code><b>--tune</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;zerolatency/animation/grain/film/fastdecode/psnr/ssim&gt;更改 preset 的一些参数，见下：</p>
+            <ul class="font-monospace pl-5 text-smaller">
+                <li><span class="text-blue-emph">zerolatency</span>集中算力到一次编码一帧，并尽可能关闭率控制和 B 帧功能：
+                    <ul>
+                        <li><code>--bframes 0 --force-cfr --no-mbtree --sync-lookahead 0 --sliced-threads --rc-lookahead 0</code></li>
+                    </ul>
+                </li>
+                <li><span class="text-blue-emph">grain</span>保留高频信号/最高画质：
+                    <ul>
+                        <li><code>--deblock -2:-2 --psy-rd &lt;跳过&gt;:0.25 --aq-strength 0.5 --no-dct-decimate --deadzone-inter 6 --deadzone-intra 6 --ipratio 1.1 --pbratio 1.1 --qcomp 0.8</code></li>
+                    </ul>
+                </li>
+                <li><span class="text-blue-emph">animation</span>优化动漫场景画面：
+                    <ul>
+                        <li><code>--ref &lt;若当前设定大于 1 则乘以 2&gt; --bframes &lt;当前设定值 +=2&gt; --deblock 1:1 --psy-rd 0.4:&lt;跳过&gt; --aq-strength 0.6</code></li>
+                    </ul>
+                </li>
+                <li><span class="text-blue-emph">fastdecode</span>降低解码算力占用以降低超高帧率 - 分辨率解码负载
+                    <ul>
+                        <li><code>--no-deblock --no-cabac --no-weightb --weightp 0</code></li>
+                    </ul>
+                </li>
+                <li><span class="text-blue-emph">film</span>优化录像与电影场景画面
+                    <ul>
+                        <li><code>--deblock -1:-1 --psy-rd &lt;跳过&gt;:0.15</code></li>
+                    </ul>
+                </li>
+                <li><span class="text-blue-emph">stillinage</span>优化静态图像画面
+                    <ul>
+                        <li><code>--deblock -3:-3 --psy-rd 2.0:0.7 --aq-strength 1.2</code></li>
+                    </ul>
+                </li>
+                <li><span class="text-blue-emph">psnr</span>尽可能降低编码结果和原画的均方差 MSE 差异，但与画质关系不大
+                    <ul>
+                        <li><code>--aq-mode 0 --no-psy</code></li>
+                    </ul>
+                </li>
+                <li><span class="text-blue-emph">ssim</span>比 <code>--tune psnr</code> 缓和一些
+                    <ul>
+                        <li><code>--aq-mode 2 --no-psy</code></li>
+                    </ul>
+                </li>
+            </ul>
+
             <h2 id="h2-16">工具下载</h2>
             <h3>下载 x264 GUI</h3>
             <table class="table-center">
@@ -2236,7 +2288,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <p>------------------------未完成内容------------------------</p>
         <!--
         <h3>测试 - 成功：</h3>
