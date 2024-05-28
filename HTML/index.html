@@ -2265,7 +2265,55 @@
             <p>由于视频元数据里不少有标错的情况，所以使用 MediaInfo 等工具查看到视频帧率是 Variable 时，有可能是标错了。此时可以用播放器逐帧查看，或者用 ffprobe 检测。见 <a href="https://nazorip.site/archives/169/">ffprobe 教程</a></p>
 
             <h3>处理图像序列</h3>
-            <p>TODO</p>
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容</button>
+            <div class="coll-content">                
+                <p>顾名思义，是一组分辨率对等，画面（应该）连贯的单图。图像格式不限，但要注意一般情况下视频格式仅支持偶数分辨率。自带 FFMS2，Lavf 的 x264/5 可根据 Win/Linux 中的序号表达式，设定输入文件名 <span class="text-blue-emph">%0Nd</span> 序号范围实现文件导入，<span class="text-blue-emph">0</span> 指编号前有空白补位 0；<span class="text-blue-emph">N</span> 即位数。Win/Linux 区别（应该）只有路径不同：</p>
+                <ul>
+                    <li><code>x264 &lt;参数&gt; --fps 30 --output /home/tmp/导出视频.mp4 /home/tmp/图片%02d.png</code></li>
+                    <li><code>x264 &lt;参数&gt; --fps 30 --output D:\tmp\导出视频.mp4 D:\tmp\图片%02d.png</code></li>
+                </ul>
+                <p>ffmpeg 还可以用 image2 解码器，搭配 <span class="text-blue-emph">start_number</span>（起始序号）和 <span class="text-blue-emph">pattern_type</span>（表达式类型）两个命令，以编解码图像序列。</p>
+                <ul>
+                    <li><code>ffmpeg -hide_banner -r 30 -f image2 -start_number 0 -pattern_type sequence -i F:\图%02d.jpg "F:\视.mp4"</code></li>
+                    <li><code>ffmpeg -hide_banner -r 30 -f image2 -start_number 0 -pattern_type glob -i F:\*.bmp "F:\频.mp4"</code></li>
+                </ul>
+                <p>其中，<code>-pattern_type sequence</code> 代表使用序号表达式 <span class="text-blue-emph">%0Nd</span>，<code>-pattern_type glob</code> 代表使用通配符 * 来匹配“部分文件名 + 通配符”，或者如上例仅使用通配符来选择所有匹配的文件</p>
+                <p>由于 Windows 系统对序号表达式 <span class="text-blue-emph">%0Nd</span> 的支持略差，而批量修改几百个文件名也有搞乱顺序的风险，所以 ffmpeg 还可以用 concat 滤镜实现。首先创建 txt 列表并假设所有图片都是 2560x1440 分辨率：</p>
+                <ul class="font-monospace pl-5 text-smaller list-dotless">
+                    <li># Concat 格式：只能用正斜杠以及单引号，用#注释，Win/Linux 区别仅路径</li>
+                    <li># 可用 gif 格式的单图，可混用图片格式，分辨率一样就行，pdf 没试过</li>
+                    <li># 用‘/’斜杠，而不是‘\’斜杠</li>
+                    <li># 可用注释符 # 来写注释</li>
+                    <li>file 'F:/2013/IMG_20130411_182854.jpg'</li>
+                    <li>file 'F:/2013/IMG_20130412_125214.png'</li>
+                    <li>file 'F:/2013/IMG_20130412_125307.tif'</li>
+                    <li>file 'F:/2013/IMG_20130508_155625.bmp'</li>
+                    <li>file 'F:/Asset/2013/IMG_20130508_155819.dpx'</li>
+                    <li>file 'F:/Asset/2013/IMG_20130613_133840.jpg'</li>
+                    <li>file 'F:/Asset/2013/IMG_20130727_191243.ext'</li>
+                    <li>file 'F:/Asset/2013/IMG_20130727_191255.isa'</li>
+                    <li>file 'F:/Asset/Pictures/4_2019-04-12.jpg'</li>
+                    <li>file 'F:/Asset/Pictures/DarkSideOfTheMoon.jpg'</li>
+                    <li>file 'F:/Asset/Pictures/in2white-square.png'</li>
+                    <li>file 'F:/Asset/Pictures/sunset.jpg'</li>
+                </ul>
+                <p class="text-gray-side">注：实际情况下应注意图片的分辨率全部一致</p>
+                <p>帧率未知，以及不确定能不能跑通时，先做一个长 10 帧左右的列表副本来生成一段未压缩视频流排查：</p>
+                <ul>
+                    <li><code>ffmpeg -loglevel 16 -hwaccel auto -y -hide_banner -f concat -safe 0 -r &lt;帧率&gt; -i "C:\图片列表.txt" -video_size 2560x1440 -an -pix_fmt yuv420p "C:\导出视频流_帧率x.yuv"</code></li>
+                </ul>
+                <ul>
+                    <li><code>-f concat</code> 代表选择 concat 滤镜以组合图片为视频帧</li>
+                    <li><code>-safe 0</code> 以解除绝对路径禁用限制（'X:\文件夹\'的路径格式，不规范或不安全之类的）</li>
+                    <li><code>-r</code> 代表设置帧率</li>
+                    <li><code>-video_size</code> 设定分辨率（旧版 ffmpeg 则是 -s）</li>
+                    <li><code>-an</code> 代表关闭音频编码</li>
+                    <li><code>-pix_fmt</code> 选择和图片格式匹配的色彩空间（通过播放器或 MediaInfo 查看）</li>
+                </ul>
+                <p>然后运行该命令，确认了帧率后就能用 ffmpeg pipe x264 或 x265，ffmpeg 内置的 libx264 或 libx265 编码了。以下为 ffmpeg 内置 libx264 和 libx265 的例子：</p>
+                <code><span class="text-green-dyna">ffmpeg.exe -loglevel 16 -hwaccel auto -y -hide_banner</span> <span class="text-pink-cnsq">-f concat -safe 0 -r 15 -i "C:\导入图片列表.txt" -video_size 2560x1440 -an -pix_fmt yuv420p</span> -x264-params "rc-lookahead=33: me=umh:bframes=12:b-adapt=2: subme=9:merange=48:fast-pskip=0:direct=auto:weightb=1:keyint=230:min-keyint=3:ref=3: crf=19:qpmin=9:chroma-qp-offset=-3:aq-mode=3:aq-strength=1.1:trellis=2:deblock=0,-1:psy-rd=0.5:0.3:nr=4" "C:\导出视频帧列表_x264_帧率15.mp4"</code>
+                <code><span class="text-green-dyna">ffmpeg.exe -loglevel 16 -hwaccel auto -y -hide_banner</span> <span class="text-pink-cnsq">-f concat -safe 0 -r 15 -i "C:\导入图片列表.txt" -video_size 2560x1440 -an -pix_fmt yuv420p</span> -x265-params "ctu=64:tu-intra-depth=4:tu-inter-depth=4:limit-tu=1:me=star:subme=3:merange=48:weightb=1:ref=3:max-merge=4:open-gop=0:min-keyint=3:keyint=230:fades=1:bframes=8:b-adapt=2:radl=3:constrained-intra=1:b-intra=1:crf=22.8:qpmin=8:crqpoffs=-3:ipratio=1.2:pbratio=1.5:rdoq-level=2:aq-mode=4:aq-strength=1:qg-size=8:rd=3:limit-refs=0:rskip=0:rc-lookahead=33:rect=1:amp=1:psy-rd=2:qp-adaptation-range=3:deblock=0,-1:limit-sao=1:sao-non-deblock=1:selective-sao=3:hash=2:allow-non-conformance=1" "C:\导出视频帧列表_x265_帧率15.mp4"</code>
+            </div>
 
             <h2 id="h2-19">工具下载</h2>
             <h3>下载 x264 GUI</h3>
