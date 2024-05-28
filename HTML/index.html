@@ -851,6 +851,10 @@
             <p>以及 ffmpeg 中使用 CLI 参数启用 libx264，通过 <code>-x264-params</code> 发送 API 参数的例子：</p>
             <code>ffmpeg.exe -loglevel 16 -hwaccel auto -y -hide_banner -i ".\导入.mp4" -c:v libx264 -x264-params "<span class="text-blue-emph">rc-lookahead=90:bframes=12:b-adapt=2:me=umh:subme=9:merange=48:fast-pskip=0:direct=auto:weightb=1:keyint=360:min-keyint=5:ref=3:crf=20:qpmin=9:chroma-qp-offset=-2:aq-mode=3:aq-strength=0.7:trellis=2:deblock=0,0:psy-rd=0.77,0.22:nr=4</span>" -fps_mode passthrough -c:a copy ".\输出.mp4"</code>
             <p>ffmpeg 中，导入文件由 <code>-i</code> 参数完成，因为 ffmpeg 支持导入多个文件，而每个文件后跟随一些处理命令就需要较为严格的命令添加顺序，而 x264/5 这些编码器一般只是导入一个文件，所以在末尾加一个路径到文件的字符串就代表导入文件了。</p>
+            <div class="align-items-center">
+                <img src="files/basics/Encoding-CLI-Info.png" alt="image20" class="img-medium">
+                <p class="text-gray-side">图：使用命令行窗口启动视频压制命令后，视频编码器会给出大致这些信息</p>
+            </div>
 
             <h3>本教程中命令行参数的说明格式</h3>
             <code><b>--参数</b></code>
@@ -2212,7 +2216,10 @@
                 </li>
             </ul>
 
-            <h2 id="h2-16">工具下载</h2>
+            <h2 id="h2-16">内置 AviSynth 滤镜</h2>
+            <p>TODO</p>
+
+            <h2 id="h2-17">工具下载</h2>
             <h3>下载 x264 GUI</h3>
             <table class="table-center">
                 <tbody>
