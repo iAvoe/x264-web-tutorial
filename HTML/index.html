@@ -19,8 +19,21 @@
 	<body class="text-gray-main">
         <div class="px-1 mb-3">
             <h1>x264 教程<span class="text-blue-emph"> HTML 完整版</span></h1>
-            <p>欢迎阅读！本教程仅算盲人摸象的业余分析，仅具备业余参考价值。若有什么不会的可以加群<a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>691892901</a>。<span class="text-red-emph">点击图片即可更改桌面和移动端的适配排版</span>。</p>
+            <p class="px-3">欢迎阅读！本教程仅算盲人摸象的业余分析，仅具备业余参考价值。若有什么不会的可以加群<a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>691892901</a>。<span class="text-red-emph">点击图片即可更改桌面和移动端的适配排版</span>。</p>
         </div>
+        <!-- x265 教程副本，更改需手动同步 { -->
+        <span class="px-3"><b>地图</b></span>
+        <ol class="font-monospace pl-5">
+            <li><a href="../../x264-web-tutorial/HTML/index.html" class="disabled">x264 教程网页版</a></li>
+            <li><a href="../../x264-web-tutorial/HTML/index.html">x265 教程网页版（尔于此地）</a></li>
+            <li>附录 α：<a href="https://www.nazorip.site/archives/44/">QAAC 音频压缩教程</a> 或 <a href="https://github.com/iAvoe/QAAC-Tutorial-Standalone/blob/master/%E6%95%99%E7%A8%8B.md">Github 副本</a></li>
+            <li>附录 β：<a href="https://nazorip.site/archives/334/">x264，libx264，x265，libx265 压制教程急用版</a> 或 <a href=""> Github 副本</a></li>
+            <li>附录 γ：<a href="https://nazorip.site/archives/169/">ffprobe 教程</a> 或 <a href="https://github.com/iAvoe/FFprobe-Tutorial-Standalone/blob/master/%E6%95%99%E7%A8%8B.md">Github 副本</a></li>
+            <li>附录 δ：<a href="https://nazorip.site/archives/1068/">ffprobe + Excel 绘制码率曲线，帧类型饼图</a></li>
+            <li>附录 ε：<a href="../../deint-ivtc-web-tutorial/HTML/index.html">交错转逐行与 IVTC 处理</a></li>
+            <li>相关：<a href="https://nazorip.site/archives/1052/">mpv 播放器的安装与设置</a></li>
+        </ol>
+        <!-- } -->
         <div class="container-mobile rounded-9 border-main">
             <h2 id="h2-1">必备常识</h2>
             <h3>封装与解封装 - Multiplex/De-multiplex</h3>
@@ -1449,7 +1462,7 @@
             <ul class="font-monospace pl-5 text-smaller">
                 <li>低成本动漫/多静态画面/PPT 录屏画面：<span class="text-blue-emph">各降低 0.2</span></li>
                 <li>剪辑素材：<span class="text-blue-emph">提高 --crf，不用改这两个参数</span></li>
-                <li>YCbCr 4:4:4 片源：<span class="text-blue-emph">x264 默认会自动修改 --chroma-qp-offset，不用该这两个参数</span></li>
+                <li>YCbCr 4:4:4 片源：<span class="text-blue-emph">x264 默认会自动修改 --chroma-qp-offset，不用改这两个参数</span></li>
             </ul>
             <p>同时，“人眼视觉特性”代表人对明暗变化与画面细节程度的曲线感知。简单地说，就是人眼敏感于中低亮度的画面细节——需要非线性地根据亮度分配画面质量，以及画面细节损失的程度（量化压缩的强度）需要一个妥协平衡点——需要非线性地映射量化强度，共两个技术要求。具体的转换见 <a href="../../x265-web-tutorial/HTML/index.html#h2-11">x265 教程网页版 - 率控制</a>。</p>
             <p>其结果就是通过 CRF/ABR 通过非线性的推演，再转换出线性的 qp 值。一般分为 1~17，18~23，和 24~69 三个阶段，分配到 qp 1~17 的画面算作低量化，分配到 qp 18~23 的画面算作中量化，分配到 qp 24~69 的画面算作高量化。</p>
@@ -2227,11 +2240,15 @@
                 <li>大量条带的并行提高了编码单帧的速度，降低延迟</li>
             </ol>
 
-            <h2 id="h2-17">滤镜</h2>
+            <h2 id="h2-17">内置滤镜</h2>
+            <h3>降噪</h3>
+            <code><b>--nr</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~65536，降噪范围 100~1000，不推荐&gt;当 ABR/VBV 指定了高于 <code>--qpmax</code> 或默认最大 qp 值时，会调用这个滤镜。如果有降噪需求则建议使用效果更好的外部滤镜工具，或至少使用 <code>--vf hqdn3d</code> 滤镜</p>
+
             <h3>内置 AviSynth 滤镜</h3>
             <code><b>--vf</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;crop:[←],[↑],[→],[↓]/pad: [←],[↑],[→],[↓]/resize:[宽，高]，[变宽比]，[装盒]，[色度采样]，[缩放算法/select_every:步，帧，帧…]/hqdn3d: [空域 Y 降噪强度]，[空域 C 降噪强度]，[降噪时域 Y 强度]，[时域 C 降噪强度]&gt;裁剪，加边，缩放/更改分辨率，删除/保留视频帧，降噪，色彩空间转换滤镜。例：</p>
-            <ol class="font-monospace pl-5 text-smaller">
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;crop:[←],[↑],[→],[↓]/pad: [←],[↑],[→],[↓]/resize:[宽，高]，[变宽比]，[装盒]，[色度采样]，[缩放算法/select_every:步，帧，帧…]/hqdn3d:[空域 Y 降噪强度]，[空域 C 降噪强度]，[降噪时域 Y 强度]，[时域 C 降噪强度]/yadif[模式],[顺序]&gt;裁剪，加边，缩放/更改分辨率，删除/保留视频帧，降噪，色彩空间转换滤镜。例：</p>
+            <ul class="font-monospace pl-5 text-smaller">
                 <li><span class="text-blue-emph">crop:3,4,5,6</span>：视频左，上，右，下分别裁剪 3，4，5，6 个像素</li>
                 <li><span class="text-blue-emph">pad:0,7,8,9,,,255,255,255</span>：视频上，右，下分别加 7，8，9 个像素的 #FFFFFF（白）边</li>
                 <li><span class="text-blue-emph">pad:,,,,1920,1080,1,36,38</span>：视频对称加减边到 1920x1080 像素，若加边则加 #013638（深蓝绿）边</li>
@@ -2248,15 +2265,22 @@
                     </ul>
                 </li>
                 <li><span class="text-blue-emph">yadif:1,tff</span>：使用 bobbing 算法，上场优先模式将交错视频转为逐行视频</li>
-            </ol>
+            </ul>
             <p>这些滤镜可以在实现简单的画面处理。使用多个滤镜的例子如：<code>--vf crop:10,0,10,0/resize:640,480,,,,lanczos</code>。</p>
             <ul>
                 <li>resize 中 [select_every] 滤镜详见 <a href="http://avisynth.nl/index.php/Select#SelectEvery">AviSynth Wiki</a></li>
                 <li>resize 中 [色彩空间] 可用的值有：i400,i420,yv12,nv12,nv21,i422,yv16,nv16,yuyv,uyvy,i444,yv24,bgr,bgra,rgb</li>
                 <li>resize 中 [缩放算法] 可用的值有：fastbilinear,bilinear,bicubic,experimental,point,area,bicublin,gauss,sinc,lanczos,spline</li>
-                <li>yadif 是一种简单的交错转逐行滤镜，推荐用画质更好的外部滤镜，见<a href="../../deint-ivtc-web-tutorial/HTML/index.html">附录：交错转逐行与 IVTC</a></li>
+                <li>yadif 是一种简单的交错转逐行滤镜，推荐用画质更好的外部滤镜，见附录 ε：<a href="../../deint-ivtc-web-tutorial/HTML/index.html">交错转逐行与 IVTC</a></li>
+                <li>x264 中内置的 yadif 滤镜来自 MPlayer，因此参数不同于 AviSynth：
+                    <ul>
+                        <li>yadif 中 [模式] 可用的值有 0,1,2,3；[顺序] 可用的值有 tff 和 bff</li>
+                    </ul>
+                </li>
                 <li>hdqn3d 是一种简单快速的时域 + 空域降噪滤镜。仅指定 <code>--vf hqdn3d</code> 则使用默认强度（仅开启滤镜）为 4,3,6,4.5</li>
             </ul>
+            <code><b>--sub</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件，<span class="text-red-emph">需 <code>--vf subtitles</code> 和 VSFilter64.dll</span>&gt;导入字幕文件，</p>
 
             <h3>恒定 Constant 与可变 Variable 帧率</h3>
             <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率有助于解决手机录像时的发热和耗电速度快的问题，同时，将可变帧率转换为恒定帧率以正常剪辑视频时则需要重新编码。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
@@ -2313,6 +2337,10 @@
                 <p>然后运行该命令，确认了帧率后就能用 ffmpeg pipe x264 或 x265，ffmpeg 内置的 libx264 或 libx265 编码了。以下为 ffmpeg 内置 libx264 和 libx265 的例子：</p>
                 <code><span class="text-green-dyna">ffmpeg.exe -loglevel 16 -hwaccel auto -y -hide_banner</span> <span class="text-pink-cnsq">-f concat -safe 0 -r 15 -i "C:\导入图片列表.txt" -video_size 2560x1440 -an -pix_fmt yuv420p</span> -x264-params "rc-lookahead=33: me=umh:bframes=12:b-adapt=2: subme=9:merange=48:fast-pskip=0:direct=auto:weightb=1:keyint=230:min-keyint=3:ref=3: crf=19:qpmin=9:chroma-qp-offset=-3:aq-mode=3:aq-strength=1.1:trellis=2:deblock=0,-1:psy-rd=0.5:0.3:nr=4" "C:\导出视频帧列表_x264_帧率15.mp4"</code>
                 <code><span class="text-green-dyna">ffmpeg.exe -loglevel 16 -hwaccel auto -y -hide_banner</span> <span class="text-pink-cnsq">-f concat -safe 0 -r 15 -i "C:\导入图片列表.txt" -video_size 2560x1440 -an -pix_fmt yuv420p</span> -x265-params "ctu=64:tu-intra-depth=4:tu-inter-depth=4:limit-tu=1:me=star:subme=3:merange=48:weightb=1:ref=3:max-merge=4:open-gop=0:min-keyint=3:keyint=230:fades=1:bframes=8:b-adapt=2:radl=3:constrained-intra=1:b-intra=1:crf=22.8:qpmin=8:crqpoffs=-3:ipratio=1.2:pbratio=1.5:rdoq-level=2:aq-mode=4:aq-strength=1:qg-size=8:rd=3:limit-refs=0:rskip=0:rc-lookahead=33:rect=1:amp=1:psy-rd=2:qp-adaptation-range=3:deblock=0,-1:limit-sao=1:sao-non-deblock=1:selective-sao=3:hash=2:allow-non-conformance=1" "C:\导出视频帧列表_x265_帧率15.mp4"</code>
+
+                <p>若要导出图片序列，则可以用 ffmpeg-image2 解码器导入，指定图片格式导出。以下为 Linux Bash 路径的例子：</p>
+                <code><span class="text-green-dyna">ffmpeg.exe -loglevel 16 -hwaccel auto -y -hide_banner</span> <span class="text-pink-cnsq">-i 导入视频.avi -r 1 -f image2 -start_number 0 -pattern_type sequence -fps_mode cfr</span> /home/tmp/图片%03d.jpg</code>
+
             </div>
 
             <h2 id="h2-19">工具下载</h2>
