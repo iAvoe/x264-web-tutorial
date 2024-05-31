@@ -3,6 +3,7 @@
 ## [点此打开](https://iavoe.github.io/x264-web-tutorial/HTML/index.html)
 
 - 建立于[x264-x265-QAAC-ffprobe-Ultimatetutorial](https://github.com/iAvoe/x264-x265-QAAC-ffprobe-Ultimatetutorial)的 x264 教程 2024.45 版，并大幅改进了内容
+
 ### HTML 版特点
 
 - [x] 基于 docx 版教程的手工移植，考量了每一处段落的实现
@@ -28,12 +29,15 @@
 - 公式段的字体为 [KaTeX Math Regular](https://github.com/KaTeX/katex-fonts/blob/master)（英文）附件（适配安卓）  
   - 辅以 Cochin，Georgia，Times，Times New Roman，serif
 
-
 ### 公式转换
 
 - 目前引入了 [MathJax JavaScript]("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js") 附件做公式转换，同时因为 MathML Tag 占据 HTML 源码的面积太大而重写为 LaTex。工具为 [Text2Latex.com]("https://www.text2latex.com")
 - 一开始因为没有转换 LaTex 的工具链而使用了手写转 MathML 的处理。工具为 [ConvertMathToLaTexMathML]("https://webdemo.myscript.com/views/math/index.html")
-- 注：Word 2016 不支持复制 LaTex 格式的公式，也不支持 Word 2010 支持的第三方转换插件...
+- 注：Word 2016 刚好同时不支持复制 LaTex 格式的公式，也不支持 Word 2010 支持的第三方转换插件...
+
+### 打赏
+<p align="center"><img src="bmc_qr.png"><img src="pp_tip_qr.png"></p>
+——新纪录！这玩意现在年收入 20 人民币
 
 -----
 
