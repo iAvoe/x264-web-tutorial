@@ -35,6 +35,22 @@
 - 一开始因为没有转换 LaTex 的工具链而使用了手写转 MathML 的处理。工具为 [ConvertMathToLaTexMathML]("https://webdemo.myscript.com/views/math/index.html")
 - 注：Word 2016 刚好同时不支持复制 LaTex 格式的公式，也不支持 Word 2010 支持的第三方转换插件...
 
+### 内容范围
+
+封装文件，编码，解码，硬解，软解，码率，滤镜，压制三角形，帧数，小数帧，向量，分辨率换算，GUI，CLI，API，mux，demux，录屏，超频，单核性能，视音频 - 图像格式分类，有损 - 无损，色深，浮点色深，色彩空间，宏观与微观色度采样于对比，伽马，伽马矫正，逐行，交错，噪点，抖动，拜耳滤镜，RAW，编程语言分类，压制软件，报错，GOP，关键帧，参考帧，待定帧，参数集，Lookahead 进程，维特比算法，动态搜索，运动补偿，SAD，SATD，加权预测，多参考帧，变换与量化，率控制模式，CRF，ABR，CQP，3CQP，zones，VBR，2pass，FTQP，方差，方差自适应量化（含计算过程），环路滤波，模式决策，率失真优化，mbtree，qcomp，率失真曲线，SSE，Noise-SSE，拉格朗日代价，游程编码，色彩信息，压制 log，软件下载，ffmpeg-pipe，去可变帧率，CMD 操作，x264 参数，图像序列 Image Sequence，序号表达式，ffmpeg-Image2，ffmpeg-Concat
+
+### 繁体中文支持
+
+本教程由简体中文编写，设计上通过自行安装浏览器插件转换为繁体。转换效果不理想则请截图，并发送到本教程 Github 仓库中的 Issues，或 QQ 群里。
+
+### 暗黑模式支持
+
+设计上通过将图片的白色背景改为透明，并给剩下的内容添加白色描边实现。目前已验证了 [Dark Reader](https://darkreader.org) 的效果。如果转换效果不理想则请截图，并发送到本教程 Github 仓库中的 Issues，或 QQ 群里。
+
+### 打印机支持
+
+TODO
+
 ### 打赏
 
 <p align="center"><img src="bmc_qr.png"><br><img src="pp_tip_qr.png"></p>
@@ -43,7 +59,7 @@
 
 ——[PayPal 链接](https://www.paypal.com/qrcodes/managed/3e3e8b7f-27ed-4edc-a0fa-1b469e854a3c?utm_source=consapp)
 
-——新纪录！这玩意现在年收入 20 人民币
+<p align="center"><font size=1>——新纪录！这玩意现在年收入 20 人民币</font></p>
 
 -----
 
