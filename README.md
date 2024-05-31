@@ -37,10 +37,12 @@
 
 ### 打赏
 
-<p align="center"><img src="bmc_qr.png"><img src="pp_tip_qr.png"></p>
+<p align="center"><img src="bmc_qr.png"><br><img src="pp_tip_qr.png"></p>
 
 ——[Buy me a coffee 链接](https://buymeacoffee.com/iavoe)
+
 ——[PayPal 链接](https://www.paypal.com/qrcodes/managed/3e3e8b7f-27ed-4edc-a0fa-1b469e854a3c?utm_source=consapp)
+
 ——新纪录！这玩意现在年收入 20 人民币
 
 -----
