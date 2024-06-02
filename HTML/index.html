@@ -1610,6 +1610,8 @@
                 <li>不用 <code>--psy-rd</code> 时，动漫或幻灯片录屏片源的 4:2:0 视频可手动设 <span class="text-blue-emph">-2~-4</span></li>
                 <li>编码 YCbCr 4:4:4 时，x264 会自动设定 <span class="text-blue-emph">-2~-4</span>。</li>
             </ul>
+            <h3>消杀区 Deadzone</h3>
+            <p>在给定帧内（像素面积），帧间（一帧长 1 像素的像素面积）范围中，抹除一切小于给定范围的非平面信息。可以视作一种快速的强降噪。当软判决优化 CABAC/CAVLC 的率失真再量化（<code>--trellis</code>）没有完全开启后，则会替代启用的功能。如果使用默认设置，在 1280x720 以上分辨率的画面会变得缺失细节，所以建议在最少大于等于 1600x900 分辨率、<code>--trellis &lt; 2</code> 的时候更改相关参数的默认值：</p>
             <code><b>--deadzone-inter</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~32，默认 21，<code>--trellis</code> 小于 2 时开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 6</p>
             <code><b>--deadzone-intra</b></code>
