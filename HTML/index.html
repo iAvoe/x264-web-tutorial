@@ -1352,8 +1352,6 @@
                 </ol>
                 <p>以上提供了两种变换，因为理论上只要能通过逆运算还原原来的 1-2-3-4 矩阵就算能用（当然量化矩阵也要跟着修改），且不同信号的编码可能会使用不同的变换算法。</p>
             </div>
-            <code><b>--no-dct-decimate</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;关闭 DCT 变换的低强度系子归零操作，以提高压缩。适合幻灯片录屏等画面极其干净，或经过大量滤镜过滤噪声，<code>--crf &lt; 17</code>或 ABR <code>--bitrate &gt; 500000</code> 编码策略的源视频</p>
 
             <h3>量化</h3>
             <p>简单地说，是根据不同的量化强度，块类型（亮度，色度，16x16，8x8，4x4）给出对应变换块的量化表/矩阵。将变换后的块点除量化矩阵，得到剩余 DCT 系子的块，从而减少高频的 DCT 系子分量，实现压缩。</p>
@@ -1610,12 +1608,6 @@
                 <li>不用 <code>--psy-rd</code> 时，动漫或幻灯片录屏片源的 4:2:0 视频可手动设 <span class="text-blue-emph">-2~-4</span></li>
                 <li>编码 YCbCr 4:4:4 时，x264 会自动设定 <span class="text-blue-emph">-2~-4</span>。</li>
             </ul>
-            <h3>消杀区 Deadzone</h3>
-            <p>在给定帧内（像素面积），帧间（一帧长 1 像素的像素面积）范围中，抹除一切小于给定范围的非平面信息。可以视作一种快速的强降噪。当软判决优化 CABAC/CAVLC 的率失真再量化（<code>--trellis</code>）没有完全开启后，则会替代启用的功能。如果使用默认设置，在 1280x720 以上分辨率的画面会变得缺失细节，所以建议在最少大于等于 1600x900 分辨率、<code>--trellis &lt; 2</code> 的时候更改相关参数的默认值：</p>
-            <code><b>--deadzone-inter</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~32，默认 21，<code>--trellis</code> 小于 2 时开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 6</p>
-            <code><b>--deadzone-intra</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，范围 0~32，默认 11，--trellis=2 时无效，小于 2 自动开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 4</p>
 
             <h4>分段压制控制</h4>
             <p>手动指定帧数片段，每个片段允许指定一种上层模式和一些控制参数。</p>
@@ -1886,7 +1878,6 @@
 
             <h2 id="h2-13">熵编码/文本压缩</h2>
             <p>x264 教程中仅提及最简单的形式。完成的熵编码流程见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版 - 熵编码</a>。</p>
-            
             <h3>霍夫曼编码 Huffman Coding</h3>
             <p>曾经广泛应用于数据压缩的算法。步骤分为：</p>
             <ol>
@@ -2019,8 +2010,48 @@
             <code><b>--no-cabac</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，不推荐&gt;关闭 CABAC，使用 CAVLC</p>
 
-            <h3>软判决优化 CABAC/CAVLC 的率失真再量化</h3>
-            <p>Soft decision quantization SDQ trellis 算法，限制变换量化后块中 DCT 系子 coefficients（转换至频域后各个 DCT 区间的分量）的强度 level（分量的用量，见<a href="#h2-7">变换</a>版块），甚至偏移当前系子的强度值到临近系子，实现类似率失真优化的压缩率与画质再平衡</p>
+            <h2 id="h2-14">优化熵编码</h2>
+            <h3>残差 DCT 系子</h3>
+            <p>Residual DCT coefficients 代表变换后量化前，已知经过量化后会被抹除的 DCT 系子。DCT 变换的例子见本教程的 <a href="#h2-7">变换 - DCT 变换</a> 部分。总之就是与“残差块”无关，只是都叫做残差而已。</p>
+
+            <h3>编码块标记 CBF</h3>
+            <p>Coded block flag 会被标在预测和/或与其相应的变换单元（亮度块加色度块）中表示该单元是否附有较多的残差系子。例如 CBF=1 代表有，CBF=0 代表没有，引导四叉树 quadtree 算法进一步分块，也就是四叉树的进一步分枝。详见 <a href="https://patents.google.com/patent/US9749645B2/en">US9749645B2</a>。</p>
+            <div class="align-items-center">
+                <img src="files/entropy-coding-optimization/Quad-tree-bitmap.svg" alt="image37" class="img-medium">
+                <p class="text-gray-side">图：四叉树的分块。见<a href="https://en.wikipedia.org/wiki/Quadtree">维基百科</a></p>
+            </div>
+
+            <h3>DCT 归零优化 Decimate</h3>
+            <p>由上可知，录像与电影片源中的动态噪点会直接干扰编码器的分块，导致熵编码总是要处理系子数量少的 8x8，4x4 分块，而 x264 设计时面向了 640x480 分辨率的视频，所以就有了专门用于避免无效分块，避免性能和熵编码压缩率被浪费的系子归零处理（现已淘汰但默认开启）。具体是：</p>
+            <ol class="text-smaller">
+                <li>8x8 亮度块中分量为 -3~3 的 DCT 系子归零</li>
+                <li>16x16 亮度块中分量为 -5~5 的 DCT 系子归零</li>
+                <li>色度块中分量为 -6~6 的 DCT 系子归零</li>
+                <li>优化后的块回到原来的编码步骤——量化中</li>
+            </ol>
+            <code><b>--no-dct-decimate</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;关闭 DCT 变换的低强度系子归零操作，以提高压缩。适合幻灯片录屏等画面极其干净，或经过大量滤镜过滤噪声，<code>--crf &lt; 17</code>或 ABR <code>--bitrate &gt; 500000</code> 编码策略的源视频</p>
+            
+            <h3>死区量化器 Dead-zone Quantizer 优化</h3>
+            <p>死区，也叫 dead-band，netual-zone，或无作用区，代表输入 - 输出波形中可归零的部分。</p>
+            <div class="align-items-center">
+                <img src="files/entropy-coding-optimization/Deadband-operator.svg" alt="image38" class="img-small">
+                <p class="text-gray-side">图：信号死区设 0.5 时，输入到输出 <span class="text-blue-pure">y</span>=<span class="text-red-pure">x</span> 波形的变化。见<a href="https://en.wikipedia.org/wiki/Deadband">维基百科</a></p>
+            </div>
+            <p>死区量化器的用途同上。x264 中，<code>--trellis</code>没有完全开启（2）时，死区量化器会被替代启用。默认设置下：</p>
+            <ol class="text-smaller">
+                <li>帧间亮度块中，分量为 -21~21 的 DCT 系子归零</li>
+                <li>帧内亮度块中，分量为 -11~11 的 DCT 系子归零</li>
+                <li>优化后的块回到原来的编码步骤——量化中</li>
+            </ol>
+            <p>因此，结果是在高分辨率下，默认设置对画面细节的涂抹较强，所以一般建议 <code>--trellis 2</code>，或在最少大于等于 1600x900 分辨率、<code>--trellis &lt; 2</code> 的时候更改死区量化器相关参数的默认值。</p>
+            <code><b>--deadzone-inter</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~32，默认 21，<code>--trellis</code> 小于 2 时开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 6</p>
+            <code><b>--deadzone-intra</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，范围 0~32，默认 11，--trellis=2 时无效，小于 2 自动开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 4</p>
+
+            <h3>软判决率失真再量化优化</h3>
+            <p>Soft decision quantization / SDQ trellis 算法。通过限制量化后块中的 DCT 系子 coefficients 强度，甚至偏移当前系子的强度值到临近系子，实现类似率失真优化的压缩率与画质再平衡。<code>--trellis</code> 应用于量化步骤之后，所以叫“再量化”。</p>
             <code><b>--trellis</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，范围 0~2, 推荐 2&gt;软判决优化 CABAC 的率失真再量化。 </p>
             <ul class="font-monospace pl-5 text-smaller">
@@ -2028,7 +2059,7 @@
                 <li><span class="text-blue-emph">2</span>同时调整帧内帧间参考和分块完成的块，效果最好</li>
             </ul>
 
-            <h2 id="h2-14">色彩信息</h2>
+            <h2 id="h2-15">色彩信息</h2>
             <p>重复一开始说明的物理亮度：可见光电磁波的强度或振幅，以流明 lumen/lm，坎德拉/烛光量 candela/cd，或尼特 nits/cdm<sup>2</sup> 计量：</p>
             <ul class="text-gray-side">
                 <li>1cd/lm 大约为一支普通蜡烛的亮度。</li>
@@ -2047,9 +2078,9 @@
             <h3>HDR 元数据设置</h3>
             <p>x264/5 皆支持的元数据设置。但因为 HDR 分为硬件标准，软件标准，以及数据标准，所以很乱。为了保证色彩正确，必须参考片源的元数据。如：</p>
             <div class="align-items-center">
-                <img src="files/video-usability-information/Metadata-for-VUI-HDR-1.png" alt="image37" class="">
+                <img src="files/video-usability-information/Metadata-for-VUI-HDR-1.png" alt="image39" class="">
                 <p class="text-gray-side">图 1: cll 1000,640. master-display 由 G(13250…) 开头，L(10000000,1) 结尾</p>
-                <img src="files/video-usability-information/Metadata-for-VUI-HDR-2.png" alt="image38" class="img-medium">
+                <img src="files/video-usability-information/Metadata-for-VUI-HDR-2.png" alt="image40" class="img-medium">
                 <p class="text-gray-side">图 2: cll 1655,117/L(40000000,50)/colorprim bt2020/colormatrix bt2020nc/transfer smpte2084</p>
             </div>
             <!-- } -->
@@ -2088,7 +2119,7 @@
             </ul>
             <!-- } -->
 
-            <h2 id="h2-15">预设参数</h2>
+            <h2 id="h2-16">预设参数</h2>
             <code><b>--preset</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;ultrafast/superfast/veryfast/faster/fast/medium/slow/slower/veryslow/placebo&gt;见下：</p>
             <div class="overflow-auto">
@@ -2283,7 +2314,7 @@
                 </li>
             </ul>
 
-            <h2 id="h2-16">线程控制</h2>
+            <h2 id="h2-17">线程控制</h2>
             <code><b>--threads</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，建议默认 1.5 倍线程&gt;参考帧步骤要等其之前的步骤算完才开始，所以远超默认的值会因为处理器随机算的特性而降低参考帧的计算时间，使码率增加，画质降低，速度变慢</p>
             <code><b>--sliced-threads</b></code>
@@ -2296,7 +2327,7 @@
                 <li>大量条带的并行提高了编码单帧的速度，降低延迟</li>
             </ol>
 
-            <h2 id="h2-17">内置滤镜</h2>
+            <h2 id="h2-18">内置滤镜</h2>
             <h3>降噪</h3>
             <code><b>--nr</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~65536，降噪范围 100~1000，不推荐&gt;当 ABR/VBV 指定了高于 <code>--qpmax</code> 或默认最大 qp 值时，会调用这个滤镜。如果有降噪需求则建议使用效果更好的外部滤镜工具，或至少使用 <code>--vf hqdn3d</code> 滤镜</p>
@@ -2353,19 +2384,19 @@
                         <th class="t-light-gray"><a href="https://shana.pe.kr/shanaencoder_download">Shana<br>Encoder</a></th>
                         <td class="px-1 text-smaller">ffmpeg-CLI 搭配部分 GUI，上手较慢。使用了 ffmpeg 内嵌的 libx264，libx265，NVEnc</td>
                         <td style="max-width: 30rem;">
-                                <img src="files/tools-download/shana-encoder.png" alt="image39" class=""><br>
-                                <img src="files/tools-download/shana-encoder-1.png" alt="image40" class="">
+                                <img src="files/tools-download/shana-encoder.png" alt="image41" class=""><br>
+                                <img src="files/tools-download/shana-encoder-1.png" alt="image42" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://bitbucket.org/muldersoft/simple-x264-launcher/downloads/">Simple x264 Launcher</a></th>
                         <td class="px-1 text-smaller">内嵌 AviSynth，支持便携版 VapourSynth，额外支持 x265 和 NVEnc 编码器，适合批量压制</td>
-                        <td style="max-width: 30rem;"><img src="files/tools-download/simple-x264-launcher.png" alt="image41" class=""></td>
+                        <td style="max-width: 30rem;"><img src="files/tools-download/simple-x264-launcher.png" alt="image43" class=""></td>
                     </tr>
                     <tr>
                         <th class="t-light-gray">小丸工具箱</th>
                         <td class="px-1 text-smaller">操作简单，适合入门的中文软件。网上能搜到详细教程。内嵌 MediaInfo，mp4box，Mkvtoolnix<br>镜像：<a href="https://pan.baidu.com/s/1VHonGHoZ0DmQBNZaRjML2A&pwd=crhu">百度云</a> 提取码"crhu"</td>
-                        <td style="max-width: 30rem;"><img src="files/tools-download/xiaowan-toolbox.png" alt="image42" class=""></td>
+                        <td style="max-width: 30rem;"><img src="files/tools-download/xiaowan-toolbox.png" alt="image44" class=""></td>
                     </tr>
                 </tbody>
             </table>
@@ -2382,29 +2413,29 @@
                         <th class="t-light-gray"><a href="https://mpv.io/installation/">mpv</a></th>
                         <td class="px-1 text-smaller">开源，支持便携的现代视频播放器。见<a href="https://nazorip.site/archives/1052/">安装与配置</a>教程</td>
                         <td style="max-width: 30rem;">
-                            <img src="files/tools-download/mpv.png" alt="image43" class="">
+                            <img src="files/tools-download/mpv.png" alt="image45" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://www.voukoder.org/">Voukoder</a></th>
                         <td class="px-1 text-smaller">开源 Premiere Vegas After Effects 压制导出插件，分为 Voukoder 和 V-Connector 两部分</td>
                         <td style="max-width: 30rem;">
-                            <img src="files/tools-download/voukoder.png" alt="image44" class="">
+                            <img src="files/tools-download/voukoder.png" alt="image46" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://obsproject.com/zh-cn/download">OBS</a></th>
                         <td class="px-1 text-smaller">强大的开源直播框架和软件，设置略比传统录屏软件复杂，但效果也更好</td>
                         <td style="max-width: 30rem;">
-                            <img src="files/tools-download/obs.png" alt="image45" class="">
+                            <img src="files/tools-download/obs.png" alt="image47" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://mediaarea.net/zh-CN/MediaInfo">MediaInfo</a></th>
                         <td class="px-1 text-smaller">开源的 GUI 媒体元数据/视音频格式读取器，用于配置正确的压制参数</td>
                         <td style="max-width: 30rem;">
-                            <img src="files/tools-download/mediainfo.png" alt="image46" class=""><br>
-                            <img src="files/tools-download/mediainfo-1.png" alt="image47" class="">
+                            <img src="files/tools-download/mediainfo.png" alt="image48" class=""><br>
+                            <img src="files/tools-download/mediainfo-1.png" alt="image49" class="">
                         </td>
                     </tr>
                     <tr>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100%" height="100%" viewBox="-50 -50 100 100">
+<title>Deadband operator</title>
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <path d="M0,0h20v20" fill="none" stroke="black" stroke-width=".5" stroke-dasharray="1,2"/>
+  </pattern>
+</defs>
+<rect x="-50" y="-50" width="100%" height="100%" fill="url(#grid)"/>
+<g stroke="black" stroke-width=".6" fill="none">
+  <path d="M-50,0h100M0,-50v100"/>
+  <path d="M-50,50l100,-100 M-40,-40h10" stroke="blue" stroke-width=".7"/>
+  <path d="M-50,50l30,-30v-20h40v-20l30,-30 M-40,-35h10" stroke="red" stroke-width=".7" stroke-dasharray="2,1"/>
+</g>
+<text font-size="4" stroke="none" fill="black" text-anchor="middle" font-family="New Century Schoolbook">
+  <tspan x="-40" y="5">−1</tspan>
+  <tspan x="40" y="5">1</tspan>
+  <tspan x="-20" y="5">−0.5</tspan>
+  <tspan x="20" y="5">0.5</tspan>
+  <tspan x="3" y="5">0</tspan>
+  <tspan y="42" x="5">−1</tspan>
+  <tspan y="-38" x="5">1</tspan>
+  <tspan y="22" x="5">−0.5</tspan>
+  <tspan y="-18" x="5">0.5</tspan>
+  <tspan x="-23" y="-39">input </tspan>
+  <tspan x="-23" y="-34">output</tspan>
+</text>
+</svg>
