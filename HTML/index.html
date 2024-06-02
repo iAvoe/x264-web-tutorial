@@ -2015,7 +2015,7 @@
             <p>Residual DCT coefficients 代表变换后量化前，已知经过量化后会被抹除的 DCT 系子。DCT 变换的例子见本教程的 <a href="#h2-7">变换 - DCT 变换</a> 部分。总之就是与“残差块”无关，只是都叫做残差而已。</p>
 
             <h3>编码块标记 CBF</h3>
-            <p>Coded block flag 会被标在预测和/或与其相应的变换单元（亮度块加色度块）中表示该单元是否附有较多的残差系子。例如 CBF=1 代表有，CBF=0 代表没有，引导四叉树 quadtree 算法进一步分块，也就是四叉树的进一步分枝。详见 <a href="https://patents.google.com/patent/US9749645B2/en">US9749645B2</a>。</p>
+            <p>Coded block flag 会被标在预测和/或与其相应的变换单元（亮度块加色度块）中表示该单元是否附有较多的残差系子：CBF=1 代表有、0 代表没有。引导四叉树 quadtree 算法进一步分枝——宏块向下分块。详见 <a href="https://patents.google.com/patent/US9749645B2/en">US9749645B2</a>。</p>
             <div class="align-items-center">
                 <img src="files/entropy-coding-optimization/Quad-tree-bitmap.svg" alt="image37" class="img-medium">
                 <p class="text-gray-side">图：四叉树的分块。见<a href="https://en.wikipedia.org/wiki/Quadtree">维基百科</a></p>
@@ -2033,7 +2033,7 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;关闭 DCT 变换的低强度系子归零操作，以提高压缩。适合幻灯片录屏等画面极其干净，或经过大量滤镜过滤噪声，<code>--crf &lt; 17</code>或 ABR <code>--bitrate &gt; 500000</code> 编码策略的源视频</p>
             
             <h3>死区量化器 Dead-zone Quantizer 优化</h3>
-            <p>死区，也叫 dead-band，netual-zone，或无作用区，代表输入 - 输出波形中可归零的部分。</p>
+            <p>死区，也叫 dead-band，netual-zone，或无作用区，代表输入到输出波形中可归零的部分。</p>
             <div class="align-items-center">
                 <img src="files/entropy-coding-optimization/Deadband-operator.svg" alt="image38" class="img-small">
                 <p class="text-gray-side">图：信号死区设 0.5 时，输入到输出 <span class="text-blue-pure">y</span>=<span class="text-red-pure">x</span> 波形的变化。见<a href="https://en.wikipedia.org/wiki/Deadband">维基百科</a></p>
