@@ -2048,7 +2048,7 @@
             <code><b>--deadzone-inter</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~32，默认 21，<code>--trellis</code> 小于 2 时开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 6</p>
             <code><b>--deadzone-intra</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，范围 0~32，默认 11，--trellis=2 时无效，小于 2 自动开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 4</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~32，默认 11，<code>--trellis</code> 小于 2 时开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 4</p>
 
             <h3>软判决率失真再量化优化</h3>
             <p>Soft decision quantization / SDQ trellis 算法。通过限制量化后块中的 DCT 系子 coefficients 强度，甚至偏移当前系子的强度值到临近系子，实现类似率失真优化的压缩率与画质再平衡。<code>--trellis</code> 应用于量化步骤之后，所以叫“再量化”。</p>
