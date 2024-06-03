@@ -2006,7 +2006,7 @@
                     </tr>
                 </tbody>
             </table>
-            <p>从上面的内容可见，熵编码是一种无损压缩（例如代码和小说都是文本，文本编码不可更改其内容）。既然是无损，那么不同的熵编码算法之间就只有编码速度和压缩率两个判断标准。x264 中使用了上下文自适应可变长度编码 Context Adaptive Variable Length Coding 和压缩率更高，速度慢一点的上下文自适应二进制算数编码 Context Adaptive Binary Arithmetic Coding CABAC。CABAC 的 原理见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版 - 熵编码</a></p>
+            <p>从上面的内容可见，熵编码是一种无损压缩（例如代码和小说都是文本，文本编码不可更改其内容）。既然是无损，那么不同的熵编码算法之间就只有编码速度和压缩率两个判断标准。x264 中使用了上下文自适应可变长度编码 Context Adaptive Variable Length Coding 和压缩率更高，速度慢一点的上下文自适应二进制算数编码 Context Adaptive Binary Arithmetic Coding CABAC。CABAC 的原理见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版 - 熵编码</a></p>
             <code><b>--no-cabac</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，不推荐&gt;关闭 CABAC，使用 CAVLC</p>
 
@@ -2030,7 +2030,7 @@
                 <li>优化后的块回到原来的编码步骤——量化中</li>
             </ol>
             <code><b>--no-dct-decimate</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;关闭 DCT 变换的低强度系子归零操作，以提高压缩。适合幻灯片录屏等画面极其干净，或经过大量滤镜过滤噪声，<code>--crf &lt; 17</code>或 ABR <code>--bitrate &gt; 500000</code> 编码策略的源视频</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;关闭 DCT 变换的低强度系子归零操作，以减少细节损失，降低有损压缩。适合幻灯片录屏等画面极其干净，或经过大量滤镜过滤噪声，<code>--crf &lt; 17</code>或 ABR <code>--bitrate &gt; 500000</code> 编码策略的源视频</p>
             
             <h3>死区量化器 Dead-zone Quantizer 优化</h3>
             <p>死区，也叫 dead-band，netual-zone，或无作用区，代表输入到输出波形中可归零的部分。</p>
@@ -2051,7 +2051,7 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~32，默认 11，<code>--trellis</code> 小于 2 时开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 4</p>
 
             <h3>软判决率失真再量化优化</h3>
-            <p>Soft decision quantization / SDQ trellis 算法。通过限制量化后块中的 DCT 系子 coefficients 强度，甚至偏移当前系子的强度值到临近系子，实现类似率失真优化的压缩率与画质再平衡。<code>--trellis</code> 应用于量化步骤之后，所以叫“再量化”。</p>
+            <p>Soft decision quantization / SDQ trellis 算法。通过限制量化后块中的 DCT 系子 coefficients 强度，甚至偏移当前系子的强度值到临近系子，实现类似率失真优化的压缩率与画质再平衡。<code>--trellis</code> 应用于量化步骤之后，所以叫“再量化”。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-16"></a>x265 教程 - 优化熵编码</p></p>
             <code><b>--trellis</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，范围 0~2, 推荐 2&gt;软判决优化 CABAC 的率失真再量化。 </p>
             <ul class="font-monospace pl-5 text-smaller">
