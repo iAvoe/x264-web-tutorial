@@ -19,7 +19,7 @@
 	<body class="text-gray-main">
         <div class="container-title">
             <h1>x264 教程<span class="text-blue-emph"> HTML 完整版</span></h1>
-            <p>欢迎阅读！本教程仅算盲人摸象的业余分析，仅具备业余参考价值。若有什么不会的可以加群<a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>691892901</a>。<span class="text-red-emph">点击图片即可更改桌面和移动端的适配排版</span>。</p>
+            <p>欢迎阅读！本教程仅算盲人摸象的业余分析，仅具备业余参考价值。若有什么不会的可以加群<a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>691892901</a>。</p>
             <!-- x265 教程副本，更改需手动同步 { -->
             <h2>地图</h2>
             <ol class="font-monospace">
@@ -42,6 +42,9 @@
             <button type="button" class="border-main rounded-3 ms-1 px-1" onclick="toggleCollapseAll()">1/5. 点击同步展开/折叠所有内容</button>
             <!-- } -->
             <p class="font-monospace">页数：A4 纸需 64 页，US Letter 信纸需 67 页。建议使用双面打印 + 侧面钉装，或只打印需要的部分以节约纸张。</p>
+
+            <h3>移动端支持</h3>
+            <p>点击图片即可轮询三种图片大小。当窗口宽度 +18 像素后大于窗口高度后，切换到宽屏/桌面端排版，否则切换到窄屏/移动端排版</p>
         </div>
         <div class="container-mobile rounded-9 border-main">
             <h2 id="h2-1">必备常识</h2>
@@ -2472,6 +2475,24 @@
                     </tr>
                 </tbody>
             </table>
+
+            <h3>检查视频编码后偏色的原因</h3>
+            <p>将编码前后的视频窗口至于同屏下，使用截图软件截图，再使用取色器测量特定区域的颜色：</p>
+            <ul>
+                <li><b>偏黄：</b>
+                    Bt.709，Bt.2020 源被转换成了 Bt.601。可以通过 <code>colormatrix=源矩阵:目标矩阵</code> 参数转换一段原视频做测试复现：
+                    <code>ffmpeg.exe -i "偏色前.mp4" -vf "colormatrix=bt709:bt601" -c:v libx264 -c:a copy -c:s copy "D:\Desktop\合成 1 转601.mkv"</code>
+                </li>
+                <li><b>偏绿：</b>
+                    使用了英伟达 NVDEC 硬件解码器导致的颜色错误，目前已知 RTX 3000 系显卡有。见 <a href="https://nazorip.site/archives/1052/">MPV 播放器</a> 中的类似状况
+                </li>
+                <li><b>对比度过低（1）：</b>
+                    编码器设定输入位深为 8bit，源视频为 10bit 或更高，没有滤镜工具转换源到 8bit，直接编码后可能导致
+                </li>
+                <li><b>对比度过低（2）：</b>
+                    编码器设定输入色域为完整 Full，视频为有限色域 Limited，没有滤镜工具转换源到完整色域，直接编码后可能导致
+                </li>
+            </ul>
         </div>
         <!--
         <h3>测试 - 成功：</h3>
