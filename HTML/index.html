@@ -69,16 +69,16 @@
 
             <h3>编解码</h3>
             <ul class="overflow-auto">
-                <li>编码 Encoding：是数据格式的转换。压缩是编码的一种形式</li>
-                <li>解码 Decoding：是将被压缩的信号还原或播放的解压缩。一般来说，压缩程度越高，解码速度越慢</li>
-                <li>软解 Software Decoding：使用通用电路播放流文件，通常具有更高的兼容性，更高的能耗/发热</li>
-                <li>硬解 Hardware Decoding：使用专用电路替代软解，通常具有更低的兼容性，更低的能耗/发热
+                <li><b>编码 Encoding</b>：是数据格式的转换。压缩是编码的一种形式</li>
+                <li><b>解码 Decoding</b>：是将被压缩的信号还原或播放的解压缩。一般来说，压缩程度越高，解码速度越慢</li>
+                <li><b>软解 Software Decoding</b>：使用通用电路播放流文件，通常具有更高的兼容性，更高的能耗/发热</li>
+                <li><b>硬解 Hardware Decoding</b>：使用专用电路替代软解，通常具有更低的兼容性，更低的能耗/发热
                     <ul class="text-gray-side">
                         <li>例如：libmxv，opencl，MMAL，direct3D</li>
                     </ul>
                 </li>
-                <li>软编 Software Encoding：使用通用电路编码流文件，通常具有更完整的压缩功能但速度较慢，能耗/发热较高，同码率下的画质比硬编更高</li>
-                <li>硬编 Hardware Encoding：使用专用电路编码流文件，通常具有较少的功能但速度更快，发热更低
+                <li><b>软编 Software Encoding</b>：使用通用电路编码流文件，通常具有更完整的压缩功能但速度较慢，能耗/发热较高，同码率下的画质比硬编更高</li>
+                <li><b>硬编 Hardware Encoding</b>：使用专用电路编码流文件，通常具有较少的功能但速度更快，发热更低
                     <ul class="text-gray-side">
                         <li>例如：NVENC，MMF/Venus，Intel-QSV，Conexant，elgato</li>
                     </ul>
@@ -89,14 +89,14 @@
             <h3>数据大小单位</h3>
             <div class="overflow-auto">
                 <ul>
-                    <li>bit（比特）：最小的计量单位，<span class="text-blue-math">\(1 \text{bit} = \frac{1}{8} \text{Byte}\)</span>，衡量传输流量</li>
-                    <li>Byte（字节）：<span class="text-blue-math">\(8 \text{bit} = 1 \text{Byte}\)</span>，衡量文件大小</li>
-                    <li>kilo-bit（Kb，千比特）：1000 比特</li>
-                    <li>kilo-Byte（KB，千字节）：1000 字节</li>
-                    <li>mega-bit（Mb，兆比特）：1000<sup>2</sup> 比特，或 1024<sup>2</sup> = 1048576 比特</li>
-                    <li>mega-Byte（MB，兆字节）：1000<sup>2</sup> 字节，或 1024<sup>2</sup> = 1048576 字节</li>
-                    <li>giga-bit（Gb，吉比特）：1000<sup>3</sup> 比特，或 1024<sup>3</sup> = 1073741824 比特</li>
-                    <li>giga-Byte（GB，吉字节）：1000<sup>3</sup> 字节，或 1024<sup>3</sup> = 1073741824 字节</li>
+                    <li><b>bit（比特）</b>：最小的计量单位，<span class="text-blue-math">\(1 \text{bit} = \frac{1}{8} \text{Byte}\)</span>，衡量传输流量</li>
+                    <li><b>Byte（字节）</b>：<span class="text-blue-math">\(8 \text{bit} = 1 \text{Byte}\)</span>，衡量文件大小</li>
+                    <li><b>kilo-bit（Kb，千比特）</b>：1000 比特</li>
+                    <li><b>kilo-Byte（KB，千字节）</b>：1000 字节</li>
+                    <li><b>mega-bit（Mb，兆比特）</b>：1000<sup>2</sup> 比特，或 1024<sup>2</sup> = 1048576 比特</li>
+                    <li><b>mega-Byte（MB，兆字节）</b>：1000<sup>2</sup> 字节，或 1024<sup>2</sup> = 1048576 字节</li>
+                    <li><b>giga-bit（Gb，吉比特）</b>：1000<sup>3</sup> 比特，或 1024<sup>3</sup> = 1073741824 比特</li>
+                    <li><b>giga-Byte（GB，吉字节）</b>：1000<sup>3</sup> 字节，或 1024<sup>3</sup> = 1073741824 字节</li>
                 </ul>
             </div>
             <div class="align-items-center">
@@ -105,7 +105,7 @@
             </div>
 
             <h3>码率/比特率 Bitrate</h3>
-            <p>文件体积每秒，单位 bps，Bps，Kbps，KBps，Mbps，MBps，Gbps，GBps 等。“ps”即 per second，也可写作“Kb/s，Mb/s”等。</p>
+            <p>文件体积每秒，单位 <span class="text-blue-emph">bps，Bps，Kbps，KBps，Mbps，MBps，Gbps，GBps</span> 等。“ps”即 per second，也可写作“Kb/s，Mb/s”等。</p>
             <ul>
                 <li>长 1 分钟，10MB 大小的视频文件的平均码率为<span class="text-blue-math">\( (10 \div 1 \times 60) \times 8 \text{bit} = 1333.3 \text{Kbps} \)</span></li>
                 <li>同样 10MB 的视频下载 1 分钟，平均下来网速即<span class="text-blue-math">\( \frac{10}{1 \times 60}=166.67 \text{KBps} \)</span>，<span class="text-blue-math">\( 166.67\times 8 \text{bit} = 1333.33 \text{Kbps} \)</span>
@@ -124,7 +124,7 @@
 
             <h3>亮度</h3>
             <ul>
-                <li>物理亮度：可见光电磁波的强度或振幅，以流明 lumen/lm，坎德拉/烛光量 candela/cd，或尼特 nits/cdm<sup>2</sup> 计量：
+                <li><b>物理亮度</b>：可见光电磁波的强度或振幅，以流明 lumen/lm，坎德拉/烛光量 candela/cd，或尼特 nits/cdm<sup>2</sup> 计量：
                     <ul class="text-gray-side">
                         <li>1cd/lm 大约为一支普通蜡烛的亮度。</li>
                         <li>由于是强度，一般来说，灯泡电压越高、火药能量密度越高，发光就越明亮
@@ -135,7 +135,7 @@
                         <li>Nits 代表 1cd 光源投射到一平方米（一般情况下距离一米）区域后所剩的亮度，主要用于显示器的亮度设定。一般来说，<span class="text-blue-math">1 nit ≈ 3.426 lm</span>，但实际的换算关系取决于光源和测量仪器的不同与误差。</li>
                     </ul>
                 </li>
-                <li>软硬件亮度：代表灰度像素值的大小，值越大表示像素点越亮，但最大亮度受硬件和用户设定限制。伽马 gamma/Y 值定义了像素的亮度范围，最小值 0 为黑色：
+                <li><b>软硬件亮度</b>：代表灰度像素值的大小，值越大表示像素点越亮，但最大亮度受硬件和用户设定限制。伽马 gamma/Y 值定义了像素的亮度范围，最小值 0 为黑色：
                     <ul class="text-gray-side">
                         <li>位深 4bit 下，最大值为 15（或 0xF），代表白色</li>
                         <li>位深 8bit 下，最大值为 255（或 0xFF），代表白色</li>
@@ -167,14 +167,14 @@
 
             <h3>伽马曲线/伽马映射</h3>
             <ul class="text-smaller overflow-auto">
-                <li>生理伽马映射：人眼对于亮度的感知与物理亮度的线性变化所异
+                <li><b>生理伽马映射</b>：人眼对于亮度的感知与物理亮度的线性变化所异
                     <ul class="text-gray-side">
                         <li>人眼敏感于低至中等亮度的变化，而对中高亮度的变化则相对不太敏感。因此，当内容的亮度变化呈直线关系时，人们会感觉到“发白”</li>
                         <li>许多游戏的初始设置中，“将滑块调节到能清晰看到左侧暗部图像”实际上就是在调节伽马曲线，而且是生理伽马曲线</li>
                         <li>相机 CMOS 捕获的线性亮度（RAW 直出格式）在人眼看来会显得过亮“发白”，需要进行“黑化”校正</li>
                     </ul>
                 </li>
-                <li>软硬件伽马映射：屏幕电压与线性亮度变化之间的关系并非线性
+                <li><b>软硬件伽马映射</b>：屏幕电压与线性亮度变化之间的关系并非线性
                     <ul class="text-gray-side">
                         <li>CRT 显示屏一般需要放大电压到 <span class="text-blue-math">\( v^{2.2} \)</span> 才能够直线地显示亮度变化</li>
                         <li>sRGB 标准则因为 CRT 显示器的特性相当于已经对图像进行了“黑化”处理，因此在录制过程中就会将图像进行“白化”处理：<span class="text-blue-math">\( \gamma^{\frac{1}{2.2}} \)</span></li>
@@ -184,7 +184,7 @@
             </ul>
 
             <h3>伽马矫正</h3>
-            <p>两种方式：向上提亮缩放“白化” <span class="text-blue-math">\( s = cr^\frac{1}{\gamma} \)</span> 和向下变暗缩放“黑化” <span class="text-blue-math">\( s = cr^\gamma \)</span>。</p>
+            <p><b>两种方式</b>：向上提亮缩放“白化” <span class="text-blue-math">\( s = cr^\frac{1}{\gamma} \)</span> 和向下变暗缩放“黑化” <span class="text-blue-math">\( s = cr^\gamma \)</span>。</p>
             <div class="align-items-center">
                 <img src="files/basics/Gamma-Correction.png" alt="image4" class="img-medium">
                 <p class="text-gray-side mt-0">图：伽马矫正的指数算式，此处<span class="text-blue-math">c = 1</span>代表 0~1 的亮度区间，8bit 256 深则<span class="text-blue-math">c = 256</span>，见<a href="https://www.desmos.com/calculator/shseuk9jcb?lang=zh-CN">desmos 互动例</a>。</p>
@@ -358,9 +358,9 @@
             <h3>压缩的策略</h3>
             <p>根据硬件的算力和带宽两种限制选择有损压缩，无损压缩和未压缩。一种（图/视/音频）编码可集成全部三种策略。</p>
             <ul class="text-smaller">
-                <li>算力 Computing Power：处理器或硬件解码器的速度和效率，低于解码难度（编码复杂度）则不能流畅播放。</li>
-                <li>带宽 Bandwidth：网速，硬盘读写和内存传输带宽，低于带宽压力（Mbps）则不能流畅播放。</li>
-                <li>DVD 播放机，蓝光播放机为确保流畅，也会和网络传输一样限制带宽。</li>
+                <li><b>算力 Computing Power</b>：处理器或硬件解码器的速度和效率，低于解码难度（编码复杂度）则不能流畅播放，编码无法快速进行。</li>
+                <li><b>带宽 Bandwidth</b>：网速，硬盘读写，内存，缓存，USB 等传输所需的带宽，低于带宽压力（Kbps，Mbps，Gbps）则不能流畅播放，录屏，编码无法全速进行。</li>
+                <li>VCD，DVD 播放机，蓝光播放机为确保流畅，也会根据机器售价和等级限制带宽。</li>
             </ul>
             <table class="table-center">
                 <thead>
@@ -417,7 +417,7 @@
             </div>
 
             <h3>音频格式（一维）</h3>
-            <p>最简单的结构为：脉冲编码调制<a href="https://zh.wikipedia.org/wiki/%E8%84%88%E8%A1%9D%E7%B7%A8%E7%A2%BC%E8%AA%BF%E8%AE%8A">Pulse-code modulation PCM</a>信号</p>
+            <p>最简单的结构为——脉冲编码调制<a href="https://zh.wikipedia.org/wiki/%E8%84%88%E8%A1%9D%E7%B7%A8%E7%A2%BC%E8%AA%BF%E8%AE%8A">Pulse-code modulation PCM</a>信号</p>
             <table class="table-center align-items-center text-smaller">
                 <thead class="thead-no-border">
                     <tr class="t-invert-dark">
@@ -720,7 +720,7 @@
             <p>变换算法可以将这个 u 作为输出数轴，原始波形中从低频到高频的分量都会被准确地排列进来。</p>
 
             <h3>程序的交互界面 Interface</h3>
-            <p>图形界面交互 Graphic user interface GUI：通过图形元素（如按钮、滑块、菜单等）进行用户交互的界面设计。随着程序复杂度的增加，设计出好用的界面会变得更加困难。因此，只有在利润丰厚、注重美学设计、且拥有设计人才的行业才会推出外观精美的 GUI。然而，外观好看并不一定意味着好用、再而，很多时候有外观用都是一种奢求。
+            <p><b>图形界面交互 Graphic user interface GUI</b>：通过图形元素（如按钮、滑块、菜单等）进行用户交互的界面设计。随着程序复杂度的增加，设计出好用的界面会变得更加困难。因此，只有在利润丰厚、注重美学设计、且拥有设计人才的行业才会推出外观精美的 GUI。然而，外观好看并不一定意味着好用、再而，很多时候有外观用都是一种奢求。
             </p>
             <div class="align-items-center">
                 <img src="files/basics/FL-Studio-GUI-Demonstration.png" alt="image14" class="img-medium">
@@ -728,8 +728,8 @@
                 <img src="files/basics/XMAPP-GUI-Demonstration.png" alt="image15" class="img-medium">
                 <p class="text-gray-side mt-0">图：网页服务器宿主软件 XMAPP 的 GUI（左下为 CLI），作为跨行业对比</p>
             </div>
-            <p>命令行交互 Commandline interface CLI：在如 Terminal、Bash、CMD 和 PowerShell 的终端环境中，用户可以手动输入命令并按回车键查看结果。通常，只要输出结果有一定的文本排版，就可以轻松阅读。随着使用的增加，CLI 可能反而会变得比 GUI 更方便。然而，由于某些命令太长，而且需要储存变量，因此为了简化操作，人们会将其写作批处理、Shell 等命令脚本文件。例如<a href="https://nazorip.site/archives/835/">PowerShell 一站式系统硬件检测</a>的脚本。</p>
-            <p>应用编程交互 Application programming interface API：定义了软件应用程序如何相互通信的规则和工具。用于使开发人员和从程序的外部访问，以便在自己的应用程序中集成其中的功能。API 可以被看作是 CLI 的映射源，当开发者没有编写 CLI 参数或 GUI 时，可以退而求 API 来调用所需的功能。尽管 API 通常不直接面向最终用户，但它们在软件开发中非常重要</p>
+            <p><b>命令行交互 Commandline interface CLI</b>：在如 Terminal、Bash、CMD 和 PowerShell 的终端环境中，用户可以手动输入命令并按回车键查看结果。通常，只要输出结果有一定的文本排版，就可以轻松阅读。随着使用的增加，CLI 可能反而会变得比 GUI 更方便。然而，由于某些命令太长，而且需要储存变量，因此为了简化操作，人们会将其写作批处理、Shell 等命令脚本文件。例如<a href="https://nazorip.site/archives/835/">PowerShell 一站式系统硬件检测</a>的脚本。</p>
+            <p><b>应用编程交互 Application programming interface API</b>：定义了软件应用程序如何相互通信的规则和工具。用于使开发人员和从程序的外部访问，以便在自己的应用程序中集成其中的功能。API 可以被看作是 CLI 的映射源，当开发者没有编写 CLI 参数或 GUI 时，可以退而求 API 来调用所需的功能。尽管 API 通常不直接面向最终用户，但它们在软件开发中非常重要</p>
 
             <h3>帧率 Frame Rate / Frames per second / FPS</h3>
             <p>帧 Frame 通常用来描述连续图片序列中的单张图片。帧率 Frame Rate 是指每秒显示/刷新的图像帧数。帧率越高，则连续背景变化越流畅。因此，在游戏中，例如微软模拟飞行、极限着陆等模拟客机的游戏，以及电影运镜等故意限制背景变化程度的场景，其帧率一般只需要 30fps 左右（每秒更新 30 张画面）。而对于背景高速运动的游戏，比如模拟赛车等，即使是在手机平台上，最低帧率也不能低于 120fps。</p>
