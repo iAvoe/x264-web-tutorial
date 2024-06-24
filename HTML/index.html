@@ -149,9 +149,10 @@
             <p>代表将色彩信息去除，只保留黑、灰、白色的单通道图像。</p>
             
             <h3>色深 Depth</h3>
-            <p>数字电路中软硬件亮度从黑到白之间过渡的细分密度。由显示器的驱动板/主控板接收 GPU 数字信号，并转义为像素点的电压得到。</p>
+            <p>数字电路中软硬件亮度从黑到白之间过渡的细分密度。由显示器的驱动板/主控板接收 GPU 数字信号，并转义为像素点的电压得到。因此使用了 CRT 显像管的电视可能是模拟电视，也可能是数字电视。</p>
+
             <p>模拟电视并没有当下较为先进的主控板，而是直接使用 <span class="text-blue-math">\( 0 \text{mV ~ } 700 \text{mV} \)</span> 的电压表示色深，但考虑到电视台调制，以及受干扰的信号可能会映射出 <span class="text-blue-math">\( &gt; 700 \text{mV} \)</span> 的烧屏强光，而限制了色深的范围，得到有限色深。</p>
-            <p>数字电视的 Bt.601 标准考虑了数字电视和模拟电视颜色的一致性而定义了有限 Limited 色深范围：</p>
+            <p>数字电视的 Bt.601 标准考虑了数字电视和模拟电视颜色的一致性而定义了有限 Limited 色深范围。</p>
 
             <h4>有限/兼容模拟/电视 Limited/Analog/TV Limited</h4>
             <ul class=" text-smaller overflow-auto">
@@ -170,19 +171,17 @@
                 <li>现代操作系统和视频播放器能够自动将有限色深的媒体转换到完整，尽管不同方案的精度可能会有微小差异</li>
             </ul>
 
-            <h4>色深映射错误</h4>
+            <h4>色深的错误</h4>
             <ul class=" text-smaller overflow-auto">
                 <li>当有限范围的输出未经转换而连接到完整范围的显示器（如电脑用 HDMI 连接显示器），显示器会缺失最暗和最亮的范围，呈现灰蒙蒙的画面，需额外设置以纠正</li>
                 <li>当 Fullrange 的硬件连接到 Limited 范围的硬件时（例如电视设置为 Full，但连接到设置为 Limited 的 PS4/Xbox 时），可能会出现画面过亮、过暗、饱和度过高的错误显示</li>
                 <li>一般来说，现在的显示系统（操作系统，显示驱动，显示器）都原生支持完整色域，如果没有则可能是显示设置错误</li>
-                <li>不支持完整色域的设备有两种，一种可以和“冲”牌万用表一起捐赠到博物馆，一种是日本电子厂商的祖训使然</li>
             </ul>
 
             <div class="align-items-center">
                 <img src="files/basics/Full-and-Limited-Range.png" alt="image3" class="img-medium">
                 <p class="text-gray-side mt-0">图：完整色深 Fullrange 与有限/TV 色深 Limited，包括上述说明的更优版本见<a href="https://www.youtube.com/watch?v=8sAJWtgQ2t8">硬件茶谈</a>。</p>
             </div>
-
 
             <h3>伽马曲线/伽马映射</h3>
             <ul class="text-smaller overflow-auto">
@@ -963,7 +962,7 @@
             <h4>串流管道 Stream-based pipeline</h4>
             <p>管道中的程序同步运行，持续地传输上游输出到下游。适用于串流作业和处理流数据，包括视音频和文本流。</p>
             <h4>对象管道 Object-based pipeline</h4>
-            <p>管道中的程序按顺序接力，一个程序/协议/函数跑完后再打开下一个。适用于处理对象化的数据，面向对象的应用程序。Windows PowerShell 使用了对象管道，所以不适合处理视音频流文件。如 Bash 下：<code>for txt in *.txt; do md5sum $txt; done | awk '{print $2, $1}' | sort -bn</code></p>
+            <p>管道中的程序按顺序接力，一个程序/协议/函数跑完后再打开下一个。适用于处理对象化 Object-oriented 的数据，面向对象的应用程序。Windows PowerShell 使用了对象管道，所以不适合处理视音频流文件。如 Bash 下：<code>for txt in *.txt; do md5sum $txt; done | awk '{print $2, $1}' | sort -bn</code></p>
             <h4>指定默认输入和报错</h4>
             <p>在不默认从 stdin 读取管道上游 stdout 的程序/协议/函数，以及不默认从 stdout 输出数据流的程序/协议/函数中，需要添加“-”以特别指定上游输出到 stdout，下游从 stdin 输入；还可以额外选择导出 stderr 到文本文件，就有了这样的命令：</p>
             <code>ffmpeg -i &lt;源&gt; -an -f yuv4mpegpipe -strict unofficial <span class="text-red-emph">- |</span> x264 --y4m <span class="text-red-emph">-</span> --output "" <span class="text-blue-emph">2> D:\文件夹\报错.txt</span></code>
@@ -1246,10 +1245,10 @@
                 <li>选出 SATD 误差值最小的块——中的 x,y 分量，纠正帧间向量表的动态矢量，完成补偿</li>
             </ol>
             <!-- } -->
-            <p>关于 FIR 插值滤镜，以及 x264/5 分别用了哪些插值和搜索方法，见<a href="../../x265-web-tutorial/HTML/index.html#h2-6">x265 教程网页版 - 动态补偿</a>。</p>
+            <p>关于 FIR 插值滤镜，以及 x264/5 分别使用了哪些插值和搜索方法，见<a href="../../x265-web-tutorial/HTML/index.html#h2-6">x265 教程网页版 - 动态补偿</a>。</p>
 
             <code><b>--subme</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 1~10，推荐 6~10&gt;调整具体的动态补偿强度，x264 中同时决定模式决策和率失真优化的强度。根据画质和编码速度选择合适的参数值：</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 1~10，推荐 6~10&gt;调整具体的动态补偿强度，x264 中同时决定模式决策和率失真优化的强度。根据画质和编码速度选择合适的大小：</p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li><span class="text-blue-emph">1</span> 逐块 1/4 像素使用 SAD 算法检验一种对齐</li>
                 <li><span class="text-blue-emph">2</span> 逐块 1/4 像素 SATD 算法检验两种对齐</li>
@@ -1454,7 +1453,7 @@
             </div>
 
             <h4>矩阵 Matrix</h4>
-            <p>一串于特定位置换行的数字，用括号括起来得到。矩阵和矩阵之间可以根据情况选一种算法实现加减乘除</p>
+            <p>一串于特定位置换行的数字，用括号括起来得到。矩阵和矩阵之间可以根据情况选一种算法实现加减乘，和一种除法</p>
 
             <h4>矩阵间的点乘/内积 Dot Product</h4>
             <p>两个矩阵之间，位置相对应的数相乘，得到新的矩阵。如果两个矩阵大小不一，则需要设定其它规则才能计算。</p>
@@ -1537,7 +1536,7 @@
 
             <h2 id="h2-8">率控制</h2>
             <h3>算出量化值</h3>
-            <p>根据输入的质量设定参数，以及视频数据与人眼视觉的两种特性得到压缩强度——量化值 qp 的具体步骤。其中，视频数据已从时间域分为了关键帧与参考帧（预测帧 + 残差帧）。根据这一性质就可以推断基础的质量差异，如：</p>
+            <p>根据输入的质量设定参数，以及视频数据与人眼视觉的两种特性得到压缩强度——量化值 qp 的具体步骤。其中，视频数据已经分为了关键帧与参考帧（预测 + 残差）。根据这一性质就可以推断基础的质量差异，如：</p>
             <code><b>--ipratio --pbratio</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点，默认 1.4、默认 1.3&gt;P 帧相比 IDR/i 帧，以及 B/b 帧相比 P 帧的质量偏移。默认预设是给录像视频片源用的。</p>
             <ul class="font-monospace pl-5 text-smaller">
@@ -1545,7 +1544,7 @@
                 <li>剪辑素材：<span class="text-blue-emph">提高 --crf，不用改这两个参数</span></li>
                 <li>YCbCr 4:4:4 片源：<span class="text-blue-emph">x264 默认会自动修改 --chroma-qp-offset，不用改这两个参数</span></li>
             </ul>
-            <p>同时，“人眼视觉特性”代表人对明暗变化与画面细节程度的曲线感知。简单地说，就是人眼敏感于中低亮度的画面细节——需要非线性地根据亮度分配画面质量，以及画面细节损失的程度（量化压缩的强度）需要一个妥协平衡点——需要非线性地映射量化强度，共两个技术要求。具体的转换见 <a href="../../x265-web-tutorial/HTML/index.html#h2-11">x265 教程网页版 - 率控制</a>。</p>
+            <p>同时，“人眼视觉特性”代表人对明暗变化与画面细节程度的曲线感知。简单说就是人眼敏感于中低亮度的画面细节——应当非线性地根据亮度分配画面质量，以及画面细节损失的程度（量化压缩的强度）需要一个妥协平衡点——需要非线性地映射量化强度，共两个技术要求。具体的转换见 <a href="../../x265-web-tutorial/HTML/index.html#h2-11">x265 教程网页版 - 率控制</a>。</p>
             <p>其结果就是通过 CRF/ABR 通过非线性的推演，再转换出线性的 qp 值。一般分为 1~17，18~23，和 24~69 三个阶段，分配到 qp 1~17 的画面算作低量化，分配到 qp 18~23 的画面算作中量化，分配到 qp 24~69 的画面算作高量化。</p>
             <p>平面等本来就没有什么信息的分块就算经过高量化，也不会影响其画质；主要的损失出现在有无意地给内容复杂的纹理细节分块分配了高量化或降噪处理，导致了信息的损失。降噪处理影响画面细节的原因是噪点本身是突兀的像素值，所以只能用高频信息表示。</p>
 
@@ -2402,7 +2401,7 @@
             <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率有助于解决手机录像时的发热和耗电速度快的问题，同时，将可变帧率转换为恒定帧率以正常剪辑视频时则需要重新编码。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
             <p>可变帧率转恒定帧率（60fps）需要借助外部滤镜完成。如 ffmpeg：</p>
             <code>ffmpeg -i &lt;输入&gt; -vsync cfr -y -vf fps=60 -c:a copy -f yuv4mpegpipe - | x264 &lt;参数&gt; - --demuxer y4m --output &lt;输出.mp4&gt;</code>
-            <p>由于视频元数据里不少有标错的情况，所以使用 MediaInfo 等工具查看到视频帧率是 Variable 时，有可能是标错了。此时可以用播放器逐帧查看，或者用 ffprobe 检测。见 <a href="https://nazorip.site/archives/169/">ffprobe 教程</a></p>
+            <p>由于视频元数据里也有着标错的情况，所以用 MediaInfo 等工具查看到视频帧率是 Variable 时，还要用播放器逐帧查看，或者用 ffprobe 检测。见 <a href="https://nazorip.site/archives/169/">ffprobe 教程</a></p>
 
             <h2 id="h2-19">工具下载</h2>
             <h3>下载套壳了 x264/libx264 的 GUI</h3>
@@ -2502,7 +2501,7 @@
                 </tbody>
             </table>
 
-            <h3>检查视频编码后偏色的原因</h3>
+            <h3>视频编码后偏色的原因</h3>
             <p>将编码前后的视频窗口至于同屏下，使用截图软件截图，再使用取色器测量特定区域的颜色：</p>
             <ul>
                 <li><b>偏黄：</b>
