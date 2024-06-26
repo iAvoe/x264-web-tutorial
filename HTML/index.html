@@ -175,13 +175,13 @@
             <ul class="overflow-auto">
                 <li>输出设置为有限，未经 Y/C 转换，连接到设置为输入完整范围的显示器，显示器缺失最暗和最亮的范围，呈现灰蒙蒙的画面，例如：
                     <ul>
-                        <li>PC 用 HDMI 连接显示器所致，需纠正显卡输出以设置</li>
+                        <li>PC 用 HDMI 连接显示器所致，需纠正显卡输出设置</li>
                         <li>显示器设置的对比度远高于亮度，需纠正显示器设置</li>
                     </ul>
                 </li>
                 <li>输出设置为完整，未经 Y/C 转换，连接到设置为输入有限范围的显示器，显示器忽略 8bit 下 0~15 和 235~255 的亮度范围，出现画面过亮过暗（饱和度过高）的画面，例如：
                     <ul>
-                        <li>较为古老 / 低成本的 HDMI 电视只支持有限色深，PC/Xbox/PlayStation 设置输出完整</li>
+                        <li>古老 / 低成本的 HDMI 电视只支持有限色深，PC/Xbox/PlayStation 设置为输出完整所致</li>
                     </ul>
                 </li>
                 <li>媒体使用了被淘汰的 YUVJ 色彩空间，且没有被正确处理导致的错误：
@@ -190,7 +190,12 @@
                         <ul>
                             <li>YUVJ 有限代表 8bit 下亮度 Y 有限 16~235，色度 CbCr 半有限/PC 16~240</li>
                             <li>YUVJ 完整代表 8bit 下亮度 Y 完整 0~255，色度 CbCr 半有限/PC 0~240</li>
-                            <li>ffmpeg 中可以用 <code>-vf "in_range=limited:out_range=full"</code>恢复，其中 <code>-pix_fmt yuvj****</code> 的相关参数已经被较新的版本抛弃，直接指定 <code>-pix_fmt yuv****</code> 即可</li>
+                            <li>ffmpeg 中可以用 <code>-vf "in_range=limited:out_range=full"</code> 恢复
+                                <ul>
+                                    <li>其中 <code>-pix_fmt yuvj****</code> 的相关参数已经被较新的版本抛弃，直接指定 <code>-pix_fmt yuv****</code> 即可</li>
+                                </ul>
+                            </li>
+                            <li>如果是 YUVJ 完整色深，则用 <code>-vf "in_range=auto:out_range=full"</code> 恢复</li>
                             <li>低端 USB 摄像头可能会录制出 YUVJ 色彩空间的视频</li>
                         </ul>
                     </div>
