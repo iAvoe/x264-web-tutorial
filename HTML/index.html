@@ -167,7 +167,7 @@
             <ul class="text-smaller overflow-auto">
                 <li>8 位色深下，色彩范围从 0 到 255 的完整 256 色深区间，密度较高</li>
                 <li>10 位色深下，色彩范围从 0 到 1023 的完整 1024 色深区间，密度很高</li>
-                <li>从上可知，游戏，软件，网页，视频等场景适合编码/渲染视频与图像为完整色深</li>
+                <li>从上可知，游戏，软件，网页，视频等场景适合编码/渲染视频与图像为完整色深，有问题再尝试有限</li>
                 <li>从上可知，有限色深的数据完整性更低，因此剪辑素材，VFX 等场景应尽量输入和输出完整色深</li>
             </ul>
 
@@ -184,27 +184,31 @@
                         <li>古老 / 低成本的 HDMI 电视只支持有限色深，PC/Xbox/PlayStation 设置为输出完整所致</li>
                     </ul>
                 </li>
-                <li>媒体使用了被淘汰的 YUVJ 色彩空间，且没有被正确处理导致的错误：
-                    <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容</button>
-                    <div class="coll-content">
-                        <ul>
-                            <li>YUVJ 有限代表 8bit 下亮度 Y 有限 16~235，色度 CbCr 半有限/PC 16~240</li>
-                            <li>YUVJ 完整代表 8bit 下亮度 Y 完整 0~255，色度 CbCr 半有限/PC 0~240</li>
-                            <li>ffmpeg 中可以用 <code>-vf "in_range=limited:out_range=full"</code> 恢复
-                                <ul>
-                                    <li>其中 <code>-pix_fmt yuvj****</code> 的相关参数已经被较新的版本抛弃，直接指定 <code>-pix_fmt yuv****</code> 即可</li>
-                                </ul>
-                            </li>
-                            <li>如果是 YUVJ 完整色深，则用 <code>-vf "in_range=auto:out_range=full"</code> 恢复</li>
-                            <li>低端 USB 摄像头可能会录制出 YUVJ 色彩空间的视频</li>
-                        </ul>
-                    </div>
+                <li>yuvj 色彩空间中的 j 被错误理解，导致用了无效或错误的转换处理：
+                    <ul>
+                        <li>j 代表 jpeg，是 ffmpeg 现已淘汰的定义，但 ffprobe 中可能还会遇到</li>
+                        <li>ffmpeg 的 color_range 参数说明中可以看到 jpeg 和完整色域都是参数值 2</li>
+                    </ul>
                 </li>
             </ul>
 
             <div class="align-items-center">
                 <img src="files/basics/Full-and-Limited-Range.png" alt="image3" class="img-medium">
                 <p class="text-gray-side mt-0">图：完整色深 Fullrange 与有限/TV 色深 Limited，包括上述说明的更优版本见<a href="https://www.youtube.com/watch?v=8sAJWtgQ2t8">硬件茶谈</a>。</p>
+            </div>
+
+            <h4>色深的转换</h4>
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容</button>
+            <div class="coll-content">
+                <p>ffmpeg 转换到完整：</p>
+                <code>ffmpeg.exe -i "limited.mp4" -vf "scale=in_range=limited:out_range=full" -color_range 2 -pix_fmt yuv420p -movflags +write_colr "full.mp4"</code>
+                <p>ffmpeg 转换到有限：</p>
+                <code>ffmpeg.exe -i "limited.mp4" -vf "scale=in_range=full:out_range=limited" -color_range 1 -pix_fmt yuv420p -movflags +write_colr "full.mp4"</code>
+                <ul>
+                    <li><code>"scale=in_range=limited:out_range=full</code> 代表输入和输出的范围</li>
+                    <li><code>-color_range</code> 选择编码和封装的色深范围（0~2）</li>
+                    <li><code>-movflags +write_colr</code> 在 .mp4 封装下写入色深范围元数据</li>
+                </ul>
             </div>
 
             <h3>伽马曲线/伽马映射</h3>
