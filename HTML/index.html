@@ -153,10 +153,10 @@
             <p>数字电视的 Bt.601 色彩标准考虑了数字与模拟电视颜色的一致性，而定义了兼容有限 Limited-compatible 的色深密度，导致现在主流使用 Bt.709 色彩标准的媒体（支持完整色深）中，有限色深仍然常见。</p>
 
             <h4>兼容有限/模拟/电视 Limited/Analog/TV</h4>
-            <ul class="text-smaller overflow-auto">
+            <ul class="overflow-auto">
                 <li>图像格式有色深的概念，但不存在“有限范围”的概念</li>
                 <li>播放器默认读取有限色深，通过 Y/C 转换恢复到完整色深，所以仍然兼容这个“兼容”的色深
-                    <ul>
+                    <ul class="text-smaller">
                         <li>“默认”是因为有限色深视频占据绝大多数</li>
                     </ul>
                 </li>
@@ -164,7 +164,7 @@
                 <li>喜欢 CRT 模拟电视的用户会自行搭配 HDMI 转 BNC、RF 的视频 DAC，以及一套 HiFi 系统</li>
                 <li>较为古老，或低成本的 HDMI 电视可能只支持有限色深，不支持完整色深</li>
                 <li>8 位色深下，色彩的原始范围从 0~255 缩减至 16~235 的有限区间，密度低了一点
-                    <ul>
+                    <ul class="text-smaller">
                         <li>色深密度代表色深大小所指的密度，而“有限区间/有限范围”代表“色深密度里有效的范围”</li>
                         <li>严格地说，不存在“色深范围”，因为范围自始至终是黑到白，只有有限色深才能修改范围</li>
                     </ul>
@@ -174,11 +174,11 @@
             <p>计算机擅长使用二进制，因此数字色深的分阶用位/bit 表示。如 4bit 16 深 <span class="text-blue-math">\( 2^4 \)</span>、8bit 256 深 <span class="text-blue-math">\( 2^8 \)</span>、10bit 1024 深 <span class="text-blue-math">\( 2^{10} \)</span> 的形式呈现：</p>
 
             <h4>完整 Full/PC</h4>
-            <ul class="text-smaller overflow-auto">
+            <ul class="overflow-auto">
                 <li>8 位密度下，色彩范围从 0 到 255 的完整 256 色深，密度较高</li>
                 <li>10 位密度下，色彩范围从 0 到 1023 的完整 1024 色深，密度很高</li>
                 <li>从上可知，游戏，软件，网页，视频等场景适合编码/渲染视频为完整色深，有问题再尝试有限
-                    <ul>
+                    <ul class="text-smaller">
                         <li>同样地，为了最大化兼容性和省事，一律编码/渲染视频为有限色深，也是合理的选择</li>
                     </ul>
                 </li>
