@@ -160,38 +160,42 @@
             </ul>
 
             <h3>数据大小单位</h3>
-            <div class="overflow-auto"><b>基本单位</b>
+            <div class="overflow-auto text-smaller"><b>基本单位</b>
                 <ul>
                     <li><b>bit（比特）</b>：最小的计量单位，<span class="text-blue-math">\(1 \text{bit} = \frac{1}{8} \text{Byte}\)</span>，衡量传输流量</li>
                     <li><b>Byte（字节）</b>：<span class="text-blue-math">\(8 \text{bit} = 1 \text{Byte}\)</span>，衡量文件大小</li>
                 </ul>
             </div>
-            <div class="overflow-auto"><b>十进制</b>
+            <div class="overflow-auto text-smaller"><b>二进制</b>
                 <ul>
-                    <li><b>kibi-bit（Kb，Kib，十进制千比特）</b>：1000 比特</li>
-                    <li><b>kibi-Byte（KB，KiB，十进制千字节）</b>：1000 字节</li>
-                    <li><b>mebi-bit（Mb，Mib，十进制兆比特）</b>：1000<sup>2</sup> 比特</li>
-                    <li><b>mebi-Byte（MB，MiB，十进制兆字节）</b>：1000<sup>2</sup> 字节</li>
-                    <li><b>gibi-bit（Gb，Gib，十进制吉比特）</b>：1000<sup>3</sup> 比特</li>
-                    <li><b>gibi-Byte（GB，GiB，十进制吉字节）</b>：1000<sup>3</sup> 字节</li>
+                    <li><b>kibi-bit（Kb，十进制千比特）</b>：1024 比特</li>
+                    <li><b>kibi-Byte（KB，十进制千字节）</b>：1024 字节</li>
+                    <li><b>mebi-bit（Mb，十进制兆比特）</b>：1024<sup>2</sup> = 1048576 比特</li>
+                    <li><b>mebi-Byte（MB，十进制兆字节）</b>：1024<sup>2</sup> = 1048576 字节</li>
+                    <li><b>gibi-bit（Gb，十进制吉比特）</b>：1024<sup>3</sup> = 1073741824 比特</li>
+                    <li><b>gibi-Byte（GB，十进制吉字节）</b>：1024<sup>3</sup> = 1073741824 字节</li>
                 </ul>
             </div>
-            <div class="overflow-auto"><b>二进制</b>
+            <div class="overflow-auto text-smaller"><b>十进制</b>
                 <ul>
-                    <li><b>kilo-bit（Kb，千比特）</b>：1024 比特</li>
-                    <li><b>kilo-Byte（KB，千字节）</b>：1024 字节</li>
-                    <li><b>mega-bit（Mb，兆比特）</b>：1024<sup>2</sup> = 1048576 比特</li>
-                    <li><b>mega-Byte（MB，兆字节）</b>：1024<sup>2</sup> = 1048576 字节</li>
-                    <li><b>giga-bit（Gb，吉比特）</b>：1024<sup>3</sup> = 1073741824 比特</li>
-                    <li><b>giga-Byte（GB，吉字节）</b>：1024<sup>3</sup> = 1073741824 字节</li>
+                    <li><b>kilo-bit（Kb，Kib，千比特）</b>：1000 比特</li>
+                    <li><b>kilo-Byte（KB，KiB，千字节）</b>：1000 字节</li>
+                    <li><b>mega-bit（Mb，Mib，兆比特）</b>：1000<sup>2</sup> 比特</li>
+                    <li><b>mega-Byte（MB，MiB，兆字节）</b>：1000<sup>2</sup> 字节</li>
+                    <li><b>giga-bit（Gb，Gib，吉比特）</b>：1000<sup>3</sup> 比特</li>
+                    <li><b>giga-Byte（GB，GiB，吉字节）</b>：1000<sup>3</sup> 字节</li>
                 </ul>
             </div>
             <div class="align-items-center">
                 <img src="files/basics/Data-Sizes.png" alt="image1" class="img-medium">
                 <p class="text-gray-side mt-0">图：比特，字节与体积时间比的转换</p>
             </div>
-            <div>操作系统（处理器、内存）的“字节”是以二进制换算的，而储存容量（闪存、硬盘）的“字节”是十进制换算的。具体原因是一开始电脑的储存容量不大，而 1000 进位和 1024 进位就差了 2.4%，不如多卖电脑重要，就有了现在不统一的容量称呼。Mac OS X 10.6 开始整个系统都以十进制表示大小。而 Windows 系统可能会将二进制大小用到倒闭。</div>
-            <div>硬盘盒闪存厂商，以及平时人们为了方便，而会使用十进制表示数据和容量大小。</div>
+            <p>操作系统（处理器、内存）的“字节”是以二进制换算的，而储存容量（闪存、硬盘）的“字节”是十进制换算的。一开始储存容量不大，而 1000 进和 1024 进差 2.4%，不如多卖电脑重要，就有了现在不统一的容量称呼</p>
+            <ul class="text-smaller">
+                <li>现在硬盘盒闪存厂商，以及平时人们为了方便会使用十进制表示数据和容量大小</li>
+                <li>Mac OS X 10.6 开始整个系统都以十进制表示大小</li>
+                <li>为了兼容，Windows 系统的单位可能永远都不会改</li>
+            </ul>
 
             <h3>码率/比特率 Bitrate</h3>
             <p>文件体积每秒，单位 <span class="text-blue-emph">bps，Bps，Kbps，KBps，Mbps，MBps，Gbps，GBps</span> 等。“ps”即 per second，也可写作“Kb/s，Mb/s”等。</p>
