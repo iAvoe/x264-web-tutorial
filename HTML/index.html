@@ -40,7 +40,7 @@
                             <a toSelf href="#h2-9">自适应量化</a>，
                             <a toSelf href="#h2-10">去块滤波</a>，
                             <a toSelf href="#h2-11">模式决策</a>，
-                            <a toSelf href="#h2-12">优化策略</a>，
+                            <a toSelf href="#h2-12">优化量化策略</a>，
                             <a toSelf href="#h2-13">熵编码</a>，
                             <a toSelf href="#h2-14">优化熵编码</a>，
                             <a toSelf href="#h2-15">色彩信息</a>
@@ -1157,7 +1157,7 @@
                 <img src="files/basics/Video-Coding-Components.png" alt="image21" class="img-medium">
             </div>
 
-            <h3>GOP 的结构</h3>
+            <h3>GOP 结构</h3>
             <p>而相对的，在帧之上的结构被称为图组 Group of pictures。每个 GOP 的创建取决于关键帧间隔设置以及转场判断，其中都包含了 IDR 帧，i 帧，P 帧，Pyramid-B 帧以及 b 帧。一个视频中最少由一个 GOP 组成，同视频长度下 GOP 的数量越多则视频体积越大，解码难度越低。</p>
             <ul>
                 <li><b>关键帧 IDR 帧，I 帧</b>：
@@ -1357,8 +1357,6 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，推荐开&gt; 关闭跳过编码 P 帧的功能</p>
             <code><b>--direct</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;temporal/spatial/auto&gt; 指定动态搜索判断方式的参数，除直播和低性能设备录屏外建议 auto</p>
-            <code><b>--non-deterministic</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关，推荐开&gt; 降低完算性（此处主要指每次编码的结果都产生差异），让新的动态搜索线程得知「旧动态搜索线程线程实际搜素过，而非参数设定」的区域。理论上会提高多线程下的画质。「完算性」仅代表通过完整计算得到结果，而不是提前跳过的计算特征。启用多线程，VBV 都会降低完算性</p>
             <code><b>--no-chroma-me</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，推荐直播/录屏用&gt; 跳过色度平面动态搜索，将亮度平面直接应用。可能对画质有略微负面影响</p>
             <!-- x265 教程副本，更改需手动同步 { -->
@@ -1915,7 +1913,7 @@
             </ol>
             <p class="text-gray-side">注：如果片源已有明显的边缘失真，模式决策优化反而需要减少，因为优化方向是尽可能保留原画，导致失真本身被当成细节</p>
 
-            <h2 id="h2-12">优化策略</h2>
+            <h2 id="h2-12">优化量化策略</h2>
             <!-- x264 教程副本，更改需手动同步 { -->
             <h3>率失真优化</h3>
             <p>Rate distortion optimization，RDO。原本有损压缩视频编码器的策略就是码率越小越好——所以量化强度越大越好。但实际情况是量化压缩相当程度的破坏了 P-B 帧原本可以参考 I 帧的部分——因为量化后差异太大而只能放弃参考，换成 I 块。解决这种乱量化问题的方法是将失真，码率分别看成两种越大越差的程度；将其中一个程度乘以一个缩放值以对齐另一个（使两值权重对等）以相互牵制出平衡点。再将这个“新的程度”应用到原本的编码器策略里，就是率失真优化。</p>
@@ -2503,8 +2501,18 @@
             </ul>
 
             <h2 id="h2-17">线程控制</h2>
+            <h3>线程管理一</h3>
+            <p>不同的算法和数据决定了不同的多线程优化性能。量化的步骤中，进程之间几乎不需要共享数据，进程占用和运算速度也不变；而冗余的步骤中则是反过来——占用可大可小，速度忽快忽慢，也需要进程间共享一定数据/内存。可以说如果想要让进程吃满更多核心，就得尽可能减少搜索冗余相关算法的强度。x264 编码器一共会占用 <code>--threads</code> 加 <code>--lookahead-threads</code>条进程。而 <code>--threads</code> 达到并超过 16~24 时，可以看到一定的画质下降，以及在更多核心的电脑上出现“吃不满”的问题，这就是 x264 中冗余算法的优化极限了。</p>
+            <p>因此，设置创建比电脑处理器更多的线程只会从任务数量上冲淡如各个冗余步骤需要“等到之前步骤给出结果才能运行”的时间窗口，甚至有时等不到就跳过，导致码率增加，画质降低，得不偿失。</p>
+            <p>x264 并没有对多路/多 CPU 节点电脑优化，但 <a href="../../x265-web-tutorial/HTML/index.html#h2-18">x265 使用线程池</a> 实现了。</p>
             <code><b>--threads</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，建议默认 1.5 倍线程&gt;参考帧步骤要等其之前的步骤算完才开始，所以远超默认的值会因为处理器随机算的特性而降低参考帧的计算时间，使码率增加，画质降低，速度变慢</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，建议保持默认（等于 CPU 线程）&gt;由于参考帧步骤要等其之前的步骤算完才开始，所以远超默认的值会因为处理器随机算的特性而降低参考帧的计算时间，使码率增加，画质降低，速度变慢</p>
+            <code><b>--non-deterministic</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关，推荐开&gt; 降低多线程完算性——减少多线程共享数据的可靠性，些微提高画质。使用后每个进程的冗余判断更为独断，且让新的动态搜索线程得知「旧动态搜索线程线程实际搜素过，而非参数设定」的区域。「完算性」一般仅代表通过完整计算得到结果，而不是提前跳过的计算特征。而启用多线程，VBV 都会降低完算性</p>
+            <code><b>--lookahead-threads</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，建议保持默认（应该是 <code>--threads</code> 的 1/4）&gt;指定前瞻进程占用的线程数，速度太快则其后的编码进程跟不上，太慢则其后的编码进程要等结果，所以不需要改动</p>
+            <code><b>--frame-threads</b></code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，建议保持默认（自动）&gt;指定 <code>--threads</code> 中分配多少线程给编码帧，决定一次同时编码多少帧（量化，优化，帧内预测，熵编码）。剩下则是上下游的处理（连续 B 帧推演，SEI，完算性错误管理），后者占用较少</p>
             <code><b>--sliced-threads</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;逐条带分配多线程。x264 r1607 前的多线程分配机制，后来因为问题太多而改成了逐帧分配多线程。剩下直播录屏等场景降低延迟一个用途</p>
             <ol class="font-monospace pl-5 text-smaller">
@@ -2514,7 +2522,15 @@
                 <li>增加了相当一部分（多余条带与 NAL 封包的）文件头</li>
                 <li>大量条带的并行提高了编码单帧的速度，降低延迟</li>
             </ol>
+            
+            <h3>线程管理二</h3>
+            <p>退一步讲，若能占满全部 CPU 核心，那么也算是实现了多线程优化。因此，关于“最大化利用 CPU 核心数量很多的电脑并提升画质”的平价方法就是多开几个编码，并限制每个编码占用的 CPU 线程数实现。例如 <a href="https://stackoverflow.com/questions/1449188/running-windows-batch-file-commands-asynchronously">Windows 批处理提供的 <code>START</code> 命令实现异步并行（多开些编码）</a>，搭配上述的 <code>--threads</code> 命令限制每个编码的进程数实现。</p>
+            <p>x264/5 中，理论画质与性能最平衡的多线程数实际是 4，所以若设定 <code>--threads 4</code>，则 <code>--lookahead-threads</code> 等于 1。得到共 5 个线程占用。</p>
 
+            <h3>线程管理三</h3>
+            <p>此外还有一种难办的情况：游戏录屏。这会导致编码进程与其它进程争夺 CPU 或内存资源。后者可以通过升级内存解决，但前者不同的地方在于“多线程优化越好则越糟”——因为软件开发也遵循了“应该占满全部 CPU 核心”的逻辑，因此当 CPU 的算力或核心数没有超过两个程序占用加起来的峰值，就只能保护其中优先级较高的进程了。</p>
+            <p>此时，“冗余”步骤所造成的不稳定占用很可能会超出 CPU 算力极限导致卡顿，因此要适当降低冗余强度来保证流畅（但需要一定经验并花费时间测试）。大多数人应对这种情况最简单的方案只有使用显卡或核显/SoC“附赠”的硬件视频编码器，或者购置高端些的视频采集卡两种方法实现；但如果 CPU 的算力足够同时流畅运行大型游戏和视频编码器，则可以参考附录：急用版 x264 教程配置 OBS 录屏的一些方案。</p>
+            
             <h2 id="h2-18">内置滤镜</h2>
             <h3>降噪</h3>
             <code><b>--nr</b></code>
@@ -2599,7 +2615,7 @@
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://mpv.io/installation/">mpv</a></th>
-                        <td class="px-1 text-smaller">开源，支持便携的现代视频播放器。见<a href="https://nazorip.site/archives/1052/">安装与配置</a>教程</td>
+                        <td class="px-1 text-smaller">开源，支持便携的现代视频播放器。见 <a href="https://nazorip.site/archives/1052/">安装与配置</a>教程</td>
                         <td style="max-width: 30rem;">
                             <img src="files/tools-download/mpv.png" alt="image45" class="">
                         </td>
