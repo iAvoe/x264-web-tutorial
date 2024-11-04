@@ -39,9 +39,19 @@
 - 一开始因为没有转换 LaTex 的工具链而使用了手写转 MathML 的处理。工具为 [ConvertMathToLaTexMathML]("https://webdemo.myscript.com/views/math/index.html")
 - 注：Word 2016 刚好同时不支持复制 LaTex 格式的公式，也不支持 Word 2010 支持的第三方转换插件...
 
-### 内容范围
+### 内容范围（三部分）
 
-封装文件，编码，解码，硬解，软解，码率，滤镜，压制三角形，帧数，小数帧，向量，分辨率换算，GUI，CLI，API，mux，demux，录屏，超频，单核性能，视音频 - 图像格式分类，有损 - 无损，色深，浮点色深，色彩空间，宏观与微观色度采样于对比，伽马，伽马矫正，逐行，交错，噪点，抖动，拜耳滤镜，RAW，编程语言分类，压制软件，报错，GOP，关键帧，参考帧，待定帧，参数集，Lookahead 进程，维特比算法，动态搜索，运动补偿，SAD，SATD，加权预测，多参考帧，变换与量化，率控制模式，CRF，ABR，CQP，3CQP，zones，VBR，2pass，FTQP，方差，方差自适应量化（含计算过程），环路滤波，模式决策，率失真优化，mbtree，qcomp，率失真曲线，SSE，Noise-SSE，拉格朗日代价，游程编码，色彩信息，压制 log，软件下载，ffmpeg-pipe，去可变帧率，CMD 操作，x264 参数，图像序列 Image Sequence，序号表达式，ffmpeg-Image2，ffmpeg-Concat
+#### I - 视频技术基础
+
+封装文件，封装与解封装，编码与解码，硬解与软解，滤镜，三角形定律，帧数，小数帧，码率，分辨率，向量，GUI-CLI-API，录屏，超频，算力性能，视频格式编目分类，音频格式编目分类，图像格式编目分类，有损压缩与无损压缩，色深，色彩空间，色度采样，伽马，伽马矫正，逐行扫描，交错/隔行扫描，噪点与抖动，拜耳滤镜，RAW 图像，RAW 视频，编程语言编目分类，压制软件
+
+#### II - x264 视频编码基础
+
+GOP，关键帧，参考帧，待定帧，参数集，Lookahead 进程，维特比算法，动态搜索，运动补偿，SAD 与 SATD，加权预测，多参考帧，变换与量化，率控制模式，CRF，ABR，CQP，3CQP，zones，VBR，2pass，FTQP，方差自适应量化，去块滤波，模式决策，率失真，率失真优化，mbtree，qcomp，SSE，Noise-SSE，拉格朗日代价，游程编码，色彩信息
+
+#### III - x264 的用法用例
+
+压制 log，软件下载，ffmpeg-pipe，去可变帧率，CMD 操作，x264 参数，图像序列 Image Sequence，序号表达式，ffmpeg-Image2，ffmpeg-Concat
 
 ### 繁体中文支持
 
