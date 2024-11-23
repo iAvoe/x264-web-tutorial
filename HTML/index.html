@@ -50,8 +50,7 @@
                         <li>附录：
                             <a toSelf href="#h2-16">预设参数</a>，
                             <a toSelf href="#h2-17">线程控制</a>，
-                            <a toSelf href="#h2-18">内置滤镜</a>，
-                            <a toSelf href="#h2-19">工具下载</a>
+                            <a toSelf href="#h2-18">工具下载</a>
                         </li>
                     </ul>
                 </li>
@@ -119,21 +118,6 @@
         </div>
         <div class="container-mobile rounded-9 border-main">
             <h2 id="h2-1">必备常识</h2>
-            <h3>封装与解封装 - Multiplex/De-multiplex</h3>
-            <ul class="overflow-auto">
-                <li>文件格式中，类似于 .zip .rar 文件将多个文件（视频，音频，字幕，字体）合并为一个文件</li>
-                <li>信号处理中，电台将多路音频流封装为一段模拟信号，接收端通过调整接收频率来接收其中一路信号，每路信号占据一定的频宽/带宽</li>
-                <li>视频封装文件记录播放所需的元数据，如视频帧率、音视频同步、色彩标识等：
-                    <ul class="text-gray-side overflow-auto">
-                        <li><span class="text-blue-emph">MP4</span> 是最常见的格式，适用于网站和本地播放，但对字幕文件的支持性较差。</li>
-                        <li><span class="text-blue-emph">MKV</span> 可以封装几乎所有已知的视频/音频/字幕格式，但无法直接导入视频编辑软件</li>
-                        <li><span class="text-blue-emph">FLV</span> 是一种轻量级封装格式，更适合网站播放，以及需要定时切分录制的格式。</li>
-                        <li><span class="text-blue-emph">MOV</span> 是由苹果公司开发，用于与其软件和硬件兼容，也是 Adobe Premiere 剪辑软件最适用的格式之一</li>
-                        <li><span class="text-blue-emph">M4A</span> （MPEG for Audio）是一种音频流封装文件，支持多种音频流，封面图片，详细艺术家，乐队信息元数据封装的格式</li>
-                        <li><span class="text-blue-emph">M3U</span> 由苹果公司研发，用于在线播放音频的封装（然后被用于视频封装），M3U8 指 UTF-8</li>
-                    </ul>
-                </li>
-            </ul>
 
             <h3>元数据 Metadata</h3>
             <p>描述数据的数据，例如食品包装上的标题、成分表、图片、营养信息、教你如何正确打开包装的附注就是一种元数据。视音频封装文件中的元数据并不是视音频本身，但播放器需要其中的一些信息才能以正确的帧率、音视频对齐、色彩标准，使用正确的视频解码器，音频解码器，以正确的打开“包装”。</p>
@@ -155,6 +139,22 @@
                     </ul>
                 </li>
                 <li>由于编解码器的复杂性，软硬编解码方案在相同价格下存在较大差异，因此最终取决于预算、速度和画质要求</li>
+            </ul>
+
+            <h3>封装与解封装 - Multiplex / De-multiplex</h3>
+            <ul class="overflow-auto">
+                <li>文件格式中，类似于 .zip .rar 文件将多个文件（视频，音频，字幕，字体）合并为一个文件</li>
+                <li>信号处理中，电台将多路音频流封装为一段模拟信号，接收端通过调整接收频率来接收其中一路信号，每路信号占据一定的频宽/带宽</li>
+                <li>视频封装文件记录播放所需的元数据，如视频帧率、音视频同步、色彩标识等：
+                    <ul class="text-gray-side overflow-auto">
+                        <li><span class="text-blue-emph">MP4</span> 是最常见的格式，适用于网站和本地播放，但对字幕文件的支持性较差。</li>
+                        <li><span class="text-blue-emph">MKV</span> 可以封装几乎所有已知的视频/音频/字幕格式，但无法直接导入视频编辑软件</li>
+                        <li><span class="text-blue-emph">FLV</span> 是一种轻量级封装格式，更适合网站播放，以及需要定时切分录制的格式。</li>
+                        <li><span class="text-blue-emph">MOV</span> 是由苹果公司开发，用于与其软件和硬件兼容，也是 Adobe Premiere 剪辑软件最适用的格式之一</li>
+                        <li><span class="text-blue-emph">M4A</span> （MPEG for Audio）是一种音频流封装文件，支持多种音频流，封面图片，详细艺术家，乐队信息元数据封装的格式</li>
+                        <li><span class="text-blue-emph">M3U</span> 由苹果公司研发，用于在线播放音频的封装（然后被用于视频封装），M3U8 指 UTF-8</li>
+                    </ul>
+                </li>
             </ul>
 
             <h3>数据大小单位</h3>
@@ -239,89 +239,75 @@
             <h3>灰度/灰阶 Grayscale</h3>
             <p>代表将色彩信息去除，只保留黑、灰、白色的单通道图像。</p>
 
-            <h3>硬件的色深 Depth 与范围 Range</h3>
-            <p>数字电路中软硬件亮度从黑到白之间过渡的细分密度。由显示器的驱动板/主控板接收 GPU 输出的数字信号，并转义为像素点的电压得到。因此使用了 CRT 显像管的电视可能是模拟电视，也可能是数字电视，取决于有没有如 HDMI，DP 等数字信号接口。模拟电视使用 <span class="text-blue-math">\( 0 \text{mV ~ } 700 \text{mV} \)</span> 的输入电压表示色深。在当时考虑到电视台调制偏差，以及干扰可能会映射出 <span class="text-blue-math">\( &gt;700 \text{mV} \)</span> 的烧屏强光，而通过限制了色深密度的范围来解决问题，得到了有限范围。</p>
+            <h3>硬件色深 Depth 与范围 Range</h3>
+            <p>对应电压的缩放值。由显示器的驱动板/主控板接收 GPU 输出的数字信号，并转义为像素点的电压得到。因此使用了 CRT 显像管的电视可能是模拟电视，也可能是数字电视，取决于有没有如 HDMI，DisplayPort 等数字信号接口。</p>
 
-            <h4>硬件层兼容有限/模拟/电视范围 Limited/Analog/TV</h4>
+            <h4>有限色深（Limited/Analog/TV）</h4>
+            <p>模拟电视使用了 <span class="text-blue-math">\( 0 \text{mV ~ } 700 \text{mV} \)</span> 的输入电压表示色深，对应软件的完整色深。但早期的模拟电视没有抑制过高电压的功能，所以如果电视台调制信号时出现偏差或干扰，就会有一大批人烧屏。所以显示标准上要求信号层面限制电压范围，牺牲一些色深来解决问题，得到了有限范围。</p>
+            <p>到了数字时代，电视厂商都使用 HDMI 协议的显示信号接口，电脑厂商则使用 DisplayPort 的显示信号接口，所以在“电脑接电视”，和“主机接显示器”时往往需要额外的输入和输出设置，才能得到明暗过渡正常的画面。</p>
             <ul class="overflow-auto">
-                <li>现在只有极少数的设备不支持完整色深，有则更可能是显示设置错误或成本原因导致</li>
-                <li>较老或低成本的 HDMI 电视可能只支持有限范围，不支持完整色深</li>
-            </ul>
-
-            <p>计算机擅长使用二进制，因此数字色深的分阶用位/bit 表示。如 4bit 16 深 <span class="text-blue-math">\( 2^4 \)</span>、8bit 256 深 <span class="text-blue-math">\( 2^8 \)</span>、10bit 1024 深 <span class="text-blue-math">\( 2^{10} \)</span> 的形式呈现：</p>
-
-            <h4>硬件层完整范围 Full/PC</h4>
-            <ul class="overflow-auto">
-                <li>现在几乎所有的设备都支持完整色深</li>
+                <li>一般在显示器的 OSD 设置界面上看到，写作兼容/有限/模拟/电视范围 </li>
+                <li>一般来说，数字显示器/数字电视是应该可以设置为输入完整色深的，如果没有则可以通过设置 HDMI Black Level 来将有限色深信号缩放到正常明暗过渡</li>
             </ul>
 
             <h3>软件的色深 Depth 与范围 Range</h3>
-            <p>数字电视的 Bt.601 色彩标准考虑了数字与模拟电视颜色的一致性，而定义了兼容有限 Limited-compatible 的色深密度，导致现在使用 Bt.709，Bt.2020 色彩标准的媒体（支持完整色深）中，有限范围仍是绝对主流。</p>
-
-            <h4>软件层兼容有限/模拟/电视范围 Limited/Analog/TV</h4>
-            <ul class="overflow-auto">
-                <li>8 位色深下，色彩的原始范围从 0~255 缩减至 16~235 的有限区间（256 深）</li>
-                <li>10 位色深下，色彩的原始范围从 0~1024 缩减至 64~940 的有限区间（876 深）</li>
-                <li>因为有限范围视频占据绝大多数，所以播放器默认读取有限范围，通过 Y/C 转换算出完整色深</li>
-                <li>图像格式有色深的概念，但不存在“有限范围”的概念</li>
-                <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：密度与范围的用语说明</button>
-                <div class="coll-content">
-                    <li>色深密度代表色深大小所指的黑~白区间密度，而“有限区间/范围”代表“密度里的有效范围”</li>
-                    <li>严格地说，不存在“色深范围”，因为范围自始至终是黑到白，只有有限范围才能修改范围</li>
-                </div>
-            </ul>
-
-            <h4>软件层完整范围 Full/PC</h4>
-            <ul class="overflow-auto">
-                <li>8 位密度下，色彩范围从 0 到 255 的完整 256 色深，密度较高</li>
-                <li>10 位密度下，色彩范围从 0 到 1023 的完整 1024 色深，密度很高</li>
-                <li>实际情况下，色深的视频剪辑软件选项应该设置为“保持和原素材一致”。因为：
-                    <ul>
-                        <li>有的设备和软硬件默认导出有限范围，但录制的时候忘了改</li>
-                        <li>有的素材会误标记范围为有限</li>
-                        <li>有限和完整范围的转换可能会产生色带 Banding 失真</li>
-                    </ul>
-                </li>
-            </ul>
-            
-            <h4>色深的错误</h4>
-            <p>输出设置为有限，未经 Y/C 转换，连接到设置为输入完整范围的显示器，显示器缺失最暗和最亮的范围，呈现灰蒙蒙的画面，例如：</p>
-            <ul class="text-smaller overflow-auto">
-                <li>PC 用 HDMI 连接显示器所致，需纠正显卡输出设置</li>
-                <li>显示器设置的对比度远高于亮度，需纠正显示器设置</li>
-            </ul>
-
-            <p>输出设置为完整，未经 Y/C 转换，连接到设置为输入有限区间的显示器，显示器忽略 8bit 下 0~15 和 235~255 的亮度范围，出现画面过亮过暗（饱和度过高）的画面，例如：</p>
-            <ul class="text-smaller overflow-auto">
-                <li>古老 / 低成本的 HDMI 电视只支持有限范围，PC/Xbox/PlayStation 设置为输出完整所致</li>
-            </ul>
-
-            <p>yuvj 色彩空间中的 j 被误解，而使用了无效或错误的转换处理导致</p>
-            <ul class="text-smaller overflow-auto">
-                <li>j 代表 jpeg，是 ffmpeg 现已淘汰的定义，但 ffprobe 中可能还会遇到</li>
-                <li>ffmpeg 的 color_range 参数说明中可以看到 jpeg 和完整色域都是参数值 2</li>
-            </ul>
-
-            <p>heic 格式的图片被错误转换到 jpeg 或错误显示导致，一般出现在手机上，以及 Windows 11 的图片浏览器中</p>
-            <p>HDR 视频在设备没有正确配置的情况下直接显示导致</p>
-
+            <p>数字色深的分阶用位/bit 表示。如四位 4bit 16 深 <span class="text-blue-math">\( 2^4 \)</span>、八位 8bit 256 深 <span class="text-blue-math">\( 2^8 \)</span>、10bit 1024 深 <span class="text-blue-math">\( 2^{10} \)</span> 的形式表示。</p>
             <div class="align-items-center">
                 <img src="files/basics/Full-and-Limited-Range.png" alt="image3" class="img-medium">
                 <p class="text-gray-side mt-0">图：完整色深 Fullrange 与有限/TV 色深 Limited，包括上述说明的更优版本见<a href="https://www.youtube.com/watch?v=8sAJWtgQ2t8">硬件茶谈</a>。</p>
             </div>
 
-            <h4>色深的转换</h4>
+            <h4>完整色深兼容有限色深</h4>
             <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容</button>
             <div class="coll-content">
-                <p>ffmpeg 转换到完整：</p>
-                <code>ffmpeg.exe -i "limited.mp4" -vf "scale=in_range=limited:out_range=full" -color_range 2 -pix_fmt yuv420p -movflags +write_colr "full.mp4"</code>
-                <p>ffmpeg 转换到有限：</p>
-                <code>ffmpeg.exe -i "limited.mp4" -vf "scale=in_range=full:out_range=limited" -color_range 1 -pix_fmt yuv420p -movflags +write_colr "full.mp4"</code>
-                <ul>
-                    <li><code>"scale=in_range=limited:out_range=full</code> 代表输入和输出的范围</li>
-                    <li><code>-color_range</code> 选择编码和封装的色深密度（0~2）</li>
-                    <li><code>-movflags +write_colr</code> 在 .mp4 封装下写入色深密度元数据</li>
+                <ul class="text-smaller overflow-auto">
+                    <li>8 位色深下，从完整 0~255 缩减至 16~235 的有限区间（256 深）</li>
+                    <li>10 位色深下，从完整 0~1024 缩减至 64~940 的有限区间（876 深）</li>
+                    <li>因为有限范围视频占据绝大多数，所以播放器默认读取有限范围，通过 Y/C 转换算出完整色深</li>
+                    <li>图像格式有色深的概念，但不存在“有限范围”的概念</li>
+                    <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：密度与范围的用语说明</button>
+                    <div class="coll-content">
+                        <li>色深密度代表色深大小所指的黑~白区间密度，而“有限区间/范围”代表“密度里的有效范围”</li>
+                        <li>严格地说，不存在“色深范围”，因为范围自始至终是黑到白，只有有限范围才能修改范围</li>
+                    </div>
                 </ul>
+
+                <h4>软件层完整范围 Full/PC</h4>
+                <ul class="text-smaller overflow-auto">
+                    <li>8 位密度下，色彩范围从 0 到 255 的完整 256 色深，密度较高</li>
+                    <li>10 位密度下，色彩范围从 0 到 1023 的完整 1024 色深，密度很高</li>
+                    <li>实际情况下，色深的视频剪辑软件选项应该设置为“保持和原素材一致”。因为：
+                        <ul>
+                            <li>有的设备和软硬件默认导出有限范围，但录制的时候忘了改</li>
+                            <li>有的素材会误标记范围为有限</li>
+                            <li>有限和完整范围的转换可能会产生色带 Banding 失真</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h4>色深转换的错误</h4>
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容</button>
+            <div class="coll-content">
+                <p>输出设置为有限，未经 Y/C 转换，连接到设置为输入完整范围的显示器，显示器缺失最暗和最亮的范围，呈现灰蒙蒙的画面，例如：</p>
+                <ul class="text-smaller overflow-auto">
+                    <li>PC 用 HDMI 连接显示器所致，需纠正显卡输出设置</li>
+                    <li>显示器设置的对比度远高于亮度，需纠正显示器设置</li>
+                </ul>
+
+                <p>输出设置为完整，未经 Y/C 转换，连接到设置为输入有限区间的显示器，显示器忽略 8bit 下 0~15 和 235~255 的亮度范围，出现画面过亮过暗（饱和度过高）的画面，例如：</p>
+                <ul class="text-smaller overflow-auto">
+                    <li>古老 / 低成本的 HDMI 电视只支持有限范围，PC/Xbox/PlayStation 设置为输出完整所致</li>
+                </ul>
+
+                <p>yuvj 色彩空间中的 j 被误解，而使用了无效或错误的转换处理导致</p>
+                <ul class="text-smaller overflow-auto">
+                    <li>j 代表 jpeg，是 ffmpeg 现已淘汰的定义，但 ffprobe 中可能还会遇到</li>
+                    <li>ffmpeg 的 color_range 参数说明中可以看到 jpeg 和完整色域都是参数值 2</li>
+                </ul>
+
+                <p>heic 格式的图片被错误转换到 jpeg 或错误显示导致，一般出现在手机上，以及 Windows 11 的图片浏览器中</p>
+                <p>HDR 视频在设备没有正确配置的情况下直接显示导致</p>
             </div>
 
             <h3>伽马曲线/伽马映射</h3>
@@ -375,9 +361,50 @@
 
             <h3>位图 Bitmap 与矢量图 Vector</h3>
             <p>位图使用像素和元数据（例如 n 个像素后换行）来表示图像。每个像素都包含特定的颜色信息，通常表示为 RGB 或 YCbCr 值。用于描述照片和复杂图像，但当放大时会失真，因为像素的信息已经固定，而放大只是用滤镜在其中插值填空的结果。</p>
-            <p>矢量图使用图形函数代码（例如 JavaFX，SVG）来描述图像。它们以函数定义图像的形状、线条和颜色。矢量图可以被放大而不失真，并且可以在不同的尺寸和分辨率下保持清晰度，因为它们是基于数学公式的。</p>
+            <p>矢量图使用图形函数与代码来描述图像（如 JavaFX，SVG）。它们以函数定义图像的形状、线条和颜色。放大矢量图不会失真，且可以在不同的尺寸和分辨率下保持清晰度：
+                <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em">
+                    <title>GitHub</title>
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                <img src="./files/svg-examples/filetype-sql.svg" alt="sql"/>
+                <img src="./files/svg-examples/pin-map.svg" alt="pinned-map"/>
+                <img src="./files/svg-examples/mailbox.svg" alt="mailbox"/>
+                <img src="./files/svg-examples/hdd-network.svg" alt="network-hdd"/>
+                <img src="./files/svg-examples/menu-button-wide.svg" alt="menu-button"/>
+                <img src="./files/svg-examples/card-list.svg" alt="card-list"/>
+                <img src="./files/svg-examples/ethernet.svg" alt="ethernet"/>
+                <img src="./files/svg-examples/bricks.svg" alt="bricks"/>
+                <img src="./files/svg-examples/postcard-heart.svg" alt="postcard-heart"/>
+                <img src="./files/svg-examples/opened-email-envelope_modified.svg" alt="email"/>
+                <img src="./files/svg-examples/person-video2.svg" alt="person-video"/>
+                <img src="./files/svg-examples/person-workspace.svg" alt="person-workspace"/>
+                <img src="./files/svg-examples/obs_94846.svg" alt="obs"/>
+                <img src="./files/svg-examples/bullseye.svg" alt="bullseye"/>
+                <img src="./files/svg-examples/clock.svg" alt="clock"/>
+                <img src="./files/svg-examples/globe2.svg" alt="globe"/>
+                <img src="./files/svg-examples/database.svg" alt="database"/>
+                <img src="./files/svg-examples/math-svgrepo-com.svg" alt="math-symbols"/>
+                <img src="./files/svg-examples/file-earmark-music-fill.svg" alt="music"/>
+                <img src="./files/svg-examples/cup-hot-fill.svg" alt="cup-hot-fill"/>
+                <img src="./files/svg-examples/ffmpeg_icon_132402.svg" alt="ffmpeg"/>
+                <img src="./files/svg-examples/javascript_logo_icon_145155.svg" alt="Javascript"/>
+                <img src="./files/svg-examples/c-sharp.svg" alt="c-sharp"/>
+                <img src="./files/svg-examples/filetype-sql.svg" alt="sql"/>
+                <img src="./files/svg-examples/php-logo.svg" alt="php"/>
+                <img src="./files/svg-examples/cloud-arrow-up.svg" alt="cloud-upload"/>
+                <img src="./files/svg-examples/markdown.svg" alt="markdown"/>
+                <img src="./files/svg-examples/photoshop_icon_130268.svg" alt="photoshop"/>
+                <img src="./files/svg-examples/adobe-audition-cc-creative-cloud_78302.svg" alt="audition"/>
+                <img src="./files/svg-examples/adobe-after-effects-cc-creative-cloud.svg" alt="after-effects"/>
+                <img src="./files/svg-examples/adobe-premiere-pro-cc-creative-cloud_78301.svg" alt="premiere"/>
+                
+            </p>
             <ul class="text-smaller overflow-auto">
-                <li>尽管矢量图优点明显，但它们相对较少见，因为不同平台额外需要一套渲染器来处理它们，以前导致了性能问题，现在则是不同平台上的一致性问题</li>
+                <li>因为渲染算力不够，所以以前的矢量图格式难以被推广</li>
+                <li>因为要保证参差不齐的“矢量图代码质量”在不同渲染器下画面一致；所以现在的矢量图格式仍然难以推广
+                    <ul><li>使以上这些 SVG 的大小一致... 需要手动改写代码</li></ul>
+                </li>
+                <li>在 Wordpress（个人博客网站软件）中使用 SVG 图形仍然需要第三方插件才能实现部分支持</li>
                 <li>然而，如果我们将“文本”视为一种矢量图的话，位图在实际应用中反而才是更为少见的</li>
             </ul>
 
@@ -517,6 +544,20 @@
             <div class="align-items-center mt-3">
                 <img src="files/basics/Color-Space-Handling.jpg" alt="image6" class="img-medium">
                 <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换，色度采样的使用及编解码与录制，传输，显示的关系</p>
+            </div>
+
+            <h3>帧率</h3>
+            <h4>恒定帧率 Constant frame rate</h4>
+            <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率有助于解决手机录像时的发热和耗电速度快的问题，同时，将可变帧率转换为恒定帧率以正常剪辑视频时则需要重新编码。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
+            
+            <h4>可变帧率 Variable frame rate</h4>
+            <p>省电，减少设备发热。因为智能手机录像的出现而变得流行，而不太支持传统剪辑软件和视频滤镜（读取错误，多视频轨的帧率同步，帧率“误解”等问题）。因此剪辑时需要额外的编码来转换到固定帧率</p>
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：ffmpeg 转换到恒定帧率的命令</button>
+            <div class="coll-content">
+                <code>ffmpeg -i &lt;输入&gt; -vsync cfr -y -vf fps=60 -c:a copy -f yuv4mpegpipe - | x264 &lt;参数&gt; - --demuxer y4m --output &lt;输出.mp4&gt;</code>
+                <ul class="text-smaller">
+                    <li>于视频元数据里也有着标错的情况，所以用 MediaInfo 等工具查看到视频帧率是 Variable 时，还要用播放器逐帧查看，或者用 ffprobe 检测。见 <a href="https://nazorip.site/archives/169/">ffprobe 教程</a></li>
+                </ul>
             </div>
 
             <h3>压缩的策略</h3>
@@ -2531,12 +2572,12 @@
             <p>此外还有一种难办的情况：游戏录屏。这会导致编码进程与其它进程争夺 CPU 或内存资源。后者可以通过升级内存解决，但前者不同的地方在于“多线程优化越好则越糟”——因为软件开发也遵循了“应该占满全部 CPU 核心”的逻辑，因此当 CPU 的算力或核心数没有超过两个程序占用加起来的峰值，就只能保护其中优先级较高的进程了。另一边，多人游戏的反作弊机制和防盗版机制的升级也增加了游戏对 CPU 和内存的压力。</p>
             <p>此时，“冗余”步骤的不稳定占用很可能会超出 CPU 算力极限导致卡顿（除非内存或散热不好，否则不会死机），因此要适当降低冗余强度来保证流畅（但需要一定经验并花费时间测试）。大多数人应对这种情况最简单的方案只有使用显卡或核显/SoC“附赠”的硬件视频编码器，或者购置高端些的视频采集卡两种方法实现；但如果 CPU 的算力足够同时流畅运行大型游戏和视频编码器，则可以参考附录：急用版 x264 教程配置 OBS 录屏的一些方案。</p>
             
-            <h2 id="h2-18">内置滤镜</h2>
-            <h3>降噪</h3>
+            <h3>x264 内置滤镜</h3>
+            <h4>降噪滤镜</h4>
             <code><b>--nr</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~65536，降噪范围 100~1000，不推荐&gt;当 ABR/VBV 指定了高于 <code>--qpmax</code> 或默认最大 qp 值时，会调用这个滤镜。如果有降噪需求则建议使用效果更好的外部滤镜工具，或至少使用 <code>--vf hqdn3d</code> 滤镜</p>
 
-            <h3>内置 AviSynth 滤镜</h3>
+            <h4>AviSynth 滤镜</h4>
             <code><b>--vf</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;crop:[←],[↑],[→],[↓]/pad: [←],[↑],[→],[↓]/resize:[宽，高]，[变宽比]，[装盒]，[色度采样]，[缩放算法/select_every:步，帧，帧…]/hqdn3d:[空域 Y 降噪强度]，[空域 C 降噪强度]，[降噪时域 Y 强度]，[时域 C 降噪强度]/yadif[模式],[顺序]&gt;裁剪，加边，缩放/更改分辨率，删除/保留视频帧，降噪，色彩空间转换滤镜。例：</p>
             <ul class="font-monospace pl-5 text-smaller">
@@ -2573,21 +2614,15 @@
             <code><b>--sub</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件，<span class="text-red-emph">需 <code>--vf subtitles</code> 和 VSFilter64.dll</span>&gt;导入字幕文件，</p>
 
-            <h3>恒定 Constant 与可变 Variable 帧率</h3>
-            <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率有助于解决手机录像时的发热和耗电速度快的问题，同时，将可变帧率转换为恒定帧率以正常剪辑视频时则需要重新编码。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
-            <p>可变帧率转恒定帧率（60fps）需要借助外部滤镜完成。如 ffmpeg：</p>
-            <code>ffmpeg -i &lt;输入&gt; -vsync cfr -y -vf fps=60 -c:a copy -f yuv4mpegpipe - | x264 &lt;参数&gt; - --demuxer y4m --output &lt;输出.mp4&gt;</code>
-            <p>由于视频元数据里也有着标错的情况，所以用 MediaInfo 等工具查看到视频帧率是 Variable 时，还要用播放器逐帧查看，或者用 ffprobe 检测。见 <a href="https://nazorip.site/archives/169/">ffprobe 教程</a></p>
-
-            <h2 id="h2-19">工具下载</h2>
-            <h3>下载套壳了 x264/libx264 的 GUI</h3>
+            <h2 id="h2-18">工具下载</h2>
+            <h3>套壳 x264/libx264 的 GUI 编码压制软件</h3>
             <p>并没有特别好的选择。尤其是当能够使用 CLI 参数命令 ffmpeg.exe，x264.exe 后。</p>
             <table class="table-center">
                 <tbody>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://shana.pe.kr/shanaencoder_download">Shana<br>Encoder</a></th>
                         <td class="px-1 text-smaller">ffmpeg-CLI 搭配部分 GUI，上手较慢。使用了 ffmpeg 内嵌的 libx264，libx265，NVEnc</td>
-                        <td style="max-width: 30rem;">
+                        <td style="max-width: 22rem;">
                                 <img src="files/tools-download/shana-encoder.png" alt="image41" class=""><br>
                                 <img src="files/tools-download/shana-encoder-1.png" alt="image42" class="">
                         </td>
@@ -2595,49 +2630,49 @@
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://bitbucket.org/muldersoft/simple-x264-launcher/downloads/">Simple x264 Launcher</a></th>
                         <td class="px-1 text-smaller">内嵌 AviSynth，支持便携版 VapourSynth，额外支持 x265 和 NVEnc 编码器，适合批量压制</td>
-                        <td style="max-width: 30rem;"><img src="files/tools-download/simple-x264-launcher.png" alt="image43" class=""></td>
+                        <td style="max-width: 22rem;"><img src="files/tools-download/simple-x264-launcher.png" alt="image43" class=""></td>
                     </tr>
                     <tr>
                         <th class="t-light-gray">小丸工具箱</th>
                         <td class="px-1 text-smaller">操作简单，适合入门的中文软件。网上能搜到详细教程。内嵌 MediaInfo，mp4box，Mkvtoolnix<br>镜像：<a href="https://pan.baidu.com/s/1VHonGHoZ0DmQBNZaRjML2A&pwd=crhu">百度云</a> 提取码"crhu"</td>
-                        <td style="max-width: 30rem;"><img src="files/tools-download/xiaowan-toolbox.png" alt="image44" class=""></td>
+                        <td style="max-width: 22rem;"><img src="files/tools-download/xiaowan-toolbox.png" alt="image44" class=""></td>
                     </tr>
                 </tbody>
             </table>
             
-            <h3>下载基本工具</h3>
-            <table>
+            <h3>基本工具</h3>
+            <table class="table-center">
                 <tbody>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="http://ffmpeg.org/download.html">ffmpeg</a></th>
                         <td class="px-1 text-smaller">强大的 CLI 开源视音频处理工具。几乎所有的视音频处理都绕不开</td>
-                        <td style="max-width: 30rem;"> </td>
+                        <td style="max-width: 22rem;"> </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://mpv.io/installation/">mpv</a></th>
                         <td class="px-1 text-smaller">开源，支持便携的现代视频播放器。见 <a href="https://nazorip.site/archives/1052/">安装与配置</a>教程</td>
-                        <td style="max-width: 30rem;">
+                        <td style="max-width: 22rem;">
                             <img src="files/tools-download/mpv.png" alt="image45" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://www.voukoder.org/">Voukoder</a></th>
                         <td class="px-1 text-smaller">开源 Premiere Vegas After Effects 压制导出插件，分为 Voukoder 和 V-Connector 两部分</td>
-                        <td style="max-width: 30rem;">
+                        <td style="max-width: 22rem;">
                             <img src="files/tools-download/voukoder.png" alt="image46" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://obsproject.com/zh-cn/download">OBS</a></th>
                         <td class="px-1 text-smaller">强大的开源直播框架和软件，设置略比传统录屏软件复杂，但效果也更好</td>
-                        <td style="max-width: 30rem;">
+                        <td style="max-width: 22rem;">
                             <img src="files/tools-download/obs.png" alt="image47" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://mediaarea.net/zh-CN/MediaInfo">MediaInfo</a></th>
                         <td class="px-1 text-smaller">开源的 GUI 媒体元数据/视音频格式读取器，用于配置正确的压制参数</td>
-                        <td style="max-width: 30rem;">
+                        <td style="max-width: 22rem;">
                             <img src="files/tools-download/mediainfo.png" alt="image48" class=""><br>
                             <img src="files/tools-download/mediainfo-1.png" alt="image49" class="">
                         </td>
@@ -2646,12 +2681,12 @@
                         <th class="t-light-gray"><a href="http://ffmpeg.org/download.html">ffprobe</a></th>
                         <td class="px-1 text-smaller">CLI 视音频格式读取器，若检测所得信息与 MediaInfo 所异，则优先参考 ffprobe<br>见<a href="https://nazorip.site/archives/169/">基本使用</a>，以及<a href="https://nazorip.site/archives/1068/">搭配 Excel 的视频数据可视化</a>教程
                         </td>
-                        <td style="max-width: 30rem;"> </td>
+                        <td style="max-width: 22rem;"> </td>
                     </tr>
                 </tbody>
             </table>
 
-            <h3>下载 x264</h3>
+            <h3>x264 本体</h3>
             <table>
                 <tbody>
                     <tr class="border-bottom">
@@ -2677,23 +2712,40 @@
                 </tbody>
             </table>
 
-            <h3>视频编码后偏色的原因</h3>
-            <p>将编码前后的视频窗口至于同屏下，使用截图软件截图，再使用取色器测量特定区域的颜色：</p>
-            <ul>
-                <li><b>偏黄：</b>
-                    Bt.709，Bt.2020 源被转换成了 Bt.601。可以通过 <code>colormatrix=源矩阵:目标矩阵</code> 参数转换一段原视频做测试复现：<br>
-                    <code>ffmpeg.exe -i "偏色前.mp4" -vf "colormatrix=bt709:bt601" -c:v libx264 -c:a copy -c:s copy "D:\Desktop\转601.mkv"</code>
-                </li>
-                <li><b>偏绿：</b>
-                    使用了英伟达 NVDEC 硬件解码器导致的颜色错误，目前已知 RTX 3000 系显卡有。见 <a href="https://nazorip.site/archives/1052/">MPV 播放器</a> 中的类似状况
-                </li>
-                <li><b>对比度过低（1）：</b>
-                    编码器设定输入位深为 8bit，源视频为 10bit 或更高，没有滤镜工具转换源到 8bit，直接编码后可能导致
-                </li>
-                <li><b>对比度过低（2）：</b>
-                    编码器设定输入色域为完整 Full，视频为有限色域 Limited，没有滤镜工具转换源到完整色域，直接编码后可能导致
-                </li>
-            </ul>
+            <h4>视频编码后偏色的各种原因</h4>
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容</button>
+            <div class="coll-content">
+                <p>将编码前后的视频窗口至于同屏下，使用截图软件截图，再使用取色器测量特定区域的颜色：</p>
+                <ul>
+                    <li><b>偏黄：</b>
+                        Bt.709，Bt.2020 源被转换成了 Bt.601。可以通过 <code>colormatrix=源矩阵:目标矩阵</code> 参数转换一段原视频做测试复现：<br>
+                        <code>ffmpeg.exe -i "偏色前.mp4" -vf "colormatrix=bt709:bt601" -c:v libx264 -c:a copy -c:s copy "D:\Desktop\转601.mkv"</code>
+                    </li>
+                    <li><b>偏绿：</b>
+                        使用了英伟达 NVDEC 硬件解码器导致的颜色错误，目前已知 RTX 3000 系显卡有。见 <a href="https://nazorip.site/archives/1052/">MPV 播放器</a> 中的类似状况
+                    </li>
+                    <li><b>对比度过低（1）：</b>
+                        编码器设定输入位深为 8bit，源视频为 10bit 或更高，没有滤镜工具转换源到 8bit，直接编码后可能导致
+                    </li>
+                    <li><b>对比度过低（2）：</b>
+                        编码器设定输入色域为完整 Full，视频为有限色域 Limited，没有滤镜工具转换源到完整色域，直接编码后可能导致
+                    </li>
+                </ul>
+            </div>
+
+            <h4>ffmpeg 色深转换处理</h4>
+            <button type="button" class="collapsible border-main rounded-3 mb-3">点击展开/折叠内容</button>
+            <div class="coll-content">
+                <p>ffmpeg 转换到完整：</p>
+                <code>ffmpeg.exe -i "limited.mp4" -vf "scale=in_range=limited:out_range=full" -color_range 2 -pix_fmt yuv420p -movflags +write_colr "full.mp4"</code>
+                <p>ffmpeg 转换到有限：</p>
+                <code>ffmpeg.exe -i "limited.mp4" -vf "scale=in_range=full:out_range=limited" -color_range 1 -pix_fmt yuv420p -movflags +write_colr "full.mp4"</code>
+                <ul>
+                    <li><code>"scale=in_range=limited:out_range=full</code> 代表输入和输出的范围</li>
+                    <li><code>-color_range</code> 选择编码和封装的色深密度（0~2）</li>
+                    <li><code>-movflags +write_colr</code> 在 .mp4 封装下写入色深密度元数据</li>
+                </ul>
+            </div>
         </div>
         <!--
         <h3>测试 - 成功：</h3>
