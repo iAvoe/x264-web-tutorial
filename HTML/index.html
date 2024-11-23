@@ -546,7 +546,21 @@
                 <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换，色度采样的使用及编解码与录制，传输，显示的关系</p>
             </div>
 
-            <h3>帧率</h3>
+            <h3>帧 Frame</h3>
+            <p>描述连续图片序列中的单张图片（随便拍一张图片不算，连拍算）。有帧大小、帧率/帧数、帧类型（关键帧，过渡帧）等描述规格，构成了图像内容运动的假象。</p>
+
+            <h3>帧率 Frame Rate / Frames per second / FPS</h3>
+            <p>每秒刷新的图像帧数，越高则变化越流畅。不同的内容类型会根据视频标准，成本和艺术效果来选择一个合适的帧率来拍摄和制作。在观影体验和制作手法中，其最核心的理念取决于<i>大范围高速画面移动的保真</i>。因此就有了用于降低帧率需求的“电影运镜”，以及通过利用视觉暂留效应的“一拍 N”制作技术。这样的画面中，帧数不可以过高或过低，例如比较粗略的判断：</p>
+            <ul class="text-smaller">
+                <li>《进击的巨人》中的部分场景，以及各种“模拟赛车游戏的场景”适合 120~144+ fps 的高帧率</li>
+                <li>“智能手机滑动画面”的场景适合 90~120 fps 的高帧率</li>
+                <li>《猫和老鼠（1940-1958）》中适合 50~60 fps 的中高帧率</li>
+                <li>“格斗游戏画面”，以及“使用动捕技术的 VTuber 直播场景”适合 45~90 fps 的中高帧率</li>
+                <li>《微软模拟飞行 2020》、《Extreme Landing》等游戏场景因为画面变化程度小，所以适合 30~45 fps 的中帧率</li>
+                <li>棋牌类游戏只需要 2~10 fps 的低帧率，尤其是棋类大多时候 0.5~1 fps 就足够了</li>
+                <li>“纯静态图像”，如“纯音乐视频”只需 0 fps 就足够了</li>
+            </ul>
+
             <h4>恒定帧率 Constant frame rate</h4>
             <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率有助于解决手机录像时的发热和耗电速度快的问题，同时，将可变帧率转换为恒定帧率以正常剪辑视频时则需要重新编码。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
             
@@ -558,6 +572,22 @@
                 <ul class="text-smaller">
                     <li>于视频元数据里也有着标错的情况，所以用 MediaInfo 等工具查看到视频帧率是 Variable 时，还要用播放器逐帧查看，或者用 ffprobe 检测。见 <a href="https://nazorip.site/archives/169/">ffprobe 教程</a></li>
                 </ul>
+            </div>
+
+            <h4>小数帧率 / 丢帧</h4>
+            <p>NTSC 模拟电视每个频道的标准带宽大约为 6MHz（但实际宽度仅为 4.5MHz）。接下来发生的事谁都没有预料到——彩色电视出现了。结果是原本的频宽完全放不下彩色电视台信号，而且由于电视机已经售出，不可能更改用户家里电视的频宽和扫描线的数量。最终解决方案是在每秒 30 帧的基础上丢掉一帧，并加速 1 秒到 1.1001 秒，以保持与帧率的对齐（同时也引入了 YUV 4:2:0 色彩空间）。经过这般折腾，码率/频宽总算被压缩了下来，但后继影响了数字视频的丢帧帧率标准——为了与模拟电视兼容<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji
+            </a>。</p>
+            <div class="align-items-center">
+                <img src="files/basics/Aligning-framerates.jpg" alt="image7" class="img-small">
+                <p class="text-gray-side mt-0">图：不同帧率的对齐“地狱”，见<a href="https://www.youtube.com/watch?v=p3Jb3UPAw-w">Taran Van Hemert</a></p>
+            </div>
+            <p>在视频编辑中有时会遇到对齐“不同帧率”乘以“不同帧率种类”视频素材的困难问题，处理起来非常考验剪辑水平。但与其这样，不如一开始就商量好使用正确的录制设定就可以了。</p>
+
+            <h3>逐行/交错扫描 Progressive / Interlaced</h3>
+            <p>逐行扫描通过一行行从左到右地刷新像素来构建图像，是最为常用的屏幕刷新方式。交错扫描的方法不同，它使用 YUV 4:1:1 采样，将屏幕的奇数像素行视为一个场，偶数像素行视为另一个场。这两个场在录制时错开一定时间，这样在模拟电视上观看时会产生 60fps 的视觉效果。交错扫描的原理是为了节省模拟电视信号的频段区间（与收音机接收电台信号一样）。因此，通过在时间上分隔行来节省空间，可以几乎将每个频道的频宽减半，例如（<span class="text-blue-math">\(525 \text{行} \times 30\text{fps} = 15.75 \text{MHz}\)</span>）。</p>
+            <div class="align-items-center">
+                <img src="files/basics/PAL-NTSC-SECAM.svg" alt="image8" class="img-medium">
+                <p class="text-gray-side mt-0">图：NTSC，PAL 和 SECAM 播放规格的地区分布，见<a href="https://en.m.wikipedia.org/wiki/File:PAL-NTSC-SECAM.svg">维基百科</a></p>
             </div>
 
             <h3>压缩的策略</h3>
@@ -623,7 +653,7 @@
             <h3>视频压制三角定律</h3>
             <p>确定编码器好坏，压缩和采购策略的方法。专用编码器常用于单一目的，但难以控制另外两端的损失。高算力适合通用策略，而低算力则适合专用策略。</p>
             <div class="align-items-center">
-                <img src="files/basics/Encoding-Trade-off-Triangle.png" alt="image7" class="img-medium">
+                <img src="files/basics/Encoding-Trade-off-Triangle.png" alt="image9" class="img-medium">
                 <p class="text-gray-side mt-0">图：三种出发点构成。其“完美中心点”不一定符合当下需求，但决定了是否能满足所有情况</p>
             </div>
 
@@ -858,9 +888,9 @@
             <p>一般来说，如果噪点的边角尖锐，缺乏渐变，则属于“难看的噪声”。另一种比较极端的判断方法是——只有影视导演亲手保留，或游戏美工专门根据显示技术适配处理过的噪声才是好看的噪声、由第三方私自添加的噪声是“难看的噪声”。</p>
             <p class="text-gray-side">实际上，人眼的“成像技术”也决定了人看到的画面本来就有很多噪点，而且是动态噪点，只是未注意的时候都是大脑的实时降噪和幻觉在抑制而已。</p>
             <div class="align-items-center">
-                <img src="files/basics/imax-tape-projector.jpg" alt="image8" class="img-medium">
+                <img src="files/basics/imax-tape-projector.jpg" alt="image10" class="img-medium">
                 <p class="text-gray-side">图：正在放映 2023 年电影《奥本海默》的 70mm IMAX 胶片放映机。源：<a href="https://www.cnbc.com/2023/07/19/where-to-watch-oppenheimer-in-70mm-imax-.html">Nicolas Vega</a></p>
-                <img src="files/basics/matte-vs-glossy.jpg" alt="image9" class="img-medium">
+                <img src="files/basics/matte-vs-glossy.jpg" alt="image11" class="img-medium">
                 <p class="text-gray-side">图：磨砂镀膜与镜面镀膜显示器的微观区别。可以看到没有漫反射的镜面更加“通透”。源：<a href="https://www.youtube.com/watch?v=mZjxEcuVHlQ">The Display Guy</a></p>
             </div>
 
@@ -870,14 +900,14 @@
             <div class="coll-content">
                 <p>具体来说，通过间隔几个像素就调亮/调暗一个像素的颜色，使得宏观整体上看起来像是淡化或加深；在音频位深分量两端的采样点间成比例的（以方形波或三角波信号）快速摆动，从而利用扬声器反应速度，起到淡化或深化偏移宏观上位深的效果。</p>
                 <div class="align-items-center">
-                    <img src="files/basics/Audio-Dither.png" alt="image10" class="img-medium">
+                    <img src="files/basics/Audio-Dither.png" alt="image12" class="img-medium">
                     <p class="text-gray-side mt-0">图：音频的采样点，以及下采样音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
-                    <img src="files/basics/Image-Dither-1.png" alt="image11" class="">
+                    <img src="files/basics/Image-Dither-1.png" alt="image13" class="">
                     <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
                 </div>
                 <p>抖动滤镜的效果主要是欺骗视觉，但因为效果独特，所以衍生出了 Ditherpunk 抖动朋克美术。典型如 1bit 游戏《奥博拉丁的回归》贯彻了这种风格——利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声，黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法来定义游戏引擎的材质。</p>
                 <div class="align-items-center">
-                    <img src="files/basics/Image-Dither-2.png" alt="image12" class="img-medium">
+                    <img src="files/basics/Image-Dither-2.png" alt="image14" class="img-medium">
                     <p class="text-gray-side mt-0">图：图像噪声算法</p>
                 </div>
             </div>
@@ -936,33 +966,13 @@
             <p><b>图形界面交互 Graphic user interface GUI</b>：通过图形元素（如按钮、滑块、菜单等）进行用户交互的界面设计。随着程序复杂度的增加，设计出好用的界面会变得更加困难。因此，只有在利润丰厚、注重美学设计、且拥有设计人才的行业才会推出外观精美的 GUI。然而，外观好看并不一定意味着好用、再而，很多时候有外观用都是一种奢求。
             </p>
             <div class="align-items-center">
-                <img src="files/basics/FL-Studio-GUI-Demonstration.png" alt="image14" class="img-medium">
+                <img src="files/basics/FL-Studio-GUI-Demonstration.png" alt="image15" class="img-medium">
                 <p class="text-gray-side mt-0">图：音频插件宿主软件 FL Studio，外加一堆免费和“免费”音频插件随便摆放的外观</p>
-                <img src="files/basics/XAMPP-GUI-Demonstration.png" alt="image15" class="img-medium">
+                <img src="files/basics/XAMPP-GUI-Demonstration.png" alt="image16" class="img-medium">
                 <p class="text-gray-side mt-0">图：网页服务器宿主软件 XAMPP 的 GUI（左下为 CLI），作为跨行业对比</p>
             </div>
             <p><b>命令行交互 Commandline interface CLI</b>：在如 Terminal、Bash、CMD 和 PowerShell 的终端环境中，用户可以手动输入命令并按回车键查看结果。通常，只要输出结果有一定的文本排版，就可以轻松阅读。随着使用的增加，CLI 可能反而会变得比 GUI 更方便。然而，由于某些命令太长，而且需要储存变量，因此为了简化操作，人们会将其写作批处理、Shell 等命令脚本文件。例如<a href="https://nazorip.site/archives/835/">PowerShell 一站式系统硬件检测</a>的脚本。</p>
             <p><b>应用编程交互 Application programming interface API</b>：定义了软件应用程序如何相互通信的规则和工具。用于使开发人员和从程序的外部访问，以便在自己的应用程序中集成其中的功能。API 可以被看作是 CLI 的映射源，当开发者没有编写 CLI 参数或 GUI 时，可以退而求 API 来调用所需的功能。尽管 API 通常不直接面向最终用户，但它们在软件开发中非常重要</p>
-
-            <h3>帧率 Frame Rate / Frames per second / FPS</h3>
-            <p>帧 Frame 通常用来描述连续图片序列中的单张图片。帧率 Frame Rate 是指每秒显示/刷新的图像帧数。帧率越高，则连续背景变化越流畅。因此，在游戏中，例如微软模拟飞行、极限着陆等模拟客机的游戏，以及电影运镜等故意限制背景变化程度的场景，其帧率一般只需要 30fps 左右（每秒更新 30 张画面）。而对于背景高速运动的游戏，比如模拟赛车等，即使是在手机平台上，最低帧率也不能低于 120fps。</p>
-            <p>在动漫中，如果背景高速移动变化时的帧率低于 60fps，观看体验会大大降低，例如《进击的巨人》中的部分场景。相反，对于一些其他动漫，如果设计师本意是为了降低成本而利用视觉暂留原理来创建顿挫画面，那么低帧率反而会破坏观赏体验。</p>
-
-            <h3>逐行/交错扫描 Progressive / Interlaced</h3>
-            <p>逐行扫描通过一行行从左到右地刷新像素来构建图像，是最为常用的屏幕刷新方式。交错扫描的方法不同，它使用 YUV 4:1:1 采样，将屏幕的奇数像素行视为一个场，偶数像素行视为另一个场。这两个场在录制时错开一定时间，这样在模拟电视上观看时会产生 60fps 的视觉效果。交错扫描的原理是为了节省模拟电视信号的频段区间（与收音机接收电台信号一样）。因此，通过在时间上分隔行来节省空间，可以几乎将每个频道的频宽减半，例如（<span class="text-blue-math">\(525 \text{行} \times 30\text{fps} = 15.75 \text{MHz}\)</span>）。</p>
-            <div class="align-items-center">
-                <img src="files/basics/PAL-NTSC-SECAM.svg" alt="image16" class="img-medium">
-                <p class="text-gray-side mt-0">图：NTSC，PAL 和 SECAM 播放规格的地区分布，见<a href="https://en.m.wikipedia.org/wiki/File:PAL-NTSC-SECAM.svg">维基百科</a></p>
-            </div>
-
-            <h3>小数帧率 / 丢帧</h3>
-            <p>NTSC 模拟电视每个频道的标准带宽大约为 6MHz（但实际宽度仅为 4.5MHz）。接下来发生的事谁都没有预料到——彩色电视出现了。结果是原本的频宽完全放不下彩色电视台信号，而且由于电视机已经售出，不可能更改用户家里电视的频宽和扫描线的数量。最终解决方案是在每秒 30 帧的基础上丢掉一帧，并加速 1 秒到 1.1001 秒，以保持与帧率的对齐（同时也引入了 YUV 4:2:0 色彩空间）。经过这般折腾，码率/频宽总算被压缩了下来，但后继影响了数字视频的丢帧帧率标准——为了与模拟电视兼容<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji
-            </a>。</p>
-            <p>在视频编辑中，对齐帧率不同视频是极其困难的操作，而这个天大的难题只需更改录制设定（点击两三个按钮）即可解决。</p>
-            <div class="align-items-center">
-                <img src="files/basics/Aligning-framerates.jpg" alt="image17" class="img-small">
-                <p class="text-gray-side mt-0">图：不同帧率的对齐地狱，见<a href="https://www.youtube.com/watch?v=p3Jb3UPAw-w">Taran Van Hemert</a></p>
-            </div>
 
             <h2 id="h2-2">编解码的过程</h2>
             <h3>视频的打开</h3>
