@@ -975,6 +975,7 @@
             <p><b>应用编程交互 Application programming interface API</b>：定义了软件应用程序如何相互通信的规则和工具。用于使开发人员和从程序的外部访问，以便在自己的应用程序中集成其中的功能。API 可以被看作是 CLI 的映射源，当开发者没有编写 CLI 参数或 GUI 时，可以退而求 API 来调用所需的功能。尽管 API 通常不直接面向最终用户，但它们在软件开发中非常重要</p>
 
             <h2 id="h2-2">编解码的过程</h2>
+            <p>注：实际情况下会因为软硬件，用户设定，以及操作系统逻辑的不同而变。</p>
             <h3>视频的打开</h3>
             <ol>
                 <li>用户点击打开视频文件</li>
@@ -987,8 +988,7 @@
                 <li>显示器上的芯片将图像数据转换为对每个像素上电路的控制，并显示出来</li>
                 <li>DAC 将音频信号转换为模拟信号，并通过扬声器播放出来</li>
             </ol>
-            <p>此步骤涵盖了基本的视频打开过程，在实际情况下会因为软硬件，用户设定，以及操作系统逻辑的不同而有出入。</p>
-
+            
             <h3>视频的压制</h3>
             <ol>
                 <li><b>打开编码器</b>
@@ -1487,7 +1487,7 @@
                 <h4>求和计算 Summation</h4>
                 <p>上式的 <span class="text-blue-math">\(\sum_{x=0}^{N-1} \sum_{y=0}^{N-1}\)</span> 部分。等同于：</p>
                 <div class="overflow-auto"><code class="text-blue-math">for($x=0; $x&lt;$N-1; $x++) { for($y=0; $y&lt;$N-1; $y++) { $T.u+=...; $T.v+=... } }</code></div>
-                <p>因此，一个 2x2 块下，上式一共要计算 <span class="text-blue-math">(\2^2\)</span> 次，将每次的结果取和，在乘以归一化缩放值 <span class="text-blue-math">\( \alpha(u) \)</span> 和 <span class="text-blue-math">\( \alpha(v) \)</span> 完成变换。</p>
+                <p>因此，一个 2x2 块下，上式一共要计算 <span class="text-blue-math">\( {2}^{2} \)</span> 次，将每次的结果取和，在乘以归一化缩放值 <span class="text-blue-math">\( \alpha(u) \)</span> 和 <span class="text-blue-math">\( \alpha(v) \)</span> 完成变换。</p>
                 
                 <h4>均方根 Root Mean Square</h4>
                 <p>RMS 是统计中常用的一种数据量化，用于表示一组数据平均值的平方根。对于一个包含 N 个值的数据集：<span class="text-blue-math">\( \{ x_1, x_2, \ldots, x_N \} \)</span> </p>
