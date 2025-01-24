@@ -1780,6 +1780,7 @@
             </ul>
 
             <h2 id="h2-9">自适应量化</h2>
+            <p>一种利用感知对比度掩蔽现象的帧内分块码率重分配方法。</p>
 
             <h3>感知对比度掩蔽现象 Perceptual contrast masking</h3>
             <p>类似于亮度与响度掩蔽。空间频率高，纹理复杂的画面能够掩蔽频率低，纹理简单的画面内容，如自然界中的动物通过“打乱”自身外形的线条和纹理细节，从而在不改变颜色，体温和体型大小的情况下实现的可见光伪装。这种效应的参数包括：</p>
@@ -1792,7 +1793,7 @@
             <p>简单地说，只要量化失真处的像素值变化程度不大于纹理像素值变化的程度即可。这种方法虽然常用在视频编码中，但对比度感知现象的原理尚不明确——如果观众仔细看就会发现失真。</p>
 
             <h3>方差 Variance</h3>
-            <p>方差表示数据样本相对于整体平均值的离散程度，通过差→方→和→均的计算顺序，以偏差之和窥数据之衡。计算如下：</p>
+            <p>方差表示数据样本相对于整体平均值的离散程度，通过差→方→和→均的计算顺序，以偏差之和窥数据之衡。这里的偏差就是上述的像素值对比度，通过“和→均”的平均法来均摊偏差程度，防止少数较大的偏差影响整体；而“差→方”平衡了前者对结果值的缩小，另一方面对高差距处加权，以影响判断结果不倾向于完全平均，从而更符合数据的实际变化情况。计算如下：</p>
             <span class="text-blue-math">\[ \sigma^{2}=\frac{\sum_{i=1}^{N} (x_{i}-\overline{x})^{2}}{N} \]</span>
             <ol class="font-monospace pl-5 text-smaller">
                 <li>每个数据样本减去整体平均值，得到差值</li>
@@ -1801,13 +1802,6 @@
                 <li>总平方误差除以样本数得到方差</li>
             </ol>
             <div class="overflow-auto"><span class="text-blue-math">\[ \text{Variance} = \frac{\text{SSE}_{Pixels_{Macroblock}} - (\text{SAD}_{Macroblock})^2}{Pixels_{Macroblock}} = \frac{\text{SSE}_{Pixels_{Macroblock}} - (\text{SAD}_{Macroblock})^2}{256} \]</span></div>
-            
-            <h3>使用逻辑</h3>
-            <p>自适应量化与方差自适应量化的区别：</p>
-            <ul>
-                <li><b>AQ</b>：提高对比度高处的量化强度，降低对比度低处的量化强度</li>
-                <li><b>VAQ</b>：使用方差，将 AQ 的判断的逻辑去线性化，使画面更加自然</li>
-            </ul>
 
             <code><b>--aq-mode</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~3&gt;据原画和 CRF/ABR 强度设定，码率不足时分配细分块量化强度的策略</p>
