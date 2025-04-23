@@ -1155,14 +1155,33 @@
             </ul>
 
             <h3>管道 Pipeline</h3>
-            <p>在进程/软件之间通信的操作系统机制。在 CLI 中表现为两个程序的命令通过链接符 <span class="text-blue-emph">|</span> 串联起来。常用于将上游程序/协议/函数输出的信息传递给下游程序/协议/函数实现过滤。最早的形式为 <a href="https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_(Unix)">Unix Pipe</a>。管道中程序/协议/函数的默认输入，输出与报错分别叫做 stdin，stdout，stderr，它们可以被手动指定到特定的路径，或作为管道传给更下游的程序/协议/函数。</p>
+            <p>一种在进程/软件之间通信的操作系统机制。在命令行中写作通过链接符 <span class="text-blue-emph">|</span> 串联起来是两段命令，而两段命令间的数据一般由默认输出 standard output（stdout）和默认输入 standard input（stdin）实现，因此不需要手动添加输出和输入命令。报错则为 stderr。在涉及到文件输入输出的程序时则需要手动指定“-”符号到程序的输入命令中，以取代文件的输入。</p>
             <h4>串流管道 Stream-based pipeline</h4>
-            <p>管道中的程序同步运行，持续地传输上游输出到下游。适用于串流作业和处理流数据，包括视音频和文本流。</p>
+            <p>Windows CMD 的管道模式，其中的程序同步运行，持续地传输上游输出到下游。适用于串流作业和处理流数据，包括视音频和文本流。</p>
             <h4>对象管道 Object-based pipeline</h4>
-            <p>管道中的程序按顺序接力，一个程序/协议/函数跑完后再打开下一个。适用于处理对象化 Object-oriented 的数据，面向对象的应用程序。Windows PowerShell 使用了对象管道，所以不适合处理视音频流文件。如 Bash 下：<code>for txt in *.txt; do md5sum $txt; done | awk '{print $2, $1}' | sort -bn</code></p>
+            <p>Windows PowerShell 的管道模式，其中的程序按顺序接力，一个程序/协议/函数跑完后再打开下一个。适用于处理对象化数据（面向对象的应用），所以不适合用于处理视音频流文件。如 Bash 下：<code>for txt in *.txt; do md5sum $txt; done | awk '{print $2, $1}' | sort -bn</code></p>
             <h4>指定默认输入和报错</h4>
-            <p>在不默认从 stdin 读取管道上游 stdout 的程序/协议/函数，以及不默认从 stdout 输出数据流的程序/协议/函数中，需要添加“-”以特别指定上游输出到 stdout，下游从 stdin 输入；还可以额外选择导出 stderr 到文本文件，就有了这样的命令：</p>
-            <code>ffmpeg -i &lt;源&gt; -an -f yuv4mpegpipe -strict unofficial <span class="text-red-emph">- |</span> x264 --y4m <span class="text-red-emph">-</span> --output "" <span class="text-blue-emph">2> D:\文件夹\报错.txt</span></code>
+            <code>J:\ffmpeg.exe -i D:\文件夹\源.mp4 -an -f yuv4mpegpipe - | J:\x264-r3206.exe --y4m - --output D:\文件夹\测试.h264 <span class="text-blue-emph">2> D:\文件夹\报错.txt</span></code>
+            <p>以上命令代表在 Windows CMD 中：</p>
+            <ol>
+                <li>ffmpeg 导入“D:\文件夹”下的一个视频文件</li>
+                <li>ffmpeg 使用 <code>-an</code> 命令指定关闭音频编码</li>
+                <li>ffmpeg 使用 <code>-f</code> 命令指定使用 YUV For MPEG 管道格式，相对于 rawpipe 格式提供了一些视频元数据，使 x264 了解视频的分辨率、帧率、位深等基本参数，否则需在命令行中手动指定</li>
+                <li>ffmpeg 使用“-"替代文件路径，指定导出文件到管道</li>
+                <li>x264 使用 <code>--y4m -</code> 命令指定使用 YUV For MPEG 管道格式，并设定输入流为“-”</li>
+                <li>x264 导出压制出、未封装的视频流到 <code>D:\文件夹</code> 下</li>
+                <li>x264 导出任何可能的报错信息到 <code>D:\文件夹</code> 下，以避免管道上游的信息覆盖或埋藏</li>
+            </ol>
+            <h4>管道的问题与上位替代</h4>
+            <p>使用管道实际上是比较麻烦的命令行操作，例如：</p>
+            <ul>
+                <li>管道下游程序的报错经常会被管道上游覆盖或埋藏，需要额外指定报错信息导出路径</li>
+                <li>虽有编程爱好者集成 LAVF 编解码到 x264 编码器中（封装、解封装视频流功能），但不是所有视频编码器都受到这种待遇</li>
+                <li>视频流已经占据了管道，音频流的封装就需要等第二行命令实现了；同理如果视频编码命令出错，那么设定为自动运行的第二行命令也会失败，使得原本的报错信息更难找到</li>
+            </ul>
+            <p>而上面的命令可以被简化到直接调用 ffmpeg 内置的 libx264 库，从而用一条命令实现压制与封装：</p>
+            <code>J:\ffmpeg.exe -i D:\文件夹\源.mp4 -c:v libx264 -fps_mode passthrough -c:a copy D:\文件夹\输出.mp4</code>
+            <p>这种命令行环境下，要注意音频流与封装格式的兼容性。如果要替换或添加新音频轨道，则在 ffmpeg 命令行中输入音频流，并通过 <code>-map</code>、<code>-c</code> 命令指定替换或添加。</p>
 
             <h2 id="h2-3">数据结构</h2>
             <h3>帧的结构</h3>
@@ -1913,7 +1932,7 @@
                 </li>
             </ul>
             <code><b>--qcomp</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0.5~1，推荐默认 0.6&gt;模糊复杂度 cplxBlur 以及 mbtree 迭代每帧量化强度范围的曲线抑制参数。越小则复杂度迭代越符合实际状况，抑制 CRF，mb-cutree，bframes 影响的效果就越弱，搭配高 CRF 能使码率控制接近 VBV 的程度。越大则 CRF，mb-cutree，bframes 越没用，越接近 CQP</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0.5~1，推荐默认 0.6&gt;模糊复杂度 cplxBlur 以及 mbtree 迭代每帧量化强度范围的曲线抑制参数。越小则复杂度迭代越符合实际状况，抑制 CRF，mb/cutree，bframes 影响的效果就越弱，搭配高 CRF 能使码率控制接近 VBV 的程度。越大则 CRF，mb-cutree，bframes 越没用，越接近 CQP</p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li><span class="text-blue-emph">小于 0.5，中~强 mbtree</span> CRF/ABR低延迟逐帧迭代qp; 画面主前景动时用，允许 mbtree 导致零星宏块欠码</li>
                 <li><span class="text-blue-emph">0.5~0.7 中 mbtree</span> CRF/ABR中延迟逐帧迭代qp, 画面含背景动，或混合情况用，平衡优先</li>
