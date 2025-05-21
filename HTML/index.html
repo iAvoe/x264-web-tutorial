@@ -1505,11 +1505,11 @@
             <p>变换的过程中，“DCT 像素”称为系子 coefficients。这些系子的强度可以是负值，表示反相的波形；也可以是小数，表示低强度的波形（但因为计算机浮点计算慢于整数计算，所以一般仅用于演示）。变换块左上角的系数是直流 DC 分量，代表整体亮度水平，其余的系数是交流 AC 分量，表示图像中的细节和纹理信息。</p>
 
             <h3>量化</h3>
-            <p>简单地说，是根据不同的量化强度，块类型（亮度，色度，16x16，8x8，4x4）给出对应变换块的量化表/矩阵。将变换后的块点除量化矩阵，得到剩余 DCT 系子的块，从而减少高频的 DCT 系子分量，实现压缩。</p>
+            <p>简单地说，是根据不同的量化强度，块类型（亮度、色度、16x16、8x8、4x4 块）给出对应变换块的量化表/矩阵。将变换后的块点除量化矩阵，得到剩余 DCT 系子的块，从而减少高频的 DCT 系子分量，实现压缩。</p>
             <h4>量化值 qp</h4>
             <p>Quantization Parameter 是 CRF，ABR 等码率质量控制模式算出，以及率失真优化量化、模式决策等步骤所调整的中间变量</p>
             <h4>量化步长 <span class="text-blue-math">\(Q_{\text{step}}\)</span></h4>
-            <p>Quantization Step-size 是 QP 参数值与实际量化强度之间的映射值。规则大致是 QP 增加 1，则 qStep 增加 0.125；QP 每 +6 则 qStep 乘以 2，使其越往后增量越大：</p>
+            <p>Quantization Step-size 是量化值 QP 参数值与实际量化强度之间的映射值。规则大致是 QP 增加 1，则 qStep 增加 0.125；QP 每 +6 则 qStep 乘以 2，使其越往后增量越大：</p>
             <div class="overflow-auto">
                 <table class="table-center align-items-center text-smaller">
                     <tbody>
@@ -1575,7 +1575,7 @@
                 </table>
             </div>
 
-            <p>x264 中，量化值 qp 大致上存在于以下几处：</p>
+            <p>x264 中，量化值大致上存在于以下几处：</p>
             <div class="overflow-auto">
                 <table class="table-fit-container text-xs">
                     <thead>
@@ -1589,45 +1589,111 @@
                         <tr class="border-bottom t-light-gray">
                             <td class="px-1">率控制</td>
                             <td class="px-1">CRF/ABR</td>
-                            <td class="px-1">逐帧 qp（或 cqp → 全局 qp）</td>
+                            <td class="px-1">逐帧 QP（或 cqp → 全局 QP）</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1">I-P 帧质量比</td>
                             <td class="px-1">I-P Ratio</td>
-                            <td class="px-1">P 帧 qp</td>
+                            <td class="px-1">P 帧 QP</td>
                         </tr>
                         <tr class="border-bottom t-light-gray">
                             <td class="px-1">P-B 帧质量比</td>
                             <td class="px-1">P-B Ratio</td>
-                            <td class="px-1">B 帧 qp</td>
+                            <td class="px-1">B 帧 QP</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1">自适应量化</td>
                             <td class="px-1">Adaptive Quantzation AQ</td>
-                            <td class="px-1">逐块 qp</td>
+                            <td class="px-1">逐块 QP</td>
                         </tr>
                         <tr class="border-bottom t-light-gray">
                             <td class="px-1">（率失真优化）模式决策</td>
                             <td class="px-1">Mode Decision MD</td>
-                            <td class="px-1">逐块 qp</td>
+                            <td class="px-1">逐块 QP</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1">率失真优化量化</td>
                             <td class="px-1">Rate-distortion optimized quantization RDOQ</td>
-                            <td class="px-1">逐块 qp</td>
+                            <td class="px-1">逐块 QP</td>
                         </tr>
                         <tr class="t-light-gray">
-                            <td class="px-1">色度块 qp 偏移</td>
+                            <td class="px-1">色度块 QP 偏移</td>
                             <td class="px-1"><code>--chroma-qp-offset</code></td>
-                            <td class="px-1">亮度与色度块 qp</td>
+                            <td class="px-1">亮度与色度块 QP</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <h2 id="h2-8">率控制</h2>
-            <h3>算出量化值</h3>
-            <p>根据输入的质量设定参数，以及视频数据与人眼视觉的两种特性得到压缩强度——量化值 qp 的具体步骤。其中，视频数据已经分为了关键帧与参考帧（预测 + 残差）。根据这一性质就可以推断基础的质量差异，如：</p>
+
+            <h3>生活中的例子</h3>
+            <p>假定某航司有成百上千架机型各异、油箱大小不同的飞机。给飞机加油既要保证航程，出勤率，又要控制成本，超支则“余油不得退款”或“降落前势必放掉”，于是有了 5 种策略——ABR、CQP（CBR）、CRF、VBR、2pass/2‑pass。</p>
+
+            <h4>平均码率模式 Average Bitrate</h4>
+            <ul>
+                <li>航司给出统一的“平均每架油费报价”，加油师傅按价加油</li>
+                <li>加油师傅遇到小飞机（储油小于平均），且只要当前平均油费小于航司报价，就加满</li>
+                <li>加油师傅遇到大飞机，则加到当前平均油费达到航司报价为止</li>
+            </ul>
+            <h5>ABR 模式优缺点</h5>
+            <ul class="text-smaller">
+                <li>思路简单快速</li>
+                <li>前十几架飞机照此操作无妨，但加油师傅不知道每架飞机的油箱大小，后面一旦遇到大飞机，根据平均报价便就只能给予很少的油，以至于无法起飞</li>
+                <li>如果航司给的报价较低，则只有前几架飞机和后来的小飞机能起飞，其它机型只能趴窝</li>
+                <li>如果航司给的报价较高，则“余油不得退款”，浪费成本</li>
+            </ul>
+            <h4>固定量化强度模式 Constant Quantizer</h4>
+            <ul>
+                <li>航司给出“油箱百分比目标”，机师盯着仪表，达到油箱百分比后口头叫停加油师傅</li>
+            </ul>
+            <h5>CQP 模式优缺点</h5>
+            <ul class="text-smaller">
+                <li>航司保证至少每架飞机都有一定量的油，至少所有飞机都可以起飞并为航司盈利</li>
+                <li>大飞机的百分比权重远大于小飞机，因此若航司给的百分比高，则费用会飙升</li>
+                <li>根据飞行计划，有的飞机只飞短途，却加油过多，而多出的油在降落时必须被放掉，徒增浪费</li>
+            </ul>
+            <h4>质量呼应码率模式 Constant Rate Factor</h4>
+            <ul>
+                <li>航司给出“油箱百分比目标”和“飞行计划表”，机师根据飞行计划计算实际需要的油量</li>
+                <li>如果“油箱百分比目标”多了，则机师忽略百分比目标，达到飞行计划所需后就口头叫停加油师傅</li>
+                <li>如果“油箱百分比目标”少了，则机师向航司部门申请更改飞行计划，航司设立接力/中转的航班</li>
+            </ul>
+            <h5>CRF 模式优缺点</h5>
+            <ul class="text-smaller">
+                <li>不但每架飞机都有一定量的油，所有飞机都不会遇到加油过多而需放油的问题</li>
+                <li>大飞机的百分比权重远大于小飞机，因此若航司给的百分比高，则费用会飙升</li>
+            </ul>
+            <h4>可变码率模式 Variable Bitrate</h4>
+            <ul>
+                <li>航司在给出“油箱百分比目标”的同时，还要求限制每架飞机的油费上限</li>
+                <li>机师盯着仪表并随时准备叫停；加油师傅盯着油费计并随时准备关闸</li>
+            </ul>
+            <h5>VBR 模式优缺点</h5>
+            <ul class="text-smaller">
+                <li>在总成本可控的前提下，中小机型一般都能加满，保证它们正常航行，利润也可观</li>
+                <li>大飞机由于上限受限而油量不足，只能飞短程，不能飞潜在利润更大的长程航线</li>
+            </ul>
+            <h4>两遍模式 2pass</h4>
+            <ul>
+                <li>第一遍：航司拟定一项“油箱百分比目标”和“飞行计划”并发给机师，机师算出座驾所需的实际油量并反馈，航司制表</li>
+                <li>第二遍：航司把“机队油量表”和“平均每架油费”发给加油师傅，加油师傅在加油前并联地调整机队油量，从而达到“平均每架油费”的目标</li>
+            </ul>
+            <h5>2pass 模式优缺点</h5>
+            <ul class="text-smaller">
+                <li>只要第二遍给的“平均每架油费”正常，就解决了 ABR 模式前后分油不均的问题</li>
+                <li>流程复杂，需要两次计算和调整，反而耽误很多时间，降低了机队出勤率</li>
+                <li>由于最终目标照旧是“平均每架油费”，所以仍会出现油量不足或“余油不得退款”现象</li>
+                <li>实际情况下，航司为机队加油与支付水电费同是用多少给多少——除非经济窘迫（硬盘太小），否则限制费用会导致加油频次提高（不满意画质/体积并重做），再次降低了机队出勤率、限制了航司利润，因此大多情况下是没有必要的</li>
+            </ul>
+            <p>率控制算法的目的是给出量化压缩的强度，强度越高则量化压缩对画面的损伤越强；对应“油箱百分比目标”、或“平均每架油费报价”限制类似。一般来说，凡不是传输到聊天软件或视频平台的用途中，视频的画质就会比体积重要，画质指标必然是第一、必须是第一、且只能是第一，体积控制必然、必须且只能是在画质条件满足后的附加项。这是因为冗余压缩算法的提升、硬盘容量和读写性能的增加会客观存在，使得“视频体积限制”总会自然衰减的结果。</p>
+            <div class="align-items-center">
+                <img src="files/rate-control/hyouka-frame-distro.webp" alt="image24" class="">
+                <p class="text-gray-side">图：这段视频约有 40000 帧，其中 I 帧的数量占 1%、却是码率的大头，因此是大飞机、油老虎，但是进一步压缩 I 帧则意味着其作为被参考帧的价值受损，因此原本应该参考它的帧不能参考，需要自备 I 块，因此视频整体的体积会提升，但码率尖峰能被降低。</p>
+                <img src="files/rate-control/solevante-frame-distro.webp" alt="image25" class="">
+                <p class="text-gray-side">图：这段场景复杂的视频约有 6000 帧，除了 I 帧的尖峰以外，出现了整块隆起的码率分布，这种视频的限码难以使用 ABR（甚至包括 VBR）实现，而是需要 2pass、CRF 等比较聪明的模式。</p>
+            </div>
+
             <code><b>--ipratio --pbratio</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点，默认 1.4、默认 1.3&gt;P 帧相比 IDR/i 帧，以及 B/b 帧相比 P 帧的质量偏移。默认预设是给录像视频片源用的。</p>
             <ul class="font-monospace pl-5 text-smaller">
@@ -1635,37 +1701,22 @@
                 <li>剪辑素材：<span class="text-blue-emph">提高 --crf，不用改这两个参数</span></li>
                 <li>YCbCr 4:4:4 片源：<span class="text-blue-emph">x264 默认会自动修改 --chroma-qp-offset，不用改这两个参数</span></li>
             </ul>
-            <p>同时，“人眼视觉特性”代表人对明暗变化与画面细节程度的曲线感知。简单说就是人眼敏感于中低亮度的画面细节——应当非线性地根据亮度分配画面质量，以及画面细节损失的程度（量化压缩的强度）需要一个妥协平衡点——需要非线性地映射量化强度，共两个技术要求。具体的转换见 <a href="../../x265-web-tutorial/HTML/index.html#h2-11">x265 教程网页版 - 率控制</a>。</p>
-            <p>其结果就是通过 CRF/ABR 通过非线性的推演，再转换出线性的量化强度。一般分为 1~17，18~23，和 24~69 三个阶段，分配到 qp 1~17 的画面算作低量化，分配到 qp 18~23 的画面算作中量化，分配到 qp 24~69 的画面算作高量化。</p>
-            <p>平面等本来就没有什么信息的分块就算经过高量化，也不会影响其画质；主要的损失出现在有无意地给内容复杂的纹理细节分块分配了高量化或降噪处理，导致了信息的损失。降噪处理影响画面细节的原因是噪点本身是突兀的像素值，所以只能用高频信息表示。</p>
-            <!-- x265 教程副本，更改需手动同步 { -->
-            <h3>上层，下层与双层模式</h3>
-            <p class="text-blue-emph">仅于本教程中使用以解释各种率控制模式搭配方法的概念。</p>
-            <ul>
-                <li>上层模式代表 ABR，CRF，CQP 等主要的率控制策略，留空则 x264/5 会根据预设参数选择默认的上层模式</li>
-                <li>下层模式起到对上层模式的辅助作用，但不是必选，大多也不常用</li>
-                <li>用户可以据需求选择任意一种上层模式搭配任意一种下层模式，但两者都不能超过一种</li>
-                <li>双层模式完全接管了率控制策略，因此不能额外添加别的上层或下层模式</li>
-                <li>其他模式对上下层率控制模式的结果起到限制作用，不参与率控制计算过程，可选</li>
-                <li>其它的视频编码器可能仅支持一两种上和下层模式</li>
-            </ul>
-            
-            <h3>上层 - 质量呼应码率 CRF 模式</h3>
-            <p>全称 Constant Rate Factor。压制三角形下，距离妥协中心点最近的模式。因此也是压制最常用的模式。</p>
+
+            <h4>CRF 模式</h4>
+            <p>质量呼应码率模式，统称 CRF。压制三角形下距离妥协中心点最近的模式。因此也是压制最常用的模式。编码器逐帧分析量化强度，为每帧分配一个量化值。</p>
             <code><b>--crf</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0~51，默认 23&gt;据 cplxBlur，cutree，B 帧偏移给每帧分配各自 qp 的固定目标质量模式，或简称质量呼应码率模式，统称 crf。素材级画质设在 16~18，收藏~高压画质设在 19~20.5，YouTube 是 23。由于动画和录像的内容差距，动画比录像要给低点</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0~51，默认 23&gt;据 cplxBlur，cutree，B 帧偏移给每帧分配各自 qp 的固定目标质量模式。素材级画质设在 16~18，收藏~高压画质设在 19~20.5，YouTube 是 23</p>
             
-            <h3>上层 - 平均码率 ABR 模式</h3>
-            <p>全称 Average Bitrate。编码器自行判断量化程度，尝试压缩到用户定义的平均码率 average bitrate 上，速度最快</p>
+            <h4>ABR 模式</h4>
+            <p>编码器自行判断量化程度，尝试压缩到用户定义的平均码率 average bitrate 上，速度最快</p>
             <code><b>--bitrate</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps&gt;平均码率。若视频易压缩且码率给高，就会得到码率比设定的片子；反过来低了会不照顾画质强行提高量化，使码率达标。如果给太低则会得到码率不达标，同时画质差的片子。平均码率模式，除 2pass 分隔，一般推流用的"码率选项"就是这个参数，速度快但同时妥协了压缩</p>
 
-            <h3>双层 - 恒定量化值 CQP 模式</h3>
-            <p>全称 Constant Quantizer Parameter</p>
+            <h4>CQP 模式</h4>
             <code><b>--qp</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~69，<span class="text-red-emph">禁用 CRF/ABR/模式决策/率失真优化</span>&gt;设定全局量化强度。除非有既定目的，否则不建议使用。如果要手动指定特定范围的帧类型和量化值，则应使用 SBRC 下层模式</p>
-            <!-- } -->
-            <h4>下层 - Zones 分段压制模式</h4>
+
+            <h4>Zones 分段模式</h4>
             <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容</button>
             <div class="coll-content">
                 <p>手动指定帧数片段，每个片段允许指定一种上层模式和一些控制参数。</p>
@@ -1676,8 +1727,8 @@
                     <li>参数 q= 即 CQP 模式的 <code>--qp</code> 参数</li>
                 </ol>
             </div>
-            <!-- x265 教程副本，更改需手动同步 { -->
-            <h3>双层 - 2pass-ABR 模式</h3>
+
+            <h3>2pass 模式</h3>
             <p>先用 CRF 模式分析整个视频总结可压缩信息，后根据 ABR 模式的码率限制统一分配量化值。有 pass 2 给特别高的平均码率，输出最小损失的最小体积近无损模式，以及 pass2 给码率硬限的全局整体压缩模式</p>
             <code><b>--pass 1</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;挡位，导出 stats 数据文件&gt;</p>
@@ -1686,7 +1737,7 @@
             <code><b>--stats</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径，默认在 x264/5 所在目录下&gt;设定导出和导入 stats 数据文件的路径和文件名</p>
 
-            <h3>下层 - VBR，CBR 模式</h3>
+            <h3>VBR 模式</h3>
             <p>说明见<a href="../../x265-web-tutorial/HTML/index.html#h2-8">x265 教程网页版</a></p>
             <code><b>--vbv-bufsize</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关=0，<span class="text-red-emph">小于 maxrate</span>&gt;编码器解出原画后，最多可占的缓存每秒。bufsize÷maxrate=播放时解码出每 gop 原画帧数的缓冲用时（秒）。<span class="text-blue-emph">值的大小相对于编完 GOP 平均大小。编码器用到是因为模式决策要解码出每个压缩步骤中的内容与原画作对比用</span>。</p>
@@ -1751,7 +1802,7 @@
             <h3>率控制模式的选择</h3>
             <p>一般情况下，用户要求在可接受的编码速度（fps 为单位）下，得到画质较高、文件体积较小的视频，构成了压制三角形。而不同的率控制模式，包括不同的视频编码器都会影响这一点。注意妥协点有三种：不省时，码率大，画质差，对应了三种不同的编码策略。</p>
             <div class="align-items-center">
-                <img src="files/rate-control/rate-control-mode-selection.png" alt="image25" class="img-medium">
+                <img src="files/rate-control/rate-control-mode-selection.png" alt="image26" class="img-medium">
                 <p class="text-gray-side">图：不同率控制模式权衡编码速度，画质，文件体积的能力不同，当然有的模式根本没得选</p>
             </div>
             <ul>
@@ -1815,8 +1866,8 @@
             <h3>去块滤镜</h3>
             <p>修复“CRF/ABR 模式在某些场景的部分区域里分配量化值过高时，宏块间出现明显横纵割痕瑕疵”的平滑滤镜。编码器内去块利用了帧内帧间搜索到的信息，而理论上相比外部滤镜误判更少（当然外部滤镜也能做动态和帧内搜索）。去块大体上是检查 1 像素宽，且此块边缘没有较大像素值变化造成的横纵边缘（所以也存在误判）。块失真源自块间不统一的量化程度，有的块量化高流就会从邻近画面里凸现出来。而去块手段是平滑滤镜，因此要降低强度才适用于高码视频，动漫，素材录屏等锐利画面。边界强度 Boundary strength（去块力度判断）</p>
             <div class="align-items-center">
-                <img src="files/deblocking/Deblock-detection-visualization.png" alt="image26" class="img-medium">
-                <img src="files/deblocking/Deblock-edge-visualization.png" alt="image27" class="img-medium">
+                <img src="files/deblocking/Deblock-detection-visualization.png" alt="image27" class="img-medium">
+                <img src="files/deblocking/Deblock-edge-visualization.png" alt="image28" class="img-medium">
                 <p class="text-gray-side">图：取最小 8x8 范围（两个 4x4 分块）间的界线举例。</p>
             </div>
 
@@ -1882,10 +1933,10 @@
                 <li><span class="text-blue-math">\(\lambda &gt; 0\)</span>则开销大于失真——保画质的率失真收益大于压缩，尽可能降低量化强度</li>
             </ul>
             <div class="align-items-center">
-                <img src="files/rate-distorsion-optimization/x264-JM-RDO-Lambda.png" alt="image28" class="img-medium">
-                <img src="files/rate-distorsion-optimization/RDO-Lambda-Slopes.png" alt="image29" class="img-medium">
+                <img src="files/rate-distorsion-optimization/x264-JM-RDO-Lambda.png" alt="image29" class="img-medium">
+                <img src="files/rate-distorsion-optimization/RDO-Lambda-Slopes.png" alt="image30" class="img-medium">
                 <p class="text-gray-side">图：率失真优化中λ的斜度变化与效果</p>
-                <img src="files/rate-distorsion-optimization/RDO-qStep-Chart.png" alt="image30" class="img-medium">
+                <img src="files/rate-distorsion-optimization/RDO-qStep-Chart.png" alt="image31" class="img-medium">
                 <p class="text-gray-side">图：率 - 失真表格中不断调整并得到“×”的实际效果</p>
             </div>
             <!-- } -->
@@ -1916,7 +1967,7 @@
             <code><b>--no-psy</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;若视频量化很低，纹理清楚，没有优化的必要可以关。但大部分情况下不应该关，而是用较低的优化强度</p>
             <div class="align-items-center">
-                <img src="files/rate-distorsion-optimization//Principle-on-Image-Quality.png" alt="image31" class="img-small">
+                <img src="files/rate-distorsion-optimization//Principle-on-Image-Quality.png" alt="image32" class="img-small">
                 <p class="text-gray-side">图：心理视觉优化保留高频信号，同时压缩周围和其中的非高频信号</p>
             </div>
 
@@ -2088,31 +2139,31 @@
                         <li>取出字次数最小的两个元素 (5, 'a'), (9, 'b')，合为 (14, 'ab')
                             <ul class="text-smaller">
                                 <li>得 (12, 'c'), (13, 'd'), (16, 'e'), (45, 'f'), (14, 'ab')</li>
-                                <li><img src="files/huffman-coding/1.png" alt="image32" class="img-small"></li>
+                                <li><img src="files/huffman-coding/1.png" alt="image33" class="img-small"></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (12, 'c'), (13, 'd')，合并为 (25, 'cd')
                             <ul class="text-smaller">
                                 <li>得 (14, 'ab'), (16, 'e'), (45, 'f'), (25, 'cd')</li>
-                                <li><img src="files/huffman-coding/2.png" alt="image33" class="img-small"></li>
+                                <li><img src="files/huffman-coding/2.png" alt="image34" class="img-small"></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (14, 'ab'), (16, 'e')，合并为 (30, 'abe')
                             <ul class="text-smaller">
                                 <li>得 (25, 'cd'), (45, 'f'), (30, 'abe')</li>
-                                <li><img src="files/huffman-coding/3.png" alt="image34" class="img-medium"></li>
+                                <li><img src="files/huffman-coding/3.png" alt="image35" class="img-medium"></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (25, 'cd'), (30, 'abe')，合并为 (55, 'cdeab')
                             <ul class="text-smaller">
                                 <li>得 (45, 'f'), (55, 'CDEAB')</li>
-                                <li><img src="files/huffman-coding/4.png" alt="image35" class="img-medium"></li>
+                                <li><img src="files/huffman-coding/4.png" alt="image36" class="img-medium"></li>
                             </ul>
                         </li>
                         <li>取出字次数最小的两个元素 (45, 'f'), (55, 'cdeab')，合并为 (100, 'fcdeab')
                             <ul class="text-smaller">
                                 <li>得 (100, 'FCDEAB')</li>
-                                <li><img src="files/huffman-coding/5.png" alt="image36" class="img-medium"></li>
+                                <li><img src="files/huffman-coding/5.png" alt="image37" class="img-medium"></li>
                             </ul>
                         </li>
                     </ol>
@@ -2159,7 +2210,7 @@
             <h3>编码块标记 CBF</h3>
             <p>Coded block flag 会被标在预测和/或与其相应的变换单元（亮度块加色度块）中表示该单元是否附有较多的残差系子：CBF=1 代表有、0 代表没有。引导四叉树 quadtree 算法进一步分枝——宏块向下分块。详见 <a href="https://patents.google.com/patent/US9749645B2/en">US9749645B2</a>。</p>
             <div class="align-items-center">
-                <img src="files/entropy-coding-optimization/Quad-tree-bitmap.svg" alt="image37" class="img-medium">
+                <img src="files/entropy-coding-optimization/Quad-tree-bitmap.svg" alt="image38" class="img-medium">
                 <p class="text-gray-side">图：四叉树的分块。见<a href="https://en.wikipedia.org/wiki/Quadtree">维基百科</a></p>
             </div>
 
@@ -2177,7 +2228,7 @@
             <h3>死区量化器 Dead-zone Quantizer 优化</h3>
             <p>死区，也叫 dead-band，netual-zone，或无作用区，代表输入到输出波形中可归零的部分。</p>
             <div class="align-items-center">
-                <img src="files/entropy-coding-optimization/Deadband-operator.svg" alt="image38" class="img-small">
+                <img src="files/entropy-coding-optimization/Deadband-operator.svg" alt="image39" class="img-small">
                 <p class="text-gray-side">图：信号死区设 0.5 时，输入到输出 <span class="text-blue-pure">y</span>=<span class="text-red-pure">x</span> 波形的变化。见<a href="https://en.wikipedia.org/wiki/Deadband">维基百科</a></p>
             </div>
             <p>死区量化器的用途同上。x264 中，<code>--trellis</code>没有完全开启（2）时，死区量化器会被替代启用。默认设置下：</p>
@@ -2217,9 +2268,9 @@
             <p>原本是高端音响的标准，代表最小音量下没有一点电流噪声，最大音量可以和真实场景媲美的性能。与扬声器的大小和材质是否匹配场景相关，即「重硬件轻软件」。因为只要硬件达到 HDR 1000 规格，那么只要调高亮度就可以了；而随便一个中位水平的电视/显示器/手机屏幕亮度都能达到 HDR 400 标准。</p>
             <p>HDR 信息分为硬件、软件、以及数据，共 3 类不统一的标准。为保证色彩正确，压制时应额外检查并确保与视频源的一致性。如：</p>
             <div class="align-items-center">
-                <img src="files/video-usability-information/Metadata-for-VUI-HDR-1.png" alt="image39" class="">
+                <img src="files/video-usability-information/Metadata-for-VUI-HDR-1.png" alt="image40" class="">
                 <p class="text-gray-side">图 1: cll 1000,640. master-display 由 G(13250…) 开头，L(10000000,1) 结尾</p>
-                <img src="files/video-usability-information/Metadata-for-VUI-HDR-2.png" alt="image40" class="img-medium">
+                <img src="files/video-usability-information/Metadata-for-VUI-HDR-2.png" alt="image41" class="img-medium">
                 <p class="text-gray-side">图 2: cll 1655,117/L(40000000,50)/colorprim bt2020/colormatrix bt2020nc/transfer smpte2084</p>
             </div>
             <code><b>--master-display</b></code>
@@ -2536,19 +2587,19 @@
                         <th class="t-light-gray"><a href="https://shana.pe.kr/shanaencoder_download">Shana<br>Encoder</a></th>
                         <td class="px-1 text-smaller">ffmpeg-CLI 搭配部分 GUI，上手较慢。使用了 ffmpeg 内嵌的 libx264，libx265，NVEnc</td>
                         <td style="max-width: 22rem;">
-                                <img src="files/tools-download/shana-encoder.png" alt="image41" class=""><br>
-                                <img src="files/tools-download/shana-encoder-1.png" alt="image42" class="">
+                                <img src="files/tools-download/shana-encoder.png" alt="image42" class=""><br>
+                                <img src="files/tools-download/shana-encoder-1.png" alt="image43" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://bitbucket.org/muldersoft/simple-x264-launcher/downloads/">Simple x264 Launcher</a></th>
                         <td class="px-1 text-smaller">内嵌 AviSynth，支持便携版 VapourSynth，额外支持 x265 和 NVEnc 编码器，适合批量压制</td>
-                        <td style="max-width: 22rem;"><img src="files/tools-download/simple-x264-launcher.png" alt="image43" class=""></td>
+                        <td style="max-width: 22rem;"><img src="files/tools-download/simple-x264-launcher.png" alt="image44" class=""></td>
                     </tr>
                     <tr>
                         <th class="t-light-gray">小丸工具箱</th>
                         <td class="px-1 text-smaller">操作简单，适合入门的中文软件。网上能搜到详细教程。内嵌 MediaInfo，mp4box，Mkvtoolnix<br>镜像：<a href="https://pan.baidu.com/s/1VHonGHoZ0DmQBNZaRjML2A&pwd=crhu">百度云</a> 提取码"crhu"</td>
-                        <td style="max-width: 22rem;"><img src="files/tools-download/xiaowan-toolbox.png" alt="image44" class=""></td>
+                        <td style="max-width: 22rem;"><img src="files/tools-download/xiaowan-toolbox.png" alt="image45" class=""></td>
                     </tr>
                 </tbody>
             </table>
@@ -2565,29 +2616,29 @@
                         <th class="t-light-gray"><a href="https://mpv.io/installation/">mpv</a></th>
                         <td class="px-1 text-smaller">开源，支持便携的现代视频播放器。见 <a href="https://nazorip.site/archives/1052/">安装与配置</a>教程</td>
                         <td style="max-width: 22rem;">
-                            <img src="files/tools-download/mpv.png" alt="image45" class="">
+                            <img src="files/tools-download/mpv.png" alt="image46" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://www.voukoder.org/">Voukoder</a></th>
                         <td class="px-1 text-smaller">开源 Premiere Vegas After Effects 压制导出插件，分为 Voukoder 和 V-Connector 两部分</td>
                         <td style="max-width: 22rem;">
-                            <img src="files/tools-download/voukoder.png" alt="image46" class="">
+                            <img src="files/tools-download/voukoder.png" alt="image47" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://obsproject.com/zh-cn/download">OBS</a></th>
                         <td class="px-1 text-smaller">强大的开源直播框架和软件，设置略比传统录屏软件复杂，但效果也更好</td>
                         <td style="max-width: 22rem;">
-                            <img src="files/tools-download/obs.png" alt="image47" class="">
+                            <img src="files/tools-download/obs.png" alt="image48" class="">
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="t-light-gray"><a href="https://mediaarea.net/zh-CN/MediaInfo">MediaInfo</a></th>
                         <td class="px-1 text-smaller">开源的 GUI 媒体元数据/视音频格式读取器，用于配置正确的压制参数</td>
                         <td style="max-width: 22rem;">
-                            <img src="files/tools-download/mediainfo.png" alt="image48" class=""><br>
-                            <img src="files/tools-download/mediainfo-1.png" alt="image49" class="">
+                            <img src="files/tools-download/mediainfo.png" alt="image49" class=""><br>
+                            <img src="files/tools-download/mediainfo-1.png" alt="image50" class="">
                         </td>
                     </tr>
                     <tr>
