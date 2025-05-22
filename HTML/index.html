@@ -1474,10 +1474,10 @@
 
             <h3>量化</h3>
             <p>简单地说，是根据不同的量化强度，块类型（亮度、色度、16x16、8x8、4x4 块）给出对应变换块的量化表/矩阵。将变换后的块点除量化矩阵，得到剩余 DCT 系子的块，从而减少高频的 DCT 系子分量，实现压缩。</p>
-            <h4>量化值 qp</h4>
-            <p>Quantization Parameter 是 CRF，ABR 等码率质量控制模式算出，以及率失真优化量化、模式决策等步骤所调整的中间变量</p>
+            <h4>量化值 Quantization Parameter</h4>
+            <p>QP 是 CRF，ABR 等码率质量控制模式算出，以及率失真优化量化、模式决策等步骤所调整的中间变量</p>
             <h4>量化步长 <span class="text-blue-math">\(Q_{\text{step}}\)</span></h4>
-            <p>Quantization Step-size 是量化值 QP 参数值与实际量化强度之间的映射值。规则大致是 QP 增加 1，则 qStep 增加 0.125；QP 每 +6 则 qStep 乘以 2，使其越往后增量越大：</p>
+            <p>Quantization Step-size 是量化值量化强度参数值与实际量化强度之间的映射值。规则大致是量化强度增加 1，则 qStep 增加 0.125；QP 每 +6 则 qStep 乘以 2，使其越往后增量越大：</p>
             <div class="overflow-auto">
                 <table class="table-center align-items-center text-smaller">
                     <tbody>
@@ -1557,37 +1557,37 @@
                         <tr class="border-bottom t-light-gray">
                             <td class="px-1">率控制</td>
                             <td class="px-1">CRF/ABR</td>
-                            <td class="px-1">逐帧 QP（或 cqp → 全局 QP）</td>
+                            <td class="px-1">逐帧量化强度（或全局量化强度）</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1">I-P 帧质量比</td>
                             <td class="px-1">I-P Ratio</td>
-                            <td class="px-1">P 帧 QP</td>
+                            <td class="px-1">P 帧量化强度</td>
                         </tr>
                         <tr class="border-bottom t-light-gray">
                             <td class="px-1">P-B 帧质量比</td>
                             <td class="px-1">P-B Ratio</td>
-                            <td class="px-1">B 帧 QP</td>
+                            <td class="px-1">B 帧量化强度</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1">自适应量化</td>
                             <td class="px-1">Adaptive Quantzation AQ</td>
-                            <td class="px-1">逐块 QP</td>
+                            <td class="px-1">逐块量化强度</td>
                         </tr>
                         <tr class="border-bottom t-light-gray">
                             <td class="px-1">（率失真优化）模式决策</td>
                             <td class="px-1">Mode Decision MD</td>
-                            <td class="px-1">逐块 QP</td>
+                            <td class="px-1">逐块量化强度</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1">率失真优化量化</td>
                             <td class="px-1">Rate-distortion optimized quantization RDOQ</td>
-                            <td class="px-1">逐块 QP</td>
+                            <td class="px-1">逐块量化强度</td>
                         </tr>
                         <tr class="t-light-gray">
-                            <td class="px-1">色度块 QP 偏移</td>
+                            <td class="px-1">色度块量化强度偏移</td>
                             <td class="px-1"><code>--chroma-qp-offset</code></td>
-                            <td class="px-1">亮度与色度块 QP</td>
+                            <td class="px-1">亮度与色度块量化强度</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1595,87 +1595,106 @@
 
             <h2 id="h2-8">率控制</h2>
 
-            <h3>生活中的例子</h3>
+            <h3>码率分布成因</h3>
+            <p>有损压缩中，只是优化码率分配本身就可以提高当前视频的画质。这是因为参考帧 P、B 帧自身的主要信息来自于被参考帧 I 帧，其中被冗余的宏块只储存“相对于被参考帧的动态向量”，和“残差画面”。这种画面并不锐利，因而（在熵编码后的）体积占比非常小。而尽管被参考帧 I 帧的体积很大，但 I 帧自身的画面为其后的若干至数百帧提供了参考，使得高画质的 I 帧反而提高了帧间冗余压缩率（与使用 10bit 位深后，码率不增反降的原因相同）。假如被参考帧 I 帧的有损压缩较高，那么在环路滤波/率失真优化过程中，编码器会发现 I 帧与 P、B 帧之间不太相像；便会提高残差画面的细节量。于是虽然峰值码率会降低，但 I 帧后的一系列帧都会比以往大一些，造成整体的码率/文件体积上升。在这个基础上：</p>
+            <ul>
+                <li>如果视频本身的画面变化偏大，那么参考帧 P、B 帧一开始就会储存更多的残差信息</li>
+                <li>如果一开始就要求限制峰值码率，那么即使文件体积增加，码率提高也是没办法的事</li>
+                <li>如果一开始就要求固定文件体积大小（不超过某个程度），那么原本的“码率提高”就会完全变成“画质降低”</li>
+            </ul>
+            <div class="align-items-center">
+                <img src="files/rate-control/hyouka-frame-distro.webp" alt="image24" class="">
+                <p class="text-gray-side">图：这段视频约有 40000 帧，其中 I 帧的数量占 1%、但峰值码率相对于网速来说很大。</p>
+                <img src="files/rate-control/solevante-frame-distro.webp" alt="image25" class="">
+                <p class="text-gray-side">图：这段场景复杂的视频约有 6000 帧，除了 I 帧的尖峰以外，出现了整块隆起的码率分布。</p>
+            </div>
 
+            <h3>压制三角形</h3>
+            <p>一般情况下，用户希望在可接受的编码速度（fps 为单位）下，得到画质较高、文件体积较小的视频，构成了此消彼长的基本压制三角形。要求速度和文件体积则失画质、要求文件体积和画质则损速度、要求速度和画质则损文件体积。</p>
+            <div class="align-items-center">
+                <img src="files/rate-control/rate-control-mode-selection.png" alt="image26" class="img-medium">
+                <p class="text-gray-side">图：不同率控制模式权衡编码速度，画质，文件体积的能力不同，当然有的模式根本没得选</p>
+            </div>
+
+            <h3>率控制模式</h3>
+
+            <h4>平均码率模式 Average Bitrate</h4>
+            <ul>
+                <li>设定统一的“平均每帧大小”（以码率每秒 / Kbps 统计）</li>
+                <li>编码器大致上计算（当前总码率÷前瞻所及帧数），只要这个平均值不超过用户设定的平均码率，就按照现有逻辑（MEMC、帧类型、块大小）设定每帧的量化强度</li>
+                <li>参考帧 P、B 帧往往体积不大，因此能被分配到足够多的码率；被参考帧 I 帧则不一定</li>
+            </ul>
+            <h5>ABR 模式优缺点</h5>
+            <ul class="text-smaller">
+                <li>思路简单快速</li>
+                <li>适合直播场景</li>
+                <li>编码器编码 GOP 前半部分时照此操作无妨，但到了后面，若画面突然开始变化，那么当前码率会立刻上升到设定的平均码率上限，此时只能分配更强的量化强度的“码率分配不匀问题”</li>
+                <li>如果用户设定的码率太低，ABR 模式会设立强量化，如果强量化不够还会启用一些滤镜，导致画面损失太严重，无法辨认内容</li>
+                <li>如果用户设定的码率大于等于如 CRF、2pass 模式，则仍可能遇到“码率分配不匀问题”</li>
+            </ul>
+            <h4>全局/固定量化强度模式 Constant Quantizer</h4>
+            <ul>
+                <li>跳过设定量化强度的算法，直接设定 I、P、B 帧各自的量化强度</li>
+            </ul>
+            <h5>CQP 模式优缺点</h5>
+            <ul class="text-smaller">
+                <li>速度最快</li>
+                <li>可以通过设定最小量化值的方法跳过量化，实现一种无损压缩模式</li>
+                <li>码率分配不匀问题最严重</li>
+            </ul>
+            <h4>质量呼应码率模式 Constant Rate Factor</h4>
+            <ul>
+                <li>在设定量化强度指标（CRF 参数值）的基础上，允许编码器根据当前画面的特性与帧类型进一步优化每帧的量化强度分配</li>
+                <li>若 CRF 值较低，而当前帧可以使用较高的量化压缩强度（如参考帧 P、B 帧）时，编码器会提高量化强度；这样不但文件体积缩小，损失的画质也肉眼难辨</li>
+                <li>若 CRF 值较高，则编码器会用同样的逻辑，并同步提高所有帧类型的量化强度；这样码率的分配仍然会是均匀的极优解</li>
+            </ul>
+            <h5>CRF 模式优缺点</h5>
+            <ul class="text-smaller">
+                <li>同码率下的压缩率、画质最好，最适合分享和收藏高质量小体积视频素材</li>
+                <li>在要求实时编码的场景中可能会因为编码 I 帧考虑太多、用时过长、导致延迟丢帧</li>
+                <li>调整 CRF 和 CQP 模式不能直接控制文件体积，尽管这是因为“视频在这个质量下，只能压缩到这个程度”，但有时会导致用户不理解</li>
+                <li>在严格要求视频体积的场景中，如微信等平台会因为文件体积限制而不便于分享
+                    <ul><li>尽管这种情况下应该用尽可能先进的编码器，但很多用户不会安装播放器，而平台或手机的默认播放器不认识或不想付解码专利费，所以打不开</li></ul>
+                </li>
+            </ul>
+            <h4>恒定码率模式 Constant Bitrate、可变码率模式 Variable Bitrate</h4>
+            <ul>
+                <li>在 ABR 或 CRF 模式的基础上启用一种码率缓冲区（VBV）的条件，只要缓冲区被当前的帧大小填满便提高量化强度</li>
+            </ul>
+            <h5>VBR 模式优缺点</h5>
+            <ul class="text-smaller">
+                <li>可以解决峰值码率过大的问题，换来整体文件体积提升，整体画质理论上不会下降（或者是反过来）</li>
+                <li>使得 CRF 模式能够更好地胜任直播、串流（外网网络播放）场景</li>
+            </ul>
+            <h4>两遍模式 2pass</h4>
+            <ul>
+                <li>Pass 1：运行 CRF 模式，得出每帧的量化强度，这个强度就是码率分配的</li>
+                <li>Pass 2：运行 ABR 模式，并根据一次性调整所有帧的量化强度</li>
+                <li>尽管不同的编码器对 2pass 模式的实现有差异，但基本流程与此处一致</li>
+            </ul>
+            <h5>2pass 模式优缺点</h5>
+            <ul class="text-smaller">
+                <li>解决了 ABR 模式在 GOP 前后码率分配不匀的问题</li>
+                <li>码率分配不匀的问题被弱化，只要最终码率类似，2pass 就能做到相当于 CRF 同码率的均匀度</li>
+                <li>能够精准控制文件体积（目标体积 ÷ 视频时长 = 目标码率），适用于严格要求视频体积，还要考虑编码兼容性的场景</li>
+                <li>Pass 2 与 Pass 1 的帧类型分布（绝大多情况下）必须完全一致，所以如转场、关键帧、前瞻进程等设置需要更改时只能重做 Pass 1</li>
+                <li>如果要使用高压缩，则必须在 Pass 1 就使用速度较慢动态搜索与补偿，从而使得整个流程下来的的编码用时远超其他模式</li>
+                <li>流程复杂，故障点（Point of failure）较多，操作比较困难</li>
+            </ul>
+            <!--<h3>生活中的例子</h3>
             <h4>交通网络</h4>
-            <p>率控制算法根据用户提供的条件来计算每帧画面的量化压缩强度，强度越高则画面损失越大。P、B 帧自身的主要信息来自于被参考帧，所以被冗余的宏块会储存“相对于被参考帧的动态向量”，和“残差画面”。这种画面并不锐利，因而可以在启用相比 I 帧更高的量化压缩强度时，保持较高的质量，因此 P、B 帧的体积会远小于 I 帧。因此，我们可以使用交通工具的大小来比喻参考帧与被参考帧；交通部门的规划比作码率控制策略。</p>
             <ul>
                 <li>I 帧：火车。一次运载大量乘客到远距离，一般情况下一辆相当于数十、甚至数百辆其它车，于此相对的是“油箱”也大</li>
                 <li>P 帧：公交车。一次运载较多乘客到近距离，在乘客人流量大的时候会分担火车的运力，油箱大小中规中矩</li>
                 <li>B 帧：出租车。一次运载少量乘客到短距离，但相比前两者可以往返载客，在乘客人流量小的时候常用于满足残余乘客的运载需求，油箱小</li>
             </ul>
-            <div class="align-items-center">
-                <img src="files/rate-control/hyouka-frame-distro.webp" alt="image24" class="">
-                <p class="text-gray-side">图：这段视频约有 40000 帧，其中 I 帧的数量占 1%、却是码率的大头，而进一步压缩 I 帧则意味着其作为被参考帧的价值受损，因此原本应该参考它的帧不能参考，需要自备 I 块，因此视频整体的体积会提升，但码率尖峰能被降低。</p>
-                <img src="files/rate-control/solevante-frame-distro.webp" alt="image25" class="">
-                <p class="text-gray-side">图：这段场景复杂的视频约有 6000 帧，除了 I 帧的尖峰以外，出现了整块隆起的码率分布，这种视频的限码难以使用 ABR（甚至包括 VBR）实现，而是需要 2pass、CRF 等比较聪明的模式。</p>
-            </div>
-
             <h4>交通资源分配举例</h4>
             <p>假定某城交通部门要为成百上千辆火车、公交和出租车每周统一加燃油。给这些车辆加油不能多，不能少，于是有了 5 种策略——ABR、CQP（CBR）、CRF、VBR、2pass/2‑pass。</p>
             <ul>
                 <li>油：代表最终的视频码率</li>
-                <!--<li>加油站：对应视频编码可用 CPU 核心与线程的数量，常规来说一个加油桩有 2 把加油枪、一颗核心可以有 2 个线程</li>-->
                 <li>加油过少：公共交通运力不足，只得拒载一部分乘客；对应视频画面损失</li>
                 <li>加油过多：公共交通运力正常，但多出来的油有 100% 的概率会被盗走，徒增成本；对应视频码率虚高</li>
-            </ul>
-
-            <h4>平均码率模式 Average Bitrate</h4>
-            <ul>
-                <li>交通部门给出统一的“平均每辆油费报价”，加油师傅按价加油</li>
-                <li>加油师傅不知道要给多少辆车加油，只知道每辆加平均报价的油</li>
-                <li>加油师傅在加油时计算（当前总价÷目光所及车辆数），从而检查当前总价是否触及“平均每辆油费”，并在两者持平时停止加油，并给下一辆车加油</li>
-                <li>出租车油箱小，所以往往加满油之后，当前的总价也不会触及“平均每辆油费”</li>
-                <li>火车油箱大，所以往往会导致（当前总价÷目光所及车辆数）触及“平均每辆油费”，因此往往加不满，多出的运力靠公交车负担</li>
-            </ul>
-            <h5>ABR 模式优缺点</h5>
-            <ul class="text-smaller">
-                <li>思路简单快速</li>
-                <li>前十几辆车照此操作无妨，但加油师傅不知道到底有多少辆车，所以往往导致加油顺序靠后的车大多缺油，甚至无法使用</li>
-            </ul>
-            <h4>固定量化强度模式 Constant Quantizer</h4>
-            <ul>
-                <li>交通部门给出“油箱百分比目标”，机师在驾驶舱盯着仪表，达到油箱百分比后口头叫停加油师傅</li>
-            </ul>
-            <h5>CQP 模式优缺点</h5>
-            <ul class="text-smaller">
-                <li>交通部门保证至少每辆车都有一定量的油，至少所有车都可以开动并为城市分担运载需求</li>
-                <li>实际上，有的车辆虽然是公交车和火车，但运载计划确实依客流而定的，于是交通部门往往遇到大多数车辆加油过多，少数车辆加油过少的问题</li>
-            </ul>
-            <h4>质量呼应码率模式 Constant Rate Factor</h4>
-            <ul>
-                <li>交通部门给出“运载计划”和“油箱百分比目标”</li>
-                <li>“运载计划”代表目标里程数——实际的耗油量；视频中代表设定帧类型/帧间参考结构的机制，如动态补偿</li>
-                <li>若油箱百分比目标大于实际耗油量，则司机根据实际耗油量口头叫停加油师傅</li>
-                <li>否则，司机向交通部门反馈，交通部门将这辆车计划后的小车换大车、大车换火车</li>
-            </ul>
-            <h5>CRF 模式优缺点</h5>
-            <ul class="text-smaller">
-                <li>不但每辆车都有油，而且大多数车辆不会有加油过多的问题；视频中，同码率效益最好</li>
-                <li>虽然总体上交通部门用油减少，后面好几辆车因为等待火车加油，但有时时间来不及，导致运载计划延误而取消了；代表网络视频因编码延迟丢包的问题</li>
-            </ul>
-            <h4>可变码率模式 Variable Bitrate</h4>
-            <ul>
-                <li>交通部门在给出“运载计划”和“油箱百分比目标”的同时，还限制每辆车的油费上限</li>
-                <li>司机盯着仪表并随时准备叫停；加油师傅盯着油费计并随时准备关闸</li>
-            </ul>
-            <h5>VBR 模式优缺点</h5>
-            <ul class="text-smaller">
-                <li>在总成本可控的前提下，中小机型一般都能加满，并且按照运载计划以防加多，利润也可观</li>
-                <li>大飞机由于上限受限而油量不足，只能飞短程，不能飞潜在利润更大的长程航线</li>
-            </ul>
-            <h4>两遍模式 2pass</h4>
-            <ul>
-                <li>第一遍：交通部门拟定一项“油箱百分比目标”和“运载计划”并发给司机，司机算出座驾所需的实际油量并反馈，交通部门制表</li>
-                <li>第二遍：交通部门把“车队油量表”和“平均每辆油费”发给加油团队，加油师傅之间商量并给出更均衡的“平均每辆油费”目标</li>
-            </ul>
-            <h5>2pass 模式优缺点</h5>
-            <ul class="text-smaller">
-                <li>只要第二遍给的“平均每辆油费”正常，就解决了 ABR 模式前后分油不均的问题</li>
-                <li>流程复杂，需要两次计算和调整，反而耽误很多时间，降低了车队出勤率</li>
-                <li>由于最终目标照旧是“平均每辆油费”，所以仍会出现油量过少或油量过多问题</li>
-            </ul>
-            <p>对应“油箱百分比目标”、或“平均每辆油费报价”限制类似。一般来说，凡不是传输到聊天软件或视频平台的用途中，视频的画质就会比体积重要，画质指标必然是第一、必须是第一、且只能是第一，体积控制必然、必须且只能是在画质条件满足后的附加项。这是因为冗余压缩算法的提升、硬盘容量和读写性能的增加会客观存在，使得“视频体积限制”总会自然衰减的结果。</p>
+            </ul>-->
 
             <code><b>--ipratio --pbratio</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点，默认 1.4、默认 1.3&gt;P 帧相比 IDR/i 帧，以及 B/b 帧相比 P 帧的质量偏移。默认预设是给录像视频片源用的。</p>
@@ -1688,7 +1707,7 @@
             <h4>CRF 模式</h4>
             <p>质量呼应码率模式，统称 CRF。压制三角形下距离妥协中心点最近的模式。因此也是压制最常用的模式。编码器逐帧分析量化强度，为每帧分配一个量化值。</p>
             <code><b>--crf</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0~51，默认 23&gt;据 cplxBlur，cutree，B 帧偏移给每帧分配各自 qp 的固定目标质量模式。素材级画质设在 16~18，收藏~高压画质设在 19~20.5，YouTube 是 23</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0~51，默认 23&gt;据 cplxBlur，cutree，B 帧偏移给每帧分配各自量化强度的固定目标质量模式。素材级画质设在 16~18，收藏~高压画质设在 19~20.5，YouTube 是 23</p>
             
             <h4>ABR 模式</h4>
             <p>编码器自行判断量化程度，尝试压缩到用户定义的平均码率 average bitrate 上，速度最快</p>
@@ -1720,12 +1739,19 @@
             <code><b>--stats</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径，默认在 x264/5 所在目录下&gt;设定导出和导入 stats 数据文件的路径和文件名</p>
 
-            <h3>VBR 模式</h3>
-            <p>说明见<a href="../../x265-web-tutorial/HTML/index.html#h2-8">x265 教程网页版</a></p>
+            <h3>VBR，CBR 模式</h3>
+            <p>带宽是有限资源。一旦网络、硬盘、内存、PCIE 等等带宽慢于当前视频码率，播放就会卡顿。因此在播放流媒体前，播放器会设置一段内存缓冲区，利用了传输速度有时会快于当前视频码率的随机条件，预加载一些数据以求播放不卡顿。此时问题变成了“缸里一端加水、另一端放水，注水量变化但缸里一直有水，求缸的大小”。如此，只要平均传输带宽大于 GOP 平均码率则播放流畅。有的大型 3D 游戏中没有加载缓冲区，导致无论电脑内存多大，只要玩家移动到触发地图加载的区域后，游戏才会开始读盘而突然卡顿。</p>
+            <p>基于缓冲区的量化控制 VBV 全称 Video Buffer Verifier：</p>
+            <ol>
+                <li>保证 <code>rc-lookahead</code> 范围内，用户通过 <code>vbv-bufsize vbv-maxrate</code> 指定网络/设备元器件带宽所能及的缓冲速度是否大于等于码率流量</li>
+                <li>码率超过缓冲区域则视频必然会卡顿，所以加大视频中「码率大于带宽处」的压缩强度。因此 VBV 对画质的破坏较大</li>
+                <li>与 CRF 上层模式一并使用时叫可变码率 Variable BitRate（VBR），或 Capped-CRF 模式</li>
+                <li>与 ABR 上层模式一并使用时叫固定码率 Constant BitRate（CBR），或 Capped-ABR 模式</li>
+            </ol>
             <code><b>--vbv-bufsize</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关=0，<span class="text-red-emph">小于 maxrate</span>&gt;编码器解出原画后，最多可占的缓存每秒。bufsize÷maxrate=播放时解码出每 gop 原画帧数的缓冲用时（秒）。<span class="text-blue-emph">值的大小相对于编完 GOP 平均大小。编码器用到是因为模式决策要解码出每个压缩步骤中的内容与原画作对比用</span>。</p>
             <code><b>--vbv-maxrate</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关 0&gt;峰值红线。用「出缓帧码率 - 入缓帧码率必≤maxrate"」限制编码器在 GOP 码率超 bufsize，即缓存跑满时压缩超载帧（提高量化强度 + 强降噪至码率合规为止）。当入缓帧较小时，出缓帧就算超 maxrate 也会因缓存有空而不被压缩。所以有四种状态，需经验判断：</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关 0&gt;峰值红线。用「出缓帧码率 - 入缓帧码率必须小于等于 maxrate"」限制编码器在 GOP 码率超 bufsize，即缓存跑满时压缩超载帧（提高量化强度 + 强降噪至码率合规为止）。当入缓帧较小时，出缓帧就算超 maxrate 也会因缓存有空而不被压缩。所以有四种状态，需经验判断：</p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li>大：GOP 大小=bufsize=2×maxrate，视频码率超出 maxrate 后等缓存满再压缩，避开多数涨落，适合限平均率的串流</li>
                 <li>小：GOP 大小=bufsize=1×maxrate，视频码率超出 maxrate 后直接压缩，避开部分涨落，适合限峰值的串流</li>
@@ -1743,7 +1769,7 @@
             <h3>下层 - FTQP 模式</h3>
             <p>手动通过文件制定帧类型和量化强度。</p>
             <code><b>--qpfile</b></code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件&gt;手动指定帧类型和量化强度 closed-gop 下 K 帧的 frame type qp 下层模式。qpfile 文件内的格式为"帧号 帧类型 QP"</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件&gt;手动指定帧类型和量化强度 closed-gop 下 K 帧的 frame type量化强度下层模式。qpfile 文件内的格式为"帧号 帧类型 QP"</p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li>帧类型可以选 [I,i,K,P,B,b]</li>
                 <li>大写 B 代表 B-Pyramid</li>
@@ -1781,29 +1807,6 @@
             <code><b>--slow-firstpass</b></code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;pass1 里自动关闭以下提速，或自动提高以下参数的强度，以保证 pass1 模式中 CRF 模式计算量化值的准确度：<code>no-8x8dct me dia partitions none ref 1 subme &lt;=2 trellis 0 fast-pskip</code>，可手动覆盖为强度更高的参数</p>
 
-
-            <h3>率控制模式的选择</h3>
-            <p>一般情况下，用户要求在可接受的编码速度（fps 为单位）下，得到画质较高、文件体积较小的视频，构成了压制三角形。而不同的率控制模式，包括不同的视频编码器都会影响这一点。注意妥协点有三种：不省时，码率大，画质差，对应了三种不同的编码策略。</p>
-            <div class="align-items-center">
-                <img src="files/rate-control/rate-control-mode-selection.png" alt="image26" class="img-medium">
-                <p class="text-gray-side">图：不同率控制模式权衡编码速度，画质，文件体积的能力不同，当然有的模式根本没得选</p>
-            </div>
-            <ul>
-                <li>同时追求以上三点：选择距离妥协中心点最近的模式/编码器</li>
-                <li>只追求以上两点，且不希望彻底妥协第三点：选择距离妥协中心点近的模式/编码器，并通过限制来偏移结果到追求的两点
-                    <ul class="font-monospace pl-5 text-smaller">
-                        <li>例如使用 CRF 模式，搭配 VBV 来保证视频串流足够流畅的策略</li>
-                    </ul>
-                </li>
-                <li>CPU 性能或散热受限：选择距离妥协中心点远的模式/编码器
-                    <ul class="font-monospace pl-5 text-smaller">
-                        <li>例如手机录像、NVENC，SVT 编码器只能同时追求省时加清晰，省时加低码，且由于编码功能相比软件编码残缺，所以做不到清晰加低码</li>
-                        <li>一般情况下，显卡或核显的主要功能是负责视频解码，适合用于多条视频轨的剪辑工作，硬件编码器则是在 CPU 被游戏等高负载工作占用时替代它进行录屏用的</li>
-                        <li>CPU 算力被游戏等进程占用后，只要硬盘和内存带宽足够，可以用高码率 ABR 设定来节省算力负载</li>
-                    </ul>
-                </li>
-            </ul>
-
             <h2 id="h2-9">自适应量化</h2>
             <p>一种利用感知对比度掩蔽现象的帧内分块码率重分配方法。</p>
 
@@ -1840,7 +1843,7 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点&gt;自适应量化强度，推荐搭配 <code>--aq-mode</code> 使用。如动漫和幻灯片录屏等平面多过纹理的场景下 <code>--aq-mode <span class="text-blue-emph">1</span> --aq-strength <span class="text-blue-emph">0.8</span></code>, <span class="text-blue-emph">2</span>:<span class="text-blue-emph">0.9</span>，<span class="text-blue-emph">3</span>:<span class="text-blue-emph">0.7</span></p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li>录像或更复杂上如果不愿降低 CRF/增加 ABR 码率，则额外增加 <span class="text-blue-emph">0.1~0.2</span></li>
-                <li>注意低成本动漫和幻灯片录屏等平面多过纹理的画面，因此码率不足时反而要更改 qp 分配策略为妥协纹理</li>
+                <li>注意低成本动漫和幻灯片录屏等平面多过纹理的画面，因此码率不足时反而要更改量化强度分配策略为妥协纹理</li>
             </ul>
            
             <h2 id="h2-10">环路滤波</h2>
@@ -1869,7 +1872,7 @@
                 <li>平滑<span class="text-blue-emph">-2~-1</span>时略降锐度，适合串流</li>
                 <li>平滑<span class="text-blue-emph">2</span>适合锐利视频源，4k 电影，游戏录屏。提高码率且会出现块失真</li>
                 <li>平滑<span class="text-blue-emph">-3~-2</span>适合高码动画源/桌面录屏。增块失真，但观感仍比 1 好</li>
-                <li>搜索<span class="text-blue-emph">大于 2</span>易误判；<span class="text-blue-emph">小于 1</span>会遗漏。建议保持<span class="text-blue-emph">0~-1</span>，除非 qp 大于 26 时设设<span class="text-blue-emph">1</span></li>
+                <li>搜索<span class="text-blue-emph">大于 2</span>易误判；<span class="text-blue-emph">小于 1</span>会遗漏。建议保持<span class="text-blue-emph">0~-1</span>，除非量化强度大于 26 时设设<span class="text-blue-emph">1</span></li>
             </ul>
             <!-- } -->
 
@@ -1906,7 +1909,7 @@
                     <ul>
                         <li>其下是在失真和码率约束下的可行方案</li>
                         <li>反之，其上是不可行的方案</li>
-                        <li>量化值 QP 越大，则斜度越小，可行方案的选择就越苛刻</li>
+                        <li>量化值量化强度越大，则斜度越小，可行方案的选择就越苛刻</li>
                     </ul>
                 </li>
                 <li>失真 D 用平方差 SSE 或总差异 SAD 判断，进而分到更多补偿的码率</li>
@@ -1931,7 +1934,7 @@
             <ol>
                 <li><b>空间掩蔽 Spatial Masking</b>：
                     <ul>
-                        <li>人眼会忽略高锐度边缘周边区域的画面，因此增加这些区域的 qp</li>
+                        <li>人眼会忽略高锐度边缘周边区域的画面，因此增加这些区域的量化强度</li>
                     </ul>
                 </li>
                 <li><b>频域掩蔽 Frequency Masking</b>：
@@ -1955,7 +1958,7 @@
             </div>
 
             <h3>宏块树与量化值曲线缩放 qComp</h3>
-            <p>源自 libavcodec 以复杂动态场景的帧间参考少而应提高压缩，分码率给参考多而远的简单动态场景，以实现同码率下整体画质更高结果的逻辑。缺点则是动漫场景等「背景不动前景动」的场景被误压缩。说到底是处理精度低而非错误，应逐宏块应用这套逻辑，<a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">就有了 mbtree</a>。量化值曲线缩放 quantizer curve compression 则被贬为控制 mbtree 等一系列 qp 分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
+            <p>源自 libavcodec 以复杂动态场景的帧间参考少而应提高压缩，分码率给参考多而远的简单动态场景，以实现同码率下整体画质更高结果的逻辑。缺点则是动漫场景等「背景不动前景动」的场景被误压缩。说到底是处理精度低而非错误，应逐宏块应用这套逻辑，<a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">就有了 mbtree</a>。量化值曲线缩放 quantizer curve compression 则被贬为控制 mbtree 等一系列量化强度分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
             <h4>量化值曲线缩放的用途</h4>
             <ol class="overflow-auto">
                 <li>（仅 ABR 模式）根据宏块的数量与 <code>--qcomp</code> 值设置初始复杂度百分比：
@@ -1968,7 +1971,7 @@
                 <li>（关 mbtree 时）使用 <code>--qcomp</code> 缩放模糊复杂度，以换算出当前帧的 qScale：
                     <span class="text-blue-math">\[ \text{qScale} = \left( \text{Complexity}_{blurred} \right)^{1-qcomp} \]</span>
                 </li>
-                <li>（开 mbtree 时）据 I 帧在当前片段的权重设单帧 qp（基准单帧用时 ÷ 当前场景用时 × I 帧用时 ÷ 帧率）：
+                <li>（开 mbtree 时）据 I 帧在当前片段的权重设单帧量化强度（基准单帧用时 ÷ 当前场景用时 × I 帧用时 ÷ 帧率）：
                     <span class="text-blue-math">\[ \text{qScale} = Duration_{frame} \div Duration_{clip}\times Duration_{iframe} \div \text{fps} \]</span>
                 </li>
             </ul>
@@ -1977,11 +1980,11 @@
             <ul class="font-monospace pl-5 text-smaller">
                 <li><span class="text-blue-emph">小于 0.5，中~强 mbtree</span> CRF/ABR低延迟逐帧迭代qp; 画面主前景动时用，允许 mbtree 导致零星宏块欠码</li>
                 <li><span class="text-blue-emph">0.5~0.7 中 mbtree</span> CRF/ABR中延迟逐帧迭代qp, 画面含背景动，或混合情况用，平衡优先</li>
-                <li><span class="text-blue-emph">大于 0.7 中~弱 mbtree</span> CRF, ABR 中~高延迟逐帧迭代 qp, 保留重噪点，或 FPS/STG 游戏录屏场景用</li>
+                <li><span class="text-blue-emph">大于 0.7 中~弱 mbtree</span> CRF, ABR 中~高延迟逐帧迭代量化强度, 保留重噪点，或 FPS/STG 游戏录屏场景用</li>
                 <li><span class="text-blue-emph">小于 0.5 关 mbtree</span> 画面不分前背景，如静态图像，PPT/桌面录屏节约性能用</li>
                 <li><span class="text-blue-emph">大于 0.5 关 mbtree</span> 动态画面，不分前背景时节约性能用</li>
                 <li><span class="text-blue-emph">0</span>（if 判定）启用固定码率模式</li>
-                <li><span class="text-blue-emph">1</span>（if 判定）启用固定 qp 模式</li>
+                <li><span class="text-blue-emph">1</span>（if 判定）启用固定量化强度模式</li>
             </ul>
 
             <h4>宏块树 Macroblock-Tree</h4>
@@ -2039,7 +2042,7 @@
                         <li>如果出现动态位移（当前宏块的范围被切分到下帧的 4 个宏块之间时），这 4 个宏块会各自按比例拆分出各自的传播信息量</li>
                     </ul>
                 </li>
-                <li><b>分配：</b>从最远范围 <code>--rc-lookahead</code> 开始，从远到近地根据已有的 <span class="text-blue-math">\( \text{Cost}_{propagate} \)</span> 和自身的信息量 <span class="text-blue-math">\( \text{Cost}_{intra} \)</span>，通过 <span class="text-blue-math">\( \log_{2}() \)</span> 非线性地映射到 qp，得到宏块树中每个宏块的量化值偏移：
+                <li><b>分配：</b>从最远范围 <code>--rc-lookahead</code> 开始，从远到近地根据已有的 <span class="text-blue-math">\( \text{Cost}_{propagate} \)</span> 和自身的信息量 <span class="text-blue-math">\( \text{Cost}_{intra} \)</span>，通过 <span class="text-blue-math">\( \log_{2}() \)</span> 非线性地映射到量化强度，得到宏块树中每个宏块的量化值偏移：
                     <span class="text-blue-math"> \[ \Delta \text{QP} = -\text{strength} \times \log_{2}\left( \frac{\text{Cost}_{intra}}{\text{Cost}_{propagate}} \right) \div \text{Cost}_{intra} \]</span>
                 </li>
             </ol>
