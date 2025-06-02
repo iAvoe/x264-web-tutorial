@@ -446,18 +446,18 @@
                             <th class="px-0">👾采样</th>
                             <th class="px-0">1920x1080 下宏观</th>
                             <th class="px-0" colspan="4">色度 4x2 微观</th>
-                            <th class="px-1">特点</th>
+                            <th class="px-0">特点</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="border-bottom">
-                            <td class="px-1 t-light-gray" rowspan="2">4:4:4</td>
-                            <td class="px-1" rowspan="2">亮度，色度皆 1920x1080</td>
+                            <td class="t-light-gray" rowspan="2">4:4:4</td>
+                            <td rowspan="2">亮度，色度皆 100% 宽 100% 高（色度 1920x1080）</td>
                             <td class="px-0 t-light-gray square" style="white-space: nowrap;">色素</td>
                             <td class="px-0 t-invert-light square" style="white-space: nowrap;">色素</td>
                             <td class="px-0 t-light-gray square" style="white-space: nowrap;">色素</td>
                             <td class="px-0 t-invert-light square" style="white-space: nowrap;">色素</td>
-                            <td rowspan="2">逐行，读写亮色度而不用从 RGB 转——剪视频快</td>
+                            <td class="px-0" rowspan="2" style="white-space: wrap;">视频滤镜可以直接作用于亮度或色度平面，而不需要在 RGB 色彩空间中转换，同时亮度色度平面完整，所以适合用于剪辑</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-0 t-invert-dark" style="white-space: nowrap;">色素</td>
@@ -466,50 +466,50 @@
                             <td class="px-0 text-lightgray" style="white-space: nowrap;">色素</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-1 t-light-gray" rowspan="2">4:2:2</td>
-                            <td class="px-1" rowspan="2">亮度不变，色度 960x1080</td>
+                            <td class="t-light-gray" rowspan="2">4:2:2</td>
+                            <td rowspan="2">亮度 100% 宽 100% 高，色度 50% 宽 100% 高（色度 960x1080）</td>
                             <td class="px-0 t-light-gray twoByOne" colspan="2">色素 ←</td>
                             <td class="px-0 t-invert-light twoByOne" colspan="2">色素 ←</td>
-                            <td class="px-1 t-light-gray" rowspan="4">逐行扫描，色度像素靠插值还原。直接读写亮度所以剪视频比 RGB 快</td>
+                            <td class="px-0 t-light-gray" rowspan="4" style="white-space: wrap;">逐行扫描，色度像素靠插值放大补全。由于人眼对色度变化不敏感，同时使用整数倍的缩小放大，因此在提高压缩的同时除了边缘细节对齐误差外的损失可以忽略不计</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-0 t-invert-dark twoByOne" colspan="2" style="white-space: nowrap;">色素 ←</td>
                             <td class="px-0 text-lightgray twoByOne" colspan="2" style="white-space: nowrap;">色素 ←</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-1 t-light-gray">4:2:0</td>
-                            <td class="px-1">亮度不变，色度半宽半高 960x540</td>
+                            <td class="t-light-gray">4:2:0</td>
+                            <td>亮度 100% 宽 100% 高，色度 50% 宽 50% 高 960x540</td>
                             <td class="px-0 t-light-gray square" colspan="2">色素 ←<br>↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬉</td>
                             <td class="px-0 t-invert-light square" colspan="2">色素 ←<br>↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬉</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-1 t-light-gray">4:0:0</td>
-                            <td class="px-1">灰度视频，或丢弃色度信息的图像/视频</td>
+                            <td class="t-light-gray">4:0:0</td>
+                            <td>亮度 100% 宽 100% 高的灰度视频，或丢弃色度信息的图像/视频</td>
                             <td class="px-0" colspan="4" style="white-space: nowrap;"></td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-1 t-light-gray" rowspan="2">4:1:1</td>
-                            <td class="px-1" rowspan="2">亮度不变，色度 1/4 宽全高 480x1080</td>
+                            <td class="t-light-gray" rowspan="2">4:1:1</td>
+                            <td rowspan="2">亮度 100% 宽 100% 高，色度 25% 宽 100% 高 480x1080</td>
                             <td class="px-0 t-light-gray fourByOne" colspan="4" style="white-space: nowrap;">色素 ← ← ← ←</td>
-                            <td class="px-1" rowspan="4">交错扫描 Interlaced，横着扫就不会把另一场的帧参考而浪费算力了</td>
+                            <td rowspan="4" style="white-space: wrap;">交错扫描 Interlaced，横着扫描可以避免将上场、下场的像素混淆</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-0 t-invert-dark fourByOne" colspan="4" style="white-space: nowrap;">色素 ← ← ← ←</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-1 t-invert-light" rowspan="2">4:1:1-par4:3</td>
-                            <td class="px-1" rowspan="2">亮度 3/4 宽全高，1440x1080 色度 3/16 宽全高，360x1080</td>
-                            <td class="px-0 t-light-gray fourByOne" colspan="4" style="white-space: nowrap;">色度像素 5.333×←</td>
+                            <td class="t-invert-light" rowspan="2">4:1:1-par4:3</td>
+                            <td rowspan="2">亮度 75% 宽 100% 高，1440x1080 色度 18.75% 宽 100% 高，360x1080</td>
+                            <td class="px-0 t-light-gray fourByOne" colspan="4" style="white-space: nowrap;">色度像素 ←×5.333</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-0 t-invert-dark fourByOne" colspan="4" style="white-space: nowrap;">色度像素 5.333×←</td>
+                            <td class="px-0 t-invert-dark fourByOne" colspan="4" style="white-space: nowrap;">色度像素 ←×5.333</td>
                         </tr>
                         <tr>
-                            <td class="px-1 t-invert-light">4:2:0-par4:3</td>
-                            <td class="px-1">亮度 3/4 宽全高，1440x1080 色度 3/8 宽半高，720x540</td>
+                            <td class="t-invert-light">4:2:0-par4:3</td>
+                            <td>亮度 75% 宽 100% 高，1440x1080 色度 37.5% 宽 50% 高，720x540</td>
                             <td class="px-0 t-light-gray square" colspan="2" style="white-space: nowrap;">2.667 ←<br>↑ 2.848 ⬉</td>
                             <td class="px-0 t-invert-light square" colspan="2" style="white-space: nowrap;">2.667 ←<br>↑ 2.848 ⬉</td>
-                            <td class="px-1 t-light-gray">逐行扫描，非方形亮度像素，par 通常是 4:3，画面除了清晰度受影响，色度像素在拉伸后也会出现更大的对齐偏差</td>
+                            <td class="px-0 t-light-gray" style="white-space: wrap;">逐行扫描，非方形亮度像素，除了清晰度更低，色度像素在拉伸后也会出现更大的对齐偏差，曾被用于电视台和视频网站（有的横向有的纵向）压缩视频，现在基本已经绝迹</td>
                         </tr>
                     </tbody>
                 </table>
@@ -517,26 +517,25 @@
 
             <div class="align-items-center mt-3">
                 <img src="files/basics/Color-Space-Handling.jpg" alt="image6" class="img-medium">
-                <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换，色度采样的使用及编解码与录制，传输，显示的关系</p>
+                <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换，色度采样的使用及编解码与录制、传输和显示的关系</p>
             </div>
 
-            <h3>帧 Frame</h3>
+            <h3>视频帧 Video Frame</h3>
             <p>描述连续图片序列中的单张图片（随便拍一张图片不算，连拍算）。有帧大小、帧率/帧数、帧类型（关键帧，过渡帧）等描述规格，构成了图像内容运动的假象。</p>
+            <p>传统的视频播放器支持暂停后逐帧预览画面。</p>
 
             <h3>帧率 Frame Rate / Frames per second / FPS</h3>
-            <p>每秒刷新的图像帧数，越高则变化越流畅。不同的内容类型会根据视频标准，成本和艺术效果来选择一个合适的帧率来拍摄和制作。在观影体验和制作手法中，其最核心的理念取决于<i>大范围高速画面移动的保真</i>。因此就有了用于降低帧率需求的“电影运镜”，以及通过利用视觉暂留效应的“一拍 N”制作技术。这样的画面中，帧数不可以过高或过低，例如比较粗略的判断：</p>
-            <ul class="text-smaller">
-                <li>《进击的巨人》中的部分场景，以及各种“模拟赛车游戏的场景”适合 120~144+ fps 的高帧率</li>
-                <li>“智能手机滑动画面”的场景适合 90~120 fps 的高帧率</li>
-                <li>《猫和老鼠（1940-1958）》中适合 50~60 fps 的中高帧率</li>
-                <li>“格斗游戏画面”，以及“使用动捕技术的 VTuber 直播场景”适合 45~90 fps 的中高帧率</li>
-                <li>《微软模拟飞行 2020》、《Extreme Landing》等游戏场景因为画面变化程度小，所以适合 30~45 fps 的中帧率</li>
-                <li>棋牌类游戏只需要 2~10 fps 的低帧率，尤其是棋类大多时候 0.5~1 fps 就足够了</li>
-                <li>“纯静态图像”，如“纯音乐视频”只需 0 fps 就足够了</li>
-            </ul>
+            <p>每秒刷新的图像帧数，越高则变化越流畅。不同的内容类型会根据视频标准，成本和艺术效果来选择一个合适的帧率来拍摄和制作。</p>
+
+            <h3>画面流畅度 Video fluidity</h3>
+            <p>在智能手机产品的发展阶段，有个叫一加的品牌率先推出了 90 Hz 的屏幕，这使得用户的体验，以及系统流畅度获得了显著提升，该手机也成为了当年的热门款式；而与此同时的电影与电视剧的 24 fps 是流畅的、浏览器观看网页的 60 fps 是流畅的、漫画材质动画的 23.976（24 fps 丢帧）同样是流畅的、唯独第一人称射击的电子竞技（FPS）游戏选手和同类游戏玩家纷纷放弃了更高分辨率的显示器，而是因为某种刚需而特地选购了 120 Hz 或更高的显示器。</p>
+            <p>电影和漫画材质动画有着内容生产和储存的成本与时限，因此自然不会随意地提高帧率。此时随着帧间插值渲染（Frame Interpolation）所依赖的 GPU 性能变得足够成熟，就有许多人尝试插帧，从而获得流畅的画面。但最后的效果却是充斥伪运动感的飘忽画面和一些由画面突变而导致的采样错误。与此同时，使用 Live2D 动补技术创建的虚拟形象却让漫画材质动画人物在 60 fps 帧率下活灵活现的显示。</p>
+            <p>实际上，流畅度的核心在于高速移动画面的保真，符合这个条件的画面类型有背景平移（Panning），智能手机滑动界面，FPS 游戏的发现到杀敌用时（TTK）等“帧率不够就会丢失动态信息”的情况。</p>
+            <p>在制作手法中，电影会限制镜头平移速度（即电影运镜）、对快速移动的物件添加动态模糊（快门角度和速度）；漫画材质动画有着利用视觉暂留的“一拍 N”制作技术，也大多会使用室内等移动物件少的场景，所以在更低的帧率下实现了对人眼来说足够流畅的画面，自然是无法通过简单的插帧提高流畅度的。</p>
+            <p>同时，随着手机剪辑网络视频的流行，更多的“纯文本”视频开始涌现到视频网站。这些视频往往就算只有 1 fps（1 帧每秒）、0.2 fps（5 秒每帧）也会是无比流畅的。</p>
 
             <h4>恒定帧率 Constant frame rate</h4>
-            <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率有助于解决手机录像时的发热和耗电速度快的问题，同时，将可变帧率转换为恒定帧率以正常剪辑视频时则需要重新编码。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
+            <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率技术有助于解决手机录像时的发热和耗电速度快的问题，但也有着剪辑软件兼容性的问题（每个用到的滤镜都必须支持可变帧率）。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
             
             <h4>可变帧率 Variable frame rate</h4>
             <p>省电，减少设备发热。因为智能手机录像的出现而变得流行，而不太支持传统剪辑软件和视频滤镜（读取错误，多视频轨的帧率同步，帧率“误解”等问题）。因此剪辑时需要额外的编码来转换到固定帧率</p>
