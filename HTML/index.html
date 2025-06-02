@@ -470,7 +470,7 @@
                             <td class="px-1" rowspan="2">亮度不变，色度 960x1080</td>
                             <td class="px-0 t-light-gray twoByOne" colspan="2">色素 ←</td>
                             <td class="px-0 t-invert-light twoByOne" colspan="2">色素 ←</td>
-                            <td class="px-1 t-light-gray" rowspan="4">逐行扫描，颜色像素靠插值还原。直接读写亮度所以剪视频比 RGB 快</td>
+                            <td class="px-1 t-light-gray" rowspan="4">逐行扫描，色度像素靠插值还原。直接读写亮度所以剪视频比 RGB 快</td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-0 t-invert-dark twoByOne" colspan="2" style="white-space: nowrap;">色素 ←</td>
@@ -483,12 +483,9 @@
                             <td class="px-0 t-invert-light square" colspan="2">色素 ←<br>↑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬉</td>
                         </tr>
                         <tr class="border-bottom">
-                            <td class="px-1 t-light-gray">4:4:0</td>
-                            <td class="px-1">亮度不变，色度全宽半高 1920x540</td>
-                            <td class="px-0 t-light-gray OneByTwo" style="white-space: nowrap;">色素<br>↑</td>
-                            <td class="px-0 t-invert-light OneByTwo" style="white-space: nowrap;">色素<br>↑</td>
-                            <td class="px-0 t-invert-dark OneByTwo" style="white-space: nowrap;">色素<br>↑</td>
-                            <td class="px-0 text-lightgray OneByTwo" style="white-space: nowrap;">色素<br>↑</td>
+                            <td class="px-1 t-light-gray">4:0:0</td>
+                            <td class="px-1">灰度视频，或丢弃色度信息的图像/视频</td>
+                            <td class="px-0" colspan="4" style="white-space: nowrap;"></td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1 t-light-gray" rowspan="2">4:1:1</td>
@@ -512,7 +509,7 @@
                             <td class="px-1">亮度 3/4 宽全高，1440x1080 色度 3/8 宽半高，720x540</td>
                             <td class="px-0 t-light-gray square" colspan="2" style="white-space: nowrap;">2.667 ←<br>↑ 2.848 ⬉</td>
                             <td class="px-0 t-invert-light square" colspan="2" style="white-space: nowrap;">2.667 ←<br>↑ 2.848 ⬉</td>
-                            <td class="px-1 t-light-gray">逐行扫描，非方形亮度像素，par 通常是 4:3 <del class="text-lightgray">要不然太烧脑了</del></td>
+                            <td class="px-1 t-light-gray">逐行扫描，非方形亮度像素，par 通常是 4:3，画面除了清晰度受影响，色度像素在拉伸后也会出现更大的对齐偏差</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1456,12 +1453,12 @@
                 <li><span class="text-blue-emph">5</span> 同时增加双向参考 B 块</li>
                 <li><span class="text-blue-emph">6</span> 同时 I，P 帧启用率失真优化处理</li>
                 <li><span class="text-blue-emph">7</span> 同时 I，P，B，b 帧启用率失真优化处理 </li>
-                <li><span class="text-blue-emph">8</span> 同时 I，P 帧启用 <code>--rd-refine</code> 功能</li>
-                <li><span class="text-blue-emph">9</span> 同时 I，P，B，b 帧启用 <code>--rd-refine</code> 功能</li>
+                <li><span class="text-blue-emph">8</span> 同时 I，P 帧启用 <code class="code-bold">rd-refine</code> 功能</li>
+                <li><span class="text-blue-emph">9</span> 同时 I，P，B，b 帧启用 <code class="code-bold">rd-refine</code> 功能</li>
                 <li><span class="text-blue-emph">10</span> 使用 <code>--me hex</code> 动态搜索检验对齐，<span class="text-red-emph">需 <code>--trellis 2 --aq-strength &gt; 0</code></span></li>
                 <li><span class="text-blue-emph">11</span> 关闭所有提前退出，边际效应过大，不推荐使用</li>
             </ul>
-            <code><b class="text-red-emph">rd-refine</code>
+            <code class="code-bold">rd-refine</code>（内部参数）
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;嵌入 <code>--subme 8</code> 中，x265 中可手动打开&gt; 率失真优化分析帧内预测的最佳量化和分块结果，耗时换压缩率和画质。x264 中还包括了最优动态向量的分析</p>
 
             <h3>细分块</h3>
