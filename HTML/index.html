@@ -162,7 +162,7 @@
                 </ul>
             </div>
             <div class="align-items-center">
-                <img src="files/basics/Data-Sizes.png" alt="image1" class="img-medium">
+                <img src="files/basics/Data-Sizes.png" alt="image0" class="img-medium">
                 <p class="text-gray-side mt-0">图：比特，字节与体积时间比的转换</p>
             </div>
             <p>操作系统（处理器、内存）的“字节”是以二进制换算的，而储存容量（闪存、硬盘）的“字节”是十进制换算的。一开始储存容量不大，而 1000 进和 1024 进差 2.4%，不如多卖电脑重要，就有了现在不统一的容量称呼</p>
@@ -186,7 +186,7 @@
             <h3>色彩</h3>
             <p>人眼感光细胞捕获特定强度的电磁波（可见光），然后通过大脑处理，产生了我们所看到的幻觉。实际上，色彩只有一个标量属性，即频率。</p>
             <div class="align-items-center">
-                <img src="files/basics/Color-Spectrum.png" alt="image2" class="img-medium">
+                <img src="files/basics/Color-Spectrum.png" alt="image1" class="img-medium">
                 <p class="text-gray-side mt-0">图：色彩的波形频率变化，见<a href="https://en.wikipedia.org/wiki/Electromagnetic_spectrum">维基百科</a>。</p>
             </div>
 
@@ -230,7 +230,7 @@
             <h3>软件的色深 Depth 与范围 Range</h3>
             <p>数字色深的分阶用位/bit 表示。如四位 4bit 16 深 <span class="text-blue-math">\( 2^4 \)</span>、八位 8bit 256 深 <span class="text-blue-math">\( 2^8 \)</span>、10bit 1024 深 <span class="text-blue-math">\( 2^{10} \)</span> 的形式表示。</p>
             <div class="align-items-center">
-                <img src="files/basics/Full-and-Limited-Range.png" alt="image3" class="img-medium">
+                <img src="files/basics/Full-and-Limited-Range.png" alt="image2" class="img-medium">
                 <p class="text-gray-side mt-0">图：完整色深 Fullrange 与有限/TV 色深 Limited，包括上述说明的更优版本见<a href="https://www.youtube.com/watch?v=8sAJWtgQ2t8">硬件茶谈</a>。</p>
             </div>
 
@@ -308,7 +308,7 @@
             <h3>伽马矫正</h3>
             <p><b>两种方式</b>：向上提亮缩放“白化” <span class="text-blue-math">\( s = cr^\frac{1}{\gamma} \)</span> 和向下变暗缩放“黑化” <span class="text-blue-math">\( s = cr^\gamma \)</span>。</p>
             <div class="align-items-center">
-                <img src="files/basics/Gamma-Correction.png" alt="image4" class="img-medium">
+                <img src="files/basics/Gamma-Correction.png" alt="image3" class="img-medium">
                 <p class="text-gray-side mt-0">图：伽马矫正的指数算式，此处<span class="text-blue-math">c = 1</span>代表 0~1 的亮度区间，8bit 256 深则<span class="text-blue-math">c = 256</span>，见<a href="https://www.desmos.com/calculator/shseuk9jcb?lang=zh-CN">desmos 互动例</a>。</p>
             </div>
             
@@ -388,7 +388,7 @@
             <h3>色彩空间 Color Space</h3>
             <div class="row">
                 <p id="LR-UD-001" class="col-10">用于表示和处理图像颜色的数据格式，具有适用于各种不同应用场景的多种类型。最常用的是分为硬件和操作系统的 RGB 色彩空间，以及内容的 YUV/YCbCr 色彩空间。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
-                <img src="files/basics/RGB-to-YCbCr-to-RGB.png" alt="image5" id="LR-UD-002" class="img-small img-right col-2 mb-auto">
+                <img src="files/basics/RGB-to-YCbCr-to-RGB.png" alt="image4" id="LR-UD-002" class="img-small img-right col-2 mb-auto">
             </div>
             <p>RGB 色彩空间由红色 Red、绿色 Green、蓝色 Blue 三个通道组成，每个通道的数值表示相应颜色的强度，对应着显示器红色 LED，绿色 LED 和蓝色 LED。常用于显示器、摄像头和图形处理等硬件和软件系统中。</p>
             <p>YUV/YCbCr 色彩空间是另一种常见的色彩表示方式，用于存储和传输视频数据。Y 代表亮度 Luminance，而 U、V 代表色度 Chrominance。YCbCr 特指数字信号，YUV 特指模拟信号，再无区别。由于后者字数更少且不需要频繁切换大小写，打字更容易，所以 YUV 拼写后来逐渐被当做讨论用的“平替”。</p>
@@ -516,7 +516,7 @@
             </div>
 
             <div class="align-items-center mt-3">
-                <img src="files/basics/Color-Space-Handling.jpg" alt="image6" class="img-medium">
+                <img src="files/basics/Color-Space-Handling.jpg" alt="image5" class="img-medium">
                 <p class="text-gray-side mt-0">图：RGB 与 YCbCr 的转换，色度采样的使用及编解码与录制、传输和显示的关系</p>
             </div>
 
@@ -548,7 +548,7 @@
             <h4>小数帧率 / 丢帧、剪辑素材对齐问题</h4>
             <p>NTSC 模拟电视每个频道的标准带宽大约为 6MHz（但实际宽度仅为 4.5MHz）。接下来发生的事谁都没有预料到——彩色电视出现了。结果是原本的频宽完全放不下彩色电视台信号，而且由于电视机已经售出，不可能更改用户家里电视的频宽和扫描线的数量。最终解决方案是在每秒 30 帧的基础上丢掉一帧，并加速 1 秒到 1.1001 秒，以保持与帧率的对齐（同时也引入了 YUV 4:2:0 色彩空间）。经过这般折腾，码率/频宽总算被压缩了下来，但后继影响了数字视频的丢帧帧率标准——为了与模拟电视兼容<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji</a>。</p>
             <div class="align-items-center">
-                <img src="files/basics/Aligning-framerates.jpg" alt="image7" class="img-small">
+                <img src="files/basics/Aligning-framerates.jpg" alt="image6" class="img-small">
                 <p class="text-gray-side mt-0">图：不同帧率的对齐问题，如果素材的帧率不统一就会出现的“快慢帧”问题，见<a href="https://www.youtube.com/watch?v=p3Jb3UPAw-w">Taran Van Hemert</a></p>
             </div>
             <p>在视频编辑中有时会遇到对齐“不同帧率”乘以“不同帧率种类”视频素材的困难问题，处理起来非常考验剪辑水平。但与其这样，不如一开始就商量好使用正确的录制设定就可以了。</p>
@@ -556,75 +556,8 @@
             <h3>逐行/交错扫描 Progressive / Interlaced</h3>
             <p>逐行扫描通过一行行从左到右地刷新像素来构建图像，是最为常用的屏幕刷新方式。交错扫描的方法不同，它使用 YUV 4:1:1 采样，将屏幕的奇数像素行视为一个场，偶数像素行视为另一个场。这两个场在录制时错开一定时间，这样在模拟电视上观看时会产生 60fps 的视觉效果。交错扫描的原理是为了节省模拟电视信号的频段区间（与收音机接收电台信号一样）。因此，通过在时间上分隔行来节省空间，可以几乎将每个频道的频宽减半，例如（<span class="text-blue-math">\(525 \text{行} \times 30\text{fps} = 15.75 \text{MHz}\)</span>）。</p>
             <div class="align-items-center">
-                <img src="files/basics/PAL-NTSC-SECAM.svg" alt="image8" class="img-medium">
+                <img src="files/basics/PAL-NTSC-SECAM.svg" alt="image7" class="img-medium">
                 <p class="text-gray-side mt-0">图：NTSC，PAL 和 SECAM 播放规格的地区分布，见<a href="https://en.m.wikipedia.org/wiki/File:PAL-NTSC-SECAM.svg">维基百科</a></p>
-            </div>
-
-            <h3>压缩的策略</h3>
-            <p>根据硬件的算力和带宽两种限制选择有损压缩，无损压缩和未压缩。一种（图/视/音频）编码可集成全部三种策略。</p>
-            <ul class="text-smaller">
-                <li><b>算力 Computing Power</b>：处理器或硬件解码器的速度和效率，低于解码难度（编码复杂度）则不能流畅播放，编码无法快速进行</li>
-                <li><b>带宽 Bandwidth</b>：网速，硬盘读写，内存，缓存，USB 等传输所需的带宽，低于带宽压力（Kbps，Mbps，Gbps）则不能流畅播放，录屏，编码无法全速进行</li>
-                <li>VCD，DVD 播放机，蓝光播放机也会根据机器售价和等级限制带宽</li>
-            </ul>
-            <table class="table-center">
-                <thead>
-                    <tr>
-                        <th class="px-1"> </th>
-                        <th class="px-1">压缩强度</th>
-                        <th class="px-1">带宽负载</th>
-                        <th class="px-1">解码负载</th>
-                        <th class="px-1">硬盘损耗</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-bottom">
-                        <th class="px-1">未压缩</th>
-                        <td class="px-1">无</td>
-                        <td class="px-1">最高</td>
-                        <td class="px-1">最低</td>
-                        <td class="px-1">最高</td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-1">无损压缩</th>
-                        <td class="px-1">低</td>
-                        <td class="px-1">高</td>
-                        <td class="px-1">低</td>
-                        <td class="px-1">高</td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-1">无损压缩</th>
-                        <td class="px-1">高</td>
-                        <td class="px-1">中~高</td>
-                        <td class="px-1">中~低</td>
-                        <td class="px-1">中</td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-1">有损压缩</th>
-                        <td class="px-1">低</td>
-                        <td class="px-1">高</td>
-                        <td class="px-1">低</td>
-                        <td class="px-1">低</td>
-                    </tr>
-                    <tr>
-                        <th class="px-1">有损压缩</th>
-                        <td class="px-1">高</td>
-                        <td class="px-1">低</td>
-                        <td class="px-1">高</td>
-                        <td class="px-1">最低</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>只要录制，剪辑，调色，混音，导出中一个环节用错了录制设备，采样率/色深，色彩空间，分辨率，像素宽高比，颜色混合，伽马映射等设定，损失就已成定局，此时选择有损或无损编码就不再有意义。</p>
-
-            <h3>视频压制</h3>
-            <p>视频压制是视频编码器用户追求画质、压缩率和速度的逻辑。很多人一看到硬件编码器速度快，就忽视了软件编码器的高压缩率。</p>
-
-            <h3>视频压制三角定律</h3>
-            <p>确定编码器好坏，压缩和采购策略的方法。专用编码器常用于单一目的，但难以控制另外两端的损失。高算力适合通用策略，而低算力则适合专用策略。</p>
-            <div class="align-items-center">
-                <img src="files/basics/Encoding-Trade-off-Triangle.png" alt="image9" class="img-medium">
-                <p class="text-gray-side mt-0">图：三种出发点构成。其“完美中心点”不一定符合当下需求，但决定了是否能满足所有情况</p>
             </div>
 
             <h3>音频格式（一维）</h3>
@@ -858,10 +791,10 @@
             <p>一般来说，如果噪点的边角尖锐，缺乏渐变，则属于“难看的噪声”。另一种比较极端的判断方法是——只有影视导演亲手保留，或游戏美工专门根据显示技术适配处理过的噪声才是好看的噪声、由第三方私自添加的噪声是“难看的噪声”。</p>
             <p class="text-gray-side">实际上，人眼的“成像技术”也决定了人看到的画面本来就有很多噪点，而且是动态噪点，只是未注意的时候都是大脑的实时降噪和幻觉在抑制而已。</p>
             <div class="align-items-center">
-                <img src="files/basics/imax-tape-projector.jpg" alt="image10" class="img-medium">
+                <img src="files/basics/imax-tape-projector.jpg" alt="image8" class="img-medium">
                 <p class="text-gray-side">图：正在放映 2023 年电影《奥本海默》的 70mm IMAX 胶片放映机。源：<a href="https://www.cnbc.com/2023/07/19/where-to-watch-oppenheimer-in-70mm-imax-.html">Nicolas Vega</a></p>
-                <img src="files/basics/matte-vs-glossy.jpg" alt="image11" class="img-medium">
-                <p class="text-gray-side">图：磨砂镀膜与镜面镀膜显示器的微观区别。可以看到没有漫反射的镜面更加“通透”。源：<a href="https://www.youtube.com/watch?v=mZjxEcuVHlQ">The Display Guy</a></p>
+                <img src="files/basics/matte-vs-glossy.jpg" alt="image9" class="img-medium">
+                <p class="text-gray-side">图：同一个 OLED 面板前方使用磨砂镀膜与镜面镀膜的微观区别。可以看到没有漫反射的镜面更“通透”。当然，后者的纯色光更容易聚集，LED 调整亮度所必须的频闪亮度变化也更大，容易导致眼部刺痛、散光。源：<a href="https://www.youtube.com/watch?v=mZjxEcuVHlQ">The Display Guy</a></p>
             </div>
 
             <h3>抖动滤镜 Dither Filter</h3>
@@ -870,14 +803,14 @@
             <div class="coll-content">
                 <p>具体来说，通过间隔几个像素就调亮/调暗一个像素的颜色，使得宏观整体上看起来像是淡化或加深；在音频位深分量两端的采样点间成比例的（以方形波或三角波信号）快速摆动，从而利用扬声器反应速度，起到淡化或深化偏移宏观上位深的效果。</p>
                 <div class="align-items-center">
-                    <img src="files/basics/Audio-Dither.png" alt="image12" class="img-medium">
+                    <img src="files/basics/Audio-Dither.png" alt="image10" class="img-medium">
                     <p class="text-gray-side mt-0">图：音频的采样点，以及下采样音频，抖动关对比开的效果，见<a href="https://micoope.com.gt/?s=what-is-audio-dithering-and-why-it-s-used-aa-BaD6b0T5">Micoope 科普</a>。</p>
-                    <img src="files/basics/Image-Dither-1.png" alt="image13" class="">
+                    <img src="files/basics/Image-Dither-1.png" alt="image11" class="">
                     <p class="text-gray-side mt-0">图：下采样 8bit 到 1bit，开抖动的效果</p>
                 </div>
                 <p>抖动滤镜的效果主要是欺骗视觉，但因为效果独特，所以衍生出了 Ditherpunk 抖动朋克美术。典型如 1bit 游戏《奥博拉丁的回归》贯彻了这种风格——利用<a href="https://bartwronski.com/2016/10/30/dithering-part-one-simple-quantization/">随机</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声</a>，<a href="https://bartwronski.com/2016/10/30/dithering-part-two-golden-ratio-sequence-blue-noise-and-highpass-and-remap/">蓝噪声，黄金分割</a>，<a href="https://www.compuphase.com/riemer.htm">Riemersma</a> 等不同的加噪算法来定义游戏引擎的材质。</p>
                 <div class="align-items-center">
-                    <img src="files/basics/Image-Dither-2.png" alt="image14" class="img-medium">
+                    <img src="files/basics/Image-Dither-2.png" alt="image12" class="img-medium">
                     <p class="text-gray-side mt-0">图：图像噪声算法</p>
                 </div>
             </div>
@@ -936,9 +869,9 @@
             <p><b>图形界面交互 Graphic user interface GUI</b>：通过图形元素（如按钮、滑块、菜单等）进行用户交互的界面设计。随着程序复杂度的增加，设计出好用的界面会变得更加困难。因此，只有在利润丰厚、注重美学设计、且拥有设计人才的行业才会推出外观精美的 GUI。然而，外观好看并不一定意味着好用、再而，很多时候有外观用都是一种奢求。
             </p>
             <div class="align-items-center">
-                <img src="files/basics/FL-Studio-GUI-Demonstration.png" alt="image15" class="img-medium">
+                <img src="files/basics/FL-Studio-GUI-Demonstration.png" alt="image14" class="img-medium">
                 <p class="text-gray-side mt-0">图：音频插件宿主软件 FL Studio，外加一堆免费和“免费”音频插件随便摆放的外观</p>
-                <img src="files/basics/XAMPP-GUI-Demonstration.png" alt="image16" class="img-medium">
+                <img src="files/basics/XAMPP-GUI-Demonstration.png" alt="image15" class="img-medium">
                 <p class="text-gray-side mt-0">图：网页服务器宿主软件 XAMPP 的 GUI（左下为 CLI），作为跨行业对比</p>
             </div>
             <p><b>命令行交互 Commandline interface CLI</b>：在如 Terminal、Bash、CMD 和 PowerShell 的终端环境中，用户可以手动输入命令并按回车键查看结果。通常，只要输出结果有一定的文本排版，就可以轻松阅读。随着使用的增加，CLI 可能反而会变得比 GUI 更方便。然而，由于某些命令太长，而且需要储存变量，因此为了简化操作，人们会将其写作批处理、Shell 等命令脚本文件。例如<a href="https://nazorip.site/archives/835/">PowerShell 一站式系统硬件检测</a>的脚本。</p>
@@ -1031,7 +964,7 @@
                 </li>
             </ol>
             <div class="align-items-center">
-                <img src="files/basics/Video-Endocing-Process.png" alt="image18" class="img-medium">
+                <img src="files/basics/Video-Endocing-Process.png" alt="image16" class="img-medium">
             </div>
 
             <h3>视频编码的标准（<a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs">MDN Docs</a>）</h3>
@@ -1101,7 +1034,7 @@
             </div>
             <p>其中，“H.264”的 H 代表国际电信联盟 - 电信标准化部门（ITU‑T）中的 <a href="https://www.itu.int/net/itu-t/sigdb/spevideo/Hseries-s.htm">H 系列建议指南</a>，例如 <a href="https://www.itu.int/rec/T-REC-H.810">ITU-T H.810</a> 个人健康系统（血压计、血糖仪、体重秤）的交互设计建议指南。一些符合某个 H 系列视频编码建议指南的视频编码器会将这个标号写在程序名字上，就有了所谓的 x264，x265。</p>
             <div class="align-items-center">
-                <img src="files/basics/Video-Endocing-Standards.png" alt="image19" class="img-medium">
+                <img src="files/basics/Video-Endocing-Standards.png" alt="image17" class="img-medium">
             </div>
 
             <h3>命令行参数</h3>
@@ -1112,7 +1045,7 @@
             <code>ffmpeg.exe -loglevel 16 -hwaccel auto -y -hide_banner -i ".\导入.mp4" -c:v libx264 -x264-params "<span class="text-blue-emph">rc-lookahead=90:bframes=12:b-adapt=2:me=umh:subme=9:merange=48:fast-pskip=0:direct=auto:weightb=1:keyint=360:min-keyint=5:ref=3:crf=20:qpmin=9:chroma-qp-offset=-2:aq-mode=3:aq-strength=0.7:trellis=2:deblock=0,0:psy-rd=0.77,0.22:nr=4</span>" -fps_mode passthrough -c:a copy ".\输出.mp4"</code>
             <p>ffmpeg 中，导入文件由 <code>-i</code> 参数完成，因为 ffmpeg 支持导入多个文件，而每个文件后跟随一些处理命令就需要较为严格的命令添加顺序，而 x264/5 这些编码器一般只是导入一个文件，所以在末尾加一个路径到文件的字符串就代表导入文件了。</p>
             <div class="align-items-center">
-                <img src="files/basics/Encoding-CLI-Info.png" alt="image20" class="img-medium">
+                <img src="files/basics/Encoding-CLI-Info.png" alt="image18" class="img-medium">
                 <p class="text-gray-side">图：使用命令行窗口启动视频压制命令后，视频编码器会给出大致这些信息</p>
             </div>
 
@@ -1201,7 +1134,7 @@
                 </li>
             </ul>
             <div class="align-items-center">
-                <img src="files/basics/Video-Coding-Components.png" alt="image21" class="img-medium">
+                <img src="files/basics/Video-Coding-Components.png" alt="image19" class="img-medium">
             </div>
 
             <h3>GOP 结构</h3>
@@ -1385,7 +1318,7 @@
             <!-- x265 教程副本，更改需手动同步 { -->
             <p>Motion Estimation（ME）。用于在连续帧间进行运动估计。过程涉及逐个像素点（微观）在相邻帧之间寻找最小失真朝向/最小失真方向 Direction of minimal distortion DMD，从而在每帧之间都生成一张向量表。如果这个过程缺失或不够理想，参考帧与分块的建立就可能会出现问题，从而导致潜在的压缩率损失或画质下降。</p>
             <div class="align-items-center">
-                <img src="files/memc/Interframe-Vector-Table.png" alt="image22" class="img-medium">
+                <img src="files/memc/Interframe-Vector-Table.png" alt="image20" class="img-medium">
                 <p class="text-gray-side">图：宏块上帧间的动态向量</p>
             </div>
             <p>简化模型下，动态搜索得到帧间向量表，帧间向量表加上上帧的画面得到预测帧，原始帧减去预测帧得到残差帧，残差帧储存为参考帧，得到帧间结构。x264 使用了不对称多六边形搜索 Uneven multiple Hexagon，从而让一个搜索算法在多个分辨率下检查画面，制衡了动态噪点对传统动态搜索算法的干扰。搜索算法详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程</a>。</p>
@@ -1421,7 +1354,7 @@
             <h2 id="h2-6">子像素运动补偿</h2>
             <p>全称 Subpixel refinement。动态预测的精度最高只有 1px，在此之上还有可能被动态噪点干扰，导致了预测帧相比原画会欠缺大量的纹理细节。动态补偿 Motion Compensation MC 通过对比原画与预测块得到残差，并根据残差的分布动态向量的精度到¼子像素，使“精加工预测块”的画面残差尽可能地缩小，得到足够准确的预测帧，即大幅减少残差帧的内容。</p>
             <div class="align-items-center">
-                <img src="files/memc/Block-Spitting-Stage-Two.png" alt="image23" class="img-medium">
+                <img src="files/memc/Block-Spitting-Stage-Two.png" alt="image21" class="img-medium">
                 <p class="text-gray-side">图：根据动态搜索与补偿所得，完成宏块到块的细分</p>
             </div>
             <p>至于对抗动态噪点，大体上是允许真正移动的物件（所涵盖的分块）有运动向量，拦截噪点在静止画面上的孤立运动向量，即「允动之移，防静所变」解决，详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-6">x265 教程</a>。</p>
@@ -1470,7 +1403,7 @@
             <h2 id="h2-7">变换</h2>
             <div class="row">
                 <p id="LR-UD-003" class="col-10">模拟信号转换为数字信号的主要步骤之一——将音量、亮度、温度、压力等信号整理为低频到高频的分量。具体来说，这个过程根据要处理的信号和用途不同，会使用傅里叶变换，小波变换，和 x264/5 使用的二维离散余弦变换 2D Discrete cosine transform。二维离散余弦变换利用预制的二维波形模具，通过穷举加减将源信号逐步分解成不同频率的平面波形，并合成变换块。<span class="text-gray-side">图：缩放到 8x8 的波形分布，由于 cos(x) 的波形范围是 -1~1，所以图中的黑色到白色并不是 0~255 或 16~235，而是 -1~1</span> </p>
-                <img src="files/transform-quantization/DCT-Block.png" alt="image24" id="LR-UD-004" class="img-small img-right col-2 mb-auto">
+                <img src="files/transform-quantization/DCT-Block.png" alt="image22" id="LR-UD-004" class="img-small img-right col-2 mb-auto">
             </div>
             <p>变换的过程中，“DCT 像素”称为系子 coefficients。这些系子的强度可以是负值，表示反相的波形；也可以是小数，表示低强度的波形（但因为计算机浮点计算慢于整数计算，所以一般仅用于演示）。变换块左上角的系数是直流 DC 分量，代表整体亮度水平，其余的系数是交流 AC 分量，表示图像中的细节和纹理信息。</p>
 
@@ -1547,7 +1480,7 @@
 
             <p>x264 中，量化值大致上存在于以下几处：</p>
             <div class="overflow-auto">
-                <table class="table-fit-container text-xs">
+                <table class="table-center">
                     <thead>
                         <tr>
                             <th class="px-1">步骤</th>
@@ -1598,29 +1531,31 @@
             <h2 id="h2-8">率控制</h2>
 
             <h3>码率分布成因</h3>
-            <p>有损压缩中，只是优化码率分配本身就可以提高当前视频的画质。这是因为参考帧 P、B 帧自身的主要信息来自于被参考帧 I 帧，其中被冗余的宏块只储存“相对于被参考帧的动态向量”，和“残差画面”。这种画面并不锐利，因而（在熵编码后的）体积占比非常小。而尽管被参考帧 I 帧的体积很大，但 I 帧自身的画面为其后的若干至数百帧提供了参考，使得高画质的 I 帧反而提高了帧间冗余压缩率（与使用 10bit 位深后，码率不增反降的原因相同）。假如被参考帧 I 帧的有损压缩较高，那么在环路滤波/率失真优化过程中，编码器会发现 I 帧与 P、B 帧之间不太相像；便会提高残差画面的细节量。于是虽然峰值码率会降低，但 I 帧后的一系列帧都会比以往大一些，造成整体的码率/文件体积上升。在这个基础上：</p>
+            <p>有损压缩中，只是优化码率分配本身就可以提高当前视频的画质。这是因为参考帧 P、B 帧自身的主要信息来自于被参考帧 I 帧，其中被冗余的宏块只储存“相对于被参考帧的动态向量”，和“残差画面”。这种画面并不锐利，因而（在熵编码后的）体积占比非常小。而尽管被参考帧 I 帧的体积很大，但 I 帧自身的画面为其后的若干至数百帧提供了参考，使得高画质的 I 帧反而提高了帧间冗余压缩率（与使用 10bit 位深后，码率不增反降的原因相同）。假如被参考帧 I 帧的有损压缩较高，那么在环路滤波/率失真优化过程中，编码器会发现 I 帧与 P、B 帧之间不太相像；便会提高残差画面的信息量。于是虽然峰值码率会降低，但 I 帧后的一系列帧都会比以往大一些，造成整体的码率/文件体积上升。在这个基础上：</p>
             <ul>
                 <li>如果视频本身的画面变化偏大，那么参考帧 P、B 帧一开始就会储存更多的残差信息</li>
                 <li>如果一开始就要求限制峰值码率，那么即使文件体积增加，码率提高也是没办法的事</li>
                 <li>如果一开始就要求固定文件体积大小（不超过某个程度），那么原本的“码率提高”就会完全变成“画质降低”</li>
             </ul>
             <div class="align-items-center">
-                <img src="files/rate-control/hyouka-frame-distro.webp" alt="image24" class="">
+                <img src="files/rate-control/hyouka-frame-distro.webp" alt="image23" class="">
                 <p class="text-gray-side">图：这段 1920x1080 视频约有 36000 帧，其中 I 帧占 1%。从趋势线可以看出平均每帧的大小位于 200Kb 以下（很多都在 10b 以下）。2000Kb 以上的帧零散存在，中心还有一张 9544 Kb（1.2MB）的帧。</p>
-                <img src="files/rate-control/solevante-frame-distro.webp" alt="image25" class="">
+                <img src="files/rate-control/solevante-frame-distro.webp" alt="image24" class="">
                 <p class="text-gray-side">图：这段场景动态复杂的 3840x2160 视频约有 6000 帧，除了 I 帧的尖峰以外，出现了整块隆起的码率分布，左侧的复杂部分达到了 6~10Mbps。</p>
             </div>
 
             <h3>压制三角形</h3>
             <p>一般情况下，用户希望在可接受的编码速度（fps 为单位）下，得到画质较高、文件体积较小的视频，构成了压制三角形。要求速度和文件体积则失画质、要求文件体积和画质则损速度、要求速度和画质则损文件体积。</p>
             <div class="align-items-center">
+                <img src="files/basics/Encoding-Trade-off-Triangle.png" alt="image25" class="img-medium">
+                <p class="text-gray-side mt-0">图：三种出发点构成。其“完美中心点”不一定符合当下需求，但决定了是否能满足所有情况</p>
                 <img src="files/rate-control/rate-control-mode-selection.png" alt="image26" class="img-medium">
                 <p class="text-gray-side">图：不同率控制模式权衡编码速度，画质，文件体积的能力不同，当然有的模式根本没得选</p>
             </div>
 
             <h3>两个一致、三边取点</h3>
             <p>“码率分布成因”中说明了在画质高度一致时，逐帧的码率变化非常大，在网络播放时可能会因为峰值而卡顿；反过来倘若要限制码率变化/波动，则画质的一致性便会下降（或文件体积增加）。于是在选择率控制模式时，要在“两个一致”之间妥协。</p>
-            <p>“压制三角性”中说明了在速度、画质和文件体积三者此消彼长，虽然大多情况下选择兼顾三者的中心点即可，但也需要根据不同场景的要求加以偏置</p>
+            <p>“压制三角形”中说明了在速度、画质和文件体积三者此消彼长，虽然大多情况下选择兼顾三者的中心点即可，但也需要根据不同场景的要求加以偏置</p>
 
             <h3>率控制模式</h3>
             <h4>平均码率模式 Average Bitrate</h4>
