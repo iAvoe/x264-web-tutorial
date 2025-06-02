@@ -534,11 +534,9 @@
             <p>录像电影和漫画材质动画有着内容生产和储存的成本与时限，自然不会随意地提高帧率。但低帧率有低帧率的办法——电影会限制镜头平移速度（即电影运镜）、对快速移动的物件添加动态模糊（摄影快门角度和速度）；漫画材质动画会利用视觉暂留效应的一拍 N 作画，也会使用室内等移动物件少的场景，这才在更低的帧率下实现了对人眼来说足够流畅的画面，这种“已流畅”的画面自然是无法通过简单的插帧来提高流畅度的。</p>
             <p>随着手机剪辑网络视频的流行，更多的“纯文本”视频开始涌现到视频网站。这些视频往往就算只有 1 fps（1 帧每秒）、0.2 fps（5 秒每帧）也会是无比流畅的。</p>
 
-            <h4>恒定帧率 Constant frame rate</h4>
+            <h4>恒定帧率、可变帧率 Constant / Variable frame rate</h4>
             <p>恒定帧率的视频播放和剪辑都最具兼容性。可变帧率技术有助于解决手机录像时的发热和耗电速度快的问题，但也有着剪辑软件兼容性的问题（每个用到的滤镜都必须支持可变帧率）。因此，录制视频时应根据设备的电量和散热能力进行选择，而录制需要剪辑的素材时则应选择恒定帧率。</p>
             
-            <h4>可变帧率 Variable frame rate</h4>
-            <p>省电，减少设备发热。因为智能手机录像的出现而变得流行，而不太支持传统剪辑软件和视频滤镜（读取错误，多视频轨的帧率同步，帧率“误解”等问题）。因此剪辑时需要额外的编码来转换到固定帧率</p>
             <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：ffmpeg 转换到恒定帧率的命令</button>
             <div class="coll-content">
                 <code>ffmpeg -i &lt;输入&gt; -vsync cfr -y -vf fps=60 -c:a copy -f yuv4mpegpipe - | x264 &lt;参数&gt; - --demuxer y4m --output &lt;输出.mp4&gt;</code>
@@ -547,12 +545,11 @@
                 </ul>
             </div>
 
-            <h4>小数帧率 / 丢帧</h4>
-            <p>NTSC 模拟电视每个频道的标准带宽大约为 6MHz（但实际宽度仅为 4.5MHz）。接下来发生的事谁都没有预料到——彩色电视出现了。结果是原本的频宽完全放不下彩色电视台信号，而且由于电视机已经售出，不可能更改用户家里电视的频宽和扫描线的数量。最终解决方案是在每秒 30 帧的基础上丢掉一帧，并加速 1 秒到 1.1001 秒，以保持与帧率的对齐（同时也引入了 YUV 4:2:0 色彩空间）。经过这般折腾，码率/频宽总算被压缩了下来，但后继影响了数字视频的丢帧帧率标准——为了与模拟电视兼容<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji
-            </a>。</p>
+            <h4>小数帧率 / 丢帧、剪辑素材对齐问题</h4>
+            <p>NTSC 模拟电视每个频道的标准带宽大约为 6MHz（但实际宽度仅为 4.5MHz）。接下来发生的事谁都没有预料到——彩色电视出现了。结果是原本的频宽完全放不下彩色电视台信号，而且由于电视机已经售出，不可能更改用户家里电视的频宽和扫描线的数量。最终解决方案是在每秒 30 帧的基础上丢掉一帧，并加速 1 秒到 1.1001 秒，以保持与帧率的对齐（同时也引入了 YUV 4:2:0 色彩空间）。经过这般折腾，码率/频宽总算被压缩了下来，但后继影响了数字视频的丢帧帧率标准——为了与模拟电视兼容<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji</a>。</p>
             <div class="align-items-center">
                 <img src="files/basics/Aligning-framerates.jpg" alt="image7" class="img-small">
-                <p class="text-gray-side mt-0">图：不同帧率的对齐“地狱”，见<a href="https://www.youtube.com/watch?v=p3Jb3UPAw-w">Taran Van Hemert</a></p>
+                <p class="text-gray-side mt-0">图：不同帧率的对齐问题，如果素材的帧率不统一就会出现的“快慢帧”问题，见<a href="https://www.youtube.com/watch?v=p3Jb3UPAw-w">Taran Van Hemert</a></p>
             </div>
             <p>在视频编辑中有时会遇到对齐“不同帧率”乘以“不同帧率种类”视频素材的困难问题，处理起来非常考验剪辑水平。但与其这样，不如一开始就商量好使用正确的录制设定就可以了。</p>
 
@@ -566,9 +563,9 @@
             <h3>压缩的策略</h3>
             <p>根据硬件的算力和带宽两种限制选择有损压缩，无损压缩和未压缩。一种（图/视/音频）编码可集成全部三种策略。</p>
             <ul class="text-smaller">
-                <li><b>算力 Computing Power</b>：处理器或硬件解码器的速度和效率，低于解码难度（编码复杂度）则不能流畅播放，编码无法快速进行。</li>
-                <li><b>带宽 Bandwidth</b>：网速，硬盘读写，内存，缓存，USB 等传输所需的带宽，低于带宽压力（Kbps，Mbps，Gbps）则不能流畅播放，录屏，编码无法全速进行。</li>
-                <li>VCD，DVD 播放机，蓝光播放机为确保流畅，也会根据机器售价和等级限制带宽。</li>
+                <li><b>算力 Computing Power</b>：处理器或硬件解码器的速度和效率，低于解码难度（编码复杂度）则不能流畅播放，编码无法快速进行</li>
+                <li><b>带宽 Bandwidth</b>：网速，硬盘读写，内存，缓存，USB 等传输所需的带宽，低于带宽压力（Kbps，Mbps，Gbps）则不能流畅播放，录屏，编码无法全速进行</li>
+                <li>VCD，DVD 播放机，蓝光播放机也会根据机器售价和等级限制带宽</li>
             </ul>
             <table class="table-center">
                 <thead>
@@ -631,7 +628,7 @@
             </div>
 
             <h3>音频格式（一维）</h3>
-            <p>最简单的结构为——脉冲编码调制<a href="https://zh.wikipedia.org/wiki/%E8%84%88%E8%A1%9D%E7%B7%A8%E7%A2%BC%E8%AA%BF%E8%AE%8A">Pulse-code modulation PCM</a>信号</p>
+            <p>最简单的结构为——脉冲编码调制 Pulse-code modulation（PCM）信号。见<a href="https://zh.wikipedia.org/wiki/%E8%84%88%E8%A1%9D%E7%B7%A8%E7%A2%BC%E8%AA%BF%E8%AE%8A">维基百科</a>。</p>
             <table class="table-center align-items-center text-smaller">
                 <thead class="thead-no-border">
                     <tr class="t-invert-dark">
