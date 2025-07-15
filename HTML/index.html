@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='zh-hans'>
 	<head>
-        <meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="initial-scale=1">
+        <meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Basic Bootstrap Javascript <script src="./files/bootstrap.min.js"></script> -->
         <!-- Bootstrap CSS <link rel="stylesheet" href="./files/bootstrap.css"> -->
         <!-- Bootstrap Icons CSS (remote)
@@ -12,6 +12,7 @@
         <!-- Basic MathJax Javascript -->
         <script src="./files/mathJax3-tex-svg.js" defer></script>
         <!-- Custom CSS Codes <link rel="stylesheet" href="./files/desktopContainer.css"> -->
+        <link rel="preload" href="./files/tutorial.css" as="style">
         <link rel="stylesheet" href="./files/tutorial.css">
         
         <title>x264 教程 HTML 完整版</title>
@@ -88,7 +89,7 @@
             <h2 id="h2-1">必备常识</h2>
 
             <h3>什么是电脑</h3>
-            <p>早期的电脑由中央处理器（CPU），内存（RAM、ROM）和一些专用芯片组成。芯片之间通过 PCB 板上的总线 Bus 互联，从而完成各种计算任务。这种 PCB 板同时负责了一套独立电脑系统的供电、信号、扩展等特性，而被特指为主板 Mainboard 或母板 Motherboard。随着技术发展，CPU 的结构和功能被优化，出现了多核心、独立缓存、共享缓存、64 bit 寄存器（相对于 8、16、32 bit）、以及更快更通用的总线（USB、PCIE）、ROM 演化为 BIOS。电脑的外设也更加丰富，例如鼠标，高清显示器，独立显卡等。这些设备在不同功耗、便携性等限制条件下，从原来的大型机、小型机演化出了服务器、工作站、个人电脑、笔记本、智能手机、平板电脑/掌机等统称为电脑的设备。</p>
+            <p>早期的电脑由中央处理器（CPU），内存（RAM、ROM）和一些专用芯片组成。芯片之间通过 PCB 板上的总线 Bus 互联，从而完成各种计算任务。这种 PCB 板同时负责了一套独立电脑系统的供电、信号、扩展等特性，而被特指为主板 Mainboard 或母板 Motherboard。随着技术发展，CPU 的结构和功能被优化，出现了多核心、独立缓存、共享缓存、64 bit 寄存器（相对于 8、16、32 bit）、以及更快更通用的总线（内存总线、USB、PCIE、SATA）、ROM 演化为 BIOS。电脑的外设也更加丰富，例如鼠标，高清显示器，独立显卡等。这些设备在不同功耗、便携性等限制条件下，从原来的大型机、小型机演化出了服务器、工作站、个人电脑、笔记本、智能手机、平板电脑/掌机等统称为电脑的设备。</p>
 
             <h3>电脑的性能</h3>
             <p>主要看两方面：处理速度（算力）和数据传输能力（带宽）。例如在看视频时，即使 CPU 自身不费力，单是网络或硬盘的带宽没跟上视频的码率带宽，画面便会卡顿。这种卡顿虽然是性能问题，却与 CPU 自身无关。</p>
@@ -135,39 +136,37 @@
             </ul>
 
             <h3>数据大小单位</h3>
-            <div class="overflow-auto text-smaller"><b>基本单位</b>
-                <ul>
-                    <li><b>bit（比特）</b>：最小的计量单位，<span class="text-blue-math">\(1 \text{bit} = \frac{1}{8} \text{Byte}\)</span>，衡量传输流量</li>
-                    <li><b>Byte（字节）</b>：<span class="text-blue-math">\(8 \text{bit} = 1 \text{Byte}\)</span>，衡量文件大小</li>
-                </ul>
-            </div>
-            <div class="overflow-auto text-smaller"><b>二进制千进位</b>
-                <ul>
-                    <li><b>kibi-bit（Kb，千比特）</b>：1024 比特，2<sup>10</sup></li>
-                    <li><b>kibi-Byte（KB，千字节）</b>：1024 字节，2<sup>10</sup></li>
-                    <li><b>mebi-bit（Mb，兆比特）</b>：1024<sup>2</sup> = 1048576 比特</li>
-                    <li><b>mebi-Byte（MB，兆字节）</b>：1024<sup>2</sup> = 1048576 字节</li>
-                    <li><b>gibi-bit（Gb，吉比特）</b>：1024<sup>3</sup> = 1073741824 比特</li>
-                    <li><b>gibi-Byte（GB，吉字节）</b>：1024<sup>3</sup> = 1073741824 字节</li>
-                </ul>
-            </div>
-            <div class="overflow-auto text-smaller"><b>十进制千进位</b>
-                <ul>
-                    <li><b>kilo-bit（Kb，Kib，千比特）</b>：1000 比特</li>
-                    <li><b>kilo-Byte（KB，KiB，千字节）</b>：1000 字节</li>
-                    <li><b>mega-bit（Mb，Mib，兆比特）</b>：1000<sup>2</sup> 比特</li>
-                    <li><b>mega-Byte（MB，MiB，兆字节）</b>：1000<sup>2</sup> 字节</li>
-                    <li><b>giga-bit（Gb，Gib，吉比特）</b>：1000<sup>3</sup> 比特</li>
-                    <li><b>giga-Byte（GB，GiB，吉字节）</b>：1000<sup>3</sup> 字节</li>
-                </ul>
-            </div>
+
+            <h4>基本单位</h4>
+            <ul class="overflow-auto">
+                <li><b>bit（比特）</b>：最小的计量单位，<span class="text-blue-math">\(1 \text{bit} = \frac{1}{8} \text{Byte}\)</span>，衡量传输流量</li>
+                <li><b>Byte（字节）</b>：<span class="text-blue-math">\(8 \text{bit} = 1 \text{Byte}\)</span>，衡量文件大小</li>
+            </ul>
+            <h4>二进制千进位（准确）</h4>
+            <ul class="overflow-auto">
+                <li><b>kibi-bit（Kb，千比特）</b>：1024 比特，2<sup>10</sup></li>
+                <li><b>kibi-Byte（KB，千字节）</b>：1024 字节，2<sup>10</sup></li>
+                <li><b>mebi-bit（Mb，兆比特）</b>：1024<sup>2</sup> = 1048576 比特</li>
+                <li><b>mebi-Byte（MB，兆字节）</b>：1024<sup>2</sup> = 1048576 字节</li>
+                <li><b>gibi-bit（Gb，吉比特）</b>：1024<sup>3</sup> = 1073741824 比特</li>
+                <li><b>gibi-Byte（GB，吉字节）</b>：1024<sup>3</sup> = 1073741824 字节</li>
+            </ul>
+            <h4>十进制千进位（模糊）</h4>
+            <ul class="overflow-auto">
+                <li><b>kilo-bit（Kb，Kib，千比特）</b>：1000 比特</li>
+                <li><b>kilo-Byte（KB，KiB，千字节）</b>：1000 字节</li>
+                <li><b>mega-bit（Mb，Mib，兆比特）</b>：1000<sup>2</sup> 比特</li>
+                <li><b>mega-Byte（MB，MiB，兆字节）</b>：1000<sup>2</sup> 字节</li>
+                <li><b>giga-bit（Gb，Gib，吉比特）</b>：1000<sup>3</sup> 比特</li>
+                <li><b>giga-Byte（GB，GiB，吉字节）</b>：1000<sup>3</sup> 字节</li>
+            </ul>
             <div class="align-items-center">
                 <img src="files/basics/Data-Sizes.png" alt="image0" class="img-medium">
                 <p class="text-gray-side mt-0">图：比特，字节与体积时间比的转换</p>
             </div>
             <p>操作系统（处理器、内存）的“字节”是以二进制换算的，而储存容量（闪存、硬盘）的“字节”是十进制换算的。一开始储存容量不大，而 1000 进和 1024 进差 2.4%，不如多卖电脑重要，就有了现在不统一的容量称呼</p>
-            <ul class="text-smaller">
-                <li>现在硬盘盒闪存厂商，以及平时人们为了方便会使用十进制表示数据和容量大小</li>
+            <ul class="text-gray-side">
+                <li>使用十进制表示数据和容量大小除了不准确外，还是会比二进制方便很多</li>
                 <li>Mac OS X 10.6 开始整个系统都以十进制表示大小</li>
                 <li>为了兼容，Windows 系统的单位可能永远都不会改</li>
             </ul>
@@ -191,7 +190,7 @@
             </div>
 
             <h3>亮度</h3>
-            <ul>
+            <ul class="overflow-auto">
                 <li><b>物理亮度</b>：可见光电磁波的强度或振幅，以流明 lumen/lm，坎德拉/烛光量 candela/cd，或尼特 nits/cdm<sup>2</sup> 计量：
                     <ul class="text-gray-side">
                         <li>1cd/lm 大约为一支普通蜡烛的亮度。</li>
@@ -222,7 +221,7 @@
             <h4>有限色深（Limited/Analog/TV）</h4>
             <p>模拟电视使用了 <span class="text-blue-math">\( 0 \text{mV ~ } 700 \text{mV} \)</span> 的输入电压表示色深，对应软件的完整色深。但早期的模拟电视缺乏电压限制功能——倘若电视台的信号调制器（类似于家庭网络的猫、Modem）出现偏差或干扰，就可能有大量用户的电视出现烧屏现象。所以显示标准上要求信号层面限制电压范围，牺牲一些色深来解决问题，得到了有限范围。</p>
             <p>到了数字时代，电视厂商都使用 HDMI 协议的显示信号接口，电脑厂商则使用 DisplayPort 的显示信号接口，所以在“电脑接电视”，和“游戏主机接显示器”时往往需要额外的输入和输出设置，才能得到明暗过渡正常的画面。</p>
-            <ul class="overflow-auto">
+            <ul class="text-gray-side overflow-auto">
                 <li>一般在显示器的 OSD 设置界面上看到，写作兼容/有限/模拟/电视范围 </li>
                 <li>一般来说，数字显示器/数字电视应该是原生支持设置为输入完整色深的，若没有则可以通过设置 HDMI Black Level 来缩放到正常明暗过渡</li>
             </ul>
@@ -313,15 +312,11 @@
             </div>
             
             <h3>对比度 Contrast</h3>
-            <p>通常情况下，表示对音量、冷热、远近等两种程度的差异大小缩放。在图像/显示器中，对比度则代表最亮和最暗的显示亮度差异。图片的对比度低会显得发灰，因为当前的亮度设置位于这个灰度水平上。</p>
-            <p>人眼在黑暗中观看同样的视频时，有些场景会显得过亮，有些场景则会显得太暗。这种情况下，降低对比度即可解决该问题；而在阳光下观看同样的视频时，即使将手机电脑调到最大亮度，也无法清晰看到暗部场景。这种情况下，降低对比度并增加亮度即可解决该问题。</p>
-            <p>售卖手机的厂商可以考虑让所有用手机看视频的人都想要换手机：只需在下拉状态栏的亮度滑块条 Brightness 上增加一个“暗度 Darkness”滑块：</p>
-            <ul class="text-smaller overflow-auto">
-                <li>亮度与暗度的间距决定对比度</li>
-                <li>通过软件限制亮度与暗度滑块的最近距离，防止误操作</li>
-                <li>上述内容已经说明调整对比度能解决几乎所有过亮或过暗场景的问题</li>
-                <li>倘若没有技术和耐心，则可退而求其次，在亮度条的下方增加对比度条</li>
-            </ul>
+            <p>任意量纲的间距。在图像与显示器中代表最亮~最暗的亮度差，音频中代表“动态范围”，对比度低的图像会“发灰”，因为当前的亮度设置位于这个灰度水平上；对比度高的图像会显得生动，因为显示出来的色彩往往更符合心理预期。</p>
+            <h4>对比过大的问题</h4>
+            <p>在安静环境下听音乐时，有的音频段落会太响、画面亮度太刺眼；而有的场景下有小到听不清、或画面暗的看不清细节。</p>
+            <h4>调节对比度</h4>
+            <p>在 DVD、蓝光播放机上，用户可以方便地通过遥控器调整；电脑麻烦些，需要通过调节显示器的 OSD 菜单，或下载第三方插件，或在播放器软件中按快捷键调节；智能手机可以通过显示色彩模式和第三方软件调节，但罕有播放器支持对比度调节，因此体验最差。</p>
 
             <h3>饱和度 Saturation</h3>
             <p>一般指液体在特定压力和温度下溶解了某种成分的程度，达到最高时会沉积而不再溶解。图像中则代表颜色接近 100% 纯色的程度或“彩度”，饱和度越高则图像越鲜艳，为零时得到灰阶图像；最大时得到纯色图像。对比度接近饱和度，但不是饱和度。</p>
@@ -331,12 +326,11 @@
 
             <h3>每英寸像素 Pixel Per Inch / PPI</h3>
             <p>指屏幕或印刷设备上的物理像素密度，这取决于设计时预期的观看距离。屏幕的 PPI 高则适合近距离观看，因为物理像素更密集。在印刷设备的 PPI 越高，打印出的图像就越细腻。软件的 PPI 主要用于计算新建图像的像素大小和分辨率，以确保图像有着适当的大小和清晰度。</p>
-            <ul class="text-smaller overflow-auto">
+            <ul class="text-gray-side overflow-auto">
                 <li>矢量图形通常不涉及 PPI 概念，因为它们以数学方式描述图像，可以无限放大而不失真</li>
                 <li>高 PPI 的显示器是一种较新的规格，旧的软件在这些显示器上会出现模糊，或界面过小的问题，见<a href="https://www.youtube.com/watch?v=jfAH4Ym5D6Q">硬件茶谈</a></li>
             </ul>
-
-            <h3>位图 Bitmap 与矢量图 Vector</h3>
+            <!--<h3>位图 Bitmap 与矢量图 Vector</h3>
             <p>位图使用像素和元数据（例如 n 个像素后换行）来表示图像。每个像素都包含特定的颜色信息，通常表示为 RGB 或 YCbCr 值。用于描述照片和复杂图像，但当放大时会失真，因为像素的信息已经固定，而放大只是用滤镜在其中插值填空的结果。</p>
             <p>矢量图使用图形函数与代码来描述图像（如 JavaFX，SVG）。它们以函数定义图像的形状、线条和颜色。放大矢量图不会失真，且可以在不同的尺寸和分辨率下保持清晰度：
                 <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em">
@@ -374,17 +368,15 @@
                 <img src="./files/svg-examples/adobe-audition-cc-creative-cloud_78302.svg" alt="audition"/>
                 <img src="./files/svg-examples/adobe-after-effects-cc-creative-cloud.svg" alt="after-effects"/>
                 <img src="./files/svg-examples/adobe-premiere-pro-cc-creative-cloud_78301.svg" alt="premiere"/>
-                
             </p>
-            <ul class="text-smaller overflow-auto">
+            <ul class="text-gray-side overflow-auto">
                 <li>因为渲染算力不够，所以以前的矢量图格式难以被推广</li>
                 <li>因为要保证参差不齐的“矢量图代码质量”在不同渲染器下画面一致；所以现在的矢量图格式仍然难以推广
                     <ul><li>使以上这些 SVG 的大小一致... 需要手动改写代码</li></ul>
                 </li>
                 <li>在 Wordpress（个人博客网站软件）中使用 SVG 图形仍然需要第三方插件才能实现部分支持</li>
                 <li>当然，“文本”也可以被视为一种矢量图，这样则位图反而更少见了</li>
-            </ul>
-
+            </ul>-->
             <h3>色彩空间 Color Space</h3>
             <div class="row">
                 <p id="LR-UD-001" class="col-10">用于表示和处理图像颜色的数据格式，具有适用于各种不同应用场景的多种类型。最常用的是分为硬件和操作系统的 RGB 色彩空间，以及内容的 YUV/YCbCr 色彩空间。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
@@ -522,7 +514,6 @@
 
             <h3>视频帧 Video Frame</h3>
             <p>描述连续图片序列中的单张图片（随便拍一张图片不算，连拍算）。有帧大小、帧率/帧数、帧类型（关键帧，过渡帧）等描述规格，构成了图像内容运动的假象。</p>
-            <p>传统的视频播放器支持暂停后逐帧预览画面。</p>
 
             <h3>帧率 Frame Rate / Frames per second / FPS</h3>
             <p>每秒刷新的图像帧数，越高则变化越流畅。不同的内容类型会根据视频标准，成本和艺术效果来选择一个合适的帧率来拍摄和制作。</p>
@@ -540,7 +531,7 @@
             <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：ffmpeg 转换到恒定帧率的命令</button>
             <div class="coll-content">
                 <code>ffmpeg -i &lt;输入&gt; -vsync cfr -y -vf fps=60 -c:a copy -f yuv4mpegpipe - | x264 &lt;参数&gt; - --demuxer y4m --output &lt;输出.mp4&gt;</code>
-                <ul class="text-smaller">
+                <ul class="text-gray-side">
                     <li>于视频元数据里也有着标错的情况，所以用 MediaInfo 等工具查看到视频帧率是 Variable 时，还要用播放器逐帧查看，或者用 ffprobe 检测。见 <a href="https://nazorip.site/archives/169/">ffprobe 教程</a></li>
                 </ul>
             </div>
@@ -947,8 +938,8 @@
                 </li>
                 <li><b>生成视频流</b>
                     <ul>
-                        <li>编码器将生成的数据流逐个 GOP Group of Pictures 打包，并附加如色彩空间、Supplemental Enhancement Information SEI、Video
-                            Usability Information/High Dynamic Range VUI/HDR 等元数据，得到视频流。</li>
+                        <li>编码器将生成的数据流逐个 GOP Group of Pictures 打包为文件，得到完整视频流文件</li>
+                        <li>如有必要，附加如色彩空间、Supplemental Enhancement Information SEI、VUI、HDR 等元数据</li>
                     </ul>
                 </li>
                 <li><b>封装视频流</b>
@@ -960,6 +951,8 @@
                                 <li>可以使用工具如 <a href="http://ffmpeg.org/download.html">ffmpeg</a>、<a href="https://www.videohelp.com/software/MP4Box">MP4Box</a>，<a href="https://mkvtoolnix.download/">MKVToolNix</a> 等来进行封装。</li>
                             </ul>
                         </li>
+                        <li>封装文件使得播放器的程序逻辑变得简单（例如，在读取视频流之前就获取视音频格式，而不是先打开所有解码器，再关掉不兼容的解码器）</li>
+                        <li>如有必要，附加音频流/音轨、字幕轨、字体等文件（但要根据封装文件的兼容性判断）</li>
                     </ul>
                 </li>
             </ol>
@@ -1063,7 +1056,7 @@
             <p>Windows CMD、Linux Bash 的管道模式，用于传输纯数据，其中的程序同步运行，持续地传输上游输出到下游。适用于串流作业和处理流数据，包括视音频和文本流。</p>
             <h5>串流管道详解</h5>
             <p>Linux Bash 中使用 <code>for txt in *.txt; do md5sum $txt; done | awk '{print $2, $1}' | sort -bn</code> 代表：</p>
-            <ul class="text-smaller">
+            <ul class="text-gray-side">
                 <li>在当前命令行目录下遍历 .txt 文件，生成多行“哈希值 文件名”字符串</li>
                 <li>将文本流传给排列功能，将每行字符的顺序改为“文件名 哈希值”</li>
                 <li>将文本流传给排序功能，按照文件名的数字重排行号并忽略空格，得到按顺序排版的“文件名 哈希值”</li>
