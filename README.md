@@ -34,19 +34,16 @@
 - 目前引入了 [MathJax JavaScript]("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js") 附件做公式转换，同时因为 MathML Tag 占据 HTML 源码的面积太大而重写为 LaTex。工具为 [Text2Latex.com]("https://www.text2latex.com")
 - 一开始因为没有转换 LaTex 的工具链而使用了手写转 MathML 的处理。工具为 [ConvertMathToLaTexMathML]("https://webdemo.myscript.com/views/math/index.html")
 
-### 内容范围（三部分）
+### 内容范围
 
-#### I - 视频技术基础
+本教程是这个视频压制教程系列中的入门篇，主要内容用于说明电脑硬件、对比度、色彩空间、位深等必备常识，并尽可能忽略了理论细节、算法步骤等有细节内容，附带 x264 编码器与 ffmpeg 的常见用法。
 
-封装文件，封装与解封装，编码与解码，硬解与软解，滤镜，三角形定律，帧数，小数帧，码率，分辨率，向量，GUI-CLI-API，录屏，超频，算力性能，视频格式编目分类，音频格式编目分类，图像格式编目分类，有损压缩与无损压缩，色深，色彩空间，色度采样，伽马，伽马矫正，逐行扫描，交错/隔行扫描，噪点与抖动，拜耳滤镜，RAW 图像，RAW 视频，编程语言编目分类，压制软件
+### 移动端支持
 
-#### II - x264 视频编码基础
-
-GOP，关键帧，参考帧，待定帧，参数集，Lookahead 进程，维特比算法，动态搜索，运动补偿，SAD 与 SATD，加权预测，多参考帧，变换与量化，率控制模式，CRF，ABR，CQP，3CQP，zones，VBR，2pass，FTQP，方差自适应量化，去块滤波，模式决策，率失真，率失真优化，mbtree，qcomp，SSE，Noise-SSE，拉格朗日代价，游程编码，色彩信息
-
-#### III - x264 与 ffmpeg 的用法用例
-
-压制 log，软件下载，ffmpeg-pipe，去可变帧率，CMD 操作，x264 参数，图像序列格式，序号表达式，ffmpeg-Image2，ffmpeg-Concat
+本教程对移动端支持添加了以下功能：
+1. 根据当前页面的宽度、高度调整内容大小
+2. 点击图片轮训放大缩小
+3. 使用兼容 Webkit/Blink 的独立字形（加粗、倾斜）字体文件
 
 ### 繁体中文支持
 
