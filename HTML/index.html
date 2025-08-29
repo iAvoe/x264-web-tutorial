@@ -332,6 +332,10 @@
                     </ul>
                 </li>
             </ul>
+            <div class="align-items-center">
+                <img src="files/basics/Y-Gamma.webp" alt="Subsampling" class="img-medium">
+                <p class="text-gray-side mt-0">图：对亮度平面调整伽马映射，来源：<a href="https://developer.apple.com/documentation/accelerate/adjusting-saturation-and-applying-tone-mapping">developer.apple.com</a>。</p>
+            </div>
 
             <h3>伽马矫正</h3>
             <p><b>两种方式</b>：向上提亮缩放“白化” <span class="text-blue-math">\( s = cr^\frac{1}{\gamma} \)</span> 和向下变暗缩放“黑化” <span class="text-blue-math">\( s = cr^\gamma \)</span>。</p>
@@ -462,7 +466,12 @@
             </table>
 
             <h3>色度采样 Chroma Subsampling</h3>
-            <p>YUV/YCbCr 色彩空间下，利用人眼对色度细节不敏感的特性（见下图全分辨率和半分辨率的色度面），降低色度平面的分辨率，从而压缩图像。色度采样格式通常用三个数字表示，例如 4:4:4、4:2:2 等。</p>
+            <p>YUV/YCbCr 色彩空间下，利用人眼对色度细节不敏感的特性（见下图全分辨率和半分辨率的色度面），降低色度平面的分辨率，从而压缩图像。色度采样格式通常用三个数字表示，例如 4:4:4、4:2:2 等。编码时下采样，解码时上采样。</p>
+            <div class="align-items-center">
+                <img src="files/basics/Subsampling.png" alt="Subsampling" class="img-medium">
+                <p class="text-gray-side mt-0">图：色度采样，来源：<a href="https://developer.apple.com/documentation/accelerate/adjusting-saturation-and-applying-tone-mapping">developer.apple.com</a>。</p>
+            </div>
+
             <p>A:B:C 代表微观分辨率下，每个长 A 像素，高 2 像素的空间，第一行缩到 B 个色度像素，第二行缩到 C 个色度像素。如 4:2:2 代表色度平面的每个 4x2 微观区间中，第一行的色度分量保留 2 个像素，第二行的色度分量也保留 2 个像素。色度采样详见下表：</p>
             <div class="overflow-auto">
                 <table class="table-center align-items-center text-smaller" style="white-space: nowrap;">
@@ -482,7 +491,11 @@
                             <td class="px-0 t-invert-light square" style="white-space: nowrap;">色素</td>
                             <td class="px-0 t-light-gray square" style="white-space: nowrap;">色素</td>
                             <td class="px-0 t-invert-light square" style="white-space: nowrap;">色素</td>
-                            <td class="px-0" rowspan="2" style="white-space: wrap;">视频滤镜可以直接作用于亮度或色度平面，而不需要在 RGB 色彩空间中转换，同时亮度色度平面完整，所以适合用于剪辑</td>
+                            <td class="px-0" rowspan="2" style="white-space: wrap;">
+                                视频滤镜可直接作用于亮度或色度平面，<br>
+                                而 RGB 色彩空间需要转过去、应用滤镜、再转换回来，<br>
+                                因此非常适合图像和视频编辑，并且便于压缩色度平面
+                            </td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-0 t-invert-dark" style="white-space: nowrap;">色素</td>
@@ -495,7 +508,11 @@
                             <td rowspan="2">亮度 100% 宽 100% 高，色度 50% 宽 100% 高（色度 960x1080）</td>
                             <td class="px-0 t-light-gray twoByOne" colspan="2">色素 ←</td>
                             <td class="px-0 t-invert-light twoByOne" colspan="2">色素 ←</td>
-                            <td class="px-0 t-light-gray" rowspan="4" style="white-space: wrap;">逐行扫描，色度像素靠插值放大补全。由于人眼对色度变化不敏感，同时使用整数倍的缩小放大，因此在提高压缩的同时除了边缘细节对齐误差外的损失可以忽略不计</td>
+                            <td class="px-0 t-light-gray" rowspan="4" style="white-space: wrap;">
+                                逐行扫描，色度像素靠插值放大补全。<br>
+                                由于人眼对色度变化不敏感，同时使用整数倍的缩小放大，<br>
+                                因此在提高压缩的同时除了边缘细节对齐误差外的损失可以忽略不计
+                            </td>
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-0 t-invert-dark twoByOne" colspan="2" style="white-space: nowrap;">色素 ←</td>
