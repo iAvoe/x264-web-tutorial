@@ -31,24 +31,23 @@
                     </ul>
                     <ul class="text-xs">
                         <li>编码：<a class="toSelf" href="#h2-4">前瞻</a>，
-                            <a class="toSelf" href="#h2-5">动搜</a>，
-                            <a class="toSelf" href="#h2-6">动补</a>，
+                            <a class="toSelf" href="#h2-5">动态搜索</a>，
+                            <a class="toSelf" href="#h2-6">动态补偿</a>，
                             <a class="toSelf" href="#h2-7">变换量化</a>，
                             <a class="toSelf" href="#h2-8">率控制模式</a>，
                             <a class="toSelf" href="#h2-9">自适应量化</a>，
-                            <a class="toSelf" href="#h2-10">去块滤波</a>，
-                            <a class="toSelf" href="#h2-11">模式决策</a>，
-                            <a class="toSelf" href="#h2-12">优化量化策略</a>，
-                            <a class="toSelf" href="#h2-13">熵编码</a>，
-                            <a class="toSelf" href="#h2-14">优化熵编码</a>，
-                            <a class="toSelf" href="#h2-15">色彩信息</a>
+                            <a class="toSelf" href="#h2-10">模式决策、环路滤镜</a>，
+                            <a class="toSelf" href="#h2-11">优化量化策略</a>，
+                            <a class="toSelf" href="#h2-12">熵编码</a>，
+                            <a class="toSelf" href="#h2-13">优化熵编码</a>，
+                            <a class="toSelf" href="#h2-14">色彩信息</a>
                         </li>
                     </ul>
                     <ul class="text-xs">
                         <li>附录：
-                            <a class="toSelf" href="#h2-16">预设参数</a>，
-                            <a class="toSelf" href="#h2-17">线程控制</a>，
-                            <a class="toSelf" href="#h2-18">工具下载</a>
+                            <a class="toSelf" href="#h2-15">预设参数</a>，
+                            <a class="toSelf" href="#h2-16">线程控制</a>，
+                            <a class="toSelf" href="#h2-17">工具下载</a>
                         </li>
                     </ul>
                 </li>
@@ -107,16 +106,19 @@
                         <li>例如：libmxv，opencl，MMAL，direct3D</li>
                     </ul>
                 </li>
-                <li><b>软编 Software Encoding</b>：使用通用电路编码流文件，通常具有更完整的压缩功能但速度较慢，能耗/发热较高，同码率下的画质比硬编更高</li>
-                <li><b>硬编 Hardware Encoding</b>：使用专用电路编码流文件，通常具有较少的功能但速度更快，发热更低
+                <li><b>软编 Software Encoding</b>：使用通用电路运行算法逻辑编码流文件，通常具有更完整的压缩功能但速度较慢，能耗/发热较高，同码率下的画质更高
                     <ul class="text-gray-side">
-                        <li>例如：NVENC，MMF/Venus，Intel-QSV，Conexant，elgato</li>
+                        <li>运行时占用 CPU 核心、GPU CUDA/ROCm/OpenCL 通用计算单元、或高端采集卡中的 FPGA 核心</li>
                     </ul>
                 </li>
-                <li>由于编解码器的复杂性，软硬编解码方案在相同价格下存在较大差异，因此最终取决于预算、速度和画质要求</li>
+                <li><b>硬编 Hardware Encoding</b>：使用专用电路编码流文件，通常具有较少的功能但速度更快，发热更低
+                    <ul class="text-gray-side">
+                        <li>常见的有 NVENC，MMF/Venus，Intel-QSV，AMD-AMF，Elgato</li>
+                    </ul>
+                </li>
             </ul>
 
-            <h3>封装与解封装 - Multiplex / De-multiplex</h3>
+            <h3>封装与解封装——(De-)multiplex</h3>
             <ul class="overflow-auto">
                 <li>文件格式中，类似于 .zip .rar 文件将多个文件（视频，音频，字幕，字体）合并为一个文件</li>
                 <li>信号处理中，电台将多路音频流封装为一段模拟信号，接收端通过调整接收频率来接收其中一路信号，每路信号占据一定的频宽/带宽</li>
@@ -132,9 +134,20 @@
                 </li>
             </ul>
 
-            <h3>数据大小单位</h3>
+            <h3>视频编码专利</h3>
+            <p>常见的有核心技术专利（特定编码步骤、装置设备具体实现等应用）、标准必要专利（即构成 AVC、HEVC、AV1 等编码所需的专利）、免费开放许可等。由于涉及视频编码的专利/权利人多，因此一种视频编码是由多项专利打包的专利池所构成，由专利池管理公司运营。</p>
+            <p>HEVC 的专利许可最初混乱且昂贵，与 AVC 的许可方式截然不同。实际上这个问题显著阻碍了 HEVC 的推广，主要的专利池包括：</p>
+            <ul>
+                <li>HEVC Advance：包含三星、高通、GE、杜比等公司的专利</li>
+                <li>MPEG LA：包含来自三菱、日本广播协会NHK、JVC Kenwood、苹果等公司的专利</li>
+                <li>Velos Media：包含来自爱立信、松下、索尼等公司的专利</li>
+            </ul>
+            <div class="align-items-center">
+                <img src="files/basics/Pay-For-HEVC-Windows.webp" alt="image0" class="img-medium">
+                <p class="text-gray-side mt-0">图：Windows 文件管理器预览 HEVC 编码视频、HEIF 图像的组件，定价 $0.99 USD。通过让用户支付这比费用，微软以“产品默认不包含”而绕过了 HEVC 的专利费。</p>
+            </div>
 
-            <h4>基本单位</h4>
+            <h3>数据大小单位</h3>
             <ul class="overflow-auto">
                 <li><b>bit（比特）</b>：最小的计量单位，<span class="text-blue-math">\(1 \text{bit} = \frac{1}{8} \text{Byte}\)</span>，衡量传输流量</li>
                 <li><b>Byte（字节）</b>：<span class="text-blue-math">\(8 \text{bit} = 1 \text{Byte}\)</span>，衡量文件大小</li>
@@ -201,9 +214,9 @@
                 </li>
                 <li><b>软硬件亮度</b>：代表灰度像素值的大小，值越大表示像素点越亮，但最大亮度受硬件和用户设定限制。伽马 gamma/Y 值定义了像素的亮度范围，最小值 0 为黑色：
                     <ul class="text-gray-side">
-                        <li>位深 4bit 下，最大值为 15（或 0xF），代表白色</li>
-                        <li>位深 8bit 下，最大值为 255（或 0xFF），代表白色</li>
-                        <li>位深 10bit 下，最大值为 1023（或 0x3FF），代表白色</li>
+                        <li>位深 4bit 下，最大值/纯白为 15（<code>0xF</code>）</li>
+                        <li>位深 8bit 下，最大值/纯白色为 255（<code>0xFF</code>）</li>
+                        <li>位深 10bit 下，最大值/纯白色为 1023（<code>0x3FF</code>）</li>
                     </ul>
                 </li>
             </ul>
@@ -925,7 +938,9 @@
                         <li><b>运动补偿</b>：Motion Compensation（MC）对比实际画面与搜索到的向量生成预测块，并补偿¼子像素精度的对齐偏差。</li>
                         <li><b>细分块</b>：根据 MEMC，进一步细分宏块或编码树单元到最小的 4x4 编码块上。</li>
                         <li><b>帧间残差编码</b>：对比实际画面与动态搜索与补偿后所得的图像，得到残差，并对残差进行变换和量化，存储到 P-B 帧上，在解码时与 I 帧叠加以得到原始画面。</li>
-                        <li><b>帧内预测</b>：在 I 帧或 P 帧的 I 块上，从前面步骤中生成的候选夹角、DC、趋平中的最佳模式冗余帧内的块，得到预测块。</li>
+                        <li><b>帧内预测</b>：在帧内编码块上检查候选出冗余最好的帧内编码方法（夹角、DC、趋平、无），选中方法后得到帧内预测后的块，即预测块。
+                            <ul><li>开启率失真优化则进一步检查画质同码率下画质是否也最好</li></ul>
+                        </li>
                         <li><b>帧内残差编码</b>：对比实际画面与帧内预测得到的残差块，进行变换和量化，存储在预测块中，在解码时与预测模式叠加以得到原始画面。</li>
                         <li><b>跳过块编码</b>：跳过帧间或帧内残差编码的块，进行变换和量化。</li>
                         <li><b>变换</b>：将图像从空间域转换到低频到高频信号分量之间的每个级别，也称为频域。</li>
@@ -958,7 +973,7 @@
             </div>
 
             <h3>视频编码的标准（<a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs">MDN Docs</a>）</h3>
-            <p>编码的标准 Encoding Standard 一般称为 coding 或 codec。其中 code 即代码，其末尾加 c 是一种名词化的形容词，如 politic/political，magic/magical，electric/electrical。</p>
+            <p>Encoding Standard 一般称为 Codec。</p>
             <div class="overflow-auto">
                 <table class="table-center align-items-center text-smaller">
                     <thead>
@@ -1064,7 +1079,7 @@
             <code>J:\ffmpeg.exe -i D:\文件夹\源.mp4 -an -f yuv4mpegpipe - | J:\x264-r3206.exe --y4m - --output D:\文件夹\测试.h264 <span class="text-blue-emph">2> D:\文件夹\报错.txt</span></code>
             <p>以上命令代表在 Windows CMD 中：</p>
             <ol>
-                <li>ffmpeg 导入“D:\文件夹”下的一个视频文件</li>
+                <li>ffmpeg 导入 "D:\文件夹" 下的一个视频文件</li>
                 <li>ffmpeg 使用 <code>-an</code> 命令指定关闭音频编码</li>
                 <li>ffmpeg 使用 <code>-f</code> 命令指定使用 YUV For MPEG 管道格式，相对于 rawpipe 格式提供了一些视频元数据，使 x264 了解视频的分辨率、帧率、位深等基本参数，否则需在命令行中手动指定</li>
                 <li>ffmpeg 使用“-"替代文件路径，指定导出文件到管道</li>
@@ -1382,7 +1397,7 @@
 
             <h3>细分块</h3>
             <code class="code-bold">--partitions</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;字符串 p8x8，p4x4，b8x8，i8x8，i4x4/none/all，默认 p8x8，b8x8，i8x8，i4x4，推荐 all&gt;允许的细分块种类。增加分块种类会增加计算负载，但 x264 放到现在来看，也只有高分辨率快速编码场景才需要保持默认。因此推荐 <span class="text-blue-emph">all</span></p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;字符串 <code>p8x8</code>，<code>p4x4</code>，<code>b8x8</code>，<code>i8x8</code>，<code>i4x4/none/all</code>，默认 <code>p8x8</code>，<code>b8x8</code>，<code>i8x8</code>，<code>i4x4</code>，推荐 <code>all</code>&gt;允许的细分块种类。增加分块种类会增加计算负载，但 x264 放到现在来看，也只有高分辨率快速编码场景才需要保持默认。因此推荐 <span class="text-blue-emph">all</span></p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li>开启 <span class="text-blue-emph">p8x8</span> 会同时启用 p16x8，p8x16</li>
                 <li>开启 <span class="text-blue-emph">p4x4</span> 会同时启用 p8x4，p4x8</li>
@@ -1392,13 +1407,13 @@
 
             <h2 id="h2-7">变换</h2>
             <div class="row">
-                <p id="LR-UD-003" class="col-10">模拟信号转换为数字信号的主要步骤之一——将音量、亮度、温度、压力等信号整理为低频到高频的分量。具体来说，这个过程根据要处理的信号和用途不同，会使用傅里叶变换，小波变换，和 x264/5 使用的二维离散余弦变换 2D Discrete cosine transform。二维离散余弦变换利用预制的二维波形模具，通过穷举加减将源信号逐步分解成不同频率的平面波形，并合成变换块。<span class="text-gray-side">图：缩放到 8x8 的波形分布，由于 cos(x) 的波形范围是 -1~1，所以图中的黑色到白色并不是 0~255 或 16~235，而是 -1~1</span> </p>
+                <p id="LR-UD-003" class="col-10">模拟信号转换为数字信号的主要步骤之一——将音量、亮度、温度、压力等信号整理为低频到高频的单一信号/波形分量。具体来说，这个过程根据要处理的信号和用途不同，会使用傅里叶变换，小波变换，和 x264/5 使用的二维离散余弦变换 2D Discrete cosine transform。二维离散余弦变换利用预制的二维波形模具，通过穷举加减将源信号逐步分解成不同频率的平面波形，并合成变换块。<span class="text-gray-side">图：缩放到 8x8 的波形分布，由于 cos(x) 的波形范围是 -1~1，所以图中的黑色到白色并不是 0~255 或 16~235，而是 -1~1</span> </p>
                 <img src="files/transform-quantization/DCT-Block.png" alt="image22" id="LR-UD-004" class="img-small img-right col-2 mb-auto">
             </div>
             <p>变换的过程中，“DCT 像素”称为系子 coefficients。这些系子的强度可以是负值，表示反相的波形；也可以是小数，表示低强度的波形（但因为计算机浮点计算慢于整数计算，所以一般仅用于演示）。变换块左上角的系数是直流 DC 分量，代表整体亮度水平，其余的系数是交流 AC 分量，表示图像中的细节和纹理信息。</p>
 
             <h3>量化</h3>
-            <p>简单地说，是根据不同的量化强度，块类型（亮度、色度、16x16、8x8、4x4 块）给出对应变换块的量化表/矩阵。将变换后的块点除量化矩阵，得到剩余 DCT 系子的块，从而减少高频的 DCT 系子分量，实现压缩。</p>
+            <p>根据压缩强度给出一个除数或矩阵数组，将变换结果的每个值除以这个除数或矩阵中同位的值，只保留和使用商来解码播放，从而实现压缩。这步操作是压缩中画面损失最大的步骤。</p>
             <h4>量化值 Quantization Parameter</h4>
             <p>QP 是 CRF，ABR 等码率质量控制模式算出，以及率失真优化量化、模式决策等步骤所调整的中间变量</p>
             <h4>量化步长 <span class="text-blue-math">\(Q_{\text{step}}\)</span></h4>
@@ -1521,7 +1536,7 @@
             <h2 id="h2-8">率控制</h2>
 
             <h3>码率分布成因</h3>
-            <p>有损压缩中，只是优化码率分配本身就可以提高当前视频的画质。这是因为参考帧 P、B 帧自身的主要信息来自于被参考帧 I 帧，其中被冗余的宏块只储存“相对于被参考帧的动态向量”，和“残差画面”。这种画面并不锐利，因而（在熵编码后的）体积占比非常小。而尽管被参考帧 I 帧的体积很大，但 I 帧自身的画面为其后的若干至数百帧提供了参考，使得高画质的 I 帧反而提高了帧间冗余压缩率（与使用 10bit 位深后，码率不增反降的原因相同）。假如被参考帧 I 帧的有损压缩较高，那么在环路滤波/率失真优化过程中，编码器会发现 I 帧与 P、B 帧之间不太相像；便会提高残差画面的信息量。于是虽然峰值码率会降低，但 I 帧后的一系列帧都会比以往大一些，造成整体的码率/文件体积上升。在这个基础上：</p>
+            <p>有损压缩中，只是优化码率分配本身就可以提高当前视频的画质。这是因为参考帧 P、B 帧自身的主要信息来自于被参考帧 I 帧，其中被冗余的宏块只储存“相对于被参考帧的动态向量”，和“残差画面”。这种画面并不锐利，因而（在熵编码后的）体积占比非常小。而尽管被参考帧 I 帧的体积很大，但 I 帧自身的画面为其后的若干至数百帧提供了参考，使得高画质的 I 帧反而提高了帧间冗余压缩率（与使用 10bit 位深后，码率不增反降的原因相同）。假如被参考帧 I 帧的有损压缩较高，那么在环路滤镜组/率失真优化过程中，编码器会发现 I 帧与 P、B 帧之间不太相像；便会提高残差画面的信息量。于是虽然峰值码率会降低，但 I 帧后的一系列帧都会比以往大一些，造成整体的码率/文件体积上升。在这个基础上：</p>
             <ul>
                 <li>如果视频本身的画面变化偏大，那么参考帧 P、B 帧一开始就会储存更多的残差信息</li>
                 <li>如果一开始就要求限制峰值码率，那么即使文件体积增加，码率提高也是没办法的事</li>
@@ -1793,8 +1808,26 @@
                 <li>注意低成本动漫和幻灯片录屏等平面多过纹理的画面，因此码率不足时反而要更改量化强度分配策略为妥协纹理</li>
             </ul>
            
-            <h2 id="h2-10">环路滤波</h2>
-            <p>由于 AVC 的环路滤波步骤中只有去块，所以叫去块滤波在此更准确。</p>
+            <h2 id="h2-10">模式决策、环路滤镜</h2>
+            <p>由于 AVC x264 的环路滤镜步骤中只有去块，所以准确的说就是“去块失真滤镜/去块滤镜（Deblock）”。之所以称作“环路/Loop”是因为编码器会在这之后进行模式决策（Mode Decision）来检查编码选用的帧内、帧间模式是否合理，于是，概念图中就出现了一条走向“倒过来回到动态搜索步骤结束为止”之后的“环路”路径，而这条路径上恰好有去块滤镜。当然，在更先进的视频编码上还有更多可用的滤镜，因此称为“滤镜组”。</p>
+            <p>环路滤镜作用在重建帧（编码结果）上，使其成为未来帧的参考。模式决策（帧内模式、运动矢量、块划分等）都在编码当前块时完成，不会在环路滤镜处理之后再复查和修改。但编码器在决策时通常会基于“滤镜处理后的参考帧”来进行运动估计和预测，以保证和解码端一致。模式决策对于帧内编码的块/帧尤其重要，因为帧内预测的模式是根据重建（并滤波）后的左侧、左上和顶部相邻像素做的（信息有限），因此很可能还有更好的编码模式可取。对于帧间编码的块，其前后的参考帧已经进行过滤镜处理（因为编解码顺序不同于播放顺序），因此编码器可以安全地根据处理后的参考帧复查动态向量。</p>
+            <ol>
+                <li><b>整合动态搜索与补偿可能性</b>：
+                    <ul>
+                        <li>计算并收集每种帧内，帧间预测模式的率失真分数（于下文解释）</li>
+                    </ul>
+                </li>
+                <li><b>整合分块参考量化可能性</b>：
+                    <ul>
+                        <li>计算并收集每种细分块方案（4x4，8x8，16x16），参考帧长度，量化强度下的率失真分数</li>
+                    </ul>
+                </li>
+                <li><b>压缩方案定制</b>：
+                    <ul>
+                        <li>选择码率最小的压缩方案并不是最优解，因此找出率失真分数最高的方案集，得到码率与画质最为平衡的方案</li>
+                    </ul>
+                </li>
+            </ol>
             <!-- x264 教程副本，更改需手动同步 { -->
             <h3>去块滤镜</h3>
             <p>修复“CRF/ABR 模式在某些场景的部分区域里分配量化值过高时，宏块间出现明显横纵割痕瑕疵”的平滑滤镜。编码器内去块利用了帧内帧间搜索到的信息，而理论上相比外部滤镜误判更少（当然外部滤镜也能做动态和帧内搜索）。去块大体上是检查 1 像素宽，且此块边缘没有较大像素值变化造成的横纵边缘（所以也存在误判）。块失真源自块间不统一的量化程度，有的块量化高流就会从邻近画面里凸现出来。而去块手段是平滑滤镜，因此要降低强度才适用于高码视频，动漫，素材录屏等锐利画面。边界强度 Boundary strength（去块力度判断）</p>
@@ -1823,27 +1856,7 @@
             </ul>
             <!-- } -->
 
-            <h2 id="h2-11">模式决策</h2>
-            <ol>
-                <li><b>整合动态搜索与补偿可能性</b>：
-                    <ul>
-                        <li>计算并收集每种帧内，帧间预测模式的率失真分数（于下文解释）</li>
-                    </ul>
-                </li>
-                <li><b>整合分块参考量化可能性</b>：
-                    <ul>
-                        <li>计算并收集每种细分块方案（4x4，8x8，16x16），参考帧长度，量化强度下的率失真分数</li>
-                    </ul>
-                </li>
-                <li><b>压缩方案的定制</b>：
-                    <ul>
-                        <li>选择码率最小的压缩方案并不是最优解，因此找出率失真分数最高的方案集，得到码率与画质最为平衡的方案</li>
-                    </ul>
-                </li>
-            </ol>
-            <p class="text-gray-side">注：如果片源已有明显的边缘失真，模式决策优化反而需要减少，因为优化方向是尽可能保留原画，导致失真本身被当成细节</p>
-
-            <h2 id="h2-12">优化量化策略</h2>
+            <h2 id="h2-11">优化量化策略</h2>
             <!-- x264 教程副本，更改需手动同步 { -->
             <h3>率失真优化</h3>
             <p>Rate distortion optimization，RDO。原本有损压缩视频编码器的策略就是码率越小越好——所以量化强度越大越好。但实际情况是量化压缩相当程度的破坏了 P-B 帧原本可以参考 I 帧的部分——因为量化后差异太大而只能放弃参考，换成 I 块。解决这种乱量化问题的方法是将失真，码率分别看成两种越大越差的程度；将其中一个程度乘以一个缩放值以对齐另一个（使两值权重对等）以相互牵制出平衡点。再将这个“新的程度”应用到原本的编码器策略里，就是率失真优化。</p>
@@ -1905,10 +1918,10 @@
             </div>
 
             <h3>宏块树与量化值曲线缩放 qComp</h3>
-            <p>源自 libavcodec 以复杂动态场景的帧间参考少而应提高压缩，分码率给参考多而远的简单动态场景，以实现同码率下整体画质更高结果的逻辑。缺点则是动漫场景等「背景不动前景动」的场景被误压缩。说到底是处理精度低而非错误，应逐宏块应用这套逻辑，<a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">就有了 mbtree</a>。量化值曲线缩放 quantizer curve compression 则被贬为控制 mbtree 等一系列量化强度分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
-            <h4>量化值曲线缩放的用途</h4>
+            <p>源自 libavcodec 实现同码率下整体画质更高结果的逻辑：“复杂动态场景的帧间参考少。所以分配更少码率（增加量化压缩），更多码率应该分给参考多而远的简单动态场景”。这样做在码率受到很大限制时能保护多数场景的画质，但缺点则是大多时候，动漫场景等「背景不动前景动」的场景（如人物脸部）画面被压缩太多的问题。x264 中所做的改进是“逐宏块应用这套逻辑”——即 <a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">MarcoBlock Tree（mbtree）</a>。量化值曲线缩放 quantizer curve compression 则被“贬为”控制 mbtree 等一系列量化强度分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
+            <h4>qComp 的用途</h4>
             <ol class="overflow-auto">
-                <li>（仅 ABR 模式）根据宏块的数量与 <code>--qcomp</code> 值设置初始复杂度百分比：
+                <li>（ABR 模式）根据宏块的数量与 <code>--qcomp</code> 值设置初始复杂度百分比：
                     <span class="text-blue-math">\[ \text{Complexity} = \left( \frac{\text{Count}_{MB}}{2} \right) ×700000^{\left( \frac{qcomp}{100} \right)} \div 100 \]</span>
                 </li>
                 <li>获取当前场景的长度 <span class="text-blue-math">\( \text{Duration}_{clip} \)</span></li>
@@ -2002,7 +2015,7 @@
             <code class="code-bold">--no-mbtree</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt; 关闭少见宏块量化偏移。可能只有近无损，<code>--crf</code> 小于 16 才用的到。</p>
 
-            <h2 id="h2-13">熵编码/文本压缩</h2>
+            <h2 id="h2-12">熵编码/文本压缩</h2>
             <p>x264 教程中仅提及最简单的形式。完成的熵编码流程见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版 - 熵编码</a>。</p>
             <h3>霍夫曼编码 Huffman Coding</h3>
             <p>曾经广泛应用于数据压缩的算法。步骤分为：</p>
@@ -2136,7 +2149,7 @@
             <code class="code-bold">--no-cabac</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，不推荐&gt;关闭 CABAC，使用 CAVLC</p>
 
-            <h2 id="h2-14">优化熵编码</h2>
+            <h2 id="h2-13">优化熵编码</h2>
             <h3>残差 DCT 系子</h3>
             <p>Residual DCT coefficients 代表变换后量化前，已知经过量化后会被抹除的 DCT 系子。DCT 变换的例子见本教程的 <a href="#h2-7">变换 - DCT 变换</a> 部分。总之就是与“残差块”无关，只是都叫做残差而已。</p>
 
@@ -2185,7 +2198,7 @@
                 <li><span class="text-blue-emph">2</span>同时调整帧内帧间参考和分块完成的块，效果最好</li>
             </ul>
 
-            <h2 id="h2-15">色彩信息</h2>
+            <h2 id="h2-14">色彩信息</h2>
             <p>重复一开始说明的物理亮度：可见光电磁波的强度或振幅，以流明 lumen/lm，坎德拉/烛光量 candela/cd，或尼特 nits/cdm<sup>2</sup> 计量：</p>
             <ul class="text-gray-side">
                 <li>1cd/lm 大约为一支普通蜡烛的亮度。</li>
@@ -2230,6 +2243,8 @@
             <!-- } -->
 
             <h3>Video Usability Information（VUI 元数据）</h3>
+            <p>VUI 是元数据，播放器会读取这些元数据来选择特定的色彩空间播放视频，由于 HDR 视频的标准受到厂商竞争割据等因素，用户需要手动指定 HDR 参数到 VUI 中才能正确播放（不过，有时电视厂商会为了节省成本而只读取一小部分信息，如只读取 MaxCLL 和 MaxFall）。</p>
+            <p>光强/光压 Candela 等于尼特，即<span class="text-blue-math">\(1 \text{cd} = 1 \text{nit}\)</span>。因 bt601，709，HDR-PQ，HLG 标准重视的亮度范围，曲线所异（偏亮或偏暗），故需要量化曲线，心理学优化，模式决策的重适配。</p>
             <code class="code-bold">--cll</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;最大内容光强，最大平均光强&gt;压制 HDR 源一定照源视频信息设，找不到不要用，见上图例。</p>
             <!-- x265 教程副本，更改需手动同步 {-->
@@ -2243,7 +2258,7 @@
             <p class="text-gray-side pl-5 m-0">上图图 2 的 PQ 即 st.2084 的标准，所以参数值为 smpte2084。</p>
             <!-- } -->
 
-            <h2 id="h2-16">预设参数</h2>
+            <h2 id="h2-15">预设参数</h2>
             <code class="code-bold">--preset</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;ultrafast/superfast/veryfast/faster/fast/medium/slow/slower/veryslow/placebo&gt;见下：</p>
             <div class="overflow-auto">
@@ -2438,7 +2453,7 @@
                 </li>
             </ul>
 
-            <h2 id="h2-17">线程控制</h2>
+            <h2 id="h2-16">线程控制</h2>
             <h3>线程管理一</h3>
             <p>不同的算法和数据决定了不同的多线程优化性能。量化的步骤中，进程之间几乎不需要共享数据，进程占用和运算速度也不变；而冗余的步骤中则是反过来——占用可大可小，速度忽快忽慢，也需要进程间共享一定数据/内存。可以说如果想要让进程吃满更多核心，就得尽可能减少搜索冗余相关算法的强度。x264 编码器一共会占用 <code>--threads</code> 加 <code>--lookahead-threads</code>条进程。而 <code>--threads</code> 达到并超过 16~24 时，可以看到一定的画质下降，以及在更多核心的电脑上出现“吃不满”的问题，这就是 x264 中冗余算法的优化极限了。</p>
             <p>因此，设置创建比电脑处理器更多的线程只会从任务数量上冲淡如各个冗余步骤需要“等到之前步骤给出结果才能运行”的时间窗口，甚至有时等不到就跳过，导致码率增加，画质降低，得不偿失。</p>
@@ -2511,7 +2526,7 @@
             <code class="code-bold">--sub</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件，<span class="text-red-emph">需 <code>--vf subtitles</code> 和 VSFilter64.dll</span>&gt;导入字幕文件，</p>
 
-            <h2 id="h2-18">工具下载</h2>
+            <h2 id="h2-17">工具下载</h2>
             <h3>套壳 x264/libx264 的 GUI 编码压制软件</h3>
             <p>并没有特别好的选择。尤其是当能够使用 CLI 参数命令 ffmpeg.exe，x264.exe 后。</p>
             <table class="table-center">
@@ -2644,11 +2659,6 @@
                 </ul>
             </div>
         </div>
-        <!--
-        <h3>测试 - 成功：</h3>
-        <p>直接跳转到<a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程 - 动态搜索</a></p>
-        -->
-        <!-- Footer -->
         <footer class="py-3 my-4 align-items-center border-top">
             <p>联系：
                 <a href='https://github.com/iAvoe/'>Github</a>，
