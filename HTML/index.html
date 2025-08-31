@@ -120,19 +120,105 @@
 
             <h3>封装与解封装——(De-)multiplex</h3>
             <ul class="overflow-auto">
-                <li>文件格式中，类似于 .zip .rar 文件将多个文件（视频，音频，字幕，字体）合并为一个文件</li>
+                <li>类似于 .zip .rar 文件将多个文件（视频，音频，字幕，字体）合并为一个文件的功能</li>
                 <li>信号处理中，电台将多路音频流封装为一段模拟信号，接收端通过调整接收频率来接收其中一路信号，每路信号占据一定的频宽/带宽</li>
-                <li>视频封装文件记录播放所需的元数据，如视频帧率、音视频同步、色彩标识等：
-                    <ul class="text-gray-side overflow-auto">
-                        <li><span class="text-blue-emph">MP4</span> 是最常见的格式，适用于网站和本地播放，但对字幕文件的支持性较差。</li>
-                        <li><span class="text-blue-emph">MKV</span> 可以封装几乎所有已知的视频/音频/字幕格式，但无法直接导入视频编辑软件</li>
-                        <li><span class="text-blue-emph">FLV</span> 是一种轻量级封装格式，更适合网站推流播放，以及需要定时切分录制的格式。</li>
-                        <li><span class="text-blue-emph">MOV</span> 是由苹果公司开发，用于与其软件和硬件兼容，也是 Adobe Premiere 剪辑软件最适用的格式之一</li>
-                        <li><span class="text-blue-emph">M4A</span> （MPEG for Audio）是一种音频流封装文件，支持多种音频流，封面图片，详细艺术家，乐队信息元数据封装的格式</li>
-                        <li><span class="text-blue-emph">M3U</span> 由苹果公司研发，用于在线播放音频的封装（然后被用于视频封装），M3U8 指 UTF-8</li>
-                    </ul>
-                </li>
             </ul>
+            <p>封装文件记录了视频帧率、音视频同步、色彩标识等关键元数据，播放器根据它们选择和配置解码器。常见的封装文件有：</p>
+            <table class="table-center text-smaller">
+                <thead>
+                    <tr class="t-invert-dark">
+                        <th>📦格式（全称）</th>
+                        <th>用途</th>
+                        <th>特点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-bottom">
+                        <th class="px-1 t-light-gray">MP4（MPEG-4 Part 14）</td>
+                        <td class="px-1">网络与本地播放</td>
+                        <td class="t-light-gray">
+                            <ul>
+                                <li>兼容性广，几乎所有设备和平台都支持</li>
+                                <li>压缩元数据，进一步缩小文件体积</li>
+                                <li>支持主要的视频、音频格式，部分字幕格式</li>
+                                <li>不支持特效字幕（如 ASS/SSA）</li>
+                                <li>整个文件写完后才统计并写入元数据，因此不适合录制（录制程序崩溃后整个视频损坏）</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-1 t-light-gray">MKV（Matroska Multimedia Container）</td>
+                        <td class="px-1">本地播放、多音轨/多字幕内容、实时录制</td>
+                        <td class="t-light-gray">
+                            <ul>
+                                <li>轨道数量无限制</li>
+                                <li>各种现存与未来的视频、音频、字幕格式</li>
+                                <li>支持逐段存储元数据，录制程序崩溃后只有最后一段内容会损坏，因此适合录制</li>
+                                <li>Adobe Premiere、After Effects、Media Encoder、Audition 版本 25.2 添加了原生支持</li>
+                                <li>网络播放兼容性差</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-1 t-light-gray">MOV（QuickTime File Format）</td>
+                        <td class="px-1">本地播放、视频编辑</td>
+                        <td class="t-light-gray">
+                            <ul>
+                                <li>用于苹果公司软硬件生态，以及其私有的视音频格式（如 ProRes）</li>
+                                <li>Adobe Premiere 等专业软件长期支持</li>
+                                <li>通常文件较大，但质量较高</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-1 t-light-gray">M4A（MPEG-4 Audio）</td>
+                        <td class="px-1">纯音频存储、音乐播放</td>
+                        <td class="t-light-gray">
+                            <ul>
+                                <li>专门用于音频的 MPEG-4 格式</li>
+                                <li>支持多种音频编解码器（如 AAC、ALAC）</li>
+                                <li>支持封装封面图片和元数据</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-1 t-light-gray">FLV（Flash Video）</td>
+                        <td class="px-1">网络与本地播放、实时录制</td>
+                        <td class="t-light-gray">
+                            <ul>
+                                <li>简单轻量，适合网络传输</li>
+                                <li>由于结构简单，因此在录制程序崩溃后几乎无损</li>
+                                <li>随着 2020 年底 Flash 的淘汰而退出主流</li>
+                                <li>视频、音频格式最高只支持到 AVC、AAC，但也有一些扩展支持 H.265，被 HLS（M3U+TS）和 MP4 流取代</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-1 t-light-gray">M3U/M3U8（MPEG URL Playlist）</td>
+                        <td class="px-1">定义播放列表（本地媒体、流媒体，如 HTTP Live Streaming）</td>
+                        <td class="t-light-gray">
+                            <ul>
+                                <li>文本列表，HLS 客户端根据它从 CDN、P2P 下载并按顺序排列 TS 封装的小片段</li>
+                                <li>部分 HLS 客户端中有缓存 TS 并上传给其它客户端的扩展实现</li>
+                                <li>M3U8 使用 UTF-8 文本编码，是前者的扩展版本</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <th class="px-1 t-light-gray">TS（MPEG Transport Stream）</td>
+                        <td class="px-1">广播电视、流媒体传输、录制</td>
+                        <td class="t-light-gray">
+                            <ul>
+                                <li>最初为数字电视广播设计（DVB、ATSC）</li>
+                                <li>结构基于固定大小的包，减少丢包造成的播放问题</li>
+                                <li>原生支持边录边播（同时直播和录制）</li>
+                                <li>比 MP4/MKV 冗余多，文件体积稍大，元数据支持较弱</li>
+                                <li>几乎所有播放器和硬件解码器都支持</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
             <h3>视频编码专利</h3>
             <p>常见的有核心技术专利（特定编码步骤、装置设备具体实现等应用）、标准必要专利（即构成 AVC、HEVC、AV1 等编码所需的专利）、免费开放许可等。由于涉及视频编码的专利/权利人多，因此一种视频编码是由多项专利打包的专利池所构成，由专利池管理公司运营。</p>
