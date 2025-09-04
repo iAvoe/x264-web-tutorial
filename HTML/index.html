@@ -52,6 +52,7 @@
                     </ul>
                 </li>
                 <li><a href="../../x265-web-tutorial/HTML/index.html">x265 教程网页版</a></li>
+                <li><a href="../../av1-web-tutorial/HTML/index.html">AV1 教程网页版</a></li>
                 <li>附录 α：
                     <a href="https://www.nazorip.site/archives/44/">QAAC 音频压缩教程</a> 或 <a href="https://github.com/iAvoe/QAAC-Tutorial-Standalone/blob/master/%E6%95%99%E7%A8%8B.md">Github 副本</a>
                     <ul class="text-xs">
@@ -89,6 +90,53 @@
 
             <h3>电脑的性能</h3>
             <p>主要看两方面：处理速度（算力）、数据传输速度（带宽）和响应速度（延迟）。例如在看视频时，即使 CPU 自身不费力，单是网络或硬盘的带宽没跟上视频的码率带宽，画面便会卡顿。这种卡顿虽然是性能问题，却与 CPU 自身无关。</p>
+            <p>数据与 CPU 核心的距离会产生巨大的延迟差异。这些延迟往往会因为同步，分阶段读取，安全验证检查等行为而积微成著，变得显而易见：</p>
+            <table class="table-center text-smaller">
+                <thead>
+                    <tr>
+                        <th class="px-1">数据位置</th>
+                        <th class="px-1">读取 CPU 周期</th>
+                        <th class="px-1">估计用时</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="px-1 align-items-center">L1 缓存</td>
+                        <td class="px-1 border-left t-align-right">3</td>
+                        <td class="px-1 border-left t-align-right">1 ns</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 align-items-center">L2 缓存</td>
+                        <td class="px-1 border-left t-align-right">10~20</td>
+                        <td class="px-1 border-left t-align-right">3~7 ns</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 align-items-center">L3 缓存</td>
+                        <td class="px-1 border-left t-align-right">30~70</td>
+                        <td class="px-1 border-left t-align-right">10~25 ns</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 align-items-center">内存</td>
+                        <td class="px-1 border-left t-align-right">180~360</td>
+                        <td class="px-1 border-left t-align-right">60~120 ns</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 align-items-center">固态硬盘</td>
+                        <td class="px-1 border-left t-align-right">240,000~900,000</td>
+                        <td class="px-1 border-left t-align-right">80~300 μs</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 align-items-center">机械硬盘</td>
+                        <td class="px-1 border-left t-align-right">41,000,000</td>
+                        <td class="px-1 border-left t-align-right">14 ms</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 align-items-center">互联网</td>
+                        <td class="px-1 border-left t-align-right">240,000,000</td>
+                        <td class="px-1 border-left t-align-right">80 ms</td>
+                    </tr>
+                </tbody>
+            </table>
 
             <h3>什么是数据 Data</h3>
             <p>数据的定义很宽泛，例如一句话就是一段数据。计算机上的数据由电信号构成，分为模拟（电压代表大小）和数字（0、1 代表开关）两种。通过将计算机编程，人们根据不同的 0、1 长度以及组合，为 CPU 定义了操作内存、硬盘等存储设备的（读写）能力，从而使得更上层的操作系统和程序能够定义和使用更抽象化的数据（如坐标，像素值）等形式，才得以让电脑显示画面，播放视频。</p>
