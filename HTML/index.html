@@ -30,17 +30,18 @@
                         </li>
                     </ul>
                     <ul class="text-xs">
-                        <li>编码：<a class="toSelf" href="#h2-4">前瞻</a>，
-                            <a class="toSelf" href="#h2-5">动态搜索</a>，
-                            <a class="toSelf" href="#h2-6">动态补偿</a>，
-                            <a class="toSelf" href="#h2-7">变换量化</a>，
-                            <a class="toSelf" href="#h2-8">率控制模式</a>，
-                            <a class="toSelf" href="#h2-9">自适应量化</a>，
-                            <a class="toSelf" href="#h2-10">模式决策、环路滤镜</a>，
-                            <a class="toSelf" href="#h2-11">优化量化策略</a>，
-                            <a class="toSelf" href="#h2-12">熵编码</a>，
-                            <a class="toSelf" href="#h2-13">优化熵编码</a>，
-                            <a class="toSelf" href="#h2-14">色彩信息</a>
+                        <li>编码：<a class="toSelf" href="#h2-4">前瞻进程</a>，
+                            <a class="toSelf" href="#h2-5">动态预测</a>，
+                            <a class="toSelf" href="#h2-6">动态搜索</a>，
+                            <a class="toSelf" href="#h2-7">动态补偿</a>，
+                            <a class="toSelf" href="#h2-8">变换量化</a>，
+                            <a class="toSelf" href="#h2-9">率控制模式</a>，
+                            <a class="toSelf" href="#h2-10">自适应量化</a>，
+                            <a class="toSelf" href="#h2-11">模式决策、环路滤镜</a>，
+                            <a class="toSelf" href="#h2-12">优化量化策略</a>，
+                            <a class="toSelf" href="#h2-13">熵编码</a>，
+                            <a class="toSelf" href="#h2-14">优化熵编码</a>，
+                            <a class="toSelf" href="#h2-15">色彩信息</a>
                         </li>
                     </ul>
                     <ul class="text-xs">
@@ -1363,7 +1364,7 @@
             <h4>多参考帧的结构</h4>
             <p>x264 首次引入了超过前后一帧长度的帧间参考范围。因此动态搜索也能更好的检查运动向量的时间一致性，从而减少动态噪点对动态搜索的干扰，同时提高了压缩。多参考帧不是越长越好，而是只要满足「一帧只要参考前后各 n 帧的信息就足以还原自身」的长度就是对的，而超过后会导致视频体积增加，同时画质降低。这个长度一般是前后各 3 帧，</p>
 
-            <h2 id="h2-4">编码 - 前瞻进程 Lookahead</h2>
+            <h2 id="h2-4">前瞻进程 Lookahead</h2>
             <p>最先启动，设立关键帧和参考帧，决定了 GOP 划分的初始编码步骤。决定了后续所有步骤的大纲：</p>
             <ol>
                 <li><b>启动和初始化</b>：
@@ -1467,7 +1468,7 @@
                         <li>根据 <code>--rc-lookahead</code> 参数指定的长度为一组，通过当前和未来两帧相减，得到差值，以大致分配压缩强度</li>
                     </ul>
                 </li>
-                <li><b>VBV/VBR/CBR 码率限制</b>：见<a href="../../x265-web-tutorial/HTML/index.html#h2-11">x265 教程网页版：下层 - VBR，CBR 模式</a></li>
+                <li><b>VBV/VBR/CBR 码率限制</b>：见<a href="../../x265-web-tutorial/HTML/index.html#h2-11">x265 教程网页版：下层——VBR，CBR 模式</a></li>
             </ol>
 
             <code class="code-bold">--min-keyint</code>
@@ -1501,9 +1502,19 @@
             <code class="code-bold">--fullrange</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，7mod x264 自动&gt;启用 0~255 色彩范围，而不是默认的 16~235。视频内容永远不在使用有限色域设备/软件/视频网站下播放下可以考虑开启</p>
 
-            <h2 id="h2-5">动态搜索</h2>
+            <h2 id="h2-5">动态预测 Motion Prediction</h2>
+            <p>在参考帧（P-B 帧）的预测块 Prediction Block 上，动态搜索（ME）之前，起到<i>提供动态搜索起点</i>功能的预测算法。x264 使用了 <code>--direct</code> 指定。x265 中则使用了更高级的 AMVP + Merge 算法。</p>
+            <p>视频里往往会有占据画面不小的物件朝着一处平移，在视频帧中表现为“某个区域的分块拥有高度相似的运动向量”。这些重复性的动态向量分布规律肉眼可见，而动态搜索只能通过不断地计算差异而一个一个方向和大小地把向量给试出来。这显然不如通过预测而快速地找出一组方向与大小（然后让整数像素动态搜索从这里开始微调到整数像素精度）直截了当。</p>
+            <p>由于动态向量预测得到的向量本身就已经足够靠谱，因此编码器会以“预测动态向量（PMV）+ 动态向量差（MVD）”的形式记录每个帧间块的动态信息，再冗余掉相同的预测动态向量，从而进一步提高压缩。尽管一个动态向量的信息不多，但放眼到整个视频的所有帧间参考时，质变也就产生了。</p>
+            <code class="code-bold">--direct</code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;temporal/spatial/auto&gt; 指定动态搜索判断方式的参数，除直播和低性能设备录屏外建议 auto</p>
+
+            <h2 id="h2-6">动态搜索 Motion Estimation（ME）</h2>
             <!-- x265 教程副本，更改需手动同步 { -->
-            <p>Motion Estimation（ME）。用于在连续帧间进行运动估计。过程涉及逐个像素点（微观）在相邻帧之间寻找最小失真朝向/最小失真方向 Direction of minimal distortion DMD，从而在每帧之间都生成一张向量表。如果这个过程缺失或不够理想，参考帧与分块的建立就可能会出现问题，从而导致潜在的压缩率损失或画质下降。</p>
+            <p class="text-gray-side">注：它的专业术语是运动搜索、运动估计。</p>
+            <p>在连续帧间画面中，进行运动估计的整数像素精度动态信息搜索步骤，涵盖了多种搜索算法，也被用于不同的信号处理领域。具体步骤是以被参考帧内的已编码块（Coded Block）为起点，尝试通过位移来匹配相邻帧的画面，从而找到一个失真最小的向量 Direction of minimal distortion（DMD），这个向量就是整数动态向量。</p>
+            <p>为了找到可用的最小失真朝向，并且避免进行算力占用巨大的全搜索（Exhausive Search），动态搜索演化出了多种匹配的图案和算法。其中，较为聪明的动态搜索算法是多级算法，它们首会先尝试在较大范围进行粗略搜索，再以大致最佳区域为中心进行精细搜索，从而（包括在噪点干扰下）多快好省地找到整数动态向量。在整数动态搜索之后，还会由子像素动态搜索（Sub-pel Motion Estimation）来进一步做对齐，最终，这个动态向量被用于冗余预测块，以及对高动态画面提高有损压缩强度，从而压缩体积并优化码率的分配。</p>
+            <p>如果动态搜索的过程有缺失或不够理想，参考帧与分块的建立会变得低效，码率分配也会变得不够合理，导致画质的降低和码率的增加。</p>
             <div class="align-items-center">
                 <img src="files/memc/Interframe-Vector-Table.png" alt="Interframe-Vector-Table" class="img-medium">
                 <p class="text-gray-side">图：宏块上帧间的动态向量</p>
@@ -1522,8 +1533,6 @@
             </ul>
             <code class="code-bold">--no-fast-pskip</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，推荐开&gt; 关闭跳过编码 P 帧的功能</p>
-            <code class="code-bold">--direct</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;temporal/spatial/auto&gt; 指定动态搜索判断方式的参数，除直播和低性能设备录屏外建议 auto</p>
             <code class="code-bold">--no-chroma-me</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，推荐直播/录屏用&gt; 跳过色度平面动态搜索，将亮度平面直接应用。可能对画质有略微负面影响</p>
             <!-- x265 教程副本，更改需手动同步 { -->
@@ -1538,7 +1547,7 @@
             </ol>
             <p class="text-gray-side">注：为了简化所以写作 <span class="text-blue-math">\(T(D(x,y))\)</span>，实际这样相当于每加一个像素值就要变换一遍</p>
 
-            <h2 id="h2-6">子像素运动补偿</h2>
+            <h2 id="h2-7">子像素运动补偿</h2>
             <p>全称 Subpixel refinement。动态预测的精度最高只有 1px，在此之上还有可能被动态噪点干扰，导致了预测帧相比原画会欠缺大量的纹理细节。动态补偿 Motion Compensation MC 通过对比原画与预测块得到残差，并根据残差的分布动态向量的精度到¼子像素，使“精加工预测块”的画面残差尽可能地缩小，得到足够准确的预测帧，即大幅减少残差帧的内容。</p>
             <div class="align-items-center">
                 <img src="files/memc/Block-Spitting-Stage-Two.png" alt="Block-Spitting-Stage-Two" class="img-medium">
@@ -1587,7 +1596,7 @@
                 <li>因为 <a href="https://forum.doom9.org/showthread.php?t=125734">边际效益太小</a>，x264 开发者取消了 b4x4 分块</li>
             </ul>
 
-            <h2 id="h2-7">变换</h2>
+            <h2 id="h2-8">变换</h2>
             <div class="row">
                 <p id="LR-UD-003" class="col-10">模拟信号转换为数字信号的主要步骤之一——将音量、亮度、温度、压力等信号整理为低频到高频的单一信号/波形分量。具体来说，这个过程根据要处理的信号和用途不同，会使用傅里叶变换，小波变换，和 x264/5 使用的二维离散余弦变换 2D Discrete cosine transform。二维离散余弦变换利用预制的二维波形模具，通过穷举加减将源信号逐步分解成不同频率的平面波形，并合成变换块。<span class="text-gray-side">图：缩放到 8x8 的波形分布，由于 cos(x) 的波形范围是 -1~1，所以图中的黑色到白色并不是 0~255 或 16~235，而是 -1~1</span> </p>
                 <img src="files/transform-quantization/DCT-Block.png" alt="DCT-Block" id="LR-UD-004" class="img-small img-right col-2 mb-auto">
@@ -1715,7 +1724,7 @@
                 </table>
             </div>
 
-            <h2 id="h2-8">率控制</h2>
+            <h2 id="h2-9">率控制</h2>
 
             <h3>码率分布成因</h3>
             <p>有损压缩中，只是优化码率分配本身就可以提高当前视频的画质。这是因为参考帧 P、B 帧自身的主要信息来自于被参考帧 I 帧，其中被冗余的宏块只储存“相对于被参考帧的动态向量”，和“残差画面”。这种画面并不锐利，因而（在熵编码后的）体积占比非常小。而尽管被参考帧 I 帧的体积很大，但 I 帧自身的画面为其后的若干至数百帧提供了参考，使得高画质的 I 帧反而提高了帧间冗余压缩率（与使用 10bit 位深后，码率不增反降的原因相同）。假如被参考帧 I 帧的有损压缩较高，那么在环路滤镜组/率失真优化过程中，编码器会发现 I 帧与 P、B 帧之间不太相像；便会提高残差画面的信息量。于是虽然峰值码率会降低，但 I 帧后的一系列帧都会比以往大一些，造成整体的码率/文件体积上升。在这个基础上：</p>
@@ -1951,7 +1960,7 @@
             <code class="code-bold">--slow-firstpass</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;pass1 里自动关闭以下提速，或自动提高以下参数的强度，以保证 pass1 模式中 CRF 模式计算量化值的准确度：<code>no-8x8dct me dia partitions none ref 1 subme &lt;=2 trellis 0 fast-pskip</code>，可手动覆盖为强度更高的参数</p>
 
-            <h2 id="h2-9">自适应量化</h2>
+            <h2 id="h2-10">自适应量化</h2>
             <p>一种利用感知对比度掩蔽现象的帧内分块码率重分配方法。</p>
 
             <h3>感知对比度掩蔽现象 Perceptual contrast masking</h3>
@@ -1990,7 +1999,7 @@
                 <li>注意低成本动漫和幻灯片录屏等平面多过纹理的画面，因此码率不足时反而要更改量化强度分配策略为妥协纹理</li>
             </ul>
            
-            <h2 id="h2-10">模式决策、环路滤镜</h2>
+            <h2 id="h2-11">模式决策、环路滤镜</h2>
             <p>由于 AVC x264 的环路滤镜步骤中只有去块，所以准确的说就是“去块失真滤镜/去块滤镜（Deblock）”。之所以称作“环路/Loop”是因为编码器会在这之后进行模式决策（Mode Decision）来检查编码选用的帧内、帧间模式是否合理，于是，概念图中就出现了一条走向“倒过来回到动态搜索步骤结束为止”之后的“环路”路径，而这条路径上恰好有去块滤镜。当然，在更先进的视频编码上还有更多可用的滤镜，因此称为“滤镜组”。</p>
             <p>环路滤镜作用在重建帧（编码结果）上，使其成为未来帧的参考。模式决策（帧内模式、运动矢量、块划分等）都在编码当前块时完成，不会在环路滤镜处理之后再复查和修改。但编码器在决策时通常会基于“滤镜处理后的参考帧”来进行运动估计和预测，以保证和解码端一致。模式决策对于帧内编码的块/帧尤其重要，因为帧内预测的模式是根据重建（并滤波）后的左侧、左上和顶部相邻像素做的（信息有限），因此很可能还有更好的编码模式可取。对于帧间编码的块，其前后的参考帧已经进行过滤镜处理（因为编解码顺序不同于播放顺序），因此编码器可以安全地根据处理后的参考帧复查动态向量。</p>
             <ol>
@@ -2038,10 +2047,10 @@
             </ul>
             <!-- } -->
 
-            <h2 id="h2-11">优化量化策略</h2>
+            <h2 id="h2-12">优化量化策略</h2>
             <!-- x264 教程副本，更改需手动同步 { -->
             <h3>率失真优化 Rate distortion optimization（RDO）</h3>
-            <p>视频压缩策略受到算力、分析算法、客户等诸多限制，尽管工程师和开发者付出了很多努力，最后也往往回归最直接的“码率越小越好”——给所有压缩步骤选择码率最小的编码模式，或者强行上马一个 CQP 就完事。这样做的结果是码率分配失衡，即“码率下去了、但画质全损”，而这里的“码率下去了”单纯是因为对比了无损或未压缩视频源的原因；实际上，如此“粗压”与“精压”相比还会露馅——后者在画质更高的情况下，码率往往更低。原因是 <i>过度的有损压缩使得本可用于无损压缩（冗余）的机会被因小失大地浪费</i>。例如，过度的量化会破坏 P-B 帧原本可以参考 I 帧的部分，由于差异太大，编码器只得放弃参考，把这个区域重编码为 I 块，或直接改成 I 帧。</p>
+            <p>视频压缩策略受到算力、分析算法、客户等诸多限制，尽管工程师和开发者付出了很多努力，最后也往往回归最直接的“码率越小越好”——给所有压缩步骤选择码率最小的编码模式，或者强行上马一个 CQP 就完事。这样做的结果是码率分配失衡，即“码率在握之画质全损”，而“码率在握”也只是因为作对比的是无损或未压缩视频源；实际上，如此“粗压”与“精压”相比还会露馅——后者在画质更高的情况下，码率往往更低。原因是 <i>过度的有损压缩使得本可用于无损压缩（冗余）的机会被因小失大地浪费</i>。例如，过度的量化会破坏 P-B 帧原本可以参考 I 帧的部分，由于差异太大，编码器只得放弃参考，把这个区域重编码为 I 块，或直接改成 I 帧。</p>
             <p>现代视频编码器已经具备了减免这种问题所需的信息——编码后失真、码率代价，以及编码后码率。将失真，码率分别看做两种“越大越差”的程度，再根据码率代价——“此处码率的宝贵程度”缩放出一个一元一次函数空间（<span class="text-blue-math">\(y = mx + b\)</span>），问题就迎刃而解——只要找到各种 <span class="text-blue-math">\(mx + b\)</span> 里最小的  <span class="text-blue-math">\(y\)</span> 即可，而“找到最小”的过程需要统计每个编码步骤下的多个至全部编码模式，这个过程就是率失真优化（RD）。率失真优化的性能占用虽然不小，但它带来的好处可以和动态搜索相媲美。</p>
             <p>“编码器策略”就是模式决策。率失真程度由代价函数「开销 = 失真+λ⋅码率」（越小越好）得出：</p>
             <span class="text-blue-math text-larger">\[J = D + \lambda \cdot R\]</span>
@@ -2188,7 +2197,7 @@
             <code class="code-bold">--no-mbtree</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt; 关闭少见宏块量化偏移。可能只有近无损，<code>--crf</code> 小于 16 才用的到。</p>
 
-            <h2 id="h2-12">熵编码/文本压缩</h2>
+            <h2 id="h2-13">熵编码/文本压缩</h2>
             <p>x264 教程中仅提及最简单的形式。完成的熵编码流程见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版 - 熵编码</a>。</p>
             <h3>霍夫曼编码 Huffman Coding</h3>
             <p>曾经广泛应用于数据压缩的算法。步骤分为：</p>
@@ -2322,7 +2331,7 @@
             <code class="code-bold">--no-cabac</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，不推荐&gt;关闭 CABAC，使用 CAVLC</p>
 
-            <h2 id="h2-13">优化熵编码</h2>
+            <h2 id="h2-14">优化熵编码</h2>
             <h3>残差 DCT 系子</h3>
             <p>Residual DCT coefficients 代表变换后量化前，已知经过量化后会被抹除的 DCT 系子。DCT 变换的例子见本教程的 <a href="#h2-7">变换 - DCT 变换</a> 部分。总之就是与“残差块”无关，只是都叫做残差而已。</p>
 
@@ -2371,7 +2380,7 @@
                 <li><span class="text-blue-emph">2</span>同时调整帧内帧间参考和分块完成的块，效果最好</li>
             </ul>
 
-            <h2 id="h2-14">色彩信息</h2>
+            <h2 id="h2-15">色彩信息</h2>
             <p>重复一开始说明的物理亮度：可见光电磁波的强度或振幅，以流明 lumen/lm，坎德拉/烛光量 candela/cd，或尼特 nits/cdm<sup>2</sup> 计量：</p>
             <ul class="text-gray-side">
                 <li>1cd/lm 大约为一支普通蜡烛的亮度。</li>
@@ -2431,7 +2440,7 @@
             <p class="text-gray-side pl-5 m-0">上图图 2 的 PQ 即 st.2084 的标准，所以参数值为 smpte2084。</p>
             <!-- } -->
 
-            <h2 id="h2-15">预设参数</h2>
+            <h2 id="h2-16">预设参数</h2>
             <code class="code-bold">--preset</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;ultrafast/superfast/veryfast/faster/fast/medium/slow/slower/veryslow/placebo&gt;见下：</p>
             <div class="overflow-auto">
@@ -2626,7 +2635,7 @@
                 </li>
             </ul>
 
-            <h2 id="h2-16">线程控制</h2>
+            <h2 id="h2-17">线程控制</h2>
             <h3>线程管理一</h3>
             <p>不同的算法和数据决定了不同的多线程优化性能。量化的步骤中，进程之间几乎不需要共享数据，进程占用和运算速度也不变；而冗余的步骤中则是反过来——占用可大可小，速度忽快忽慢，也需要进程间共享一定数据/内存。可以说如果想要让进程吃满更多核心，就得尽可能减少搜索冗余相关算法的强度。x264 编码器一共会占用 <code>--threads</code> 加 <code>--lookahead-threads</code>条进程。而 <code>--threads</code> 达到并超过 16~24 时，可以看到一定的画质下降，以及在更多核心的电脑上出现“吃不满”的问题，这就是 x264 中冗余算法的优化极限了。</p>
             <p>因此，设置创建比电脑处理器更多的线程只会从任务数量上冲淡如各个冗余步骤需要“等到之前步骤给出结果才能运行”的时间窗口，甚至有时等不到就跳过，导致码率增加，画质降低，得不偿失。</p>
@@ -2699,7 +2708,7 @@
             <code class="code-bold">--sub</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件，<span class="text-red-emph">需 <code>--vf subtitles</code> 和 VSFilter64.dll</span>&gt;导入字幕文件，</p>
 
-            <h2 id="h2-17">工具下载</h2>
+            <h2 id="h2-18">工具下载</h2>
             <h3>套壳 x264/libx264 的 GUI 编码压制软件</h3>
             <p>并没有特别好的选择。尤其是当能够使用 CLI 参数命令 ffmpeg.exe，x264.exe 后。</p>
             <table class="table-center">
