@@ -2040,26 +2040,18 @@
 
             <h2 id="h2-11">优化量化策略</h2>
             <!-- x264 教程副本，更改需手动同步 { -->
-            <h3>率失真优化</h3>
-            <p>Rate distortion optimization，RDO。原本有损压缩视频编码器的策略就是码率越小越好——所以量化强度越大越好。但实际情况是量化压缩相当程度的破坏了 P-B 帧原本可以参考 I 帧的部分——因为量化后差异太大而只能放弃参考，换成 I 块。解决这种乱量化问题的方法是将失真，码率分别看成两种越大越差的程度；将其中一个程度乘以一个缩放值以对齐另一个（使两值权重对等）以相互牵制出平衡点。再将这个“新的程度”应用到原本的编码器策略里，就是率失真优化。</p>
-            <p>“编码器策略”就是模式决策。率失真程度由代价函数「开销=失真+λ⋅码率」（越小越好）得出：</p>
-            <span class="text-blue-math">\[J = D + \lambda \cdot R\]</span>
-            <p>这个式子是一元一次函数（ <span class="text-blue-math">\(y=mx+b\)</span> ），每个压缩方案导向的结果 J 位于 D，R 坐标系间，斜度 λ 线上的点；其中：</p>
-
-            <ul class="text-smaller">
-                <li>拉格朗日值 <span class="text-blue-math">\(\lambda\)</span> 由量化值强度决定，即 CRF、ABR 等率控制模式指定的率失真斜度
-                    <ul>
-                        <li>其下是在失真和码率约束下的可行方案</li>
-                        <li>反之，其上是不可行的方案</li>
-                        <li>量化值量化强度越大，则斜度越小，可行方案的选择就越苛刻</li>
-                    </ul>
-                </li>
-                <li>失真 D 用平方差 SSE 或总差异 SAD 判断，进而分到更多补偿的码率</li>
-
-                <li><span class="text-blue-math">\(\lambda=0\)</span>则无斜度，则代价等于失真——码率变而画质不变，适合更大的量化压缩强度</li>
-                <li><span class="text-blue-math">\(\lambda \rightarrow 0\)</span>（趋 0）则开销趋失真——适当地量化压缩</li>
-                <li><span class="text-blue-math">\(\lambda &gt; 0\)</span>则开销大于失真——保画质的率失真收益大于压缩，尽可能降低量化强度</li>
+            <h3>率失真优化 Rate distortion optimization（RDO）</h3>
+            <p>视频压缩策略受到算力、分析算法、客户等诸多限制，尽管工程师和开发者付出了很多努力，最后也往往回归最直接的“码率越小越好”——给所有压缩步骤选择码率最小的编码模式，或者强行上马一个 CQP 就完事。这样做的结果是码率分配失衡，即“码率下去了、但画质全损”，而这里的“码率下去了”单纯是因为对比了无损或未压缩视频源的原因；实际上，如此“粗压”与“精压”相比还会露馅——后者在画质更高的情况下，码率往往更低。原因是 <i>过度的有损压缩使得本可用于无损压缩（冗余）的机会被因小失大地浪费</i>。例如，过度的量化会破坏 P-B 帧原本可以参考 I 帧的部分，由于差异太大，编码器只得放弃参考，把这个区域重编码为 I 块，或直接改成 I 帧。</p>
+            <p>现代视频编码器已经具备了减免这种问题所需的信息——编码后失真、码率代价，以及编码后码率。将失真，码率分别看做两种“越大越差”的程度，再根据码率代价——“此处码率的宝贵程度”缩放出一个一元一次函数空间（<span class="text-blue-math">\(y = mx + b\)</span>），问题就迎刃而解——只要找到各种 <span class="text-blue-math">\(mx + b\)</span> 里最小的  <span class="text-blue-math">\(y\)</span> 即可，而“找到最小”的过程需要统计每个编码步骤下的多个至全部编码模式，这个过程就是率失真优化（RD）。率失真优化的性能占用虽然不小，但它带来的好处可以和动态搜索相媲美。</p>
+            <p>“编码器策略”就是模式决策。率失真程度由代价函数「开销 = 失真+λ⋅码率」（越小越好）得出：</p>
+            <span class="text-blue-math text-larger">\[J = D + \lambda \cdot R\]</span>
+            <p>编码器在决定采用哪种编码模式（如帧内/帧间、哪种块划分、运动矢量朝向等）时，不再只考虑码率 R 或失真 D，而是计算所有候选模式的率失真代价 <span class="text-blue-math">\(J = D + \lambda R\)</span>，然后选择代价 J 最小的那个模式。</p>
+            <ul>
+                <li><span class="text-blue-math">\(\lambda=0\)</span>：无斜度，则代价等于失真——码率变而画质不变，宜压缩</li>
+                <li><span class="text-blue-math">\(\lambda \rightarrow 0\)</span>：趋 0，则开销趋失真——宜适当压缩</li>
+                <li><span class="text-blue-math">\(\lambda &gt;0\)</span>：大于 0，则开销大于失真——保画质收益大于压缩收益，宜保画质</li>
             </ul>
+            <!-- } -->
             <div class="align-items-center">
                 <img src="files/rate-distorsion-optimization/x264-JM-RDO-Lambda.png" alt="x264-JM-RDO-Lambda" class="img-medium">
                 <img src="files/rate-distorsion-optimization/RDO-Lambda-Slopes.png" alt="RDO-Lambda-Slopes" class="img-medium">
@@ -2067,7 +2059,6 @@
                 <img src="files/rate-distorsion-optimization/RDO-qStep-Chart.png" alt="RDO-qStep-Chart" class="img-medium">
                 <p class="text-gray-side">图：率 - 失真表格中不断调整并得到“×”的实际效果</p>
             </div>
-            <!-- } -->
             <code class="code-bold">--fgo</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数默认关，推荐 15 左右&gt;将高频信号在量化前后的差距也算进率失真优化的统计中，使优化更倾向于保留细节和噪声</p>
 
