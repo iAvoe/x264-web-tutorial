@@ -1362,7 +1362,7 @@
             </ul>
 
             <h4>多参考帧的结构</h4>
-            <p>x264 首次引入了超过前后一帧长度的帧间参考范围。因此动态搜索也能更好的检查运动向量的时间一致性，从而减少动态噪点对动态搜索的干扰，同时提高了压缩。多参考帧不是越长越好，而是只要满足「一帧只要参考前后各 n 帧的信息就足以还原自身」的长度就是对的，而超过后会导致视频体积增加，同时画质降低。这个长度一般是前后各 3 帧，</p>
+            <p>x264 首次引入了超过前后一帧长度的帧间参考范围。因此动态搜索也能更好的检查运动向量的时间一致性，从而减少动态噪点对动态搜索的干扰，同时提高了压缩。多参考帧不是越长越好，而是只要满足「一帧只要参考前后各 N 帧的信息就足以还原自身」的长度就是最优解的，而超过后会导致视频体积增加，同时画质降低。这个长度一般是前后各 3 帧，即 <code>--ref 3</code>。</p>
 
             <h2 id="h2-4">前瞻进程 Lookahead</h2>
             <p>最先启动，设立关键帧和参考帧，决定了 GOP 划分、帧类型推演、转场设立、逐帧量化强度等多项初始数据。</p>
@@ -1455,26 +1455,79 @@
             </ol>
             <p class="text-gray-side">注：为了简化所以写作 <span class="text-blue-math">\(T(D(x,y))\)</span>，实际这样相当于每加一个像素值就要变换一遍</p>
 
-            <h2 id="h2-7">子像素运动补偿</h2>
-            <p>全称 Subpixel refinement。动态预测的精度最高只有 1px，在此之上还有可能被动态噪点干扰，导致了预测帧相比原画会欠缺大量的纹理细节。动态补偿 Motion Compensation MC 通过对比原画与预测块得到残差，并根据残差的分布动态向量的精度到¼子像素，使“精加工预测块”的画面残差尽可能地缩小，得到足够准确的预测帧，即大幅减少残差帧的内容。</p>
+            <h2 id="h2-7">运动补偿 Motion Compensation（MC）</h2>
+            <p>整数像素动态搜索虽看起来很准，但精度终归有限，只能算是“粗加工预测”；直接使用整数动态向量会导致纹理细节和物件边缘信息的丢失。为此，编码器需要对向量“精加工”——对齐到插值出的 half-pixel / hpel / ½ 像素，及 quarter-pixel / qpel / ¼ 像素，使预测画面（指 PU、PB）的残差变小，与输入源画面更一致。</p>
+
+            <h3>整数像素运动补偿</h3>
+            <p>视频编码中同动态搜索（ME）。</p>
+            
+            <h3>子像素运动补偿 Sub-pel Motion Compensation</h3>
+            <ol>
+                <li>线性插值参考帧（有限冲击响应滤镜 FIR），分别生成上采样/放大 2x 和 4x 的副本</li>
+                <li>以整数向量落点为起点搜索放大副本的位置，从而找出率失真代价最小的子像素动态向量位置：
+                    <ul>
+                        <li><b>(J)oule</b>：率失真代价（RD Cost），失真最小的候选最精确</li>
+                        <li><b>(D)istortion</b>：使用当前子像素动态向量编码预测块与输入源画面的差异（SATD）</li>
+                        <li><b>(R)ate</b>：计算编码这些新向量所产生的码率</li>
+                        <li><b>λ</b>：拉格朗日代价</li>
+                    </ul>
+                </li>
+            </ol>
+            <p class="text-gray-side">注：率失真优化计算见下方版块的说明。</p>
             <div class="align-items-center">
                 <img src="files/mpmemc/Block-Spitting-Stage-Two.png" alt="Block-Spitting-Stage-Two" class="img-medium">
                 <p class="text-gray-side">图：根据动态搜索与补偿所得，完成宏块到块的细分</p>
             </div>
-            <p>至于对抗动态噪点，大体上是允许真正移动的物件（所涵盖的分块）有运动向量，拦截噪点在静止画面上的孤立运动向量，即「允动之移，防静所变」解决，详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-6">x265 教程</a>。</p>
-            <ol class="overflow-auto">
-                <li>此处省略<span class="text-blue-math">上帧画面 + 帧间向量表中的动态向量 = 一系列粗加工预测块</span>的步骤</li>
-                <li>使用有限冲激响应插值滤镜 FIR filter 放大画面以便后面对齐</li>
-                <li>将“粗加工预测块”与源视频所对应的画面使用 SATD 做差，得到当前的误差程度</li>
-                <li>当前向量的 x，y 分量分别加减 ½，¼ 像素（插值放大的画面中是整数像素），即分别让这些块对比原画跑一遍 SATD：
-                    <ul class="text-smaller">
-                        <li><span class="text-blue-math">\(B\prime(x+½,y),B\prime(x,y+½),B\prime(x+½,y+½),B\prime(x+¼,y),B\prime(x,y+¼),B\prime(x+¼,y+¼),B\prime(x+¼,y+½),B\prime(x+½,y+¼)\)</span></li>
-                    </ul>
-                </li>
-                <li>选出 SATD 误差值最小的块——中的 x,y 分量，纠正帧间向量表的动态矢量，完成补偿</li>
-            </ol>
-            <!-- } -->
-            <p>关于 FIR 插值滤镜，以及 x264/5 分别使用了哪些插值和搜索方法，见<a href="../../x265-web-tutorial/HTML/index.html#h2-6">x265 教程网页版 - 动态补偿</a>。</p>
+            <div class="row">
+                <div id="LR-UD-003" class="col-8 align-items-center">
+                    <table class="table-center">
+                        <tr>
+                            <th class="px-3">编码器（官方版）</th>
+                            <th class="px-3">平面——块类型</th>
+                            <th class="px-3">范围精度</th>
+                            <th class="px-3">插值方法</th>
+                        </tr>
+                        <tr class="t-light-gray">
+                            <td class="px-1">x264</td>
+                            <td class="px-1">亮度 Y</td>
+                            <td class="px-1">½ 像素（hpel）</td>
+                            <td class="px-1">6 tap FIR</td>
+                        </tr>
+                        <tr>
+                            <td class="px-1">x264</td>
+                            <td class="px-1">亮度 Y</td>
+                            <td class="px-1">¼ 像素（qpel）</td>
+                            <td class="px-1">双线性插值（Bi-lerp）</td>
+                        </tr>
+                        <tr class="t-light-gray">
+                            <td class="px-1">x264</td>
+                            <td class="px-1">色度 C</td>
+                            <td class="px-1">hpel+qpel</td>
+                            <td class="px-1">上下左右加权平均</td>
+                        </tr>
+                        <tr>
+                            <td class="px-1">x265</td>
+                            <td class="px-1">亮度 Y</td>
+                            <td class="px-1">hpel+qpel</td>
+                            <td class="px-1">上下左右加权平均</td>
+                        </tr>
+                        <tr class="t-light-gray">
+                            <td class="px-1">x265</td>
+                            <td class="px-1">亮度 Y</td>
+                            <td class="px-1">¼像素（qpel）</td>
+                            <td class="px-1">两种 7tap FIR</td>
+                        </tr>
+                        <tr>
+                            <td class="px-1">x265</td>
+                            <td class="px-1">色度 C</td>
+                            <td class="px-1">hpel+qpel</td>
+                            <td class="px-1">4tap FIR</td>
+                        </tr>
+                    </table>
+                    <p class="text-gray-side mt-0">表：x264/5 的 hpel~qpel FIR 插值放大算法使用。x264 使用 6tap FIR 滤镜，x265 使用 8tap、7tap 和 4tap FIR 滤镜。</p>
+                </div>
+                <img loading="lazy" src="files/mpmemc/hpel-qpel-interpolation.png" alt="hpel qpel interpolation" id="LR-UD-004" class="img-small img-right col-4 mb-auto" >
+            </div>
 
             <code class="code-bold">--subme</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 1~10，推荐 6~10&gt;调整具体的动态补偿强度，x264 中同时决定模式决策和率失真优化的强度。根据画质和编码速度选择合适的大小：</p>
