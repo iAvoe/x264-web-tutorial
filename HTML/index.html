@@ -1511,17 +1511,23 @@
 
             <h2 id="h2-6">动态搜索 Motion Estimation（ME）</h2>
             <!-- x265 教程副本，更改需手动同步 { -->
-            <p class="text-gray-side">注：它的专业术语是运动搜索、运动估计。</p>
-            <p>在连续帧间画面中，进行运动估计的整数像素精度动态信息搜索步骤，涵盖了多种搜索算法，也被用于不同的信号处理领域。具体步骤是以被参考帧内的已编码块（Coded Block）为起点，尝试通过位移来匹配相邻帧的画面，从而找到一个失真最小的向量 Direction of minimal distortion（DMD），这个向量就是整数动态向量。</p>
+            <div class="align-items-center">
+                <img loading="lazy" src="files/mpmemc/Motion-Vectors.png" alt="Motion Vectors" class="img-medium">
+                <p class="text-gray-side mt-0">图：Elephants Dream 视频素材某帧的动态向量分布。来源：<a href="https://en.wikipedia.org/wiki/Motion_estimation">维基百科</a></p>
+            </div>
+            <p class="text-gray-side">注：它的专业术语是运动搜索、运动估计；具体到视频编码时，要加上“整数像素”的前缀。</p>
+            <p>在连续帧间画面中，进行运动估计的整数像素精度动态信息搜索步骤，涵盖了各式搜索算法与各样的信号处理用途。具体步骤是以被参考帧内的已编码块（Coded Block）为起点，尝试通过位移来匹配相邻帧的画面，从而找到一个失真最小的向量 Direction of minimal distortion（DMD），这个向量就是整数动态向量。</p>
             <p>为了找到可用的最小失真朝向，并且避免进行算力占用巨大的全搜索（Exhausive Search），动态搜索演化出了多种匹配的图案和算法。其中，较为聪明的动态搜索算法是多级算法，它们首会先尝试在较大范围进行粗略搜索，再以大致最佳区域为中心进行精细搜索，从而（包括在噪点干扰下）多快好省地找到整数动态向量。在整数动态搜索之后，还会由子像素动态搜索（Sub-pel Motion Estimation）来进一步做对齐，最终，这个动态向量被用于冗余预测块，以及对高动态画面提高有损压缩强度，从而压缩体积并优化码率的分配。</p>
             <p>如果动态搜索的过程有缺失或不够理想，参考帧与分块的建立会变得低效，码率分配也会变得不够合理，导致画质的降低和码率的增加。</p>
+            <p class="text-gray-side">注：动态搜索的用途包括计算机视觉的目标跟踪（自动驾驶、监控与制导系统）、基于动态向量的分辨率超采样（如 DLSS）、视频驱动的 3D 建模与插帧、剪辑后期的视频去抖（如 Adobe Premiere 的变形稳定器效果）、智能电视内置的动态画质增强（虽然大多情况下效果一般）等等。</p>
             <div class="align-items-center">
-                <img src="files/memc/Interframe-Vector-Table.png" alt="Interframe-Vector-Table" class="img-medium">
+                <img src="files/mpmemc/Interframe-Vector-Table.png" alt="Interframe-Vector-Table" class="img-medium">
                 <p class="text-gray-side">图：宏块上帧间的动态向量</p>
             </div>
             <p>简化模型下，动态搜索得到帧间向量表，帧间向量表加上上帧的画面得到预测帧，原始帧减去预测帧得到残差帧，残差帧储存为参考帧，得到帧间结构。x264 使用了不对称多六边形搜索 Uneven multiple Hexagon，从而让一个搜索算法在多个分辨率下检查画面，制衡了动态噪点对传统动态搜索算法的干扰。搜索算法详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程</a>。</p>
             <!-- } -->
             <code class="code-bold">--me</code>
+
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;hex/umh/esa/tesa，推荐 umh&gt; 搜索算法，umh 平衡，star 四角星搜索之后收益递减，sea 是优化过的 x264 esa 穷举，但收益递减仍大。umh 通过多种分辨率大小的查找范围，减轻了动态噪点对传统搜索算法的干扰</p>
             <code class="code-bold">--merange</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，推荐 4 的倍数，<span class="text-red-emph">需 me</span>&gt;<span class="text-blue-emph">完全取决于 ME 算法和分辨率</span>，过大会因「找不到更好，找到也是错」而损失画质和压缩。</p>
@@ -1550,7 +1556,7 @@
             <h2 id="h2-7">子像素运动补偿</h2>
             <p>全称 Subpixel refinement。动态预测的精度最高只有 1px，在此之上还有可能被动态噪点干扰，导致了预测帧相比原画会欠缺大量的纹理细节。动态补偿 Motion Compensation MC 通过对比原画与预测块得到残差，并根据残差的分布动态向量的精度到¼子像素，使“精加工预测块”的画面残差尽可能地缩小，得到足够准确的预测帧，即大幅减少残差帧的内容。</p>
             <div class="align-items-center">
-                <img src="files/memc/Block-Spitting-Stage-Two.png" alt="Block-Spitting-Stage-Two" class="img-medium">
+                <img src="files/mpmemc/Block-Spitting-Stage-Two.png" alt="Block-Spitting-Stage-Two" class="img-medium">
                 <p class="text-gray-side">图：根据动态搜索与补偿所得，完成宏块到块的细分</p>
             </div>
             <p>至于对抗动态噪点，大体上是允许真正移动的物件（所涵盖的分块）有运动向量，拦截噪点在静止画面上的孤立运动向量，即「允动之移，防静所变」解决，详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-6">x265 教程</a>。</p>
@@ -1725,9 +1731,7 @@
             </div>
 
             <h2 id="h2-9">率控制</h2>
-
-            <h3>码率分布成因</h3>
-            <p>有损压缩中，只是优化码率分配本身就可以提高当前视频的画质。这是因为参考帧 P、B 帧自身的主要信息来自于被参考帧 I 帧，其中被冗余的宏块只储存“相对于被参考帧的动态向量”，和“残差画面”。这种画面并不锐利，因而（在熵编码后的）体积占比非常小。而尽管被参考帧 I 帧的体积很大，但 I 帧自身的画面为其后的若干至数百帧提供了参考，使得高画质的 I 帧反而提高了帧间冗余压缩率（与使用 10bit 位深后，码率不增反降的原因相同）。假如被参考帧 I 帧的有损压缩较高，那么在环路滤镜组/率失真优化过程中，编码器会发现 I 帧与 P、B 帧之间不太相像；便会提高残差画面的信息量。于是虽然峰值码率会降低，但 I 帧后的一系列帧都会比以往大一些，造成整体的码率/文件体积上升。在这个基础上：</p>
+            <p>有损压缩中，码率分配本身会决定压缩视频的画质。这是因为参考帧 P、B 帧自身的主要信息来自于被参考帧 I 帧，其中被冗余的宏块只储存“相对于被参考帧的动态向量”，和“残差画面”。这种画面并不锐利，因而（在熵编码后的）体积占比非常小。而尽管被参考帧 I 帧的体积很大，但 I 帧自身的画面为其后的若干至数百帧提供了参考，使得高画质的 I 帧反而提高了帧间冗余压缩率（与使用 10bit 位深后，码率不增反降的原因相同）。假如被参考帧 I 帧的有损压缩较高，那么在环路滤镜组/率失真优化过程中，编码器会发现 I 帧与 P、B 帧之间不太相像；便会提高残差画面的信息量。于是虽然峰值码率会降低，但 I 帧后的一系列帧都会比以往大一些，造成整体的码率/文件体积上升。在这个基础上：</p>
             <ul>
                 <li>如果视频本身的画面变化偏大，那么参考帧 P、B 帧一开始就会储存更多的残差信息</li>
                 <li>如果一开始就要求限制峰值码率，那么即使文件体积增加，码率提高也是没办法的事</li>
