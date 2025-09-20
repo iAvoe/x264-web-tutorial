@@ -1109,12 +1109,14 @@
                 </li>
                 <li><b>编码过程</b>
                     <ul>
-                        <li><b>前瞻进程</b>：Lookahead 从更小的分辨率预先分析未来几帧的复杂度、运动和场景切换 scenecut 的估计。</li>
-                        <li><b>分帧/帧类型决策</b>：根据前瞻进程的结果和关键帧间隔 keyframe interval 设置关键帧 I 帧与参考帧 P-B 帧。</li>
-                        <li><b>粗分块</b>：
+                        <li><b>前瞻进程（Lookahead）</b>：预先分析未来几帧的复杂度、运动和场景切换 scenecut 的估计、I-P-B 帧类型决策
+                            <ul><li>帧类型决策由最短路径算法（Shortest Path）确立</li></ul>
+                        </li>
+                        <li><b>粗分块</b>：虚拟步骤，编解码器直接根据指定可用的大小开始在特定位置上操作，因此搜索等操作默认这步已经完成
                             <ul>
-                                <li>x264 中粗分到宏块 Macroblock MB</li>
-                                <li>x265 中粗分到编码树单元 Coding Tree Unit CTU </li>
+                                <li>x264：宏块 Macroblock MB（16x16）</li>
+                                <li>x265：编码树单元 Coding Tree Unit CTU（最大 64x64、最小 32x32）</li>
+                                <li>AV1：特大块 Superblock（最大 128x128，但为了兼容现有硬编硬解、所以很多步骤上等效于 64x64）</li>
                             </ul>
                         </li>
                         <li><b>动态搜索</b>：Motion Estimation（ME）找到当前帧与参考帧之间的相似区域，并为每个块分配动态向量。</li>
@@ -1220,7 +1222,7 @@
                     </tbody>
                 </table>
             </div>
-            <p>其中，“H.264”的 H 代表国际电信联盟 - 电信标准化部门（ITU‑T）中的 <a href="https://www.itu.int/net/itu-t/sigdb/spevideo/Hseries-s.htm">H 系列建议指南</a>，例如 <a href="https://www.itu.int/rec/T-REC-H.810">ITU-T H.810</a> 个人健康系统（血压计、血糖仪、体重秤）的交互设计建议指南。一些符合某个 H 系列视频编码建议指南的视频编码器会将这个标号写在程序名字上，就有了所谓的 x264，x265。</p>
+            <p>其中，“H.264”的 H 代表国际电信联盟——电信标准化部门（ITU‑T）中的 <a href="https://www.itu.int/net/itu-t/sigdb/spevideo/Hseries-s.htm">H 系列建议指南</a>，例如 <a href="https://www.itu.int/rec/T-REC-H.810">ITU-T H.810</a> 个人健康系统（血压计、血糖仪、体重秤）的交互设计建议指南。一些符合某个 H 系列视频编码建议指南的视频编码器会将这个标号写在程序名字上，就有了所谓的 x264，x265。</p>
             <div class="align-items-center">
                 <img src="files/basics/Video-Endocing-Standards.png" alt="Video-Endocing-Standards" class="img-medium">
             </div>
@@ -1407,7 +1409,7 @@
             <h2 id="h2-5">动态预测 Motion Prediction（MP）</h2>
             <p>在参考帧（P-B 帧）的预测块 Prediction Block 上，动态搜索（ME）之前，起到<i>提供动态搜索起点</i>功能的预测算法。x264 使用了 <code>--direct</code> 指定。x265 中则使用了更高级的 AMVP + Merge 算法。</p>
             <p>视频里往往会有占据画面不小的物件朝着一处平移，在视频帧中表现为“某个区域的分块拥有高度相似的运动向量”。这些重复性的动态向量分布规律肉眼可见，而动态搜索只能通过不断地计算差异而一个一个方向和大小地把向量给试出来。这显然不如通过预测而快速地找出一组方向与大小（然后让整数像素动态搜索从这里开始微调到整数像素精度）直截了当。</p>
-            <p>由于动态向量预测得到的向量本身就已经足够靠谱，因此编码器会以“预测动态向量（PMV）+ 动态向量差（MVD）”的形式记录每个帧间块的动态信息，再冗余掉相同的预测动态向量，从而进一步提高压缩。尽管一个动态向量的信息不多，但放眼到整个视频的所有帧间参考时，质变也就产生了。</p>
+            <p>由于动态向量预测得到的向量本身就已经足够靠谱，因此编码器会以“预测动态向量（PMV）+ 动态向量差（MVD）”的形式记录每个帧间块的动态信息，再冗余掉相同的预测动态向量，从而进一步提高压缩。纵然一支动态向量的信息不多，但放眼到整个视频的所有帧间参考时，质变也就产生了。</p>
             <code class="code-bold">--direct</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;temporal/spatial/auto&gt; 指定动态搜索判断方式的参数，除直播和低性能设备录屏外建议 auto</p>
 
@@ -1457,7 +1459,8 @@
 
             <h2 id="h2-7">运动补偿 Motion Compensation（MC）</h2>
             <p>整数像素动态搜索虽看起来很准，但精度终归有限，只能算是“粗加工预测”；直接使用整数动态向量会导致纹理细节和物件边缘信息的丢失。为此，编码器需要对向量“精加工”——对齐到插值出的 half-pixel / hpel / ½ 像素，及 quarter-pixel / qpel / ¼ 像素，使预测画面（指 PU、PB）的残差变小，与输入源画面更一致。</p>
-
+            <p class="text-gray-side">注：虽然看起来只有一个子像素补偿，但这不妨碍运动补偿作为一个完整独立的步骤存在。此外，在 AV1 标准中，运动补偿就不只有一种了。</p>
+            
             <h3>整数像素运动补偿</h3>
             <p>视频编码中同动态搜索（ME）。</p>
             
@@ -1865,7 +1868,7 @@
             <code class="code-bold">--vbv-bufsize</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整整数 kbps，默认关（0），<span class="text-red-emph">需小于 <code>--vbv-maxrate</code></span>&gt;在编码器解码出原画后，每秒最多可占的缓存。bufsize÷maxrate=播放时解码出每 gop 原画帧数的缓冲用时（秒）。</p>
             <code class="code-bold">--vbv-maxrate</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关 0&gt;峰值红线。用「出缓帧码率 - 入缓帧码率必须小于等于 maxrate"」限制编码器在 GOP 码率超 bufsize，即缓存跑满时压缩超载帧（提高量化强度 + 强降噪至码率合规为止）。当入缓帧较小时，出缓帧就算超 maxrate 也会因缓存有空而不被压缩。所以有四种状态，需经验判断：</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关 0&gt;峰值红线。用出缓帧码率减去入缓帧的码率必须小于等于 maxrate，从而限制编码器在 GOP 码率超 bufsize，即缓存跑满时压缩超载帧（提高量化强度 + 强降噪至码率合规为止）。当入缓帧较小时，出缓帧就算超 maxrate 也会因缓存有空而不被压缩。所以有四种状态，需经验判断：</p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li>大：GOP 大小=bufsize=2×maxrate，视频码率超出 maxrate 后等缓存满再压缩，避开多数涨落，适合限平均率的串流</li>
                 <li>小：GOP 大小=bufsize=1×maxrate，视频码率超出 maxrate 后直接压缩，避开部分涨落，适合限峰值的串流</li>
@@ -1880,7 +1883,7 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点百分比，默认 1&gt; maxrate 限码的容错程度，用于防止压缩过大，但与此同时码率过大所导致卡顿的次数会增加</p>
 
             <!-- x265 教程副本，更改需手动同步 { -->
-            <h3>下层 - FTQP 模式</h3>
+            <h3>下层——FTQP 模式</h3>
             <p>手动通过文件制定帧类型和量化强度。</p>
             <code class="code-bold">--qpfile</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件&gt;手动指定帧类型和量化强度 closed-gop 下 K 帧的 frame type量化强度下层模式。qpfile 文件内的格式为"帧号 帧类型 QP"</p>
@@ -2027,7 +2030,7 @@
                 <img src="files/rate-distorsion-optimization/RDO-Lambda-Slopes.png" alt="RDO-Lambda-Slopes" class="img-medium">
                 <p class="text-gray-side">图：率失真优化中λ的斜度变化与效果</p>
                 <img src="files/rate-distorsion-optimization/RDO-qStep-Chart.png" alt="RDO-qStep-Chart" class="img-medium">
-                <p class="text-gray-side">图：率 - 失真表格中不断调整并得到“×”的实际效果</p>
+                <p class="text-gray-side">图：率失真表格中不断调整并得到“×”的实际效果</p>
             </div>
             <code class="code-bold">--fgo</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数默认关，推荐 15 左右&gt;将高频信号在量化前后的差距也算进率失真优化的统计中，使优化更倾向于保留细节和噪声</p>
@@ -2047,11 +2050,11 @@
                 </li>
             </ol>
             <code class="code-bold">--psy-rd</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;a:b 浮点，默认 1:0&gt;心理学优化设置。a 保留纹理，b 在 a 的基础上保留噪点细节，ab 值据画面复杂度拉高，</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;α:β 浮点，默认 1:0&gt;心理学优化设置。α 保留纹理，β 在 α 的基础上保留噪点细节。画质优先时，α、β 值的大小与画面复杂度呈正比，但增加的程度相比于画面复杂度应该更小。</p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li>低成本动漫与幻灯片录屏画面：<span class="text-blue-emph">0.4:0.1</span>~<span class="text-blue-emph">0.6:0.15</span></li>
                 <li>电影，录像等场景：<span class="text-blue-emph">0.7:0.12</span>~<span class="text-blue-emph">1.3:0.2</span></li>
-                <li><code>--no-mbtree</code> 可将 b 设置为 <span class="text-blue-emph">0</span></li>
+                <li><code>--no-mbtree</code> 时，可将 β 设置为 <span class="text-blue-emph">0</span></li>
             </ul>
             <code class="code-bold">--no-psy</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;若视频量化很低，纹理清楚，没有优化的必要可以关。但大部分情况下不应该关，而是用较低的优化强度</p>
@@ -2061,7 +2064,7 @@
             </div>
 
             <h3>宏块树与量化值曲线缩放 qComp</h3>
-            <p>源自 libavcodec 实现同码率下整体画质更高结果的逻辑：“复杂动态场景的帧间参考少。所以分配更少码率（增加量化压缩），更多码率应该分给参考多而远的简单动态场景”。这样做在码率受到很大限制时能保护多数场景的画质，但缺点则是大多时候，动漫场景等「背景不动前景动」的场景（如人物脸部）画面被压缩太多的问题。x264 中所做的改进是“逐宏块应用这套逻辑”——即 <a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">MarcoBlock Tree（mbtree）</a>。量化值曲线缩放 quantizer curve compression 则被“贬为”控制 mbtree 等一系列量化强度分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
+            <p>源自 libavcodec 实现同码率下整体画质更高结果的逻辑：“复杂动态场景的帧间参考少。所以分配更少码率（增加量化压缩），更多码率应该分给参考多而远的简单动态场景”。这样做在码率受到很大限制时能保护多数场景的画质，但缺点则是大多时候，动漫场景等「背景不动前景动」的场景（如人物脸部）画面被压缩太多的问题。x264 中所做的改进是“逐宏块应用这套逻辑”——即 <a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">MarcoBlock Tree（MBTree）</a>。量化值曲线缩放 quantizer curve compression 则被“贬为”控制 MBTree 等一系列量化强度分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
             <h4>qComp 的用途</h4>
             <ol class="overflow-auto">
                 <li>（ABR 模式）根据宏块的数量与 <code>--qcomp</code> 值设置初始复杂度百分比：
@@ -2071,28 +2074,28 @@
                 <li>当前帧与下一帧间的图像模糊后做 SATD，获得「模糊复杂度 <span class="text-blue-math">\( \text{Complexity}_{blurred} \)</span>」</li>
             </ol>
             <ul class="overflow-auto">
-                <li>（关 mbtree 时）使用 <code>--qcomp</code> 缩放模糊复杂度，以换算出当前帧的 qScale：
+                <li>（关 MBTree 时）使用 <code>--qcomp</code> 缩放模糊复杂度，以换算出当前帧的 qScale：
                     <span class="text-blue-math">\[ \text{qScale} = \left( \text{Complexity}_{blurred} \right)^{1-qcomp} \]</span>
                 </li>
-                <li>（开 mbtree 时）据 I 帧在当前片段的权重设单帧量化强度（基准单帧用时 ÷ 当前场景用时 × I 帧用时 ÷ 帧率）：
+                <li>（开 MBTree 时）据 I 帧在当前片段的权重设单帧量化强度（基准单帧用时 ÷ 当前场景用时 × I 帧用时 ÷ 帧率）：
                     <span class="text-blue-math">\[ \text{qScale} = Duration_{frame} \div Duration_{clip}\times Duration_{iframe} \div \text{fps} \]</span>
                 </li>
             </ul>
             <code class="code-bold">--qcomp</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0.5~1，推荐默认 0.6&gt;模糊复杂度 cplxBlur 以及 mbtree 迭代每帧量化强度范围的曲线抑制参数。越小则复杂度迭代越符合实际状况，抑制 CRF，mb/cutree，bframes 影响的效果就越弱，搭配高 CRF 能使码率控制接近 VBV 的程度。越大则 CRF，mb-cutree，bframes 越没用，越接近 CQP</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0.5~1，推荐默认 0.6&gt;模糊复杂度 <code>cplxBlur</code> 以及宏块树迭代每帧量化强度范围的曲线抑制参数。越小则复杂度迭代越符合实际状况，抑制 CRF，宏块树/CU 树（MBTree/CUTree），bframes 影响的效果就越弱，搭配高 CRF 能使码率控制接近 VBV 的程度。越大则 CRF，mb-cutree，bframes 越没用，越接近 CQP</p>
             <ul class="font-monospace pl-5 text-smaller">
-                <li><span class="text-blue-emph">小于 0.5，中~强 mbtree</span> CRF/ABR低延迟逐帧迭代qp; 画面主前景动时用，允许 mbtree 导致零星宏块欠码</li>
-                <li><span class="text-blue-emph">0.5~0.7 中 mbtree</span> CRF/ABR中延迟逐帧迭代qp, 画面含背景动，或混合情况用，平衡优先</li>
-                <li><span class="text-blue-emph">大于 0.7 中~弱 mbtree</span> CRF, ABR 中~高延迟逐帧迭代量化强度, 保留重噪点，或 FPS/STG 游戏录屏场景用</li>
-                <li><span class="text-blue-emph">小于 0.5 关 mbtree</span> 画面不分前背景，如静态图像，PPT/桌面录屏节约性能用</li>
-                <li><span class="text-blue-emph">大于 0.5 关 mbtree</span> 动态画面，不分前背景时节约性能用</li>
+                <li><span class="text-blue-emph">小于 0.5，中~强 MBTree</span> CRF/ABR低延迟逐帧迭代qp; 画面主前景动时用，允许宏块树导致零星宏块欠码</li>
+                <li><span class="text-blue-emph">0.5~0.7 中 MBTree</span> CRF/ABR中延迟逐帧迭代qp, 画面含背景动，或混合情况用，平衡优先</li>
+                <li><span class="text-blue-emph">大于 0.7 中~弱 MBTree</span> CRF, ABR 中~高延迟逐帧迭代量化强度, 保留重噪点，或 FPS/STG 游戏录屏场景用</li>
+                <li><span class="text-blue-emph">小于 0.5 关 MBTree</span> 画面不分前背景，如静态图像，PPT/桌面录屏节约性能用</li>
+                <li><span class="text-blue-emph">大于 0.5 关 MBTree</span> 动态画面，不分前背景时节约性能用</li>
                 <li><span class="text-blue-emph">0</span>（if 判定）启用固定码率模式</li>
                 <li><span class="text-blue-emph">1</span>（if 判定）启用固定量化强度模式</li>
             </ul>
 
-            <h4>宏块树 Macroblock-Tree</h4>
-            <p>如果一个宏块用作帧间参考的码率比用作帧内参考低 70%，则该宏块可视为 30% 非帧间参考和 70% 帧间参考两部分。已知帧间参考占据的部分越多，则这个宏块自身就没有多少信息；而在宏块树所运行的时间，这个宏块是位于软转场 GOP 末尾——scenecut 步骤之后，keyint 步骤之前。因此，可以增强其压缩——把更多的码率分给参考传播最远的 I 帧，以提拔整个软转场 GOP 的画质。详见 <a href="http://lazybing.github.io/blog/2021/06/22/h264-rate-control-algorithm/">x264 率控制算法</a> 及 <a href="https://huyunf.github.io/blogs/2017/12/06/x264_slice_type_decision/MBtree paper.pdf">mbtree paper</a>。</p>
-            <p>由于宏块树的步骤位于前瞻进程 Lookahead 中，而前瞻进程位于动态搜索和运动补偿之前，且 Lookahead 只使用半分辨率的视频帧，因此，此时的宏块树只能额外尝试简单的帧内和帧间预测。</p>
+            <h4>宏块树 Macroblock-Tree/帧间粗分块自适应量化</h4>
+            <p>如果一个宏块用作帧间参考的码率比用作帧内参考低 70%，则该宏块可视为 30% 非帧间参考和 70% 帧间参考两部分。已知帧间参考占据的部分越多，则这个宏块自身就没有多少信息；而在宏块树所运行的时间，这个宏块是位于软转场 GOP 末尾——scenecut 步骤之后，keyint 步骤之前。因此，可以增强其压缩——把更多的码率分给参考传播最远的 I 帧，以提拔整个软转场 GOP 的画质。详见 <a href="http://lazybing.github.io/blog/2021/06/22/h264-rate-control-algorithm/">x264 率控制算法</a> 及 <a href="https://huyunf.github.io/blogs/2017/12/06/x264_slice_type_decision/MBtree paper.pdf">MBTree 论文</a>。</p>
+            <p>由于宏块树的步骤位于前瞻进程（Lookahead）中，而前瞻进程位于动态搜索和运动补偿之前，且前瞻进程只使用半分辨率的视频帧，因此，此时的宏块树会额外尝试一些简单的帧内和帧间预测。</p>
             <ul>
                 <li>注：帧间参考代价只能小于等于帧内参考代价，类似于（同视频下的）P 帧体积不应大于 I 帧
                     <ul class="text-smaller">
@@ -2149,19 +2152,19 @@
                     <span class="text-blue-math"> \[ \Delta \text{QP} = -\text{strength} \times \log_{2}\left( \frac{\text{Cost}_{intra}}{\text{Cost}_{propagate}} \right) \div \text{Cost}_{intra} \]</span>
                 </li>
             </ol>
-            <p class="text-gray-side">大部分情况下 mbtree 偏移值为零，因为宏块没有溯块信息可用</p>
+            <p class="text-gray-side">大部分情况下 MBTree 偏移的量化强度为零，因为宏块没有参考溯块信息可用</p>
             <!-- x265 教程副本，需要手动同步更改 { -->
             <code class="code-bold">--rc-lookahead</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;帧数量，范围 1~250，推荐 keyint÷2&gt; 指定 cutree 的检索帧数，通常设在帧率的 2.5~3 倍。高则占用内存增加延迟，低则降低压缩率和平均画质。</p>
-            <p class="text-gray-side pl-5 m-0 overflow-auto">注：mbtree/cutree 会自动选择 <code>--rc-lookahead</code> 和 <span class="text-blue-math text-smaller">\( \max\left( \text{keyint}, \max\left( \text{vbv-maxrate}, \text{bitrate}\right)\div\text{vbv-bufsize} \times \text{fps} \right) \)</span> 中最小的值作为检索帧数</p>
+            <p class="text-gray-side pl-5 m-0 overflow-auto">注：MBTree/cutree 会自动选择 <code>--rc-lookahead</code> 和 <span class="text-blue-math text-smaller">\( \max\left( \text{keyint}, \max\left( \text{vbv-maxrate}, \text{bitrate}\right)\div\text{vbv-bufsize} \times \text{fps} \right) \)</span> 中最小的值作为检索帧数</p>
             <!-- } -->
             <code class="code-bold">--no-mbtree</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt; 关闭少见宏块量化偏移。可能只有近无损，<code>--crf</code> 小于 16 才用的到。</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;关闭宏块树/CU 树（MBTree/CUTree）/帧间自适应量化，不推荐。</p>
 
             <h2 id="h2-13">熵编码/文本压缩</h2>
-            <p>x264 教程中仅提及最简单的形式。完成的熵编码流程见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版 - 熵编码</a>。</p>
-            <h3>霍夫曼编码 Huffman Coding</h3>
-            <p>曾经广泛应用于数据压缩的算法。步骤分为：</p>
+            <p class="text-gray-side">完整的熵编码流程见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版——熵编码</a>。</p>
+            <h3>霍夫曼编码（Huffman Coding）</h3>
+            <p>曾经广泛应用于数据压缩的算法，虽然没有被用于 AVC，但目的相同，此处用于替代说明 x264 中高度复杂的 CABAC 算法。步骤分为：</p>
             <ol>
                 <li><b>统计频率</b>：
                     <ul class="font-monospace pl-5 text-smaller">
@@ -2189,7 +2192,7 @@
             </ol>
 
             <h4>霍夫曼编码的例子</h4>
-            <p>来源：<a href="https://www.geeksforgeeks.org/huffman-coding-greedy-algo-3/">geekforgeeks - greedy3</a> 算法。假设第一次遍历文本得到了如下字符及其频率：</p>
+            <p>来源：<a href="https://www.geeksforgeeks.org/huffman-coding-greedy-algo-3/">geekforgeeks——greedy3</a> 算法。假设第一次遍历文本得到了如下字符及其频率：</p>
 
             <table class="table-center align-items-center font-monospace pl-5 text-smaller">
                 <thead>
@@ -2288,13 +2291,13 @@
                     </tr>
                 </tbody>
             </table>
-            <p>从上面的内容可见，熵编码是一种无损压缩（例如代码和小说都是文本，文本编码不可更改其内容）。既然是无损，那么不同的熵编码算法之间就只有编码速度和压缩率两个判断标准。x264 中使用了上下文自适应可变长度编码 Context Adaptive Variable Length Coding 和压缩率更高，速度慢一点的上下文自适应二进制算数编码 Context Adaptive Binary Arithmetic Coding CABAC。CABAC 的原理见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程网页版 - 熵编码</a></p>
+            <p>熵编码是一种无损压缩（例如代码和小说都是文本，文本编码不可更改其内容）。因此，不同的熵编码算法之间就只有编码速度和压缩率两个判断标准。</p>
             <code class="code-bold">--no-cabac</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，不推荐&gt;关闭 CABAC，使用 CAVLC</p>
 
             <h2 id="h2-14">优化熵编码</h2>
             <h3>残差 DCT 系子</h3>
-            <p>Residual DCT coefficients 代表变换后量化前，已知经过量化后会被抹除的 DCT 系子。DCT 变换的例子见本教程的 <a href="#h2-7">变换 - DCT 变换</a> 部分。总之就是与“残差块”无关，只是都叫做残差而已。</p>
+            <p>Residual DCT coefficients 代表变换后量化前，已知经过量化后会被抹除的 DCT 系子。DCT 变换的例子见本教程的 <a href="#h2-7">变换——DCT 变换</a> 部分。总之就是与“残差块”无关，只是都叫做残差而已。</p>
 
             <h3>编码块标记 CBF</h3>
             <p>Coded block flag 会被标在预测和/或与其相应的变换单元（亮度块加色度块）中表示该单元是否附有较多的残差系子：CBF=1 代表有、0 代表没有。引导四叉树 quadtree 算法进一步分枝——宏块向下分块。详见 <a href="https://patents.google.com/patent/US9749645B2/en">US9749645B2</a>。</p>
@@ -2332,8 +2335,8 @@
             <code class="code-bold">--deadzone-intra</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~32，默认 11，<code>--trellis</code> 小于 2 时开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 4</p>
 
-            <h3>软判决率失真游程走线优化 - SDQ trellis</h3>
-            <p>Soft decision quantization / SDQ trellis 算法。通过限制量化后块中的 DCT 系子 coefficients 强度，甚至偏移当前系子的强度值到临近系子，以保证游程编码中走线的平稳。过程中由率失真计算确认对画面的影响符合预期质量，从而提高压缩率。<code>--trellis</code> 应用于量化步骤之后，并且对少数突兀的 DCT 系子强度做了平均化，所以叫“再量化”。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-16"></a>x265 教程 - 优化熵编码</p></p>
+            <h3>软判决率失真游程走线优化——SDQ trellis</h3>
+            <p>Soft decision quantization / SDQ trellis 算法。通过限制量化后块中的 DCT 系子 coefficients 强度，甚至偏移当前系子的强度值到临近系子，以保证游程编码中走线的平稳。过程中由率失真计算确认对画面的影响符合预期质量，从而提高压缩率。<code>--trellis</code> 应用于量化步骤之后，并且对少数突兀的 DCT 系子强度做了平均化，所以叫“再量化”。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-16"></a>x265 教程——优化熵编码</p></p>
             <code class="code-bold">--trellis</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，范围 0~2, 推荐 2&gt;软判决优化 CABAC 的率失真再量化。 </p>
             <ul class="font-monospace pl-5 text-smaller">
@@ -2524,7 +2527,7 @@
                             <td class="px-1 t-invert-light" colspan="9">默认 0</td>
                         </tr>
                         <tr class="border-lr">
-                            <th>no-mbtree</th>
+                            <th>no-MBTree</th>
                             <td class="px-1" colspan="2">1</td>
                             <td class="px-1 t-invert-light" colspan="8">默认 0</td>
                         </tr>
@@ -2556,7 +2559,7 @@
             <ul class="font-monospace pl-5 text-smaller">
                 <li><span class="text-blue-emph">zerolatency</span>集中算力到一次编码一帧，并尽可能关闭率控制和 B 帧功能：
                     <ul>
-                        <li><code>--bframes 0 --force-cfr --no-mbtree --sync-lookahead 0 --sliced-threads --rc-lookahead 0</code></li>
+                        <li><code>--bframes 0 --force-cfr --no-MBTree --sync-lookahead 0 --sliced-threads --rc-lookahead 0</code></li>
                     </ul>
                 </li>
                 <li><span class="text-blue-emph">grain</span>保留高频信号/最高画质：
@@ -2569,7 +2572,7 @@
                         <li><code>--ref &lt;若当前设定大于 1 则乘以 2&gt; --bframes &lt;当前设定值 +=2&gt; --deblock 1:1 --psy-rd 0.4:&lt;跳过&gt; --aq-strength 0.6</code></li>
                     </ul>
                 </li>
-                <li><span class="text-blue-emph">fastdecode</span>降低解码算力占用以降低超高帧率 - 分辨率解码负载
+                <li><span class="text-blue-emph">fastdecode</span>降低解码算力占用以降低超高帧率——分辨率解码负载
                     <ul>
                         <li><code>--no-deblock --no-cabac --no-weightb --weightp 0</code></li>
                     </ul>
@@ -2612,7 +2615,7 @@
             <code class="code-bold">--sliced-threads</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;逐条带分配多线程。x264 r1607 前的多线程分配机制，后来因为问题太多而改成了逐帧分配多线程。剩下直播录屏等场景降低延迟一个用途</p>
             <ol class="font-monospace pl-5 text-smaller">
-                <li>熵编码中，CABAC（见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程 - 熵编码</a>）因为内容不连续所以经常重设，降低压缩率</li>
+                <li>熵编码中，CABAC（见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程——熵编码</a>）因为内容不连续所以经常重设，降低压缩率</li>
                 <li>动态信息的动态矢量长度被限制到条带分片内部，干扰动态补偿，降低压缩率</li>
                 <li>帧内冗余降级为条带内冗余，降低帧内编码压缩率</li>
                 <li>增加了相当一部分（多余条带与 NAL 封包的）文件头</li>
