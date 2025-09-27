@@ -2673,7 +2673,7 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件，<span class="text-red-emph">需 <code>--vf subtitles</code> 和 VSFilter64.dll</span>&gt;导入字幕文件，</p>
 
             <h2 id="h2-18">工具下载</h2>
-            <h3>套壳 x264/libx264 的 GUI 编码压制软件</h3>
+            <h3>调用 x264/libx264 的 GUI 编码压制软件</h3>
             <p>并没有特别好的选择。尤其是当能够使用 CLI 参数命令 ffmpeg.exe，x264.exe 后。</p>
             <table class="table-center align-items-center">
                 <tbody>
@@ -2705,26 +2705,34 @@
             </table>
             
             <h3>基本工具</h3>
+            <p>对压制、视频处理等通途起到辅助作用的软件工具。</p>
             <table class="table-center align-items-center">
                 <tbody>
                     <tr class="border-bottom">
+                        <th class="px-3"><a href="https://bluesky-soft.com/en/DXVAChecker.html">DXVA Checker</a></th>
+                        <td class="px-3" style="max-width: 42rem;">
+                            <img src="files/tools-download/dxva-checker-2.png" alt="dxva checker" class="mt-1 img-medium">
+                            <p class="text-dark-green-main">检测 PC 上支持的硬件编解码支持，输入输出格式，以及监控编解码占用的轻量工具。页面底部选择下载安装版（Installer）或便携版（ZIP）</p>
+                        </td>
+                    </tr>
+                    <tr class="border-bottom">
                         <th class="px-3"><a href="http://ffmpeg.org/download.html">ffmpeg</a></th>
                         <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/ffmpeg.svg" alt="ffmpeg logo" class="img-medium">
+                            <img src="files/tools-download/ffmpeg.svg" alt="ffmpeg logo" class="mt-1 img-medium">
                             <p class="text-dark-green-main">强大的 CLI 开源视音频处理工具。几乎所有的视音频处理都绕不开</p>
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://mpv.io/installation/">mpv</a></th>
                         <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/mpv.png" alt="mpv" class="">
+                            <img src="files/tools-download/mpv.png" alt="mpv" class="mt-1 img-medium">
                             <p class="text-dark-green-main">开源，便携，支持深度配置的现代视频播放器，但需要一定的英文阅读能力使用。见 <a href="https://nazorip.site/archives/1052/">安装与配置</a>教程</p>
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://www.voukoder.org/">Voukoder</a></th>
                         <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/voukoder.png" alt="voukoder" class="">
+                            <img src="files/tools-download/voukoder.png" alt="voukoder" class="mt-1 img-medium">
                             <p class="text-dark-green-main">开源 Premiere Vegas After Effects 压制导出插件，分为 Voukoder 和 V-Connector 两部分</p>
                         </td>
                         <td>
@@ -2734,25 +2742,25 @@
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://obsproject.com/zh-cn/download">OBS</a></th>
                         <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/obs.png" alt="obs" class="">
-                            <p class="text-dark-green-main">强大的开源直播框架和软件，设置略比传统录屏软件复杂，但效果也更好</p>
+                            <img src="files/tools-download/obs.png" alt="obs" class="mt-1">
+                            <img src="files/tools-download/obs-1.webp" alt="obs-1" class="">
+                            <p class="text-dark-green-main">强大的开源直播框架和软件，设置比录屏软件复杂，有一定的学习成本，但效果也更好</p>
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://mediaarea.net/zh-CN/MediaInfo">MediaInfo</a></th>
                         <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/mediainfo.png" alt="mediainfo" class=""><br>
-                            <img src="files/tools-download/mediainfo-1.png" alt="mediainfo-1" class="">
-                            <p class="text-dark-green-main">开源的 GUI 媒体元数据/视音频格式读取器，用于配置正确的压制参数</p>
-                            <p class="text-gray-side">注：由于在苹果应用商店收取上架费，因此需要在 <a href="https://mediaarea.net/zh-CN/MediaInfo/Download/Mac_OS">MediaInfo 官网下载安装包（下载 GUI，不是 CLI）</a>并侧载安装。</p>
+                            <img src="files/tools-download/mediainfo-1.png" alt="mediainfo-1" class="mt-1 img-medium">
+                            <p class="text-dark-green-main">开源的 GUI 媒体元数据/视音频格式读取器，这些数据是配置合理压制参数的关键</p>
+                            <p class="text-gray-side">注：由于苹果应用商店收取上架费，因此需要在 <a href="https://mediaarea.net/zh-CN/MediaInfo/Download/Mac_OS">MediaInfo 官网下载安装包（下载 GUI，不是 CLI）</a>并侧载安装。</p>
                         </td>
                     </tr>
                     <tr>
                         <th class="px-3"><a href="http://ffmpeg.org/download.html">ffprobe</a></th>
                         <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/ffprobe-excel.png" alt="mediainfo" class=""><br>
-                            <p class="text-gray-side">图：ffprobe 导出 CSV 或 XML，再使用 Excel 读取并制表，实现数据可视化。</p>
-                            <p class="text-dark-green-main">CLI 视音频格式读取器，除了元数据，还可以读取视频帧（GOP）的 SEI 信息。见 <a href="https://nazorip.site/archives/169/">基本使用教程</a>，以及 <a href="https://nazorip.site/archives/1068/">搭配 Excel 的数据可视化教程</a></p>
+                            <img src="files/tools-download/ffprobe-excel.png" alt="ffprobe visualization" class=""><br>
+                            <p class="text-dark-green-main">开源 CLI 媒体元数据/视音频格式 + 视频帧/GOP SEI 信息读取器，用于分析码率构成与趋势，以及挑选出不同压制结果中的最优选。</p>
+                            <p class="text-gray-side">注：见 <a href="https://nazorip.site/archives/169/">基本使用</a>，以及 <a href="https://nazorip.site/archives/1068/">搭配 Excel 的数据可视化</a> 教程</p>
                         </td>
                     </tr>
                 </tbody>
