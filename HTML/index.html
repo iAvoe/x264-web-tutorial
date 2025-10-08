@@ -1374,21 +1374,20 @@
                 <p class="text-gray-side">图：前瞻型纯追踪算法 Pure pursuit lookahead。见<a href="https://www.mathworks.com/help/nav/ug/pure-pursuit-controller.html">MatLab</a></p>
             </div>
             <p>前瞻进程距离短时，计算容易出现过冲（Overshoot）现象；距离长则虽然判断稳定，但程序占用的缓存更多，延迟也往往更大。</p>
-            
-            <code class="code-bold">--min-keyint</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，默认 25，<span class="text-red-emph">小于等于 keyint</span>&gt;判断新发现的转场距离上个 IDR 帧是否小于该值长短。有两种设定逻辑，而它们给出的画质都一样：</p>
-            <ul class="font-monospace pl-5 text-smaller">
-                <li>一般通用，一定程度上防止硬转场干扰软转场的溯块参考冗余：<span class="text-blue-emph">keyint ÷2</span></li>
-                <li>少设一些 IDR 帧，以略微提高压缩率和编码速度<span class="text-blue-emph">5 或更高</span></li>
-                <li>快速编码/直播环境：<span class="text-blue-emph">等于 keyint</span></li>
-                <li>多设一些 IDR 帧，一帧被判做转场本来就意味着前后溯块的价值不高。损失编码速度和压缩率，使复杂画面更接近素材视频级的图片序列，从而分配更多的码率 <span class="text-blue-emph">1 或 2</span></li>
-            </ul>
+            <!-- x265 教程副本，需要手动同步更改 { -->
             <code class="code-bold">--keyint</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数&gt;一般设 <span class="text-blue-emph">9 倍于帧率</span>（9 秒一个 IDR 帧），影响视频解码计算难度和拖进度条的延迟：</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，默认 250，推荐 9~12 倍帧率（即 9~12 秒）&gt;指定最长关键帧间隔（GOP 长度）。当距离上一个 IDR 帧达到阈值时，覆盖帧类型推演而直接设立 IDR 帧，开始一个新 GOP，并弃用 IDR 帧前的所有数据。</p>
             <ul class="font-monospace pl-5 text-smaller">
-                <li>短视频，不拖进度条的视频：<span class="text-blue-emph">keyint -1</span>略微降低文件体积</li>
-                <li>剪辑素材，频繁于多个视频轨上，根据画面复杂度设<span class="text-blue-emph">5 倍于帧率</span>，以降低解码负载</li>
+                <li>如果视频用于多轨剪辑素材（且频繁拖动进度条），则建议 6~8 倍帧率（即 6~8 秒）以降低解码器负载，提高流畅度</li>
             </ul>
+            <code class="code-bold">--min-keyint</code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，默认 25&gt;指定最小关键帧（IDR 帧）间隔。当转场判断（scenecut）被触发时，这个间隔之内的设立为 I 帧，之外的设立为 IDR 帧。非关键帧的 I 帧虽然也是独立图像，但不刷新解码器缓冲区，因此帧间参考会继续。有两种设定逻辑，而它们给出的画质都一样，区别在于体积：</p>
+            <ul class="font-monospace pl-5 text-smaller">
+                <li><span class="text-blue-emph">keyint÷2 ~ keyint</span>：设立新 I 帧意味着一批帧内编码任务被设立，而设立 IDR 帧还要重新开始帧间编码，不急着设立 IDR 帧虽然对压缩/画质不好，但也不容易在录制时卡顿</li>
+                <li><span class="text-blue-emph">1</span>：一帧被判为 I 帧，而不是 P、B 帧，已经说明了说明前后并不适合参考。因此即使两帧挨得很近，也有可能是两个不同的场景，于是设立 IDR 帧拆分成 GOP 是画质最好，但帧间参考最差的选项。</li>
+                <li><span class="text-blue-emph">5~10</span>：相比 1 在 24~60 fps 帧率下略微放宽要求（约 0.1~.15 秒），避免画面闪烁、闪回插入镜头（如意识流蒙太奇剪辑）时 IDR 帧数暴涨，维持帧间参考；推荐搭配 <code>--gop-lookahead</code> 使用</li>
+            </ul>
+            <!-- } -->
             <code class="code-bold">--ref</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 1~16&gt;多参考帧前后帧数半径，一图流设 <span class="text-blue-emph">1</span>。必须要在溯全尽可能多块的情况下降低参考长度，所以推荐 <span class="text-blue-emph">3</span>：</p>
             <code class="code-bold">--no-mixed-refs</code>
@@ -2670,7 +2669,7 @@
                 <li>hdqn3d 是一种简单快速的时域 + 空域降噪滤镜。仅指定 <code>--vf hqdn3d</code> 则使用默认强度（仅开启滤镜）为 4,3,6,4.5</li>
             </ul>
             <code class="code-bold">--sub</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件，<span class="text-red-emph">需 <code>--vf subtitles</code> 和 VSFilter64.dll</span>&gt;导入字幕文件，</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件，<span class="text-red-emph">需 <code>--vf subtitles</code> 和 VSFilter64.dll</span>&gt;见 <code>--vf subtitles</code> 说明</p>
 
             <h2 id="h2-18">工具下载</h2>
             <h3>调用 x264/libx264 的 GUI 编码压制软件</h3>
@@ -2679,23 +2678,23 @@
                 <tbody>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://shana.pe.kr/shanaencoder_download">ShanaEncoder</a></th>
-                        <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/shana-encoder.png" alt="shana-encoder" class="img-medium"><br>
+                        <td class="px-3" style=" max-width: 45rem;">
+                            <img src="files/tools-download/shana-encoder.png" alt="shana-encoder" class="mt-1 img-medium"><br>
                             <img src="files/tools-download/shana-encoder-1.png" alt="shana-encoder-1" class="">
                             <p class="text-dark-green-main">ffmpeg-CLI 搭配部分 GUI，上手较慢。使用了 ffmpeg 内嵌的 libx264，libx265，NVEnc</p>
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://bitbucket.org/muldersoft/simple-x264-launcher/downloads/">Simple x264 Launcher</a></th>
-                        <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/simple-x264-launcher.png" alt="simple-x264-launcher" class="">
+                        <td class="px-3" style=" max-width: 45rem;">
+                            <img src="files/tools-download/simple-x264-launcher.png" alt="simple-x264-launcher" class="mt-1">
                             <p class="text-dark-green-main">内嵌 AviSynth，支持便携版 VapourSynth，额外支持 x265 和 NVEnc 编码器，适合批量压制</p>
                         </td>
                     </tr>
                     <tr>
                         <th class="px-3">小丸工具箱</th>
-                        <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/xiaowan-toolbox.png" alt="xiaowan-toolbox" class="img-medium">
+                        <td class="px-3" style=" max-width: 45rem;">
+                            <img src="files/tools-download/xiaowan-toolbox.png" alt="xiaowan-toolbox" class="mt-1 img-medium">
                             <p class="text-dark-green-main">操作简单，适合入门的中文软件。网上能搜到详细教程。内嵌 MediaInfo，mp4box，Mkvtoolnix<br>
                                 镜像：<a href="https://pan.baidu.com/s/1VHonGHoZ0DmQBNZaRjML2A&pwd=crhu">百度云</a>；提取码 crhu
                             </p>
@@ -2710,46 +2709,43 @@
                 <tbody>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://bluesky-soft.com/en/DXVAChecker.html">DXVA Checker</a></th>
-                        <td class="px-3" style="max-width: 42rem;">
+                        <td class="px-3" style=" max-width: 45rem;">
                             <img src="files/tools-download/dxva-checker-2.png" alt="dxva checker" class="mt-1 img-medium">
                             <p class="text-dark-green-main">检测 PC 上支持的硬件编解码支持，输入输出格式，以及监控编解码占用的轻量工具。页面底部选择下载安装版（Installer）或便携版（ZIP）</p>
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="http://ffmpeg.org/download.html">ffmpeg</a></th>
-                        <td class="px-3" style="max-width: 42rem;">
+                        <td class="px-3" style=" max-width: 45rem;">
                             <img src="files/tools-download/ffmpeg.svg" alt="ffmpeg logo" class="mt-1 img-medium">
                             <p class="text-dark-green-main">强大的 CLI 开源视音频处理工具。几乎所有的视音频处理都绕不开</p>
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://mpv.io/installation/">mpv</a></th>
-                        <td class="px-3" style="max-width: 42rem;">
+                        <td class="px-3" style=" max-width: 45rem;">
                             <img src="files/tools-download/mpv.png" alt="mpv" class="mt-1 img-medium">
                             <p class="text-dark-green-main">开源，便携，支持深度配置的现代视频播放器，但需要一定的英文阅读能力使用。见 <a href="https://nazorip.site/archives/1052/">安装与配置</a>教程</p>
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://www.voukoder.org/">Voukoder</a></th>
-                        <td class="px-3" style="max-width: 42rem;">
+                        <td class="px-3" style=" max-width: 45rem;">
                             <img src="files/tools-download/voukoder.png" alt="voukoder" class="mt-1 img-medium">
                             <p class="text-dark-green-main">开源 Premiere Vegas After Effects 压制导出插件，分为 Voukoder 和 V-Connector 两部分</p>
-                        </td>
-                        <td>
-                            
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://obsproject.com/zh-cn/download">OBS</a></th>
-                        <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/obs.png" alt="obs" class="mt-1">
-                            <img src="files/tools-download/obs-1.webp" alt="obs-1" class="">
+                        <td class="px-3" style=" max-width: 45rem;">
+                            <img src="files/tools-download/obs.png" alt="obs" class="mt-1 img-medium">
+                            <img src="files/tools-download/obs-1.webp" alt="obs-1" class="img-medium">
                             <p class="text-dark-green-main">强大的开源直播框架和软件，设置比录屏软件复杂，有一定的学习成本，但效果也更好</p>
                         </td>
                     </tr>
                     <tr class="border-bottom">
                         <th class="px-3"><a href="https://mediaarea.net/zh-CN/MediaInfo">MediaInfo</a></th>
-                        <td class="px-3" style="max-width: 42rem;">
+                        <td class="px-3" style=" max-width: 45rem;">
                             <img src="files/tools-download/mediainfo-1.png" alt="mediainfo-1" class="mt-1 img-medium">
                             <p class="text-dark-green-main">开源的 GUI 媒体元数据/视音频格式读取器，这些数据是配置合理压制参数的关键</p>
                             <p class="text-gray-side">注：由于苹果应用商店收取上架费，因此需要在 <a href="https://mediaarea.net/zh-CN/MediaInfo/Download/Mac_OS">MediaInfo 官网下载安装包（下载 GUI，不是 CLI）</a>并侧载安装。</p>
@@ -2757,12 +2753,18 @@
                     </tr>
                     <tr>
                         <th class="px-3"><a href="http://ffmpeg.org/download.html">ffprobe</a></th>
-                        <td class="px-3" style="max-width: 42rem;">
-                            <img src="files/tools-download/ffprobe-excel.png" alt="ffprobe visualization" class=""><br>
+                        <td class="px-3" style=" max-width: 45rem;">
+                            <img src="files/tools-download/ffprobe-excel.png" alt="ffprobe visualization" class="mt-1 img-medium">
                             <p class="text-dark-green-main">开源 CLI 媒体元数据/视音频格式 + 视频帧/GOP SEI 信息读取器，用于分析码率构成与趋势，以及挑选出不同压制结果中的最优选。</p>
                             <p class="text-gray-side">注：见 <a href="https://nazorip.site/archives/169/">基本使用</a>，以及 <a href="https://nazorip.site/archives/1068/">搭配 Excel 的数据可视化</a> 教程</p>
                         </td>
                     </tr>
+                    <tr>
+                        <th class="px-3"><a href="https://bitsum.com/">Process Lasso</a></th>
+                        <td class="px-3" style=" max-width: 45rem;">
+                            <img src="files/tools-download/process-lasso.png" alt="process lasso" class="mt-1 img-medium">
+                            <img src="files/tools-download/process-lasso-1.png" alt="process lasso 1" class="img-medium">
+                            <p class="text-dark-green-main">Windows 进程优先级和电源计划自动调优工具，确保系统跑满（包括高占用软件卡死导致系统无响应）时正常响应用户操作，同时比任务管理器看到更全面的资源占用（微软虽然也有工具，但前者同时支持全中文显示和高 DPI 显示）</p>
                 </tbody>
             </table>
 

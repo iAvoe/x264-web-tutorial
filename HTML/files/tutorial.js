@@ -210,6 +210,15 @@ for (let i=0; i<imgs.length; i++) {
             case 'img-small':
                 imgs[i].setAttribute("class", "img-medium");
                 break;
+            case 'mt-1 img-medium':
+                imgs[i].setAttribute("class", "mt-1");
+                break;
+            case 'mt-1':
+                imgs[i].setAttribute("class", "mt-1 img-small");
+                break;
+            case 'mt-1 img-small':
+                imgs[i].setAttribute("class", "mt-1 img-medium");
+                break;
             // Images under row column grid system
             case 'img-medium img-right col-4': // Rotation 1 - Medium to Large
                 imgs[i].setAttribute("class", "img-right col-auto");
