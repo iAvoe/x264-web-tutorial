@@ -1808,7 +1808,6 @@
                     </ul>
                 </li>
             </ol>
-            
 
             <code class="code-bold">--ipratio --pbratio</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点，默认 1.4、默认 1.3&gt;P 帧相比 IDR/i 帧，以及 B/b 帧相比 P 帧的质量偏移。默认预设是给录像视频片源用的。</p>
@@ -1817,6 +1816,16 @@
                 <li>剪辑素材：<span class="text-blue-emph">提高 --crf，不用改这两个参数</span></li>
                 <li>YCbCr 4:4:4 片源：<span class="text-blue-emph">x264 默认会自动修改 --chroma-qp-offset，不用改这两个参数</span></li>
             </ul>
+            <!-- x264 教程副本，需要手动同步更改 { -->
+            <code class="code-bold">--bframes</code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~16&gt;最多可连续插入的双向参考帧 B 帧数量（超过后插入 P 帧）：</p>
+            <ul class="font-monospace pl-5 text-smaller">
+                <li>一般录像/录屏快速，以及视频剪辑素材设<span class="text-blue-emph">3~6</span>以防止录制和剪辑的解码算力要求过高</li>
+                <li>电影片源快速设<span class="text-blue-emph">8</span>左右</li>
+                <li>低成本动画片源，或播放设备配置或硬解兼容高的话可设在<span class="text-blue-emph">13</span>左右</li>
+            </ul>
+            <p class="text-gray-side pl-5 m-0">注：<code>--bframes &gt; 8</code>，同时 <code>--keyint &gt; 250</code> 会根据视频分辨率而显著增加内存占用。</p>
+            <!-- } -->
 
             <h4>CRF 模式</h4>
             <p>质量呼应码率模式，统称 CRF。压制三角形下距离妥协中心点最近的模式。因此也是压制最常用的模式。编码器逐帧分析量化强度，为每帧分配一个量化值。</p>
@@ -2092,8 +2101,8 @@
                 <li><span class="text-blue-emph">1</span>（if 判定）启用固定量化强度模式</li>
             </ul>
 
-            <h4>宏块树 Macroblock-Tree/帧间粗分块自适应量化</h4>
-            <p>如果一个宏块用作帧间参考的码率比用作帧内参考低 70%，则该宏块可视为 30% 非帧间参考和 70% 帧间参考两部分。已知帧间参考占据的部分越多，则这个宏块自身就没有多少信息；而在宏块树所运行的时间，这个宏块是位于软转场 GOP 末尾——scenecut 步骤之后，keyint 步骤之前。因此，可以增强其压缩——把更多的码率分给参考传播最远的 I 帧，以提拔整个软转场 GOP 的画质。详见 <a href="http://lazybing.github.io/blog/2021/06/22/h264-rate-control-algorithm/">x264 率控制算法</a> 及 <a href="https://huyunf.github.io/blogs/2017/12/06/x264_slice_type_decision/MBtree paper.pdf">MBTree 论文</a>。</p>
+            <h4>宏块树 Macroblock-Tree/帧间逐宏块自适应量化</h4>
+            <p>宏块的构成可以被视作“帧间预测+帧内预测+预测残差”三张图。如果宏块的绝大多数内容数据（如 70%）来自于帧间预测，而这个宏块里当前 GOP 末尾（关键帧间隔 <code>--keyint</code>）很近了，那么它的出现时间自然是配不上它的码率的。如果找出并降低这种宏块的码率（指定该宏块的量化值/量化强度 +N），省下来的码率分给 GOP 开头和中间的宏块，码率的分配就更均衡，整个视频的画质都会提升了。宏块树就是实现这种码率分配优化的算法，本质上这是一种时间域的逐宏块自适应量化，且在现代视频编码中被重用。详见 <a href="http://lazybing.github.io/blog/2021/06/22/h264-rate-control-algorithm/">x264 率控制算法</a> 及 <a href="https://huyunf.github.io/blogs/2017/12/06/x264_slice_type_decision/MBtree paper.pdf">MBTree 论文</a>。</p>
             <p>由于宏块树的步骤位于前瞻进程（Lookahead）中，而前瞻进程位于动态搜索和运动补偿之前，且前瞻进程只使用半分辨率的视频帧，因此，此时的宏块树会额外尝试一些简单的帧内和帧间预测。</p>
             <ul>
                 <li>注：帧间参考代价只能小于等于帧内参考代价，类似于（同视频下的）P 帧体积不应大于 I 帧
@@ -2151,7 +2160,7 @@
                     <span class="text-blue-math"> \[ \Delta \text{QP} = -\text{strength} \times \log_{2}\left( \frac{\text{Cost}_{intra}}{\text{Cost}_{propagate}} \right) \div \text{Cost}_{intra} \]</span>
                 </li>
             </ol>
-            <p class="text-gray-side">大部分情况下 MBTree 偏移的量化强度为零，因为宏块没有参考溯块信息可用</p>
+            <p class="text-gray-side">大部分情况下宏块树偏移的量化强度为零，因为宏块没有参考溯块信息可用。</p>
             <!-- x265 教程副本，需要手动同步更改 { -->
             <code class="code-bold">--rc-lookahead</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;帧数量，范围 1~250，推荐 keyint÷2&gt; 指定 cutree 的检索帧数，通常设在帧率的 2.5~3 倍。高则占用内存增加延迟，低则降低压缩率和平均画质。</p>
