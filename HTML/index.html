@@ -1551,7 +1551,7 @@
 
             <h3>细分块</h3>
             <code class="code-bold">--partitions</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;字符串 <code>p8x8</code>，<code>p4x4</code>，<code>b8x8</code>，<code>i8x8</code>，<code>i4x4/none/all</code>，默认 <code>p8x8</code>，<code>b8x8</code>，<code>i8x8</code>，<code>i4x4</code>，推荐 <code>all</code>&gt;允许的细分块种类。增加分块种类会增加计算负载，但 x264 放到现在来看，也只有高分辨率快速编码场景才需要保持默认。因此推荐 <span class="text-blue-emph">all</span></p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;字符串 <code>p8x8</code>，<code>p4x4</code>，<code>b8x8</code>，<code>i8x8</code>，<code>i4x4/none/all</code>，默认 <code>p8x8</code>，<code>b8x8</code>，<code>i8x8</code>，<code>i4x4</code>，推荐 <code>all</code>&gt;允许的细分块种类。增加分块种类会增加计算负载，但对现在的 6~16 核消费级 CPU 来说无咎。因此推荐 <span class="text-blue-emph">all</span></p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li>开启 <span class="text-blue-emph">p8x8</span> 会同时启用 p16x8，p8x16</li>
                 <li>开启 <span class="text-blue-emph">p4x4</span> 会同时启用 p8x4，p4x8</li>
