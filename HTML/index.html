@@ -17,61 +17,36 @@
 	<body class="text-gray-main">
         <div class="container-title">
             <h1>x264 教程<span class="text-blue-emph"> HTML 完整版</span></h1>
-            <p>欢迎阅读！本教程仅算盲人摸象的业余分析，仅具备业余参考价值。若有什么不会的可以加群<a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>691892901</a>。</p>
+            <p>欢迎阅读！本教程仅算盲人摸象的业余分析，仅具备业余参考价值。若有什么不会的可以加群<a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>691892901</a>。教程地图、工具下载见：<a href="https://iavoe.github.io/">iavoe.github.io</a></p>
             <!-- x265 教程副本，更改需手动同步 { -->
-            <h2>地图</h2>
-            <ol class="font-monospace">
-                <li>
-                    <a href="../../x264-web-tutorial/HTML/index.html" class="disabled">x264 教程网页版（你在这里）</a>
-                    <ul class="text-xs">
-                        <li>基础：<a class="toSelf" href="#h2-1">封装/解封装</a>，
-                            <a class="toSelf" href="#h2-2">编解码过程</a>，
-                            <a class="toSelf" href="#h2-3">视频结构</a>
-                        </li>
-                    </ul>
-                    <ul class="text-xs">
-                        <li>编码：<a class="toSelf" href="#h2-4">前瞻进程</a>，
-                            <a class="toSelf" href="#h2-5">动态预测</a>，
-                            <a class="toSelf" href="#h2-6">动态搜索</a>，
-                            <a class="toSelf" href="#h2-7">动态补偿</a>，
-                            <a class="toSelf" href="#h2-8">变换量化</a>，
-                            <a class="toSelf" href="#h2-9">率控制模式</a>，
-                            <a class="toSelf" href="#h2-10">自适应量化</a>，
-                            <a class="toSelf" href="#h2-11">模式决策、环路滤镜</a>，
-                            <a class="toSelf" href="#h2-12">优化量化策略</a>，
-                            <a class="toSelf" href="#h2-13">熵编码</a>，
-                            <a class="toSelf" href="#h2-14">优化熵编码</a>，
-                            <a class="toSelf" href="#h2-15">色彩信息</a>
-                        </li>
-                    </ul>
-                    <ul class="text-xs">
-                        <li>附录：
-                            <a class="toSelf" href="#h2-15">预设参数</a>，
-                            <a class="toSelf" href="#h2-16">线程控制</a>，
-                            <a class="toSelf" href="#h2-17">工具下载</a>
-                        </li>
-                    </ul>
+            <h2>目录</h2>
+            <ul class="font-monospace text-smaller">
+                <li>基础：<a class="toSelf" href="#h2-1">封装/解封装</a>，
+                    <a class="toSelf" href="#h2-2">编解码过程</a>，
+                    <a class="toSelf" href="#h2-3">视频结构</a>
                 </li>
-                <li><a href="../../x265-web-tutorial/HTML/index.html">x265 教程网页版</a></li>
-                <li><a href="../../av1-web-tutorial/HTML/index.html">AV1 教程网页版</a></li>
-                <li>附录 α：
-                    <a href="https://www.nazorip.site/archives/44/">QAAC 音频压缩教程</a> 或 <a href="https://github.com/iAvoe/QAAC-Tutorial-Standalone/blob/master/%E6%95%99%E7%A8%8B.md">Github 副本</a>
-                    <ul class="text-xs">
-                        <li>下载安装，用例，Pipe 导入，流格式，封装格式，多声道编辑，压缩强度与占用，章节处理，缓入缓出，音频标识，音频编辑，滤镜，已知报错，多参数储存和调用，采样率的选择，采样率的验证</li>
-                    </ul>
+            </ul>
+            <ul class="font-monospace text-smaller">
+                <li>编码：<a class="toSelf" href="#h2-4">前瞻进程</a>，
+                    <a class="toSelf" href="#h2-5">动态预测</a>，
+                    <a class="toSelf" href="#h2-6">动态搜索</a>，
+                    <a class="toSelf" href="#h2-7">动态补偿</a>，
+                    <a class="toSelf" href="#h2-8">变换量化</a>，
+                    <a class="toSelf" href="#h2-9">率控制模式</a>，
+                    <a class="toSelf" href="#h2-10">自适应量化</a>，
+                    <a class="toSelf" href="#h2-11">模式决策、环路滤镜</a>，
+                    <a class="toSelf" href="#h2-12">优化量化策略</a>，
+                    <a class="toSelf" href="#h2-13">熵编码</a>，
+                    <a class="toSelf" href="#h2-14">优化熵编码</a>，
+                    <a class="toSelf" href="#h2-15">色彩信息</a>
                 </li>
-                <li>附录 β：<a href="https://nazorip.site/archives/334/">x264，libx264，x265，libx265 压制教程急用版</a></li>
-                <li>附录 γ：<a href="https://nazorip.site/archives/169/">ffprobe 教程</a> 或 <a href="https://github.com/iAvoe/FFprobe-Tutorial-Standalone/blob/master/%E6%95%99%E7%A8%8B.md">Github 副本</a></li>
-                <li>附录 δ：<a href="https://nazorip.site/archives/1068/">ffprobe + Excel 绘制码率曲线，帧类型饼图</a></li>
-                <li>
-                    附录 ε：<a href="../../deint-ivtc-web-tutorial/HTML/index.html">交错转逐行与 IVTC 处理</a>
-                    <ul class="text-xs">
-                        <li>逐行与交错扫描，帧率与场率，仅交错，A:B Pulldown / telecine，2:2:2:4，3:2:3:2，Euro-pulldown，0.5:0.5，特殊情况，去交错的算法与滤镜，IVTC 滤镜用例，p/c/n/u/b，AviSynth 例，TFM-TDecimate 例，VapourSynth 例</li>
-                    </ul>
+            </ul>
+            <ul class="font-monospace text-smaller">
+                <li>附录：
+                    <a class="toSelf" href="#h2-16">预设参数</a>，
+                    <a class="toSelf" href="#h2-17">线程控制</a>
                 </li>
-                <li>附录 ζ：<a href="../../img-sequence-enc-web-tutorial/HTML/index.html">图像序列的处理</a></li><!-- 后续顺序：η θ ι κ λ μ -->
-                <li>相关：<a href="https://nazorip.site/archives/1052/">mpv 播放器的安装与设置</a></li>
-            </ol>
+            </ul>
             <h3>打印支持</h3>
             <button type="button" class="border-main rounded-3 ms-1 px-1" onclick="toggleCollapseAll()">1/5. 点击同步展开/折叠所有内容</button>
             <button type="button" class="border-main rounded-3 ms-1 px-1" onclick="printMode(printT, printC)">2. 点击进入文档的打印模式排版</button>
@@ -79,9 +54,9 @@
             <p class="font-monospace px-1">推荐设置：彩色模式、不打印背景、0.04 英寸边距、打印页眉页脚</p>
             <button type="button" class="border-main rounded-3 ms-1 px-1" onclick="printModeOff(printT, printC, widthOffset)">4. 点击退出打印排版</button>
             <button type="button" class="border-main rounded-3 ms-1 px-1" onclick="toggleCollapseAll()">1/5. 点击同步展开/折叠所有内容</button>
+            
             <!-- } -->
             <p>点击图片即可轮询三种图片大小。窗口宽度大于窗口高度则切换到宽屏/桌面端/平板电脑排版，否则切换到窄屏/移动端排版。</p>
-            <p>安卓 12 或更高版本中，如 Edge，Brave，Kiwi，Arc，Dragon，Opera 的 Chromium 内核网页浏览器有着中文字体过细的显示问题（谷歌早已知晓却从未修复）建议使用 Firefox 以确保舒适的观看体验。</p>
         </div>
         <div class="container-mobile rounded-9 border-main">
             <h2 id="h2-1">必备常识</h2>
@@ -2615,9 +2590,22 @@
             </ul>
 
             <h2 id="h2-17">线程控制</h2>
-            <h3>线程管理一</h3>
-            <p>不同的算法和数据决定了不同的多线程优化性能。量化的步骤中，进程之间几乎不需要共享数据，进程占用和运算速度也不变；而冗余的步骤中则是反过来——占用可大可小，速度忽快忽慢，也需要进程间共享一定数据/内存。可以说如果想要让进程吃满更多核心，就得尽可能减少搜索冗余相关算法的强度。x264 编码器一共会占用 <code>--threads</code> 加 <code>--lookahead-threads</code>条进程。而 <code>--threads</code> 达到并超过 16~24 时，可以看到一定的画质下降，以及在更多核心的电脑上出现“吃不满”的问题，这就是 x264 中冗余算法的优化极限了。</p>
-            <p>因此，设置创建比电脑处理器更多的线程只会从任务数量上冲淡如各个冗余步骤需要“等到之前步骤给出结果才能运行”的时间窗口，甚至有时等不到就跳过，导致码率增加，画质降低，得不偿失。</p>
+
+            <h3>任务拆分</h3>
+            <p>视频编码会对大量数据进行复杂计算，属于高吞吐量（High throughput）程序，多线程优化在这里包括将编码的大步骤拆分为独立的小操作，例如通过将一个帧拆分为粗分块（宏块）来实现。不过，拆分是有极限的；x264 r1607 前的版本曾有过逐条带（slice，一组宏块）的编码任务拆分，目的是通过大量条带的并行提高编码单帧的速度，降低延迟。但压制后的效果非常差，因为：</p>
+            <ol class="font-monospace pl-5 text-smaller">
+                <li>熵编码中，CABAC（见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程——熵编码</a>）因为上下文不连续所以经常重设，效果大打折扣</li>
+                <li>动态信息的动态向量长度被限制到条带分片内部，干扰动态补偿，降低压缩率</li>
+                <li>帧内冗余降级为条带内冗余，降低帧内编码压缩率</li>
+                <li>增加了相当一部分（多余条带与 NAL 封包的）文件头</li>
+            </ol>
+
+            <h3>同步与异步</h3>
+            <p>将一个复杂的大步骤拆分，会产生适合同步（Synchronous）与适合异步（Asynchronous）执行的小步骤。例如“打印”这个操作适合异步执行；如果使用同步操作，那么打印时电脑会停止响应，等待打印完成并同步打印结果，再恢复响应，显然是不合适的。在视频编码中，除了前瞻进程（Lookahead）以外，其它的搜索与冗余步骤高度相关，因此，x264 编码器默认会占用 <code>--threads</code> 加 <code>--lookahead-threads</code>条进程，从而占用一个数量相对合理的线程数。而 <code>--threads</code> 达到并超过 16~24 时，可以看到画质下降一点，以及在更多核心的电脑上出现“吃不满”的问题，这就是 x264 编码特性所致的优化极限了。</p>
+
+            <h3>码率分配均衡程度</h3>
+            <p>故意创建比电脑处理器更多的线程会导致码率增加，画质降低。这是因为 <span class="text-blue-emph">CPU 一次只能运行线程数量的任务</span>，结果就是从数量上冲淡了一些关键步骤所需的“运行占用百分比”，甚至有时等不到就跳过，最终导致了不够合理的码率分配，以及其副作用。</p>
+
             <p>x264 并没有对多路/多 CPU 节点电脑优化，但 <a href="../../x265-web-tutorial/HTML/index.html#h2-18">x265 使用线程池</a> 实现了。</p>
             <code class="code-bold">--threads</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，建议保持默认（等于 CPU 线程）&gt;由于参考帧步骤要等其之前的步骤算完才开始，所以远超默认的值会因为处理器随机算的特性而降低参考帧的计算时间，使码率增加，画质降低，速度变慢</p>
@@ -2628,22 +2616,10 @@
             <code class="code-bold">--frame-threads</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，建议保持默认（自动）&gt;指定 <code>--threads</code> 中分配多少线程给编码帧，决定一次同时编码多少帧（量化，优化，帧内预测，熵编码）。剩下则是上下游的处理（连续 B 帧推演，SEI，完算性错误管理），后者占用较少</p>
             <code class="code-bold">--sliced-threads</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;逐条带分配多线程。x264 r1607 前的多线程分配机制，后来因为问题太多而改成了逐帧分配多线程。剩下直播录屏等场景降低延迟一个用途</p>
-            <ol class="font-monospace pl-5 text-smaller">
-                <li>熵编码中，CABAC（见 <a href="../../x265-web-tutorial/HTML/index.html#h2-15">x265 教程——熵编码</a>）因为内容不连续所以经常重设，降低压缩率</li>
-                <li>动态信息的动态矢量长度被限制到条带分片内部，干扰动态补偿，降低压缩率</li>
-                <li>帧内冗余降级为条带内冗余，降低帧内编码压缩率</li>
-                <li>增加了相当一部分（多余条带与 NAL 封包的）文件头</li>
-                <li>大量条带的并行提高了编码单帧的速度，降低延迟</li>
-            </ol>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关，推荐关&gt;逐条带分配多线程。x264 r1607 前的多线程分配机制，后来因为问题太多而改成了逐帧分配多线程</p>
             
-            <h3>线程管理二</h3>
-            <p>退一步讲，若能占满全部 CPU 核心，那么也算是实现了多线程优化。因此，关于“最大化利用 CPU 核心数量很多的电脑并提升画质”的平价方法就是多开几个编码，并限制每个编码占用的 CPU 线程数实现。例如 <a href="https://stackoverflow.com/questions/1449188/running-windows-batch-file-commands-asynchronously">Windows 批处理提供的 <code>START</code> 命令实现异步并行（多开些编码）</a>，搭配上述的 <code>--threads</code> 命令限制每个编码的进程数实现。</p>
+            <p>退一步讲，只要一个程序能吃满全部 CPU 核心，那么多线程优化自然会到位。因此，对于多线程优化一般的程序，只要多打开几个，并限制每个程序的线程数，就能提高最终的效率。例如 <a href="https://stackoverflow.com/questions/1449188/running-windows-batch-file-commands-asynchronously">Windows 批处理提供的 <code>START</code> 命令实现异步并行（多开些编码）</a>，搭配上述的 <code>--threads</code> 命令限制每个编码的进程数实现。</p>
             <p>x264/5 中，理论画质与性能最平衡的多线程数实际是 4，所以若设定 <code>--threads 4</code>，则 <code>--lookahead-threads</code> 等于 1。得到共 5 个线程占用。</p>
-
-            <h3>线程管理三</h3>
-            <p>此外还有一种难办的情况：游戏录屏。这会导致编码进程与其它进程争夺 CPU 或内存资源。后者可以通过升级内存解决，但前者不同的地方在于“多线程优化越好则越糟”——因为软件开发也遵循了“应该占满全部 CPU 核心”的逻辑，因此当 CPU 的算力或核心数没有超过两个程序占用加起来的峰值，就只能保护其中优先级较高的进程了。另一边，多人游戏的反作弊机制和防盗版机制的升级也增加了游戏对 CPU 和内存的压力。</p>
-            <p>此时，“冗余”步骤的不稳定占用很可能会超出 CPU 算力极限导致卡顿（除非内存或散热不好，否则不会死机），因此要适当降低冗余强度来保证流畅（但需要一定经验并花费时间测试）。大多数人应对这种情况最简单的方案只有使用显卡或核显/SoC“附赠”的硬件视频编码器，或者购置高端些的视频采集卡两种方法实现；但如果 CPU 的算力足够同时流畅运行大型游戏和视频编码器，则可以参考附录：急用版 x264 教程配置 OBS 录屏的一些方案。</p>
             
             <h3>x264 内置滤镜</h3>
             <h4>降噪滤镜</h4>
@@ -2686,171 +2662,15 @@
             </ul>
             <code class="code-bold">--sub</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;路径到文件，<span class="text-red-emph">需 <code>--vf subtitles</code> 和 VSFilter64.dll</span>&gt;见 <code>--vf subtitles</code> 说明</p>
-
-            <h2 id="h2-18">工具下载</h2>
-            <h3>调用 x264/libx264 的 GUI 编码压制软件</h3>
-            <p>并没有特别好的选择。尤其是当能够使用 CLI 参数命令 ffmpeg.exe，x264.exe 后。</p>
-            <table class="table-center align-items-center">
-                <tbody>
-                    <tr class="border-bottom">
-                        <th class="px-3"><a href="https://shana.pe.kr/shanaencoder_download">ShanaEncoder</a></th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/shana-encoder.png" alt="shana-encoder" class="mt-1 img-medium"><br>
-                            <img src="files/tools-download/shana-encoder-1.png" alt="shana-encoder-1" class="">
-                            <p class="text-dark-green-main">ffmpeg-CLI 搭配部分 GUI，上手较慢。使用了 ffmpeg 内嵌的 libx264，libx265，NVEnc</p>
-                        </td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-3"><a href="https://bitbucket.org/muldersoft/simple-x264-launcher/downloads/">Simple x264 Launcher</a></th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/simple-x264-launcher.png" alt="simple-x264-launcher" class="mt-1">
-                            <p class="text-dark-green-main">内嵌 AviSynth，支持便携版 VapourSynth，额外支持 x265 和 NVEnc 编码器，适合批量压制</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="px-3">小丸工具箱</th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/xiaowan-toolbox.png" alt="xiaowan-toolbox" class="mt-1 img-medium">
-                            <p class="text-dark-green-main">操作简单，适合入门的中文软件。网上能搜到详细教程。内嵌 MediaInfo，mp4box，Mkvtoolnix<br>
-                                镜像：<a href="https://pan.baidu.com/s/1VHonGHoZ0DmQBNZaRjML2A&pwd=crhu">百度云</a>；提取码 crhu
-                            </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3>基本工具</h3>
-            <p>对压制、视频处理等通途起到辅助作用的软件工具。</p>
-            <table class="table-center align-items-center">
-                <tbody>
-                    <tr class="border-bottom">
-                        <th class="px-3"><a href="https://bluesky-soft.com/en/DXVAChecker.html">DXVA Checker</a></th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/dxva-checker-2.png" alt="dxva checker" class="mt-1 img-medium">
-                            <p class="text-dark-green-main">检测 PC 上支持的硬件编解码支持，输入输出格式，以及监控编解码占用的轻量工具。页面底部选择下载安装版（Installer）或便携版（ZIP）</p>
-                        </td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-3"><a href="http://ffmpeg.org/download.html">ffmpeg</a></th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/ffmpeg.svg" alt="ffmpeg logo" class="mt-1 img-medium">
-                            <p class="text-dark-green-main">强大的 CLI 开源视音频处理工具。几乎所有的视音频处理都绕不开</p>
-                        </td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-3"><a href="https://mpv.io/installation/">mpv</a></th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/mpv.png" alt="mpv" class="mt-1 img-medium">
-                            <p class="text-dark-green-main">开源，便携，支持深度配置的现代视频播放器，但需要一定的英文阅读能力使用。见 <a href="https://nazorip.site/archives/1052/">安装与配置</a>教程</p>
-                        </td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-3"><a href="https://www.voukoder.org/">Voukoder</a></th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/voukoder.png" alt="voukoder" class="mt-1 img-medium">
-                            <p class="text-dark-green-main">开源 Premiere Vegas After Effects 压制导出插件，分为 Voukoder 和 V-Connector 两部分</p>
-                        </td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-3"><a href="https://obsproject.com/zh-cn/download">OBS</a></th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/obs.png" alt="obs" class="mt-1 img-medium">
-                            <img src="files/tools-download/obs-1.webp" alt="obs-1" class="img-medium">
-                            <p class="text-dark-green-main">强大的开源直播框架和软件，设置比录屏软件复杂，有一定的学习成本，但效果也更好</p>
-                        </td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-3"><a href="https://mediaarea.net/zh-CN/MediaInfo">MediaInfo</a></th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/mediainfo-1.png" alt="mediainfo-1" class="mt-1 img-medium">
-                            <p class="text-dark-green-main">开源的 GUI 媒体元数据/视音频格式读取器，这些数据是配置合理压制参数的关键</p>
-                            <p class="text-gray-side">注：由于苹果应用商店收取上架费，因此需要在 <a href="https://mediaarea.net/zh-CN/MediaInfo/Download/Mac_OS">MediaInfo 官网下载安装包（下载 GUI，不是 CLI）</a>并侧载安装。</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="px-3"><a href="http://ffmpeg.org/download.html">ffprobe</a></th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/ffprobe-excel.png" alt="ffprobe visualization" class="mt-1 img-medium">
-                            <p class="text-dark-green-main">开源 CLI 媒体元数据/视音频格式 + 视频帧/GOP SEI 信息读取器，用于分析码率构成与趋势，以及挑选出不同压制结果中的最优选。</p>
-                            <p class="text-gray-side">注：见 <a href="https://nazorip.site/archives/169/">基本使用</a>，以及 <a href="https://nazorip.site/archives/1068/">搭配 Excel 的数据可视化</a> 教程</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="px-3"><a href="https://bitsum.com/">Process Lasso</a></th>
-                        <td class="px-3" style=" max-width: 45rem;">
-                            <img src="files/tools-download/process-lasso.png" alt="process lasso" class="mt-1 img-medium">
-                            <img src="files/tools-download/process-lasso-1.png" alt="process lasso 1" class="img-medium">
-                            <p class="text-dark-green-main">Windows 进程优先级和电源计划自动调优工具，确保系统跑满（包括高占用软件卡死导致系统无响应）时正常响应用户操作，同时比任务管理器看到更全面的资源占用（微软虽然也有工具，但前者同时支持全中文显示和高 DPI 显示）</p>
-                </tbody>
-            </table>
-
-            <h3>x264 本体</h3>
-            <table>
-                <tbody>
-                    <tr class="border-bottom">
-                        <th class="px-3 t-light-gray"><a href="https://www.mediafire.com/folder/arv5xmdqyiczc">Patman</a></th>
-                        <td class="px-1">支持 FFMS2 Lavf 编解码 [8~10bit]</td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-3 t-light-gray"><a href="https://www.mediafire.com/?bxvu1vvld31k1">LigH</a></th>
-                        <td class="px-1">支持 FFMS2 Lavf 编解码 [8~10bit]</td>
-                    </tr>
-                    <tr class="border-bottom">
-                        <th class="px-3 t-light-gray"><a href="https://github.com/jpsdr/x264/releases/">jspdr (tMod)</a></th>
-                        <td class="px-1">支持 FFMS2 Lavf 编解码，MCF 线程管理库</td>
-                    </tr>
-                    <tr>
-                        <th class="px-3 t-light-gray">x264 7mod</th>
-                        <td class="px-1">支持 FFMS2 Lavf 编解码，支持 hqdn3d 降噪，镜像链接：<a href="https://drive.google.com/drive/folders/1kFCeNGA_wiiLt-DSeI3cyY8vxlffgQcy?usp=sharing">谷歌盘</a>/<a href="https://pan.baidu.com/s/1sbz8WztGTz3lcLzirHW_2w">百度云</a></td>
-                    </tr>
-                    <tr>
-                        <th class="px-3 t-light-gray"><a href="http://komisar.gin.by/">Komisar KMod</a></th>
-                        <td class="px-1">支持 FFMS2 编解码 [8][10]bit</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>视频编码后偏色的各种原因</h4>
-            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容</button>
-            <div class="coll-content">
-                <p>将编码前后的视频窗口至于同屏下，使用截图软件截图，再使用取色器测量特定区域的颜色：</p>
-                <ul>
-                    <li><b>偏黄：</b>
-                        Bt.709，Bt.2020 源被转换成了 Bt.601。可以通过 <code>colormatrix=源矩阵:目标矩阵</code> 参数转换一段原视频做测试复现：<br>
-                        <code>ffmpeg.exe -i "偏色前.mp4" -vf "colormatrix=bt709:bt601" -c:v libx264 -c:a copy -c:s copy "D:\Desktop\转601.mkv"</code>
-                    </li>
-                    <li><b>偏绿：</b>
-                        使用了英伟达 NVDEC 硬件解码器导致的颜色错误，目前已知 RTX 3000 系显卡有。见 <a href="https://nazorip.site/archives/1052/">MPV 播放器</a> 中的类似状况
-                    </li>
-                    <li><b>对比度过低（1）：</b>
-                        编码器设定输入位深为 8bit，源视频为 10bit 或更高，没有滤镜工具转换源到 8bit，直接编码后可能导致
-                    </li>
-                    <li><b>对比度过低（2）：</b>
-                        编码器设定输入色域为完整 Full，视频为有限色域 Limited，没有滤镜工具转换源到完整色域，直接编码后可能导致
-                    </li>
-                </ul>
-            </div>
-
-            <h4>ffmpeg 色深转换处理</h4>
-            <button type="button" class="collapsible border-main rounded-3 mb-3">点击展开/折叠内容</button>
-            <div class="coll-content">
-                <p>ffmpeg 转换到完整：</p>
-                <code>ffmpeg.exe -i "limited.mp4" -vf "scale=in_range=limited:out_range=full" -color_range 2 -pix_fmt yuv420p -movflags +write_colr "full.mp4"</code>
-                <p>ffmpeg 转换到有限：</p>
-                <code>ffmpeg.exe -i "limited.mp4" -vf "scale=in_range=full:out_range=limited" -color_range 1 -pix_fmt yuv420p -movflags +write_colr "full.mp4"</code>
-                <ul>
-                    <li><code>"scale=in_range=limited:out_range=full</code> 代表输入和输出的范围</li>
-                    <li><code>-color_range</code> 选择编码和封装的色深密度（0~2）</li>
-                    <li><code>-movflags +write_colr</code> 在 .mp4 封装下写入色深密度元数据</li>
-                </ul>
-            </div>
         </div>
+
         <footer class="py-3 my-4 align-items-center border-top">
             <p>联系：
                 <a href='https://github.com/iAvoe/'>Github</a>，
-                <a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>QQ 群：691892901</a>
-            </p>
-            &#x24B8; iAvoe，2024
+                <a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>QQ 群：691892901</a></p>
+            <p>教程地图、工具下载：
+                <a href="https://iavoe.github.io/">iavoe.github.io</a></p>
+            &#x24B8; iAvoe，2025
         </footer>
 	</body>
 </html>
