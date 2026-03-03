@@ -155,7 +155,7 @@
                 </thead>
                 <tbody>
                     <tr class="border-bottom">
-                        <th class="px-1 t-light-gray">MP4 (MPEG-4 Part 14)</td>
+                        <th class="px-1 t-light-gray">MP4 (MPEG-4 Part 14)</th>
                         <td class="px-1">网络与本地播放</td>
                         <td class="t-light-gray">
                             <ul>
@@ -168,7 +168,7 @@
                         </td>
                     </tr>
                     <tr class="border-bottom">
-                        <th class="px-1 t-light-gray">MKV (Matroska Multimedia Container)</td>
+                        <th class="px-1 t-light-gray">MKV (Matroska Multimedia Container)</th>
                         <td class="px-1">本地播放、多音轨/多字幕内容、实时录制</td>
                         <td class="t-light-gray">
                             <ul>
@@ -181,7 +181,7 @@
                         </td>
                     </tr>
                     <tr class="border-bottom">
-                        <th class="px-1 t-light-gray">MOV (QuickTime File Format)</td>
+                        <th class="px-1 t-light-gray">MOV (QuickTime File Format)</th>
                         <td class="px-1">本地播放、视频编辑</td>
                         <td class="t-light-gray">
                             <ul>
@@ -192,7 +192,7 @@
                         </td>
                     </tr>
                     <tr class="border-bottom">
-                        <th class="px-1 t-light-gray">M4A (MPEG-4 Audio)</td>
+                        <th class="px-1 t-light-gray">M4A (MPEG-4 Audio)</th>
                         <td class="px-1">纯音频存储、音乐播放</td>
                         <td class="t-light-gray">
                             <ul>
@@ -203,7 +203,7 @@
                         </td>
                     </tr>
                     <tr class="border-bottom">
-                        <th class="px-1 t-light-gray">FLV (Flash Video)</td>
+                        <th class="px-1 t-light-gray">FLV (Flash Video)</th>
                         <td class="px-1">网络与本地播放、实时录制</td>
                         <td class="t-light-gray">
                             <ul>
@@ -215,7 +215,7 @@
                         </td>
                     </tr>
                     <tr class="border-bottom">
-                        <th class="px-1 t-light-gray">M3U/M3U8 (MPEG URL Playlist)</td>
+                        <th class="px-1 t-light-gray">M3U/M3U8 (MPEG URL Playlist)</th>
                         <td class="px-1">定义播放列表（本地媒体、流媒体，如 HTTP Live Streaming）</td>
                         <td class="t-light-gray">
                             <ul>
@@ -226,7 +226,7 @@
                         </td>
                     </tr>
                     <tr class="border-bottom">
-                        <th class="px-1 t-light-gray">TS (MPEG Transport Stream)</td>
+                        <th class="px-1 t-light-gray">TS (MPEG Transport Stream)</th>
                         <td class="px-1">广播电视、流媒体传输、录制</td>
                         <td class="t-light-gray">
                             <ul>
@@ -374,12 +374,15 @@
                     <li>10 位色深下，从完整 0~1024 缩减至 64~940 的有限区间（876 深）</li>
                     <li>因为有限范围视频占据绝大多数，所以播放器默认读取有限范围，通过 Y/C 转换算出完整色深</li>
                     <li>图像格式有色深的概念，但不存在“有限范围”的概念</li>
-                    <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：密度与范围的用语说明</button>
-                    <div class="coll-content">
+
+                </ul>
+                <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：密度与范围的用语说明</button>
+                <div class="coll-content">
+                    <ul>
                         <li>色深密度代表色深大小所指的黑~白区间密度，而“有限区间/范围”代表“密度里的有效范围”</li>
                         <li>严格地说，不存在“色深范围”，因为范围自始至终是黑到白，只有有限范围才能修改范围</li>
-                    </div>
-                </ul>
+                    </ul>
+                </div>
 
                 <h4>软件层完整范围 Full/PC</h4>
                 <ul class="text-smaller overflow-auto">
@@ -976,12 +979,12 @@
             <p>Windows 系统一般用双线性缩放放大 PPI 小的软件，视频视频播放器一般用 bicubic 或 lanczos 插值</p>
             <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：更改图像大小的各种算法，可略</button>
             <div class="coll-content">
-                <h5>临近取样插值 Nearest Neighbour interpolation（NN）：</h5>
+                <h4>临近取样插值 Nearest Neighbour interpolation（NN）：</h4>
                 <ol class="text-smaller">
                     <li>2x2 的四个像素点移动到缩放后的四个位置</li>
                     <li>待插值的像素中，距离哪四个点近的像素就取哪个像素的值</li>
                 </ol>
-                <h5>双线性插值 Bi-linear interpolation（Bi-lerp / Bilinear）：</h5>
+                <h4>双线性插值 Bi-linear interpolation（Bi-lerp / Bilinear）：</h4>
                 <ol class="text-smaller">
                     <li>2x2 的四个像素点移动到缩放后的四个位置</li>
                     <li>横向和纵向的点（像素值）间各连一条线</li>
@@ -990,7 +993,7 @@
                     <li>横向和纵向的边（像素值）间各连一条线，共六横六纵</li>
                     <li>所有线段接着采样得到中间的插值像素点，且在横纵线的两种插值之间取平均</li>
                 </ol>
-                <h5>样条插值 Spline interpolation（spline）：</h5>
+                <h4>样条插值 Spline interpolation（spline）：</h4>
                 <ol class="text-smaller">
                     <li>“样条”代表软木条，通过铁钉塑形结合木条的应力做出连贯且一致的曲线</li>
                     <li>这种性质可以用多项式准确描述，而图像中的“铁钉”就是像素值</li>
@@ -1004,9 +1007,9 @@
                     </li>
                     <li>插值的与逻辑和双线性插值一致，同时是三次多项式插值，则是双三次多项式插值 bi-cubic interpolation</li>
                 </ol>
-                <h5>Lanczos 插值：</h5>
+                <h4>Lanczos 插值：</h4>
                 <p class="text-smaller">使用 sinc 函数取近似，且引入了窗函数来矫正 sinc 函数，同时要计算 lanczos 核实现插值。计算量大，准确度略高于 bicubic 插值。</p>
-                <h5>神经网络缩放滤镜：</h5>
+                <h4>神经网络缩放滤镜：</h4>
                 <p class="text-smaller">通过认知大量训练数据，在其中找出更高维度规律的情况下，利用这些规律推断像素值。计算量极大，准确度时高时低。</p>
             </div>
 
@@ -1092,7 +1095,7 @@
                             </ul>
                         </li>
                         <li><b>动态搜索</b>：Motion Estimation（ME）找到当前帧与参考帧之间的相似区域，并为每个块分配动态向量。</li>
-                        <li><b>运动补偿</b>：Motion Compensation（MC）对比实际画面与搜索到的向量生成预测块，并补偿¼子像素精度的对齐偏差。</li>
+                        <li><b>动态补偿</b>：Motion Compensation（MC）对比实际画面与搜索到的向量生成预测块，并补偿¼子像素精度的对齐偏差。</li>
                         <li><b>细分块</b>：根据 MEMC，进一步细分宏块或编码树单元到最小的 4x4 编码块上。</li>
                         <li><b>帧间残差编码</b>：对比实际画面与动态搜索与补偿后所得的图像，得到残差，并对残差进行变换和量化，存储到 P-B 帧上，在解码时与 I 帧叠加以得到原始画面。</li>
                         <li><b>帧内预测</b>：在帧内编码块上检查候选出冗余最好的帧内编码方法（夹角、DC、趋平、无），选中方法后得到帧内预测后的块，即预测块。
@@ -1378,9 +1381,9 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，7mod x264 自动&gt;启用 0~255 色彩范围，而不是默认的 16~235。视频内容永远不在使用有限色域设备/软件/视频网站下播放下可以考虑开启</p>
 
             <h2 id="h2-5">动态预测（Motion Prediction、MP）</h2>
-            <p>在单/双向参考帧（P/B/b 帧）中的预测块（Prediction Block）上，动态搜索（ME）开始前起到<i>提供动态搜索起点</i>功能的预测算法。x264 使用了 <code>--direct</code> 指定。x265 中则使用了更高级的 AMVP + Merge 算法。</p>
-            <p>视频里往往会有占据画面不小的物件朝着一处平移，在视频帧中表现为“某个区域的分块拥有高度相似的运动向量”。这些重复性的动态向量分布规律肉眼可见，但动态搜索算法只会一味的盲找，因此我们提前给动态搜索一个搜索起点，就可以直截了当地降本增效了。</p>
+            <p>视频往往会出现“占据一定画面的物件朝向一处平移”的情况，在视频帧中表现为“某个区域的分块拥有高度相似的运动向量”。这些重复性的动态向量分布规律肉眼可见，但动态搜索算法只会一味的盲找，因此我们提前给动态搜索一个搜索起点，就可以降本增效了。</p>
             <p>实际上，动态预测得到的向量往往相当靠谱，因此编码器会以“预测动态向量（PMV）+ 动态向量差（MVD）”的形式记录每个帧间块的动态信息，再冗余掉相同的预测动态向量，从而进一步提高压缩。纵然一支动态向量的信息不多，但放眼到整个视频的所有帧间参考时，质变也就产生了。</p>
+            <p>x264 使用了 <code>--direct</code> 指定预测方法（时间法/空间法/两者都用）。x265 则使用了更高级的 AMVP + Merge 预测算法。</p>
             <code class="code-bold">--direct</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;temporal/spatial/auto&gt; 指定动态搜索判断方式的参数，除直播和低性能设备录屏外建议 auto</p>
 
@@ -1428,14 +1431,14 @@
             </ol>
             <p class="text-gray-side">注：为了简化所以写作 <span class="text-blue-math">\(T(D(x,y))\)</span>，实际这样相当于每加一个像素值就要变换一遍</p>
 
-            <h2 id="h2-7">运动补偿（Motion Compensation、MC）</h2>
+            <h2 id="h2-7">动态补偿/运动补偿（Motion Compensation、MC）</h2>
             <p>整数像素动态搜索虽看起来很准，但精度终归有限，只能算是“粗加工预测”；直接使用整数动态向量会导致纹理细节和物件边缘信息的丢失。为此，编码器需要对向量“精加工”——对齐到插值出的 half-pixel（hpel）/ ½ 像素，以及 quarter-pixel（qpel）/ ¼ 像素，使预测画面（指 PU、PB）的残差变小，与输入源画面更一致。</p>
-            <p class="text-gray-side">注：虽然看起来只有一个子像素补偿，但这不妨碍运动补偿作为一个完整独立的步骤存在。此外，在 AV1 标准中，运动补偿就不只有一种了。</p>
+            <p class="text-gray-side">注：虽然看起来只有一个子像素补偿，但这不妨碍动态补偿作为一个完整独立的步骤存在。此外，在 AV1 标准中，动态补偿就不只有一种了。</p>
             
-            <h3>整数像素运动补偿</h3>
+            <h3>整数像素动态补偿</h3>
             <p>视频编码中同动态搜索（ME）。</p>
             
-            <h3>子像素运动补偿（Subpixel Motion Compensation）</h3>
+            <h3>子像素动态补偿（Subpixel Motion Compensation）</h3>
             <ol>
                 <li>线性插值参考帧（有限冲击响应滤镜 FIR），分别生成上采样/放大 2x 和 4x 的副本</li>
                 <li>以整数向量落点为起点搜索放大副本的位置，从而找出率失真代价最小的子像素动态向量位置：
@@ -1981,8 +1984,15 @@
                 </li>
             </ol>
             <!-- x264 教程副本，更改需手动同步 { -->
-            <h3>去块滤镜</h3>
-            <p>修复“CRF/ABR 模式在某些场景的部分区域里分配量化值过高时，宏块间出现明显横纵割痕瑕疵”的平滑滤镜。编码器内去块利用了帧内帧间搜索到的信息，而理论上相比外部滤镜误判更少（当然外部滤镜也能做动态和帧内搜索）。去块大体上是检查 1 像素宽，且此块边缘没有较大像素值变化造成的横纵边缘（所以也存在误判）。块失真源自块间不统一的量化程度，有的块量化高流就会从邻近画面里凸现出来。而去块手段是平滑滤镜，因此要降低强度才适用于高码视频，动漫，素材录屏等锐利画面。边界强度 Boundary strength（去块力度判断）</p>
+            <h3>去块滤镜（Deblock）</h3>
+            <p>有时，率控制模式（CRF/ABR），以及宏块树（MBTree/CUTree）在分配量化值时产生的块失真（宏块间分界线）瑕疵。这有时是因为最优的量化值没找到/没来得及调优，或者画面中有难以被动态预测（动态信息随机/有时与前景交叉）、自适应量化（宏块中的内容差不多，无法重分配码率）等功能处理好的内容（如云雾/暗色动态背景等）。在 x264 的去块滤镜还未推出前，避免这种失真最直接的办法就是关闭宏块树功能，但也只是治标不治本。</p>
+            
+            <h4>去块滤镜原理</h4>
+            <p>去块滤镜大体上检查了 1 像素宽或高，且临近此边缘的像素值变化不大，构成瀑布状地形的横纵边缘。<i>去块操作的本质就是平滑滤镜，因此即使是普通强度也会降低画面整体锐度</i>；因此，要求画面锐度高，但画质要求不高时，会有大幅降低去块强度，使得少量块失真被保留的做法。</p>
+            <p>去块滤镜本身可在多种滤镜工具及剪辑软件中直接调用，但精确处理需要动态搜索、帧内搜索来获取相关信息。不过，考虑到视频编码器在压制时大概率会引入新的块失真，所以最直接的方法是用视频编码器内置的滤镜完成这一步。</p>
+
+            <h4>边界强度 Boundary strength</h4>
+            <p>判断去块力度</p>
             <div class="align-items-center">
                 <img src="files/deblocking/Deblock-detection-visualization.png" alt="Deblock-detection-visualization" class="img-medium">
                 <img src="files/deblocking/Deblock-edge-visualization.png" alt="Deblock-edge-visualization" class="img-medium">
@@ -1990,15 +2000,15 @@
             </div>
 
             <ul class="text-smaller">
-                <li>平滑 4：a 与 1 皆为帧内块，且边界位于 CTU/宏块间，最强滤镜值</li>
-                <li>平滑 3：a 或 1 皆为帧内块，但边界不在 CTU/宏块间</li>
-                <li>平滑 2：a 与 1 皆非帧内块，含一参考源/已编码系子</li>
-                <li>平滑 1：a 与 1 皆非帧内块，皆无参考源/已编码系子，溯异帧或动态向量相异</li>
-                <li>平滑 0：a 与 1 皆非帧内块，皆无参考源/已编码系子，溯同帧或动态向量相同，滤镜关</li>
+                <li>平滑<span class="text-blue-emph">4</span>：a 与 1 皆为帧内块，且边界位于 CTU/宏块间，最强滤镜值</li>
+                <li>平滑<span class="text-blue-emph">3</span>：a 或 1 皆为帧内块，但边界不在 CTU/宏块间</li>
+                <li>平滑<span class="text-blue-emph">2</span>：a 与 1 皆非帧内块，含一参考源/已编码系子</li>
+                <li>平滑<span class="text-blue-emph">1</span>：a 与 1 皆非帧内块，皆无参考源/已编码系子，溯异帧或动态向量相异</li>
+                <li>平滑<span class="text-blue-emph">0</span>：a 与 1 皆非帧内块，皆无参考源/已编码系子，溯同帧或动态向量相同，滤镜关</li>
             </ul>
 
             <code class="code-bold">--deblock</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点偏移值，默认 1:0。推荐 0:0，-1:-1，-2:-1&gt; 平滑强度：搜索精度。两值于原有强度上增减。</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数偏移值，默认 <span class="text-blue-emph">1:0</span>。推荐 <span class="text-blue-emph">0:0</span>、<span class="text-blue-emph">-1:-1</span>、<span class="text-blue-emph">-2:-1</span>1&gt; 平滑强度偏移 : 搜索精度偏移。两值于原有强度上增减。</p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li>平滑<span class="text-blue-emph">≥1</span>时用以压缩</li>
                 <li>平滑<span class="text-blue-emph">-2~-1</span>时略降锐度，适合串流</li>
@@ -2087,8 +2097,8 @@
             </ul>
 
             <h4>宏块树 Macroblock-Tree/帧间逐宏块自适应量化</h4>
-            <p>宏块的构成可以被视作“帧间预测 + 帧内预测 + 预测残差”三张图。如果宏块的绝大多数内容数据（如 70%）来自于帧间预测，而这个宏块里当前 GOP 末尾（关键帧间隔 <code>--keyint</code>）很近了，那么它的出现时间自然是配不上它的码率的。如果找出并降低这种宏块的码率（指定该宏块的量化值/量化强度 +N），省下来的码率分给 GOP 开头和中间的宏块，码率的分配就更均衡，整个视频的画质都会提升了。宏块树就是实现这种码率分配优化的算法，本质上这是一种时间域的逐宏块自适应量化，且在现代视频编码中被重用。详见 <a href="http://lazybing.github.io/blog/2021/06/22/h264-rate-control-algorithm/">x264 率控制算法</a> 及 <a href="https://huyunf.github.io/blogs/2017/12/06/x264_slice_type_decision/MBtree paper.pdf">MBTree 论文</a>。</p>
-            <p>由于宏块树的步骤位于前瞻进程（Lookahead）中，而前瞻进程位于动态搜索和运动补偿之前，且前瞻进程只使用半分辨率的视频帧，因此，此时的宏块树会额外尝试一些简单的帧内和帧间预测。</p>
+            <p>宏块的构成可以被视作“帧间预测 + 帧内预测 + 预测残差”三张图。如果宏块的绝大多数内容数据（如 70%）来自于帧间预测，而这个宏块里当前 GOP 末尾（关键帧间隔 <code>--keyint</code>）很近了，那么它的出现时间自然是配不上它的码率的。如果找出并降低这种宏块的码率（指定该宏块的量化值/量化强度 +N），省下来的码率分给 GOP 开头和中间的宏块，码率的分配就更均衡，整个视频的画质都会提升了。宏块树就是实现这种码率分配优化的算法，本质上这是一种时间域的逐宏块自适应量化，且在现代视频编码中被重用。详见 <a href="http://lazybing.github.io/blog/2021/06/22/h264-rate-control-algorithm/">x264 率控制算法</a> 及 <a href="https://huyunf.github.io/blogs/2017/12/06/x264_slice_type_decision/MBtree%20paper.pdf">MBTree 论文</a>。</p>
+            <p>由于宏块树的步骤位于前瞻进程（Lookahead）中，而前瞻进程位于动态搜索和动态补偿之前，且前瞻进程只使用半分辨率的视频帧，因此，此时的宏块树会额外尝试一些简单的帧内和帧间预测。</p>
             <p class="text-gray-side">注：帧间参考代价只能小于等于帧内参考代价，类似于（同视频下的）P 帧体积不应大于 I 帧；若出现帧间参考代价大于帧内参考代价的情况，就重设为「帧间参考代价等于帧内参考代价」</p>
             <p>宏块帧内和帧间的参考代价记为 <span class="text-blue-math">\(\text{Cost}_{intra}\)</span> 和 <span class="text-blue-math">\(\text{Cost}_{inter}\)</span>，通过前瞻进程（Lookahead）中以下“搜索”步骤得到：</p>
             <ul>
@@ -2183,7 +2193,10 @@
 
             <table class="table-center align-items-center font-monospace pl-5 text-smaller">
                 <thead>
-                    <th class="px-3">字符</th><th class="px-3">频率</th>
+                    <tr>
+                        <th class="px-3">字符</th>
+                        <th class="px-3">频率</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr class="border-bottom">
@@ -2255,7 +2268,10 @@
             </ol>
             <table class="table-center align-items-center font-monospace pl-5 text-smaller">
                 <thead>
-                    <th class="px-3">字符</th><th class="px-3">编码</th>
+                    <tr>
+                        <th class="px-3">字符</th>
+                        <th class="px-3">编码</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr class="border-bottom">
@@ -2323,7 +2339,7 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~32，默认 11，<code>--trellis</code> 小于 2 时开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 4</p>
 
             <h3>软判决率失真游程走线优化——SDQ trellis</h3>
-            <p>Soft decision quantization / SDQ trellis 算法。通过限制量化后块中的 DCT 系子 coefficients 强度，甚至偏移当前系子的强度值到临近系子，以保证游程编码中走线的平稳。过程中由率失真计算确认对画面的影响符合预期质量，从而提高压缩率。<code>--trellis</code> 应用于量化步骤之后，并且对少数突兀的 DCT 系子强度做了平均化，所以叫“再量化”。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-16"></a>x265 教程——优化熵编码</p></p>
+            <p>Soft decision quantization / SDQ trellis 算法。通过限制量化后块中的 DCT 系子 coefficients 强度，甚至偏移当前系子的强度值到临近系子，以保证游程编码中走线的平稳。过程中由率失真计算确认对画面的影响符合预期质量，从而提高压缩率。<code>--trellis</code> 应用于量化步骤之后，并且对少数突兀的 DCT 系子强度做了平均化，所以叫“再量化”。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-16"></a>x265 教程——优化熵编码</p>
             <code class="code-bold">--trellis</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，范围 0~2, 推荐 2&gt;软判决优化 CABAC 的率失真再量化。 </p>
             <ul class="font-monospace pl-5 text-smaller">
