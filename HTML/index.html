@@ -55,13 +55,13 @@
 
             <h3>性能是什么</h3>
             <p>主要分为<span class="text-blue-emph">处理速度/算力</span>和<span class="text-blue-emph">数据传输速度/带宽</span>，部分情况下还注重<span class="text-blue-emph">操作响应速度/延迟</span>。播放视频时，画面卡顿问题往往来自于某一处的带宽不足（如网速、硬盘带宽）；而另一种情况下，如果让性能太弱的 CPU 播放高度压缩后的视频，那么即使带宽充足，视频也会因为算力不足而卡顿。</p>
-            <p>数据与 CPU 核心的距离，以及使用的数据传输协议会导致巨大的延迟差异。在此之上还有因为同步，分阶段读取，安全检查，纠错校验等行为而积微成著：</p>
-            <table class="table-center text-smaller">
+            <p>电信号从储存介质到 CPU 核心的距离，以及使用的数据传输协议会导致巨大的延迟差异。在此之上还有因为同步，分阶段读取，安全检查，纠错校验等行为而积微成著：</p>
+            <table class="table-center">
                 <thead>
                     <tr>
-                        <th class="px-1">数据位置</th>
-                        <th class="px-1">读取 CPU 周期</th>
-                        <th class="px-1">估计用时</th>
+                        <th>数据位置</th>
+                        <th>读取 CPU 周期</th>
+                        <th>估计用时</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -118,88 +118,89 @@
             <p>描述数据的数据，例如零食的包装袋上会印有零食的参考图和名称。如果所有的包装都是白色，那么用户就无法找到想吃的零食。而电脑只能根据每个格式元数据（一般为文件后缀名）预设的“默认程序”来打开视频文件（设置错误时，也强行让设定的程序打开），而视频播放器也需要编码格式、亮度、对比度、帧率等元数据才能正确的播放视频。</p>
 
             <h3>压缩是什么</h3>
-            <p>克劳德·香农在 1948 年的论文中定义了信息熵（Entropy）的概念，即信息能被无损压缩到的极限，而“熵”的另一层意义就是“不可逆”或丢失后无法被恢复。根据这个理论，我们可以将压缩分为“有损”和“无损”两类：</p>
+            <p>克劳德·香农在 1948 年的论文中定义了信息熵（Entropy）的概念，这代表了信息能被无损压缩到的理论极限，而“熵”的另一层意义就是“不可逆”（丢失后无法被恢复）。根据这个理论，我们可以将压缩分为“有损”和“无损”两类：</p>
             <ul>
                 <li><b>无损压缩：</b>在不损失“熵”的前提下，剔除“冗余”</li>
-                <li><b>有损压缩：</b>舍弃掉“熵”/超过极限，无法恢复</li>
+                <li><b>有损压缩：</b>舍弃掉“熵”，无法恢复原貌</li>
             </ul>
-            <p>压缩手段可以用“水果包装运输策略”来类比。农产品的成本以运输为重，而“熵”在此就是不可逆的果肉：</p>
+            <p>压缩手段可以用“水果包装运输策略”来类比。农产品的成本以运输为重，而“熵”在此就是不可逆的果肉部分：</p>
             <table class="table-center">
                 <thead>
-                    <tr class="t-invert-dark">
+                    <tr>
                         <th>📦</th>
                         <th>包装策略</th>
                         <th>信号处理策略</th>
-                        <th>果肉状况</th>
+                        <th>果肉状况/熵</th>
                         <th>优劣原因</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-bottom">
+                    <tr>
                         <th class="px-1">未压缩</th>
-                        <td class="px-1 t-light-gray">连枝带叶，散装运输</td>
+                        <td class="px-1">连枝带叶，散装运输</td>
                         <td class="px-1">原始采样</td>
-                        <td class="px-1 t-light-gray">原汁原味</td>
+                        <td class="px-1">原汁原味</td>
                         <td class="px-1">体积极大，密度低</td>
                     </tr>
-                    <tr class="border-bottom">
+                    <tr class="t-light-gray">
                         <th class="px-1">无损压缩</th>
-                        <td class="px-1 t-light-gray">清理枝叶，集装运输</td>
+                        <td class="px-1">清理枝叶，集装运输</td>
                         <td class="px-1">数据去重与打包（如 ZIP）</td>
-                        <td class="px-1 t-light-gray">等同未压缩</td>
-                        <td class="px-1">体积巨大，密度偏低</td>
+                        <td class="px-1">等同未压缩</td>
+                        <td class="px-1">体积巨大，密度低</td>
                     </tr>
-                    <tr class="border-bottom">
+                    <tr class="t-invert-light">
                         <th class="px-1">有损低压</th>
-                        <td class="px-1 t-light-gray">去皮去核，制成罐头</td>
-                        <td class="px-1">剔除难以察觉的内容</td>
-                        <td class="px-1 t-light-gray">受损，保留风味口感</td>
+                        <td class="px-1">去皮去核，制成罐头</td>
+                        <td class="px-1">剔除不易察觉的内容再打包</td>
+                        <td class="px-1">有损但保留风味口感</td>
                         <td class="px-1">体积大，密度中等</td>
                     </tr>
-                    <tr class="border-bottom">
+                    <tr class="t-invert-dark">
                         <th class="px-1">有损高压</th>
-                        <td class="px-1 t-light-gray">榨汁装瓶</td>
-                        <td class="px-1">剔除可见内容</td>
-                        <td class="px-1 t-light-gray">损毁，保留风味，无口感</td>
+                        <td class="px-1">榨汁装瓶</td>
+                        <td class="px-1">剔除可见内容与细节后打包</td>
+                        <td class="px-1">结构性损毁，仅剩液体</td>
                         <td class="px-1">体积中等，密度高</td>
                     </tr>
-                    <tr class="border-bottom">
+                    <tr class="t-invert-black">
                         <th class="px-1">全损高压</th>
-                        <td class="px-1 t-light-gray">制成冲剂</td>
-                        <td class="px-1">剔除大部分内容</td>
-                        <td class="px-1 t-light-gray">损毁，无风味无口感</td>
+                        <td class="px-1">制成冲剂</td>
+                        <td class="px-1">剔除大部分内容再打包</td>
+                        <td class="px-1">全损</td>
                         <td class="px-1">体积小，密度最高</td>
                     </tr>
                 </tbody>
             </table>
-            <p class="text-gray-side">注：根据需求定义不同，熵也可以是“风味”。</p>
 
             <h3>编解码是什么</h3>
             <ul class="overflow-auto">
-                <li><b>编码 Encoding</b>：是数据格式的转换。压缩是编码的一种形式</li>
-                <li><b>解码 Decoding</b>：是将被压缩的信号还原或播放的解压缩。一般来说，压缩程度越高，解码速度越慢</li>
-                <li><b>软解 Software Decoding</b>：使用通用电路播放流文件，通常具有更高的兼容性，更高的能耗/发热</li>
-                <li><b>硬解 Hardware Decoding</b>：使用专用电路替代软解，通常具有更低的兼容性，更低的能耗/发热
-                    <ul class="text-gray-side">
-                        <li>例如：libmxv，opencl，MMAL，direct3D</li>
+                <li><b>编码 Encoding：</b>数据格式的转换。压缩是编码的一种形式</li>
+                <li><b>解码 Decoding：</b>将被压缩的信号还原以播放的解压缩</li>
+                <li><b>软件解码 Software Decoding：</b>使用通用电路播放流文件，通常兼容性更高，画质更好，能耗/发热更高</li>
+                <li><b>硬件解码 Hardware Decoding：</b>使用专用电路替代软解，通常兼容性更低，画质更差，能耗/发热更低
+                    <ul class="text-smaller">
+                        <li>如 libmxv，opencl，MMAL，direct3D</li>
                     </ul>
                 </li>
-                <li><b>软编 Software Encoding</b>：使用通用电路运行算法逻辑编码流文件，通常具有更完整的压缩功能但速度较慢，能耗/发热较高，同码率下的画质更高
-                    <ul class="text-gray-side">
-                        <li>运行时占用 CPU 核心、GPU CUDA/ROCm/OpenCL 通用计算单元、或高端采集卡中的 FPGA 核心</li>
+                <li><b>软件编码 Software Encoding</b>：使用通用电路编码流文件，通常具有更完整可控的压缩功能，但速度也更慢，能耗/发热较高，同码率下的画质更高
+                    <ul class="text-smaller">
+                        <li>通用计算电路：CPU 核心、（高端采集卡中的）FPGA 核心、显卡的 CUDA/ROCm/OpenCL 单元</li>
                     </ul>
                 </li>
-                <li><b>硬编 Hardware Encoding</b>：使用专用电路编码流文件，通常具有较少的功能但速度更快，发热更低
-                    <ul class="text-gray-side">
-                        <li>常见的有 NVENC，MMF/Venus，Intel-QSV，AMD-AMF，Elgato</li>
+                <li><b>硬件编码 Hardware Encoding</b>：使用专用电路编码流文件，通常功能更少但速度更快，发热更低
+                    <ul class="text-smaller">
+                        <li>如 NVENC，MMF/Venus，Intel QSV，AMD AMF，Elgato</li>
                     </ul>
                 </li>
             </ul>
 
             <h3>封装与解封装——(De-)multiplex</h3>
             <ul class="overflow-auto">
-                <li>类似于 .zip .rar 文件将多个文件（视频，音频，字幕，字体）合并为一个文件的功能</li>
-                <li>信号处理中，电台将多路音频流封装为一段模拟信号，接收端通过调整接收频率来接收其中一路信号，每路信号占据一定的频宽/带宽</li>
+                <li>将多个文件真正合并为一个文件，如 .zip .rar 格式的作用之一</li>
+                <li>信号处理中，电台/电视台将多路音频/视频流“封装调制”为一段模拟信号的处理方法
+                    <ul class="text-smaller"><li>接收端通过对齐特定接收频率来接收其中一路信号</li></ul>
+                </li>
             </ul>
             <p>封装文件记录了视频帧率、音视频同步、色彩标识等关键元数据，播放器根据它们选择和配置解码器。常见的封装文件有：</p>
             <table class="table-center text-smaller">
@@ -300,12 +301,13 @@
 
             <h3>视频编码专利</h3>
             <p>常见的有核心技术专利（特定编码步骤、装置设备具体实现等应用）、标准必要专利（即构成 AVC、HEVC、AV1 等编码所需的专利）、免费开放许可等。由于涉及视频编码的专利/权利人多，因此一种视频编码是由多项专利打包的专利池所构成，由专利池管理公司运营。</p>
-            <p>HEVC 的专利许可最初混乱且昂贵，与 AVC 的许可方式截然不同。实际上这个问题显著阻碍了 HEVC 的推广，主要的专利池包括：</p>
+            <p>HEVC H.265 的专利许可最初成分混乱且昂贵，与 AVC H.264 的许可截然不同。主要的专利池包括：</p>
             <ul>
                 <li>HEVC Advance：包含三星、高通、GE、杜比等公司的专利</li>
                 <li>MPEG LA：包含来自三菱、日本广播协会 NHK、JVC Kenwood、苹果等公司的专利</li>
                 <li>Velos Media：包含来自爱立信、松下、索尼等公司的专利</li>
             </ul>
+            <p>...以及独立的专利权持有方许可（约占 38%，如诺基亚的 HEVC 标准必要专利集）才能合规使用（更不如不用）。</p>
             <div class="align-items-center">
                 <img src="files/basics/Pay-For-HEVC-Windows.webp" alt="Pay-For-HEVC-Windows" class="img-medium">
                 <p class="text-gray-side mt-0">图：Windows 文件管理器预览 HEVC 编码视频、HEIF 图像的组件，定价 $0.99 USD。通过让用户支付这比费用。<br>微软以“产品默认不包含”而绕过了 HEVC 的专利费。</p>
@@ -423,54 +425,30 @@
                 <p class="text-gray-side mt-0">图：完整/PC 色深（Full）与有限/TV 色深（Limited），包括上述说明的更优版本见<a href="https://www.youtube.com/watch?v=8sAJWtgQ2t8">硬件茶谈</a>。</p>
             </div>
 
-            <h4>完整色深兼容有限色深</h4>
-            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容</button>
-            <div class="coll-content">
-                <ul class="text-smaller overflow-auto">
-                    <li>8 位色深下，从完整 0~255 缩减至 16~235 的有限区间（256 深）</li>
-                    <li>10 位色深下，从完整 0~1024 缩减至 64~940 的有限区间（876 深）</li>
-                    <li>因为有限范围视频占据绝大多数，所以播放器默认读取有限范围，通过 Y/C 转换算出完整色深</li>
-                    <li>图像格式有色深的概念，但不存在“有限范围”的概念</li>
-
-                </ul>
-                <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：密度与范围的用语说明</button>
-                <div class="coll-content">
-                    <ul>
-                        <li>色深密度代表色深大小所指的黑~白区间密度，而“有限区间/范围”代表“密度里的有效范围”</li>
-                        <li>严格地说，不存在“色深范围”，因为范围自始至终是黑到白，只有有限范围才能修改范围</li>
-                    </ul>
-                </div>
-
-                <h4>软件层完整范围 Full/PC</h4>
-                <ul class="text-smaller overflow-auto">
-                    <li>8 位密度下，色彩范围从 0 到 255 的完整 256 色深，密度较高</li>
-                    <li>10 位密度下，色彩范围从 0 到 1023 的完整 1024 色深，密度很高</li>
-                    <li>实际情况下，色深的视频剪辑软件选项应该为保持和原素材一致</li>
-                </ul>
-            </div>
-
             <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：色深转换的错误</button>
             <div class="coll-content">
-                <h4>色深转换的错误</h4>
-                <p>输出设置为有限，未经 Y/C 转换，连接到设置为输入完整范围的显示器，显示器缺失最暗和最亮的范围，呈现灰蒙蒙的画面，例如：</p>
-                <ul class="text-smaller overflow-auto">
-                    <li>PC 用 HDMI 连接显示器所致，需纠正显卡输出设置</li>
-                    <li>显示器设置的对比度远高于亮度，需纠正显示器设置</li>
-                </ul>
+                <h3>色深转换的错误</h3>
 
-                <p>输出设置为完整，未经 Y/C 转换，连接到设置为输入有限区间的显示器，显示器忽略 8bit 下 0~15 和 235~255 的亮度范围，出现画面过亮过暗（饱和度过高）的画面，例如：</p>
-                <ul class="text-smaller overflow-auto">
-                    <li>古老 / 低成本的 HDMI 电视只支持有限范围，PC/Xbox/PlayStation 设置为输出完整所致</li>
+                <h4>有限转完整</h4>
+                <ul class="text-smaller">
+                    <li>设备：设置为输出有限范围</li>
+                    <li>显示器：设置为输入完整范围（默认）</li>
+                    <li>结果：显示器缺失最暗和最亮的范围，呈现灰蒙蒙的画面</li>
                 </ul>
+                <p>该错误常见于电脑用 HDMI 线连接电脑显示器，应纠正显卡输出设置或使用 DisplayPort（DP）接口。</p>
 
-                <p>yuvj 色彩空间中的 j 被误解，而使用了无效或错误的转换处理导致</p>
-                <ul class="text-smaller overflow-auto">
-                    <li>j 代表 jpeg，是 ffmpeg 现已淘汰的定义，但 ffprobe 中可能还会遇到</li>
-                    <li>ffmpeg 的 color_range 参数说明中可以看到 jpeg 和完整色域都是参数值 2</li>
+                <h4>完整转有限</h4>
+                <ul class="text-smaller">
+                    <li>设备：设置为输出完整范围</li>
+                    <li>电视：设置为输入有限范围（默认）</li>
+                    <li>结果 1：色深为 8bit 时，0~15 和 236~255 的亮度范围被丢弃</li>
+                    <li>结果 2：色深为 8bit 时，16-235 的亮度范围被强行拉伸，使得画面过亮且过暗（饱和度过高）</li>
                 </ul>
+                <p>古老 / 低成本的 HDMI 电视只支持有限范围，PC/Xbox/PlayStation 设置为输出完整所致。</p>
 
-                <p>heic 格式的图片被错误转换到 jpeg 或错误显示导致，一般出现在手机上，以及 Windows 11 的图片浏览器中</p>
-                <p>HDR 视频在设备没有正确配置的情况下直接显示导致</p>
+                <h4>默认配置错误</h4>
+                <p>一些媒体使用了被淘汰的色彩空间编码，导致该媒体被人或程序误判为老格式——有限色深；例如 yuvj 这个 ffmpeg 用过但已淘汰的色彩空间（实际上这是完整色深，这里的 j 是指 jpeg）</p>
+                <p>新兴的一些摄影图片格式，如 heic、avif 等可能会遇到兼容性问题，包括部分手机相册转换错误，以及 Windows 图片浏览器的显示错误</p>
             </div>
 
             <h3>伽马曲线/伽马映射</h3>
@@ -478,7 +456,7 @@
                 <li><b>生理伽马映射</b>：人眼对于亮度的感知与物理亮度的线性变化所异
                     <ul class="text-gray-side">
                         <li>人眼敏感于低至中等亮度的变化，而对中高亮度的变化则相对不太敏感。因此，当内容的亮度变化呈直线关系时，人们会感觉到“发白”</li>
-                        <li>许多游戏的初始设置中，“将滑块调节到能清晰看到左侧暗部图像”实际上就是在调节伽马曲线，而且是生理伽马曲线</li>
+                        <li>许多游戏的初始设置中，“将滑块调节到能清晰看到左侧暗部图像”实际上就是在调节生理伽马曲线</li>
                         <li>相机 CMOS 捕获的线性亮度（RAW 直出格式）在人眼看来会显得过亮“发白”，需要进行“黑化”校正</li>
                     </ul>
                 </li>
