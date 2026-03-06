@@ -480,30 +480,35 @@
                 <p class="text-gray-side mt-0">图：伽马矫正的指数算式，此处<span class="text-blue-math">c = 1</span>代表 0~1 的亮度区间，8bit 256 深则<span class="text-blue-math">c = 256</span>，见<a href="https://www.desmos.com/calculator/shseuk9jcb?lang=zh-CN">desmos 互动例</a>。</p>
             </div>
             
-            <h3>对比度 Contrast</h3>
+            <h3>对比度（Contrast）</h3>
             <p>任意量纲的间距。在图像与显示器中代表最亮~最暗的亮度差，音频中代表“动态范围”，对比度低的图像会“发灰”，因为当前的亮度设置位于这个灰度水平上；对比度高的图像会显得生动，因为显示出来的色彩往往更符合心理预期。</p>
             <div class="align-items-center">
                 <img src="files/basics/Contrast.webp" alt="Contrast" class="img-medium">
                 <p class="text-gray-side mt-0">图：对比度。</p>
             </div>
+
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：对比过大的问题、对比度的调节</button>
+            <div class="coll-content">
             <h4>对比过大的问题</h4>
             <p>在安静环境下听音乐时，有的音频段落会太响、画面亮度太刺眼；而有的场景下有小到听不清、或画面暗的看不清细节。</p>
-            <h4>调节对比度</h4>
-            <p>在 DVD、蓝光播放机上，用户可以方便地通过遥控器调整；电脑麻烦些，需要通过调节显示器的 OSD 菜单，或下载第三方插件，或在播放器软件中按快捷键调节；智能手机可以通过显示色彩模式和第三方软件调节，但罕有播放器支持对比度调节，因此体验最差。</p>
+            <h4>对比度的调节</h4>
+            <p>在 DVD、蓝光播放机上，用户可以方便地通过遥控器调整；电脑则是通过调节显示器的 OSD 菜单，或在播放器软件中调节；智能手机可以通过显示色彩模式和第三方软件调节，但罕有播放器支持对比度调节。</p>
+            <p class="text-gray-side">注：智能手机上的“调节”实际上是加了一层灰滤镜，因此会影响到截图画面。</p>
+            </div>
 
-            <h3>饱和度 Saturation</h3>
+            <h3>饱和度（Saturation）</h3>
             <p>一般指液体在特定压力和温度下溶解了某种成分的程度，达到最高时会沉积而不再溶解。图像中则代表颜色接近 100% 纯色的程度或“彩度”，饱和度越高则图像越鲜艳，为零时得到灰阶图像；最大时得到纯色图像。对比度接近饱和度，但不是饱和度，从图中可见并没有白色溢出。</p>
             <div class="align-items-center">
                 <img src="files/basics/Saturation.webp" alt="Saturation" class="img-medium">
                 <p class="text-gray-side mt-0">图：饱和度，来源：<a href="https://developer.apple.com/documentation/accelerate/adjusting-saturation-and-applying-tone-mapping">developer.apple.com</a>。</p>
             </div>
 
-            <h3>像素 Pixel / pix / pel / px</h3>
+            <h3>像素（Pixel / pix / pel / px）</h3>
             <p>像素是组成图像的最小单位，决定了图像的物理大小和分辨率。一般情况下分为屏幕的硬件像素大小，和图片/视频的软件像素大小两种。当软件像素小于硬件像素时，显示 100% 大小的图片会变小，或者通过缩放滤镜将图片放大以适应屏幕。反之，若硬件像素大小小于软件像素，则会使用缩放滤镜将图片缩小至合适的尺寸，或者图片会溢出屏幕。图像中的每个像素都有位置和颜色两份信息。</p>
 
-            <h3>每英寸像素 Pixel Per Inch / PPI</h3>
+            <h3>每英寸像素（Pixel Per Inch，PPI）</h3>
             <p>指屏幕或印刷设备上的物理像素密度，这取决于设计时预期的观看距离。屏幕的 PPI 高则适合近距离观看，因为物理像素更密集。在印刷设备的 PPI 越高，打印出的图像就越细腻。软件的 PPI 主要用于计算新建图像的像素大小和分辨率，以确保图像有着适当的大小和清晰度。</p>
-            <ul class="text-gray-side overflow-auto">
+            <ul class="text-gray-side">
                 <li>矢量图形通常不涉及 PPI 概念，因为它们以数学方式描述图像，可以无限放大而不失真</li>
                 <li>高 PPI 的显示器是一种较新的规格，旧的软件在这些显示器上会出现模糊，或界面过小的问题，见<a href="https://www.youtube.com/watch?v=jfAH4Ym5D6Q">硬件茶谈</a></li>
             </ul>
@@ -512,55 +517,7 @@
                 <p class="text-gray-side mt-0">图：每英寸像素，来源：<a href="https://www.inchcalculator.com/ppi-calculator/">www.inchcalculator.com</a>。</p>
             </div>
 
-
-            <!--<h3>位图 Bitmap 与矢量图 Vector</h3>
-            <p>位图使用像素和元数据（例如 n 个像素后换行）来表示图像。每个像素都包含特定的颜色信息，通常表示为 RGB 或 YCbCr 值。用于描述照片和复杂图像，但当放大时会失真，因为像素的信息已经固定，而放大只是用滤镜在其中插值填空的结果。</p>
-            <p>矢量图使用图形函数与代码来描述图像（如 JavaFX，SVG）。它们以函数定义图像的形状、线条和颜色。放大矢量图不会失真，且可以在不同的尺寸和分辨率下保持清晰度：
-                <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em">
-                    <title>GitHub</title>
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                </svg>
-                <img src="./files/svg-examples/filetype-sql.svg" alt="sql"/>
-                <img src="./files/svg-examples/pin-map.svg" alt="pinned-map"/>
-                <img src="./files/svg-examples/mailbox.svg" alt="mailbox"/>
-                <img src="./files/svg-examples/hdd-network.svg" alt="network-hdd"/>
-                <img src="./files/svg-examples/menu-button-wide.svg" alt="menu-button"/>
-                <img src="./files/svg-examples/card-list.svg" alt="card-list"/>
-                <img src="./files/svg-examples/ethernet.svg" alt="ethernet"/>
-                <img src="./files/svg-examples/bricks.svg" alt="bricks"/>
-                <img src="./files/svg-examples/postcard-heart.svg" alt="postcard-heart"/>
-                <img src="./files/svg-examples/opened-email-envelope_modified.svg" alt="email"/>
-                <img src="./files/svg-examples/person-video2.svg" alt="person-video"/>
-                <img src="./files/svg-examples/person-workspace.svg" alt="person-workspace"/>
-                <img src="./files/svg-examples/obs_94846.svg" alt="obs"/>
-                <img src="./files/svg-examples/bullseye.svg" alt="bullseye"/>
-                <img src="./files/svg-examples/clock.svg" alt="clock"/>
-                <img src="./files/svg-examples/globe2.svg" alt="globe"/>
-                <img src="./files/svg-examples/database.svg" alt="database"/>
-                <img src="./files/svg-examples/math-svgrepo-com.svg" alt="math-symbols"/>
-                <img src="./files/svg-examples/file-earmark-music-fill.svg" alt="music"/>
-                <img src="./files/svg-examples/cup-hot-fill.svg" alt="cup-hot-fill"/>
-                <img src="./files/svg-examples/ffmpeg_icon_132402.svg" alt="ffmpeg"/>
-                <img src="./files/svg-examples/javascript_logo_icon_145155.svg" alt="Javascript"/>
-                <img src="./files/svg-examples/c-sharp.svg" alt="c-sharp"/>
-                <img src="./files/svg-examples/filetype-sql.svg" alt="sql"/>
-                <img src="./files/svg-examples/php-logo.svg" alt="php"/>
-                <img src="./files/svg-examples/cloud-arrow-up.svg" alt="cloud-upload"/>
-                <img src="./files/svg-examples/markdown.svg" alt="markdown"/>
-                <img src="./files/svg-examples/photoshop_icon_130268.svg" alt="photoshop"/>
-                <img src="./files/svg-examples/adobe-audition-cc-creative-cloud_78302.svg" alt="audition"/>
-                <img src="./files/svg-examples/adobe-after-effects-cc-creative-cloud.svg" alt="after-effects"/>
-                <img src="./files/svg-examples/adobe-premiere-pro-cc-creative-cloud_78301.svg" alt="premiere"/>
-            </p>
-            <ul class="text-gray-side overflow-auto">
-                <li>因为渲染算力不够，所以以前的矢量图格式难以被推广</li>
-                <li>因为要保证参差不齐的“矢量图代码质量”在不同渲染器下画面一致；所以现在的矢量图格式仍然难以推广
-                    <ul><li>使以上这些 SVG 的大小一致... 需要手动改写代码</li></ul>
-                </li>
-                <li>在 Wordpress（个人博客网站软件）中使用 SVG 图形仍然需要第三方插件才能实现部分支持</li>
-                <li>当然，“文本”也可以被视为一种矢量图，这样则位图反而更少见了</li>
-            </ul>-->
-            <h3>色彩空间 Color Space</h3>
+            <h3>色彩空间（Color Space）</h3>
             <div class="row">
                 <p id="LR-UD-001" class="col-10">用于表示和处理图像颜色的数据格式，具有适用于各种不同应用场景的多种类型。最常用的是分为硬件和操作系统的 RGB 色彩空间，以及内容的 YUV/YCbCr 色彩空间。见 <a href="https://www.youtube.com/watch?v=FTKP0Y9MVus">Captain Disillusion</a> 的科普。</p>
                 <img src="files/basics/RGB-to-YCbCr-to-RGB.png" alt="RGB-to-YCbCr-to-RGB" id="LR-UD-002" class="img-small img-right col-2 mb-auto">
