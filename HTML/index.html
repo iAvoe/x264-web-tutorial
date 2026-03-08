@@ -16,7 +16,7 @@
 	<body class="text-gray-main">
         <div class="container-title">
             <h1>x264 教程<span class="text-blue-emph"> HTML 完整版</span></h1>
-            <p>欢迎阅读！本教程仅算盲人摸象的业余分析，仅具备业余参考价值。若有什么不会的可以加群 <a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>691892901</a>。教程地图、工具下载见：<a href="https://iavoe.github.io/">iavoe.github.io</a></p>
+            <p>欢迎阅读！本教程仅算盲人摸象的业余分析，仅具备业余参考价值。若有什么不会的可以加群 <a href='https://jq.qq.com/?_wv=1027&k=5YJFXyf'>691892901</a>。教程地图、工具下载见：<a href="https://iavoe.github.io/">iavoe.github.io</a>。</p>
             <h2>目录</h2>
             <ul class="font-monospace text-smaller">
                 <li>基础：<a class="toSelf" href="#h2-1">封装/解封装</a>，
@@ -52,6 +52,7 @@
         </div>
         <div class="container-mobile rounded-9 border-main">
             <h2 id="h2-1">必备常识</h2>
+            <p class="text-smaller align-items-center"><b>按 <code>Ctrl+F</code> 以搜索关键字</b>，如果找不到则点击“打印支持—同步展开所有内容”按钮再搜索。</p>
 
             <h3>性能是什么</h3>
             <p>主要分为<span class="text-blue-emph">处理速度/算力</span>和<span class="text-blue-emph">数据传输速度/带宽</span>，部分情况下还注重<span class="text-blue-emph">操作响应速度/延迟</span>。播放视频时，画面卡顿问题往往来自于某一处的带宽不足（如网速、硬盘带宽）；而另一种情况下，如果让性能太弱的 CPU 播放高度压缩后的视频，那么即使带宽充足，视频也会因为算力不足而卡顿。</p>
@@ -105,13 +106,13 @@
             
             <h4>读写性能（IO）</h4>
             <p>硬盘或闪存芯片上的数据写入速度普遍比内存慢得多，但容量大且断电不丢失，是本地读写性能的主要瓶颈。实际读写性能通常分为两类，其性能差异相当于一次 vs. 成千上万次操作的区别。</p>
-            <ul>
+            <ul class="text-smaller">
                 <li><b>连续读写</b>：适用于大文件，速度快</li>
-                <li><b>随机小文件读写（4K 性能）</b>：由于每个文件至少占 4KB 空间，造成大量额外的寻址与读写，速度可能只有前者的一到两成</li>
+                <li><b>随机小文件读写（4K 性能）</b>：每个文件至少占 4KB 空间，产生大量额外的寻址，速度可能只有前者的两成</li>
             </ul>
-            <p>视频文件属于大文件，而且封装格式将音轨、字幕等数据紧密存放，因此即便是连续读写性能较低的存储介质（如闪存），其带宽也能保证播放流畅</p>
+            <p class="text-gray-side">注：视频属于大文件，而封装格式将音轨、字幕等数据紧密存放，从而避免了额外的随机读写，优化了性能。</p>
 
-            <h3>数据是什么</h3>
+            <h3>数据（Data）是什么</h3>
             <p>一句话就是一段数据。计算机上的数据由电信号构成，分为模拟（电压代表大小）和数字（0、1 代表开关）两种。通过将计算机编程，人们根据不同的 0、1 长度以及组合，为 CPU 定义了操作内存、硬盘等存储设备的（读写）能力，从而使得更上层的操作系统和程序能够定义和使用更抽象化的数据（如坐标，像素值）等形式，才得以让电脑显示画面，播放视频。</p>
 
             <h3>元数据（Metadata）</h3>
@@ -314,6 +315,14 @@
                 <p class="text-gray-side mt-0">图：Windows 文件管理器预览 HEVC 编码视频、HEIF 图像的组件，定价 $0.99 USD。通过让用户支付这比费用。<br>微软以“产品默认不包含”而绕过了 HEVC 的专利费。</p>
             </div>
 
+            <h3>比特（Bit）是什么</h3>
+            <ul class="text-smaller">
+                <li><b>二进制</b>：3 位数的所有排列组合是 000~111，共 8 种可能的状态/值，若增加到 4 位，则会得到 0000~1111，共 16 种可能</li>
+                <li><b>十进制</b>：3 位数的所有排列组合是 000~999，共 1000 种可能的状态/值，若增加到 4 位，则会得到 0000~9999，共 10000 种可能</li>
+            </ul>
+            <p>能够准确描述这一<i>随位数增减状态数量</i>的方法就是“底数的幂”；比如以二进位，共 3 位，就是 <span class="text-blue-math">\( 2^3 \)</span>；以十进位，共 3 位，就是 <span class="text-blue-math">\( 10^3 \)</span>。</p>
+            <p>为了简化，统计学家约翰·图基在备忘录中把“binary digit”缩写为“bit”，因此“二进制 3 位数”被称为 3 bit；“二进制 4 位数”被称为 4 bit。</p>
+
             <h3>数据大小单位</h3>
             <ul class="overflow-auto">
                 <li><b>bit（比特）</b>：最小的计量单位，<span class="text-blue-math">\(1 \text{bit} = \frac{1}{8} \text{Byte}\)</span>，衡量传输流量</li>
@@ -395,40 +404,39 @@
                         <li>一般来说 <span class="text-blue-math">\(1 \text{nit} \approx 3.426 \text{lm}\)</span>，但实际的“汇率”取决于光源和测量仪器/方法</li>
                     </ul>
                 </li>
-                <li><b>软硬件亮度</b>：代表灰度像素值的大小，值越大表示像素点越亮，但最大亮度受硬件和用户设定限制。伽马 gamma/Y 值定义了像素的亮度范围，最小值 0 为黑色：
-                    <ul class="text-gray-side">
-                        <li>4bit 位深最大值/纯白为 15（<code>0xF</code>）</li>
-                        <li>8bit 位深最大值/纯白色为 255（<code>0xFF</code>）</li>
-                        <li>10bit 位深最大值/纯白色为 1023（<code>0x3FF</code>）</li>
-                    </ul>
-                </li>
+                <li><b>软硬件亮度</b>：代表灰度像素值的大小，值越大表示像素点越亮，但最大亮度受硬件和用户设定限制。伽马 gamma/Y 值定义了像素的亮度范围，最小值 0 为黑色</li>
             </ul>
             <p>YUV / YCbCr 色彩空间图像的亮度平面 Y，或者 RGB 图像分离出的亮度/灰度平面，有时也被称为伽马平面或 Y 平面。</p>
             
             <h3>灰度/灰阶 Grayscale</h3>
             <p>代表将色彩信息去除，只保留黑、灰、白色的单通道图像。</p>
 
-            <h3>硬件色深（Color Depth）与范围（Color Range）</h3>
+            <h3>硬件位深/色深（Bit/Color Depth）与范围（Color Range）</h3>
             <p>对应电压的缩放值。由显示器的驱动板/主控板接收 GPU 输出的数字信号，并转义为像素点的电压得到。因此使用了 CRT 显像管的电视可能是模拟电视，也可能是数字电视，取决于有没有如 HDMI，DisplayPort 等数字信号接口。</p>
+            <p class="text-gray-side">注：“色深”是衍生叫法，“位深”是严谨称呼；并没有“色彩深度”等其它含义。</p>
 
-            <h4>有限色深（Limited/Analog/TV）</h4>
-            <p>模拟电视使用了 <span class="text-blue-math">\( 0 \text{mV ~ } 700 \text{mV} \)</span> 的输入电压表示色深，对应软件的完整色深。但早期的模拟电视缺乏电压限制功能——倘若电视台的信号调制器（类似于家庭网络的猫、Modem）出现偏差或干扰，就可能有大量用户的电视出现烧屏现象。所以显示标准上要求信号层面限制电压范围，牺牲一些色深来解决问题，得到了有限范围。</p>
+            <h4>有限位深（Limited/Analog/TV）</h4>
+            <p>模拟电视使用了 <span class="text-blue-math">\( 0 \text{mV ~ } 700 \text{mV} \)</span> 的输入电压表示位深，对应软件的完整位深。但早期的模拟电视缺乏电压限制功能——倘若电视台的信号调制器（如同家庭宽带的 Modem）出现偏差或干扰，就可能有大量用户的电视出现烧屏现象。所以显示标准上要求信号层面限制电压范围，牺牲一些位深来解决问题，得到了有限范围。</p>
             <p>到了数字时代，电视厂商都使用 HDMI 协议的显示信号接口，电脑厂商则使用 DisplayPort 的显示信号接口，所以在“电脑接电视”，和“游戏主机接显示器”时往往需要额外的输入和输出设置，才能得到明暗过渡正常的画面。</p>
             <ul class="text-gray-side overflow-auto">
                 <li>一般在显示器的 OSD 设置界面上看到，写作兼容/有限/模拟/电视范围 </li>
-                <li>一般来说，数字显示器/数字电视应该是原生支持设置为输入完整色深的，若没有则可以通过设置 HDMI Black Level 来缩放到正常明暗过渡</li>
+                <li>一般来说，数字显示器/数字电视应该是原生支持设置为输入完整位深的，若没有则可以通过设置 HDMI Black Level 来缩放到正常明暗过渡</li>
             </ul>
 
-            <h3>软件的色深 Depth 与范围 Range</h3>
-            <p>数字色深的分阶用位/bit 表示。如四位 4bit（16 单位）<span class="text-blue-math">\(2^4\)</span>、八位 8bit（256 单位）<span class="text-blue-math">\(2^8\)</span>、10bit（1024 单位）<span class="text-blue-math">\(2^{10}\)</span> 的形式表示。</p>
+            <h3>软件的位深与范围</h3>
+            <p>数字位深的分阶用位/bit 表示。如四位 4bit（16 单位）<span class="text-blue-math">\(2^4\)</span>、八位 8bit（256 单位）<span class="text-blue-math">\(2^8\)</span>、10bit（1024 单位）<span class="text-blue-math">\(2^{10}\)</span> 的形式表示。</p>
+            <ul class="text-gray-side">
+                <li>8bit 位深最大值/纯白色为 255（<code>0xFF</code>）</li>
+                <li>10bit 位深最大值/纯白色为 1023（<code>0x3FF</code>）</li>
+            </ul>
             <div class="align-items-center">
                 <img src="files/basics/Full-and-Limited-Range.png" alt="Full-and-Limited-Range" class="img-medium">
-                <p class="text-gray-side mt-0">图：完整/PC 色深（Full）与有限/TV 色深（Limited），包括上述说明的更优版本见<a href="https://www.youtube.com/watch?v=8sAJWtgQ2t8">硬件茶谈</a>。</p>
+                <p class="text-gray-side mt-0">图：完整/PC 位深（Full）与有限/TV 位深（Limited），包括上述说明的更优版本见<a href="https://www.youtube.com/watch?v=8sAJWtgQ2t8">硬件茶谈</a>。</p>
             </div>
 
-            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：色深转换的错误</button>
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：位深转换的错误</button>
             <div class="coll-content">
-                <h3>色深转换的错误</h3>
+                <h3>位深转换的错误</h3>
 
                 <h4>有限转完整</h4>
                 <ul class="text-smaller">
@@ -442,14 +450,55 @@
                 <ul class="text-smaller">
                     <li>设备：设置为输出完整范围</li>
                     <li>电视：设置为输入有限范围（默认）</li>
-                    <li>结果 1：色深为 8bit 时，0~15 和 236~255 的亮度范围被丢弃</li>
-                    <li>结果 2：色深为 8bit 时，16-235 的亮度范围被强行拉伸，使得画面过亮且过暗（饱和度过高）</li>
+                    <li>结果 1：位深为 8bit 时，0~15 和 236~255 的亮度范围被丢弃</li>
+                    <li>结果 2：位深为 8bit 时，16-235 的亮度范围被强行拉伸，使得画面过亮且过暗（饱和度过高）</li>
                 </ul>
                 <p>古老 / 低成本的 HDMI 电视只支持有限范围，PC/Xbox/PlayStation 设置为输出完整所致。</p>
 
                 <h4>默认配置错误</h4>
-                <p>一些媒体使用了被淘汰的色彩空间编码，导致该媒体被人或程序误判为老格式——有限色深；例如 yuvj 这个 ffmpeg 用过但已淘汰的色彩空间（实际上这是完整色深，这里的 j 是指 jpeg）</p>
+                <p>一些媒体使用了被淘汰的色彩空间编码，导致该媒体被人或程序误判为老格式——有限位深；例如 yuvj 这个 ffmpeg 用过但已淘汰的色彩空间（实际上这是完整位深，这里的 j 是指 jpeg）</p>
                 <p>新兴的一些摄影图片格式，如 heic、avif 等可能会遇到兼容性问题，包括部分手机相册转换错误，以及 Windows 图片浏览器的显示错误</p>
+            </div>
+
+            <h3>内容位深</h3>
+            <p>即图像和视频储存时使用的色彩空间位深。</p>
+
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：为什么 10bit 位深的内容少见</button>
+            <div class="coll-content">
+                <h4>为什么 10bit 位深的内容少见</h4>
+                <p class="text-gray-side">注：此段在当下语境中有些超纲，但该疑问本身很常见。</p>
+                <p>10bit 位深的视频内容的确能被压缩到比 8bit 位深体积更小，同时画质更好的程度；但这需要满足以下条件：</p>
+                <ol>
+                    <li>视频源至少是 10bit 编码，或者使用了大量滤镜来修复</li>
+                    <li>视频编码器必须用慢速、精确的帧间搜索冗余，否则压缩率不但不提升，还有可能会下降</li>
+                    <li>播放器需要为高位深内容增加缓冲区大小以储存解码内容，否则容易卡住，但则会极大影响低网速的情况</li>
+                </ol>
+                <p>同时，10bit 位深的图片永远比 8bit 位深的同一张图片大，尽管它们在解码后/未压缩状态的大小差距在 20% 左右（1920x1080 YUV4:2:0 格式）。</p>
+                <table class="table-center">
+                    <thead>
+                        <tr>
+                            <th>🎆格式</th>
+                            <th>分辨率</th>
+                            <th>~比特数</th>
+                            <th>~字节数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="px-1">YUV420 8bit</td>
+                            <td class="px-1">1920×1080</td>
+                            <td class="px-1">24.88 Mbit</td>
+                            <td class="px-1">3.11 MB</td>
+                        </tr>
+                        <tr>
+                            <td class="px-1">YUV420 10bit</td>
+                            <td class="px-1">1920×1080</td>
+                            <td class="px-1">31.10 Mbit</td>
+                            <td class="px-1">3.89 MB</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>至于老设备不支持的情况反而不是问题，因为厂商正愁自己的用户暂无升级之由，而会积极推动各种格式（如 HDR、杜比视界）的普及，而“服务定制”对于互联网来说也是老生常谈了。</p>
             </div>
 
             <h3>伽马曲线/伽马映射</h3>
@@ -725,10 +774,10 @@
                         <tr class="t-invert-dark">
                             <th>📷压缩</th>
                             <th>格式</th>
-                            <th>最大 <span style="color:red">R</span><span style="color:lime">G</span><span style="color:blue">B</span> 色深</th>
-                            <th>最大 <span style="background-image: linear-gradient(190deg, rgb(68, 68, 68), white);background-clip: text; -webkit-text-fill-color: transparent;">Y</span><span style="background-image: linear-gradient(72deg, #80AB00, #8054FF); background-clip: text; -webkit-text-fill-color: transparent;">Cb</span><span style="background-image: linear-gradient(72deg, #00DB80, #FF2480); background-clip: text; -webkit-text-fill-color: transparent;">Cr</span> 色深</th>
+                            <th>最大 <span style="color:red">R</span><span style="color:lime">G</span><span style="color:blue">B</span> 位深</th>
+                            <th>最大 <span style="background-image: linear-gradient(190deg, rgb(68, 68, 68), white);background-clip: text; -webkit-text-fill-color: transparent;">Y</span><span style="background-image: linear-gradient(72deg, #80AB00, #8054FF); background-clip: text; -webkit-text-fill-color: transparent;">Cb</span><span style="background-image: linear-gradient(72deg, #00DB80, #FF2480); background-clip: text; -webkit-text-fill-color: transparent;">Cr</span> 位深</th>
                             <th>最大 <span style="color:aqua">C</span><span style="color:fuchsia">M</span><span
-                                style="color:yellow">Y</span><span style="color:black">K</span> 色深</th>
+                                style="color:yellow">Y</span><span style="color:black">K</span> 位深</th>
                             <th>动图</th>
                             <th>HDR</th>
                             <th>透明</th>
@@ -833,7 +882,7 @@
                         <tr class="t-invert-dark">
                             <th>🎥压缩</th>
                             <th>格式</th>
-                            <th><span style="color:red">R</span><span style="color:lime">G</span><span style="color:blue">B</span>/<span style="background-image: linear-gradient(190deg, black, white);background-clip: text; -webkit-text-fill-color: transparent;">Y</span><span style="background-image: linear-gradient(72deg, #80AB00, #8054FF); background-clip: text; -webkit-text-fill-color: transparent;">Cb</span><span style="background-image: linear-gradient(72deg, #00DB80, #FF2480); background-clip: text; -webkit-text-fill-color: transparent;">Cr</span> 色深</th>
+                            <th><span style="color:red">R</span><span style="color:lime">G</span><span style="color:blue">B</span>/<span style="background-image: linear-gradient(190deg, black, white);background-clip: text; -webkit-text-fill-color: transparent;">Y</span><span style="background-image: linear-gradient(72deg, #80AB00, #8054FF); background-clip: text; -webkit-text-fill-color: transparent;">Cb</span><span style="background-image: linear-gradient(72deg, #00DB80, #FF2480); background-clip: text; -webkit-text-fill-color: transparent;">Cr</span> 位深</th>
                             <th>HDR</th>
                             <th>透明</th>
                         </tr>
