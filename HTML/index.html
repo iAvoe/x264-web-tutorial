@@ -1222,7 +1222,7 @@
             </div>
 
             <h3>命令行参数</h3>
-            <p>由开发者定义，将函数或程序中的一些变量设为通过命令传递。命令行参数一般使用空格作为分隔符（也有用半角冒号，半角句号等其他情况），参数和参数值之间一般使用空格做分隔符（也有使用等于号的其他情况），多个参数值之间一般使用半角逗号或半角冒号分隔，而含有空格的参数值则使用半角直引号 "" 或 '' 连起来。</p>
+            <p>由开发者定义的键—值（key—value）数据，使得用户能够给代码函数或程序中的一些变量赋值，从而调整程序的运行逻辑。命令一般由空格作为分隔符，但为了给程序内的程序传递命令就会出现会分隔符混淆，因此这些内部程序会定义一套不同的分隔符规则，例如 ffmpeg 调用内部库 API 的 <code>"命令=值:命令=值"</code> 写法。</p>
             <p>例如，x264 使用 CLI 参数的例子：</p>
             <code>x264.exe <span class="text-blue-emph">--rc-lookahead 90 --bframes 12 --b-adapt 2 --me umh --subme 9 --merange 48 --no-fast-pskip --direct auto --weightb --keyint 360 --min-keyint 5 --ref 3 --crf 20 --qpmin 9 --chroma-qp-offset -2 --aq-mode 3 --aq-strength 0.7 --trellis 2 --deblock 0:0 --psy-rd 0.77:0.22 --fgo 10 --nr 4</span> --output ".\输出.mp4" ".\导入.mp4"</code>
             <p>以及 ffmpeg 中使用 CLI 参数启用 libx264，通过 <code>-x264-params</code> 发送 API 参数的例子：</p>
@@ -1424,7 +1424,7 @@
             <p>简化模型下，动态搜索得到帧间向量表，帧间向量表加上上帧的画面得到预测帧，原始帧减去预测帧得到残差帧，残差帧储存为参考帧，得到帧间结构。x264 使用了不对称多六边形搜索 Uneven multiple Hexagon，从而让一个搜索算法在多个分辨率下检查画面，制衡了动态噪点对传统动态搜索算法的干扰。搜索算法详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程</a>。</p>
             <!-- } -->
             <code class="code-bold">--me</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;dia/hex/umh/esa/tesa，推荐 <span class="text-blue-emph">umh</span>&gt; 动态搜索算法，最终目的是找到准确的动态信息走向。<span class="text-blue-emph">dia</span>、<span class="text-blue-emph">hex</span> 适合 <code>--merange 16</code> 或更小的范围，一般用于直播与录屏（降低编码延迟），umh 适合 <code>--merange 32</code> 及更大直径。此外就是几乎没有用的的 <span class="text-blue-emph">esa</span>、<span class="text-blue-emph">tesa</span> 全搜索了，其中 <span class="text-blue-emph">esa</span> 是优化过的 <span class="text-blue-emph">tesa</span>。</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;dia/hex/umh/esa/tesa，推荐 <span class="text-blue-emph">umh</span>&gt;动态搜索算法，最终目的是找到准确的动态信息走向。<span class="text-blue-emph">dia</span>、<span class="text-blue-emph">hex</span> 适合 <code>--merange 16</code> 或更小的范围，一般用于直播与录屏（降低编码延迟）；umh 适合 <code>--merange 32</code> 及更大搜索直径。此外就是几乎没有用的 <span class="text-blue-emph">esa</span>、<span class="text-blue-emph">tesa</span> 全搜索/穷举法了，其中 <span class="text-blue-emph">esa</span> 是优化过的 <span class="text-blue-emph">tesa</span>。</p>
             <code class="code-bold">--merange</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，推荐 4 的倍数，<span class="text-red-emph">需 me</span>&gt;<span class="text-blue-emph">完全取决于 ME 算法和分辨率</span>，过大会因「找不到更好，找到也是错」而损失画质和压缩。</p>
             <ul class="font-monospace pl-5 text-smaller">
