@@ -1424,8 +1424,7 @@
             <p>简化模型下，动态搜索得到帧间向量表，帧间向量表加上上帧的画面得到预测帧，原始帧减去预测帧得到残差帧，残差帧储存为参考帧，得到帧间结构。x264 使用了不对称多六边形搜索 Uneven multiple Hexagon，从而让一个搜索算法在多个分辨率下检查画面，制衡了动态噪点对传统动态搜索算法的干扰。搜索算法详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-5">x265 教程</a>。</p>
             <!-- } -->
             <code class="code-bold">--me</code>
-
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;hex/umh/esa/tesa，推荐 umh&gt; 搜索算法，umh 平衡，star 四角星搜索之后收益递减，sea 是优化过的 x264 esa 穷举，但收益递减仍大。umh 通过多种分辨率大小的查找范围，减轻了动态噪点对传统搜索算法的干扰</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;dia/hex/umh/esa/tesa，推荐 <span class="text-blue-emph">umh</span>&gt; 动态搜索算法，最终目的是找到准确的动态信息走向。<span class="text-blue-emph">dia</span>、<span class="text-blue-emph">hex</span> 适合 <code>--merange 16</code> 或更小的范围，一般用于直播与录屏（降低编码延迟），umh 适合 <code>--merange 32</code> 及更大直径。此外就是几乎没有用的的 <span class="text-blue-emph">esa</span>、<span class="text-blue-emph">tesa</span> 全搜索了，其中 <span class="text-blue-emph">esa</span> 是优化过的 <span class="text-blue-emph">tesa</span>。</p>
             <code class="code-bold">--merange</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，推荐 4 的倍数，<span class="text-red-emph">需 me</span>&gt;<span class="text-blue-emph">完全取决于 ME 算法和分辨率</span>，过大会因「找不到更好，找到也是错」而损失画质和压缩。</p>
             <ul class="font-monospace pl-5 text-smaller">
