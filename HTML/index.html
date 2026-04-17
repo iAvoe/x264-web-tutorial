@@ -1866,7 +1866,7 @@
             <p>带宽是有限资源。一旦网络、硬盘等带宽变慢或变卡，播放就会卡顿。因此，播放器会设置内存缓冲区，利用了传输速度有时会快于当前视频码率的随机条件，预加载一些数据以求播放不卡顿。此时问题变成了“缸里一端加水（进入缓存）、另一端放水（放出缓存），注水量变化但确保缸里一直有水，求缸的大小”。如此，只要平均传输带宽大于 GOP 平均码率则播放流畅了。</p>
 
             <h4>基于缓冲区的量化控制（Video Buffer Verifier、VBV）</h4>
-            <p>由编码器单独设置一个小缓冲区，以其盈缺状态而增加或激增量化强度，从而缓解码率波动问题。</p>
+            <p>由编码器单独设置一个小缓冲区，观其盈缺而增加/激增量化强度，从而缓解码率波动问题。</p>
             <div class="mt-3 align-items-center">
                 <table class="table-center text-smaller">
                     <tr>
@@ -1895,24 +1895,22 @@
                 </table>
             </div>
             <ol>
-                <li>保证 <code>rc-lookahead</code> 范围内，用户通过 <code>--vbv-bufsize --vbv-maxrate</code> 指定网络/设备元器件带宽所能及的缓冲速度是否大于等于码率流量</li>
+                <li>保证 <code>--rc-lookahead</code> 范围内，用户通过 <code>--vbv-bufsize --vbv-maxrate</code> 指定网络/设备元器件带宽所能及的缓冲速度是否大于等于码率流量</li>
                 <li>码率超过缓冲区域则视频必然会卡顿，所以加大视频中「码率大于带宽处」的压缩强度。因此 VBV 对画质的破坏较大</li>
                 <li>与 CRF 上层模式一并使用时叫可变码率 Variable BitRate（VBR），或 Capped-CRF 模式</li>
                 <li>与 ABR 上层模式一并使用时叫固定码率 Constant BitRate（CBR），或 Capped-ABR 模式</li>
             </ol>
             <!-- x264 教程副本，更改需手动同步 { -->
             <code class="code-bold">--vbv-bufsize</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关（0），<span class="text-red-emph">需小于 <code>--vbv-maxrate</code></span>&gt;虚构缓冲区的大小，当压缩视频数据流会超出这个大小时增加量化压缩强度。</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关（0），<span class="text-red-emph">需小于 <code>--vbv-maxrate</code> ÷ 帧率</span>&gt;虚构缓冲区的大小，当压缩视频数据流会超出这个大小时增加量化压缩强度。有以下几种设置方式：</p>
+            <ul class="font-monospace pl-5 text-smaller">
+                <li>互联网直播~串流：<span class="text-blue-math">\(\text{bufsize} = \left[\text{maxrate}, 2 \times \text{maxrate}\right]\)</span></li>
+                <li>低延迟直播（每帧都小于 maxrate）：<span class="text-blue-math">\(\text{bufsize} = \text{maxrate} / \text{fps}\)</span></li>
+                <li>高画质串流（画质仍低于关 VBV）：<span class="text-blue-math">\(\text{bufsize} = \left[4 \times \text{maxrate}, ... \times \text{maxrate} \right]\)</span></li>
+            </ul>
             <p class="text-gray-size">注：在对解码缓冲速度有要求的应用里，需要同时确保解码 GOP 缓冲时长合规，时长 = <span class="text-blue-math">bufsize ÷ maxrate</span> 秒。</p>
             <code class="code-bold">--vbv-maxrate</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关（0）&gt;峰值上限，用于网络条件不足以支撑带宽波峰的情况（提高量化强度 + 强降噪）。据情景不同，maxrate 可以有 4 种状态，且这 4 种状态可以出现在同一视频中。<code>--vbv-bufsize --vbv-maxrate</code> 实际控制的还是这些状态的出现概率，需经验判断：</p>
-            <ul class="font-monospace pl-5 text-smaller">
-                <li>大：GOP 大小=bufsize=2×maxrate，视频码率超出 maxrate 后等缓存满再压缩，避开多数涨落，适合限平均率的串流</li>
-                <li>小：GOP 大小=bufsize=1×maxrate，视频码率超出 maxrate 后直接压缩，避开部分涨落，适合限峰值的串流</li>
-                <li>超：GOP 大小&lt;bufsize=1~2×maxrate，视频码率超出 maxrate 后直接压缩，但因视频小/crf 大所以作用不大</li>
-                <li>欠：GOP 大小&gt;bufsize=1~2×maxrate，视频码率超出 maxrate 后直接压缩，但因视频大/crf 小所以全都糊掉</li>
-            </ul>
-            <p class="font-monospace pl-5 m-0 overflow-auto">由于 gop 多样，4 种状态可以出现在同一视频中。buf/max 实际控制了这些状态的出现概率</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关（0）&gt;带宽条件（网速、池中加水速度），降低以限制带宽波峰（提高量化强度 + 强降噪）。主要限制了 I 帧的体积，直接影响 I 帧的可参考价值，反而会导致文件体积和总码率增加，画质降低（如 P 帧、B 帧内的 I 块数量增加的情况）；因此如果网络带宽能够承受波动，则不建议远低于 <code>--vbv-bufsize</code> 。</p>
             <!-- } -->
             <code class="code-bold">--nal-hrd</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关，<span class="text-red-emph">需 VBV</span>&gt;开启假想对照解码器 Hypothetical reference decoder。与假想播放流程中得到额外的 VBV 控制信息，并写进每段序列参数集 sps 及辅助优化信息 sei 里，适合提高 VBV 控制精度</p>
