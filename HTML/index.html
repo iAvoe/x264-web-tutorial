@@ -1868,7 +1868,7 @@
                 <li>加水：数据流流入缓存，码率即流速</li>
                 <li>出水：数据流流出缓存</li>
                 <li>缸不缺水：播放不卡顿</li>
-                <li>缸不满盈：硬件解码不爆缓存（类似于爆显存）</li>
+                <li>缸不满盈：硬件解码不溢出缓存（类似于大型游戏溢出显存，但有些设备可能会拒绝播放）</li>
             </ul>
 
             <h4>基于缓冲区的量化控制（Video Buffer Verifier、VBV）</h4>
@@ -2077,18 +2077,21 @@
             <p>“编码器策略”就是模式决策。率失真程度由代价函数「开销 = 失真+λ⋅码率」（越小越好）得出：</p>
             <span class="text-blue-math text-larger">\[J = D + \lambda \cdot R\]</span>
             <p>编码器在决定采用哪种编码模式（如帧内/帧间、哪种块划分、运动矢量朝向等）时，不再只考虑码率 R 或失真 D，而是计算所有候选模式的率失真代价 <span class="text-blue-math">\(J = D + \lambda R\)</span>，然后选择代价 J 最小的那个模式。</p>
-            <ul>
+            <!--<ul>
                 <li><span class="text-blue-math">\(\lambda=0\)</span>：无斜度，则代价等于失真——码率变而画质不变，宜压缩</li>
                 <li><span class="text-blue-math">\(\lambda \rightarrow 0\)</span>：趋 0，则开销趋失真——宜适当压缩</li>
                 <li><span class="text-blue-math">\(\lambda &gt;0\)</span>：大于 0，则开销大于失真——保画质收益大于压缩收益，宜保画质</li>
-            </ul>
+            </ul>-->
             <!-- } -->
             <div class="align-items-center">
-                <img src="files/rate-distorsion-optimization/x264-JM-RDO-Lambda.png" alt="x264-JM-RDO-Lambda" class="img-medium">
-                <img src="files/rate-distorsion-optimization/RDO-Lambda-Slopes.png" alt="RDO-Lambda-Slopes" class="img-medium">
+                <!--<img src="files/rate-distorsion-optimization/RDO-Lambda-Slopes.png" alt="RDO-Lambda-Slopes" class="img-medium">
                 <p class="text-gray-side">图：率失真优化中λ的斜度变化与效果</p>
                 <img src="files/rate-distorsion-optimization/RDO-qStep-Chart.png" alt="RDO-qStep-Chart" class="img-medium">
-                <p class="text-gray-side">图：率失真表格中不断调整并得到“×”的实际效果</p>
+                <p class="text-gray-side">图：率失真表格中不断调整并得到“×”的实际效果</p>-->
+                <img src="files/rate-distorsion-optimization/RDO-qStep-Chart-Emulated-v8.png" alt="RDO-qStep-Chart-Emulated" class="">
+                <p class="text-gray-side">图：率失真优化中λ的斜度变化与效果（左）与不同模式决策产生的不同“×”点位（右，由随机正态分布模仿得来，仅作示意）</p>
+                <img src="files/rate-distorsion-optimization/x264-JM-RDO-Lambda.png" alt="x264-JM-RDO-Lambda" class="img-medium">
+                <p class="text-gray-side">图：不同量化值（QP）对应了不同的（λ）斜度，从而定制筛选（优化）策略</p>
             </div>
             <code class="code-bold">--fgo</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数默认关，推荐 15 左右&gt;将高频信号在量化前后的差距也算进率失真优化的统计中，使优化更倾向于保留细节和噪声</p>
