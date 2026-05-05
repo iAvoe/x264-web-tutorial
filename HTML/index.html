@@ -1397,7 +1397,7 @@
             <code class="code-bold">--force-cfr</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;强制设定视频帧到整数时间码，可能用于对齐小数帧率的误差（如 23.976 或 24000/1001 变成 23.977）用</p>
             <code class="code-bold">--fullrange</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，7mod x264 自动&gt;启用 0~255 色彩范围，而不是默认的 16~235。视频内容永远不在使用有限色域设备/软件/视频网站下播放下可以考虑开启</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;启用 0~255 色彩范围，而不是默认的 16~235。应保持和源一致</p>
 
             <h2 id="h2-5">动态预测（Motion Prediction、MP）</h2>
             <p>视频往往会出现“占据一定画面的物件朝向一处平移”的情况，在视频帧中表现为“某个区域的分块拥有高度相似的运动向量”。这些重复性的动态向量分布规律肉眼可见，但动态搜索算法只会一味的盲找，因此我们提前给动态搜索一个搜索起点，就可以降本增效了。</p>
@@ -2092,7 +2092,7 @@
                 <img src="files/rate-distorsion-optimization/x264-JM-RDO-Lambda.png" alt="x264-JM-RDO-Lambda" class="img-medium">
                 <p class="text-gray-side">图：不同量化值（QP）对应了不同的（λ）斜度，从而定制筛选（优化）策略</p>
             </div>
-            <p>从上图可以看出，选择图中尽量往左下角的数据点并不难，不过列举各个模式本身会大量浪费性能，因此编码器会做更粗略，产生点位更少的率失真优化。</p>
+            <p>从上图可以看出，选择图中尽量往左下角的数据点并不难，难点在于列举各个模式会大量占用性能，因此编码器会做更粗略，产生点位更少的率失真优化。</p>
             <code class="code-bold">--fgo</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数默认关，推荐 15 左右&gt;将高频信号在量化前后的差距也算进率失真优化的统计中，使优化更倾向于保留细节和噪声</p>
 
@@ -2441,15 +2441,36 @@
             <p>光强/光压 Candela 等于尼特，即 <span class="text-blue-math">\(1 \text{cd} = 1 \text{nit}\)</span>。因 bt601，709，HDR-PQ，HLG 标准重视的亮度范围，曲线所异（偏亮或偏暗），故需要量化曲线，心理学优化，模式决策的重适配。</p>
             <code class="code-bold">--cll</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;最大内容光强，最大平均光强&gt;压制 HDR 源一定照源视频信息设，找不到不要用，见上图例。</p>
+            
             <!-- x265 教程副本，更改需手动同步 {-->
+            <h4>播放条件</h4>
+            <code class="code-bold">--range</code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;full/limited，默认留空&gt;指定视频源的色深范围，full：完整，limited：有限。剪辑时应额外检查剪辑软件的输出设定一致性。</p>
+            <code class="code-bold">--chromaloc</code>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~5，默认留空&gt;指定色度像素相对于缩小前画面的采样位置，涉及到解码端的色度像素对齐。如果源视频标注，则建议标注。</p>
+            <ul class="list-dotless font-monospace pl-5 list-dotless text-smaller">
+                <li><span class="text-blue-emph">0</span> ←（left）</li>
+                <li><span class="text-blue-emph">1</span> 中（center）</li>
+                <li><span class="text-blue-emph">2</span> ↖（topleft）</li>
+                <li><span class="text-blue-emph">3</span> ↑（top）</li>
+                <li><span class="text-blue-emph">4</span> ↙（bottomleft）</li>
+                <li><span class="text-blue-emph">5</span> ↓（bottom）</li>
+            </ul>
+            <div class="align-items-center">
+                <img loading="lazy" src="files/video-usability-information/Chroma-Location-Type.png" alt="Chroma Location Type" class="img-medium" >
+                <p class="text-gray-side">图：色度采样位置</p>
+                <img loading="lazy" src="files/video-usability-information/Chroma-Location-Type-Semantic.png" alt="Chroma Location Type Semantics" class="img-small" >
+                <p class="text-gray-side">图：国际电信联盟（ITU-T）<a href="https://www.itu.int/rec/dologin.asp?lang=s&id=T-REC-H.265-201504-S!!MSW-E">H.265 Figure E.1（第 384 页）</a> 沿用了 <a href="https://www.itu.int/rec/dologin_pub.asp?lang=e&id=T-REC-H.264-202408-I!!PDF-E&type=items">H.264 Figure E.1（第 443 页）</a> 的色度采样位置，与上图所述一致，但更难看懂。</p>
+            </div>
+
             <code class="code-bold">--colorprim</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;字符&gt;播放用三原色 (以及白点) 指标，查看视频信息可知：bt470m，bt470bg，smpte170m，smpte240m，film，bt2020，smpte428，smpte431，smpte432。如图 1 为 bt.2020。</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;字符&gt;原色色系：bt470m，bt470bg，smpte170m，smpte240m，film，bt2020，smpte428，smpte431，smpte432。</p>
             <code class="code-bold">--colormatrix</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;字符&gt;播放用矩阵格式/系数指标：fcc，bt470bg，smpte170m，smpte240m，GBR，YCgCo，bt2020c，smpte2085，chroma-derived-nc，chroma-derived-c，ICtCp。</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;字符&gt;矩阵格式：fcc，bt470bg，smpte170m，smpte240m，GBR，YCgCo，bt2020c，smpte2085，chroma-derived-nc，chroma-derived-c，ICtCp。</p>
             <p class="text-gray-side pl-5 m-0">注：不支持 bt2020nc</p>
             <code class="code-bold">--transfer</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;字符&gt;传输特质：bt470m，bt470bg，smpte170m，smpte240m，linear，log100，log316，iec61966-2-4，bt1361e，iec61966-2-1，bt2020-10，bt2020-12，smpte2084，smpte428，arib-std-b67。</p>
-            <p class="text-gray-side pl-5 m-0">上图图 2 的 PQ 即 st.2084 的标准，所以参数值为 smpte2084。</p>
+            <p class="text-gray-side pl-5 m-0">上方 HDR 部分图 2 的“PQ”字样即 st.2084，所以参数值为 smpte2084。</p>
             <!-- } -->
 
             <h2 id="h2-16">预设参数</h2>
