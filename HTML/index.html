@@ -8,7 +8,7 @@
         <script src="./files/tutorial.js" defer></script>
         <!-- Basic MathJax Javascript -->
         <script src="./files/mathJax3-tex-svg.js" defer></script>
-        <!-- Custom CSS Codes <link rel="stylesheet" href="./files/desktopContainer.css"> -->
+        <!-- Custom CSS Codes -->
         <link rel="preload" href="./files/tutorial.css" as="style">
         <link rel="stylesheet" href="./files/tutorial.css">
         <title>x264 教程 HTML 完整版</title>
@@ -994,7 +994,7 @@
             </div>
 
             <h3>缩放滤镜（Resize Filter）</h3>
-            <p>Windows 系统一般用双线性缩放放大 PPI 小的软件，视频视频播放器一般用 bicubic 或 lanczos 插值</p>
+            <p>Windows 系统一般用双线性缩放放大 PPI 小的软件，视频播放器一般用 bicubic 或 lanczos 插值</p>
             <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：更改图像大小的各种算法，可略</button>
             <div class="coll-content">
                 <h4>临近取样插值 Nearest Neighbour interpolation（NN）：</h4>
@@ -1052,7 +1052,7 @@
                 <img src="files/basics/Ubuntu-Terminal.png" alt="Ubuntu-Terminal" class="img-medium">
                 <p class="text-gray-side mt-0">图：Ubuntu（Linux 系统）的终端命令交互程序窗口。</p>
             </div>
-            <p><b>应用编程交互（Application programming interface、API）</b>：定义编译好的软件应用程序之间应该如何如何相互通信的规则。主要分为跨网络的 API（调用数据库、调用其他网站资源）和本地程序之间（软件、操作系统、电脑硬件）的 API。API 可以被看作是 CLI 的映射。</p>
+            <p><b>应用编程交互（Application programming interface、API）</b>：定义编译好的软件应用程序之间应该如何相互通信的规则。主要分为跨网络的 API（调用数据库、调用其他网站资源）和本地程序之间（软件、操作系统、电脑硬件）的 API。API 可以被看作是 CLI 的映射。</p>
 
             <h2 id="h2-2">编解码的过程</h2>
             <p>注：实际情况下会因为软硬件，用户设定，以及操作系统逻辑的不同而变。</p>
@@ -1413,7 +1413,7 @@
             </div>
             <p class="text-gray-side">注：它的专业术语是运动搜索、运动估计；具体到视频编码时，要加上“整数像素”的前缀。</p>
             <p>在连续帧间画面中，进行运动估计的整数像素精度动态信息搜索步骤，涵盖了各式搜索算法与各样的信号处理用途。具体步骤是以被参考帧内的已编码块（Coded Block）为起点，尝试通过位移来匹配相邻帧的画面，从而找到一个失真最小的向量（Direction of minimal distortion、DMD），这个向量就是整数动态向量。</p>
-            <p>为了找到可用的最小失真朝向，并且避免进行算力占用巨大的全搜索（Exhausive Search），动态搜索演化出了多种匹配的图案和算法。其中，较为聪明的动态搜索算法是多级算法，它们首会先尝试在较大范围进行粗略搜索，再以大致最佳区域为中心进行精细搜索，从而（包括在噪点干扰下）多快好省地找到整数动态向量。在整数动态搜索之后，还会由子像素动态搜索（Sub-pel Motion Estimation）来进一步做对齐，最终，这个动态向量被用于冗余预测块，以及对高动态画面提高有损压缩强度，从而压缩体积并优化码率的分配。</p>
+            <p>为了找到可用的最小失真朝向，并且避免进行算力占用巨大的全搜索（Exhaustive Search），动态搜索演化出了多种匹配的图案和算法。其中，较为聪明的动态搜索算法是多级算法，它们首会先尝试在较大范围进行粗略搜索，再以大致最佳区域为中心进行精细搜索，从而（包括在噪点干扰下）多快好省地找到整数动态向量。在整数动态搜索之后，还会由子像素动态搜索（Sub-pel Motion Estimation）来进一步做对齐，最终，这个动态向量被用于冗余预测块，以及对高动态画面提高有损压缩强度，从而压缩体积并优化码率的分配。</p>
             <p>如果动态搜索的过程有缺失或不够理想，参考帧与分块的建立会变得低效，码率分配也会变得不够合理，导致画质的降低和码率的增加。</p>
             <p class="text-gray-side">注：动态搜索的用途包括计算机视觉的目标跟踪（自动驾驶、监控与制导系统）、基于动态向量的分辨率超采样（如 DLSS）、视频驱动的 3D 建模与插帧、剪辑后期的视频去抖（如 Adobe Premiere 的变形稳定器效果）、智能电视内置的动态画质增强（虽然大多情况下效果一般）等等。</p>
             <div class="align-items-center">
@@ -1665,7 +1665,7 @@
                         </tr>
                         <tr class="border-bottom">
                             <td class="px-1">自适应量化</td>
-                            <td class="px-1">Adaptive Quantzation AQ</td>
+                            <td class="px-1">Adaptive Quantization (AQ)</td>
                             <td class="px-1">逐块量化强度</td>
                         </tr>
                         <tr class="border-bottom t-light-gray">
@@ -1739,7 +1739,7 @@
             <ul class="text-smaller">
                 <li>速度最快</li>
                 <li>可以通过设定最小量化值的方法跳过量化，实现一种无损压缩模式</li>
-                <li>码率分配不匀问题最严重，码率与文件体积体积不易预测</li>
+                <li>码率分配不匀问题最严重，码率与文件体积不易预测</li>
             </ul>
             <h4>码率调谐常量模式（Constant Rate Factor、CRF）</h4>
             <p>编码器进行简易的逐帧画面分析（前瞻进程 Lookahead），为每帧算出一个量化值（QP）的模式，调谐常量值，也就是 CRF 值在其中起到范围锚定作用，从而实现倾向于画质或压缩方向的码率分配策略。CRF 是在压制的不可能三角中实现微妙平衡的率控制模式，也是追求画质优先的唯一模式（码率受限时则画质不如 2pass 模式均衡）。</p>
@@ -1916,7 +1916,7 @@
                 <li>低延迟直播（每帧都小于 maxrate）：<span class="text-blue-math">\(\text{bufsize} = \text{maxrate} / \text{fps}\)</span></li>
                 <li>高画质串流（画质仍低于关 VBV）：<span class="text-blue-math">\(\text{bufsize} = \left[4 \times \text{maxrate}, ... \times \text{maxrate} \right]\)</span></li>
             </ul>
-            <p class="text-gray-size">注：在对解码缓冲速度有要求的应用里，需要同时确保解码 GOP 缓冲时长合规，时长 = <span class="text-blue-math">bufsize ÷ maxrate</span> 秒。</p>
+            <p class="text-gray-side">注：在对解码缓冲速度有要求的应用里，需要同时确保解码 GOP 缓冲时长合规，时长 = <span class="text-blue-math">bufsize ÷ maxrate</span> 秒。</p>
             <code class="code-bold">--vbv-maxrate</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 kbps，默认关（0）&gt;带宽条件（网速、池中加水速度），降低以限制带宽波峰（提高量化强度 + 强降噪）。主要限制了 I 帧的体积，直接影响 I 帧的可参考价值，反而会导致文件体积和总码率增加，画质降低（如 P 帧、B 帧内的 I 块数量增加的情况）；因此如果网络带宽能够承受波动，则不建议远低于 <code>--vbv-bufsize</code> 。</p>
             <!-- } -->
@@ -2123,7 +2123,7 @@
             </div>
 
             <h3>宏块树与量化值曲线缩放 qComp</h3>
-            <p>源自 libavcodec 实现同码率下整体画质更高结果的逻辑：“复杂动态场景的帧间参考少。所以分配更少码率（增加量化压缩），更多码率应该分给参考多而远的简单动态场景”。这样做在码率受到很大限制时能保护多数场景的画质，但缺点则是大多时候，动漫场景等「背景不动前景动」的场景（如人物脸部）画面被压缩太多的问题。x264 中所做的改进是“逐宏块应用这套逻辑”——即 <a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">MarcoBlock Tree (MBTree)</a>。量化值曲线缩放 quantizer curve compression 则被“贬为”控制 MBTree 等一系列量化强度分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
+            <p>源自 libavcodec 实现同码率下整体画质更高结果的逻辑：“复杂动态场景的帧间参考少。所以分配更少码率（增加量化压缩），更多码率应该分给参考多而远的简单动态场景”。这样做在码率受到很大限制时能保护多数场景的画质，但缺点则是大多时候，动漫场景等「背景不动前景动」的场景（如人物脸部）画面被压缩太多的问题。x264 中所做的改进是“逐宏块应用这套逻辑”——即 <a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">Marcoblock Tree (MBTree)</a>。量化值曲线缩放 quantizer curve compression 则被“贬为”控制 MBTree 等一系列量化强度分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
             <h4>qComp 的用途</h4>
             <ol class="overflow-auto">
                 <li>（ABR 模式）根据宏块的数量与 <code>--qcomp</code> 值设置初始复杂度百分比：
@@ -2377,7 +2377,7 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;关闭 DCT 变换的低强度系子归零操作，以减少细节损失，降低有损压缩。适合幻灯片录屏等画面极其干净，或经过大量滤镜过滤噪声，<code>--crf &lt; 17</code>或 ABR <code>--bitrate &gt; 500000</code> 编码策略的源视频</p>
             
             <h3>死区量化器 Dead-zone Quantizer 优化</h3>
-            <p>死区，也叫 dead-band，netual-zone，或无作用区，代表输入到输出波形中可归零的部分。</p>
+            <p>死区，也叫 dead-band，neutral-zone，或无作用区，代表输入到输出波形中可归零的部分。</p>
             <div class="align-items-center">
                 <img src="files/entropy-coding-optimization/Deadband-operator.svg" alt="Deadband-operator" class="img-small">
                 <p class="text-gray-side">图：信号死区设 0.5 时，输入到输出 <span class="text-blue-pure">y</span>=<span class="text-red-pure">x</span> 波形的变化。见<a href="https://en.wikipedia.org/wiki/Deadband">维基百科</a></p>
@@ -2511,7 +2511,7 @@
                         </tr>
                         <tr class="border-lr">
                             <th>direct</th>
-                            <td class="px-1" colspan="6">默认 spatio</td>
+                            <td class="px-1" colspan="6">默认 spatial</td>
                             <td class="px-1 t-invert-dark" colspan="4">auto</td>
                         </tr>
                         <tr class="border-lr">
@@ -2691,7 +2691,7 @@
             <code class="code-bold">--threads</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，建议保持默认（等于 CPU 线程）&gt;由于参考帧步骤要等其之前的步骤算完才开始，所以远超默认的值会因为处理器随机算的特性而降低参考帧的计算时间，使码率增加，画质降低，速度变慢</p>
             <code class="code-bold">--non-deterministic</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关，推荐开&gt; 降低多线程完算性——减少多线程共享数据的可靠性，些微提高画质。使用后每个进程的冗余判断更为独断，且让新的动态搜索线程得知「旧动态搜索线程线程实际搜素过，而非参数设定」的区域。「完算性」一般仅代表通过完整计算得到结果，而不是提前跳过的计算特征。而启用多线程，VBV 都会降低完算性</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关，推荐开&gt; 降低多线程完算性——减少多线程共享数据的可靠性，些微提高画质。使用后每个进程的冗余判断更为独断，且让新的动态搜索线程得知「旧动态搜索线程线程实际搜索过，而非参数设定」的区域。「完算性」一般仅代表通过完整计算得到结果，而不是提前跳过的计算特征。而启用多线程，VBV 都会降低完算性</p>
             <code class="code-bold">--lookahead-threads</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，建议保持默认（应该是 <code>--threads</code> 的 1/4）&gt;指定前瞻进程占用的线程数，速度太快则其后的编码进程跟不上，太慢则其后的编码进程要等结果，所以不需要改动</p>
             <code class="code-bold">--frame-threads</code>
@@ -2717,7 +2717,7 @@
                 <li><span class="text-blue-emph">pad:,,,,3840,2160,,,</span>：视频加减边到 3840x2160 像素，若加边则加 #000000（黑）边</li>
                 <li><span class="text-blue-emph">resize:1060,1080,96:53,,,lanczos</span>：1920x1080 视频的宽使用 lanczos 算法缩小 53/96；同时标记视频宽在播放时，宽度应拉伸 96:53 倍（96:53 长方像素），显示为 1920x1080</li>
                 <li><span class="text-blue-emph">resize:1280,720,,i444,spline</span>：使用样条插值缩放输入视频到 1280x720，储存为 YCbCr 4:4:4</li>
-                <li><span class="text-blue-emph">resize:1060,1080,,width,i420,lanczos</span>：使用 lanzcos 插值，只将宽 width 缩放到 1060px，储存为 YCbCr 4:2:0</li>
+                <li><span class="text-blue-emph">resize:1060,1080,,width,i420,lanczos</span>：使用 lanczos 插值，只将宽 width 缩放到 1060px，储存为 YCbCr 4:2:0</li>
                 <li><span class="text-blue-emph">hqdn3d:0,0,3,5</span>：仅开启时域降噪滤镜，分别在 Y，C 平面设定强度 3,5</li>
                 <li><span class="text-blue-emph">vflip</span>：左右翻转视频</li>
                 <li><span class="text-blue-emph">subtitles</span>：在集成 VSFilter64.dll 动态链接库的情况下渲染字幕文件，需<code>--sub</code> 导入字幕文件，然后使用 <code>--vf subtitles</code> 参数渲染字幕到视频</li>
@@ -2739,7 +2739,7 @@
                         <li>yadif 中 [模式] 可用的值有 0,1,2,3；[顺序] 可用的值有 tff 和 bff</li>
                     </ul>
                 </li>
-                <li>hdqn3d 是一种简单快速的时域 + 空域降噪滤镜。仅指定 <code>--vf hqdn3d</code> 则使用默认强度（仅开启滤镜）为 4,3,6,4.5</li>
+                <li>hqdn3d 是一种简单快速的时域 + 空域降噪滤镜。仅指定 <code>--vf hqdn3d</code> 则使用默认强度（仅开启滤镜）为 4,3,6,4.5</li>
             </ul>
             <code class="code-bold">--sub</code>
             <p class="font-monospace pl-5 m-0 overflow-auto mb-3">&lt;路径到文件，<span class="text-red-emph">需 <code>--vf subtitles</code> 和 VSFilter64.dll</span>&gt;见 <code>--vf subtitles</code> 说明</p>
