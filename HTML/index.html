@@ -47,7 +47,6 @@
             <button type="button" class="border-main rounded-3 ms-1 px-1" onclick="window.print()">3. 点击打印</button>
             <p class="font-monospace px-1">推荐设置：彩色模式、不打印背景、0.04 英寸边距、打印页眉页脚</p>
             <button type="button" class="border-main rounded-3 ms-1 px-1" onclick="printModeOff(printT, printC, widthOffset)">4. 点击退出打印排版</button>
-            <button type="button" class="border-main rounded-3 ms-1 px-1" onclick="toggleCollapseAll()">1/5. 点击同步展开/折叠所有内容</button>
             <p>点击图片即可轮询三种图片大小。窗口宽度大于窗口高度则切换到宽屏/桌面端/平板电脑排版，否则切换到窄屏/移动端排版。</p>
         </div>
         <div class="container-mobile rounded-9 border-main">
@@ -182,7 +181,7 @@
                 <li><b>软件解码 Software Decoding：</b>以通用电路播放流文件，通常兼容性更高，画质更好，能耗/发热更高</li>
                 <li><b>硬件解码 Hardware Decoding：</b>以专用电路替代软解，通常兼容性更低，画质更差，能耗/发热更低
                     <ul class="text-smaller">
-                        <li>如 libmxv，opencl，MMAL，direct3D</li>
+                        <li>如 libmfx，opencl，MMAL，direct3D</li>
                     </ul>
                 </li>
                 <li><b>软件编码 Software Encoding</b>：以通用电路编码流文件，压缩功能通常更完整可控，更慢，能耗/发热更高，同码率下的画质更高或最高
@@ -312,7 +311,7 @@
             <p>...以及独立的专利权持有方许可（约占 38%，如诺基亚的 HEVC 标准必要专利集）才能合规使用（更不如不用）。</p>
             <div class="align-items-center">
                 <img src="files/basics/Pay-For-HEVC-Windows.webp" alt="Pay-For-HEVC-Windows" class="img-medium">
-                <p class="text-gray-side mt-0">图：Windows 文件管理器预览 HEVC 编码视频、HEIF 图像的组件，定价 $0.99 USD。通过让用户支付这比费用。<br>微软以“产品默认不包含”而绕过了 HEVC 的专利费。</p>
+                <p class="text-gray-side mt-0">图：Windows 文件管理器预览 HEVC 编码视频、HEIF 图像的组件，定价 $0.99 USD。通过让用户支付这笔费用。<br>微软以“产品默认不包含”而绕过了 HEVC 的专利费。</p>
             </div>
 
             <h3>比特（Bit）是什么</h3>
@@ -1148,7 +1147,7 @@
                 </li>
             </ol>
             <div class="align-items-center">
-                <img src="files/basics/Video-Endocing-Process.png" alt="Video-Endocing-Process" class="img-medium">
+                <img src="files/basics/Video-Encoding-Process.png" alt="Video-Encoding-Process" class="img-medium">
             </div>
 
             <h3>视频编码的标准（<a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs">MDN Docs</a>）</h3>
@@ -1218,7 +1217,7 @@
             </div>
             <p>其中，“H.264”的 H 代表国际电信联盟——电信标准化部门（ITU‑T）中的 <a href="https://www.itu.int/net/itu-t/sigdb/spevideo/Hseries-s.htm">H 系列建议指南</a>，例如 <a href="https://www.itu.int/rec/T-REC-H.810">ITU-T H.810</a> 个人健康系统（血压计、血糖仪、体重秤）的交互设计建议指南。一些符合某个 H 系列视频编码建议指南的视频编码器会将这个标号写在程序名字上，就有了所谓的 x264，x265。</p>
             <div class="align-items-center">
-                <img src="files/basics/Video-Endocing-Standards.png" alt="Video-Endocing-Standards" class="img-medium">
+                <img src="files/basics/Video-Encoding-Standards.png" alt="Video-Encoding-Standards" class="img-medium">
             </div>
 
             <h3>命令行参数</h3>
@@ -2062,13 +2061,13 @@
             </ul>
 
             <code class="code-bold">--deblock</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数偏移值，默认 <span class="text-blue-emph">1:0</span>。推荐 <span class="text-blue-emph">0:0</span>、<span class="text-blue-emph">-1:-1</span>、<span class="text-blue-emph">-2:-1</span>1&gt; 平滑强度偏移 : 搜索精度偏移。两值于原有强度上增减。</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数偏移值，默认 <span class="text-blue-emph">1:0</span>。推荐 <span class="text-blue-emph">0:0</span>、<span class="text-blue-emph">-1:-1</span>、<span class="text-blue-emph">-2:-1</span>&gt; 平滑强度偏移 : 搜索精度偏移。两值于原有强度上增减。</p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li>平滑<span class="text-blue-emph">≥1</span>时用以压缩</li>
                 <li>平滑<span class="text-blue-emph">-2~-1</span>时略降锐度，适合串流</li>
                 <li>平滑<span class="text-blue-emph">2</span>适合锐利视频源，4k 电影，游戏录屏。提高码率且会出现块失真</li>
                 <li>平滑<span class="text-blue-emph">-3~-2</span>适合高码动画源/桌面录屏。增块失真，但观感仍比 1 好</li>
-                <li>搜索<span class="text-blue-emph">大于 2</span>易误判；<span class="text-blue-emph">小于 1</span>会遗漏。建议保持<span class="text-blue-emph">0~-1</span>，除非量化强度大于 26 时设设<span class="text-blue-emph">1</span></li>
+                <li>搜索<span class="text-blue-emph">大于 2</span>易误判；<span class="text-blue-emph">小于 1</span>会遗漏。建议保持<span class="text-blue-emph">0~-1</span>，除非量化强度大于 26 时设<span class="text-blue-emph">1</span></li>
             </ul>
             <!-- } -->
 
@@ -2396,7 +2395,7 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~32，默认 11，<code>--trellis</code> 小于 2 时开启&gt;一种逻辑简单的帧间再量化——细节面积小于死区就删掉，大就保留。一般用途建议 8，高画质建议 4</p>
 
             <h3>软判决率失真游程走线优化——SDQ trellis</h3>
-            <p>Soft decision quantization / SDQ trellis 算法。通过限制量化后块中的 DCT 系子 coefficients 强度，甚至偏移当前系子的强度值到临近系子，以保证游程编码中走线的平稳。过程中由率失真计算确认对画面的影响符合预期质量，从而提高压缩率。<code>--trellis</code> 应用于量化步骤之后，并且对少数突兀的 DCT 系子强度做了平均化，所以叫“再量化”。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-16"></a>x265 教程——优化熵编码</p>
+            <p>Soft decision quantization / SDQ trellis 算法。通过限制量化后块中的 DCT 系子 coefficients 强度，甚至偏移当前系子的强度值到临近系子，以保证游程编码中走线的平稳。过程中由率失真计算确认对画面的影响符合预期质量，从而提高压缩率。<code>--trellis</code> 应用于量化步骤之后，并且对少数突兀的 DCT 系子强度做了平均化，所以叫“再量化”。详见 <a href="../../x265-web-tutorial/HTML/index.html#h2-16">x265 教程——优化熵编码</a></p>
             <code class="code-bold">--trellis</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数，范围 0~2, 推荐 2&gt;软判决优化 CABAC 的率失真再量化。 </p>
             <ul class="font-monospace pl-5 text-smaller">
