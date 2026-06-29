@@ -2038,9 +2038,9 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~3，默认 0 关闭&gt;指定据画面分块的复杂度、CRF/ABR 模式给的逐帧量化值（QP）分化出每个画面块应有量化值的策略。</p>
             <ul class="font-monospace pl-5 text-smaller">
                 <li></li>
-                <li><span class="text-blue-emph">1</span>普通自适应量化，适合画面内容单调、快速编码、压缩优先场景用</li>
-                <li><span class="text-blue-emph">2</span>方差自适应量化（AQ-Variance），同时自动调整 <code>--aq-strength</code> 的强度。推荐用于录像电影，或搭配 CRF 小于 17，高码率 ABR 等不会欠码的策略</li>
-                <li><span class="text-blue-emph">3</span>方差自适应量化、欠码时倾向保暗场画质（平面涂抹失真更明显）</li>
+                <li><span class="text-blue-emph">1</span>方差自适应量化（AQ-Variance），适合画面内容单调、快速编码、压缩优先场景用</li>
+                <li><span class="text-blue-emph">2</span>自动方差自适应量化（Auto AQ-Variance），同时自动调整 <code>--aq-strength</code> 的强度。推荐用于录像电影，或搭配 CRF 小于 17，高码率 ABR 等不会欠码的策略</li>
+                <li><span class="text-blue-emph">3</span>自动方差自适应量化、欠码时倾向保暗场画质（平面涂抹失真更明显）</li>
             </ul>
             <code class="code-bold">--aq-strength</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点&gt;自适应量化强度，推荐搭配 <code>--aq-mode</code> 使用。如动漫和幻灯片录屏等平面多过纹理的场景下 <code>--aq-mode <span class="text-blue-emph">1</span> --aq-strength <span class="text-blue-emph">0.8</span></code>, <span class="text-blue-emph">2</span>:<span class="text-blue-emph">0.9</span>，<span class="text-blue-emph">3</span>:<span class="text-blue-emph">0.7</span></p>
