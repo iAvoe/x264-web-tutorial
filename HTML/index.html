@@ -1967,8 +1967,8 @@
             <code class="code-bold">--slow-firstpass</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关&gt;pass1 里自动关闭以下提速，或自动提高以下参数的强度，以保证 pass1 模式中 CRF 模式计算量化值的准确度：<code>--no-8x8dct --me dia --partitions none ref 1 --subme &lt;=2 --trellis 0 --fast-pskip</code>，可手动覆盖为强度更高的参数</p>
 
-            <h2 id="h2-10">自适应量化</h2>
-            <p>一种利用感知对比度掩蔽现象的帧内分块码率调整，将更多码率分配到“更重要”地方的方法。</p>
+            <h2 id="h2-10">自适应量化（Adaptive Quantization，AQ）</h2>
+            <p>一种利用感知对比度掩蔽现象的帧内分块码率调整，将更多码率分配到“更重要”处的策略。</p>
             <div class="align-items-center">
                 <img loading="lazy" src="files/rate-control/VAQ-Source3.webp" alt="VAQ Source" class="img-medium" >
                 <img loading="lazy" src="files/rate-control/VAQ-Source3-Mode1.png" alt="VAQ Mode1 Map" class="img-medium" >
@@ -1976,18 +1976,45 @@
                 <p class="text-gray-side">图：简单根据纹理（Mode 1）分布/密度增减量化值；来源及更多图例：<a href="https://github.com/Khrysoberyl/vs_AQVisualizer">Github/Khrysoberyl</a></p>
             </div>
 
-            <h3>感知对比度掩蔽现象（Perceptual contrast masking）</h3>
+            <h3>感知对比度掩蔽现象（Perceptual Contrast Masking）</h3>
             <p class="text-gray-side">注：这不是摄影后期/PhotoShop 的对比度遮罩处理法（Contrast Masking）</p>
-            <p>自然界中的动物通过打乱自身外形的线条轮廓，从而在不调整自身颜色，不改变体温，不变更习性，不妥协体型大小的情况下做到的外形伪装。这种效应的参数包括：</p>
+            <p>自然界中的动物通过打乱自身外形的线条轮廓，从而在不调整自身颜色，不改变体温，不变更习性，不妥协体型大小的情况下实现的外形伪装。这种效应的参数包括：</p>
             <ul>
                 <li>空间距离差异——两种特征的距离越近，掩蔽越强</li>
                 <li>特征差异——两种特征的摆放角度，空间频率越接近，掩蔽越强</li>
                 <li>对比度差异——两种特征的对比度越大，掩蔽越强</li>
             </ul>
             <p>这种现象说明不只是音量，颜色或亮度的差异能掩蔽内容，单纯是画面中细节的分布不同就可以让人视而不见——<i>空间频率高，纹理复杂的内容能够掩蔽频率低，纹理简单的内容</i>，只要找出这些信息，就有机会进行更强力的有损压缩了。</p>
-            <p>具体来说，自适应量化利用了这一效应来重新分配不同分块的量化强度，具体到<i>量化失真处的像素值变化程度不大于纹理像素值变化的程度即可</i>。</p>
-            <p>要注意的是，尽管该方法常用，但对比度感知现象的原理尚不明确——如果观众仔细看就会发现失真。因此这也是“高播放画质”与“高暂停画质”的区别之一。</p>
 
+            <h4>主观画质理论衍生的 AQ 策略</h4>
+            <ul>
+                <li><b>自适应压缩纹理</b>
+                    <ul>
+                        <li>纹理复杂、空间频率高的大范围区域（如砂砾、宣纸平铺）会掩蔽掉一定程度的量化失真，同时人眼对低频信息的变化更敏感——压缩纹理保平面</li>
+                        <li>程度：量化失真处的造成的失真程度不大于纹理像素值变化的程度即可</li>
+                        <li>要注意的是，尽管该方法常用，但对比度感知现象的原理尚不明确——如果观众仔细看就会发现失真</li>
+                        <li>不适合漫画材质动画与 3D 动画，不适合高码率视频</li>
+                        <li>对应 <code>--aq-mode 1</code></li>
+                    </ul>
+                </li>
+                <li><b>自适应保护纹理</b>
+                    <ul>
+                        <li>人眼倾向于观察人物神态、且主观上喜欢看锐利的边缘，因此要优先保纹理</li>
+                        <li>程度：平面和暗场画面更糊一些即可，当然掩蔽效应也要利用上（仍压缩纹理，只是更轻），尝试平衡平坦区和纹理的画质</li>
+                        <li>属于心理视觉优化（PVO）策略，可能会降低客观画质</li>
+                        <li>不适合码率优先、非画质优先的视频</li>
+                    </ul>
+                </li>
+                <li><b>自适应保护纹理和暗场</b>
+                    <ul>
+                        <li>由于画面暗部细节时有主要内容（聚焦到角色神情等可能）、暗部的变糊和色阶断裂等默认编码器压缩策略会变得不可取，因此额外给低亮度区域分配保护权重</li>
+                        <li>程度：同上</li>
+                        <li>属于心理视觉优化（PVO）策略，但可能会增加客观画质</li>
+                        <li>不适合码率优先、非画质优先的视频</li>
+                    </ul>
+                </li>
+            </ul>
+            
             <h3>方差（Variance）</h3>
             <p>表示数据样本相对于整体平均值的离散程度。有时平均值，包括加权平均值指标并不可靠，或者说我们需要知道平均值到底有多可靠。因此有了这种“差→方→和→均”式计算，即“以偏差之和窥数据之衡”。</p>
             <span class="text-blue-math">\[ \sigma^{2}=\frac{\sum_{i=1}^{N} (x_{i}-\overline{x})^{2}}{N} \]</span>
@@ -2008,12 +2035,12 @@
             </div>
 
             <code class="code-bold">--aq-mode</code>
-            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~3&gt;据原画和 CRF/ABR 强度设定，码率不足时分配细分块量化强度的策略</p>
+            <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数 0~3，默认 0 关闭&gt;指定据画面分块的复杂度、CRF/ABR 模式给的逐帧量化值（QP）分化出每个画面块应有量化值的策略。</p>
             <ul class="font-monospace pl-5 text-smaller">
-                <li><span class="text-blue-emph">1</span>普通自适应量化，适用于简单平面以及快速编码场景</li>
-                <li><span class="text-blue-emph">2</span>方差自适应量化，同时自动调整 <code>--aq-strength</code> 的强度。推荐用于录像电影，或搭配 CRF 小于 17，高码率 ABR 等不会欠码的策略</li>
-                <li><span class="text-blue-emph">3</span>在欠码时倾向保暗场画质</li>
-                <li><span class="text-blue-emph">4</span>在欠码时更加倾向保纹理画质（接受平面涂抹失真，动漫和幻灯片录屏场景慎用）</li>
+                <li></li>
+                <li><span class="text-blue-emph">1</span>普通自适应量化，适合画面内容单调、快速编码、压缩优先场景用</li>
+                <li><span class="text-blue-emph">2</span>方差自适应量化（AQ-Variance），同时自动调整 <code>--aq-strength</code> 的强度。推荐用于录像电影，或搭配 CRF 小于 17，高码率 ABR 等不会欠码的策略</li>
+                <li><span class="text-blue-emph">3</span>方差自适应量化、欠码时倾向保暗场画质（平面涂抹失真更明显）</li>
             </ul>
             <code class="code-bold">--aq-strength</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点&gt;自适应量化强度，推荐搭配 <code>--aq-mode</code> 使用。如动漫和幻灯片录屏等平面多过纹理的场景下 <code>--aq-mode <span class="text-blue-emph">1</span> --aq-strength <span class="text-blue-emph">0.8</span></code>, <span class="text-blue-emph">2</span>:<span class="text-blue-emph">0.9</span>，<span class="text-blue-emph">3</span>:<span class="text-blue-emph">0.7</span></p>
@@ -2099,15 +2126,16 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;整数默认关，推荐 15 左右&gt;将高频信号在量化前后的差距也算进率失真优化的统计中，使优化更倾向于保留细节和噪声</p>
 
             <h3>心理视觉优化</h3>
-            <p>Psycho-visual optimization PVO 更类似于一种自适应量化，利用人类视觉系统的特性，通过掩蔽和感知量化量化，实现低码画面的码率再分配，保持高压缩的同时，提供更好的主观视觉质量。主观质量是建立在损失客观质量（与输入源的差距）上的质量。</p>
+            <p>Psycho-visual optimization（PVO）更类似于一种自适应量化，利用人类视觉系统的特性，通过掩蔽和感知量化，实现低码画面的码率再分配，勉强保持高压缩的同时，提供更好的主观视觉质量，妥协客观质量（与输入源的差距）。</p>
             <ol>
                 <li><b>空间掩蔽（Spatial Masking）</b>：
-                    <ul><li>人眼会忽略高锐度边缘周边区域的画面，因此增加这些区域的量化强度</li></ul>
+                    <ul><li>人眼会忽略高锐度边缘周边区域的画面，因此增加这些区域的量化强度，省出码率</li></ul>
                 </li>
                 <li><b>频域掩蔽（Frequency Masking）</b>：
-                    <ul><li>人眼会忽略高频细节区域内的低频信号分量，因此可以在变换块中剔除高频块的低频分量</li></ul>
+                    <ul><li>突兀大范围信号会遮住不够明显、空间面积不够大的周边信号，例如彩色噪点遮住纯色线条、大亮斑遮住小暗斑，因此可以在变换块中剔除空间频率相似，但信号相异的 DCT 分量/系子，省出码率</li></ul>
                 </li>
             </ol>
+            <p>来源：<a href="http://www.visionrc.com/Research/Implicitmasking.aspx">Applied Vision Research and Consulting</a></p>
             <code class="code-bold">--psy-rd</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;α:β 浮点，默认 1:0&gt;心理学优化设置。α 保留纹理，β 在 α 的基础上保留噪点细节。画质优先时，α、β 值的大小与画面复杂度呈正比，但增加的程度相比于画面复杂度应该更小。</p>
             <ul class="font-monospace pl-5 text-smaller">
