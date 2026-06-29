@@ -399,8 +399,9 @@
                     <ul>
                         <li>1cd/lm 大约为一支蜡烛的亮度</li>
                         <li>由于能量（电压、焦耳）与亮度正相关，所以往往被直接称为 i“能量”</li>
-                        <li>尼特代表 1cd 光源投射到一平方米（一般情况下距离一米）区域后所剩的亮度，主要用于显示器的亮度设定</li>
+                        <li>尼特（nit）代表 1cd 光源投射到一平方米（一般情况下距离一米）区域后所剩的亮度，主要用于显示器的亮度设定</li>
                         <li>一般来说 <span class="text-blue-math">\(1 \text{nit} \approx 3.426 \text{lm}\)</span>，但实际的“汇率”取决于光源和测量仪器/方法</li>
+                        <li>或者更干脆一点，两者量纲不同，不能相对比</li>
                     </ul>
                 </li>
                 <li><b>软硬件亮度</b>：代表灰度像素值的大小，值越大表示像素点越亮，但最大亮度受硬件和用户设定限制。伽马 gamma/Y 值定义了像素的亮度范围，最小值 0 为黑色</li>
@@ -415,7 +416,7 @@
             <p class="text-gray-side">注：“色深”是衍生叫法，“位深”是严谨称呼；并没有“色彩深度”等其它含义。</p>
 
             <h4>有限位深（Limited/Analog/TV）</h4>
-            <p>模拟电视使用了 <span class="text-blue-math">\( 0 \text{mV ~ } 700 \text{mV} \)</span> 的输入电压表示位深，对应软件的完整位深。但早期的模拟电视缺乏电压限制功能——倘若电视台的信号调制器（如同家庭宽带的 Modem）出现偏差或干扰，就可能有大量用户的电视出现烧屏现象。所以显示标准上要求信号层面限制电压范围，牺牲一些位深来解决问题，得到了有限范围。</p>
+            <p>模拟电视使用了 <span class="text-blue-math">\( 0 \text{mV ~ } 700 \text{mV} \)</span> 的输入电压表示位深，对应软件的完整位深。但为了传输同步脉冲信号和消隐信号，就分别拿走了 0~15 和 236~255 两个范围，即流传至今的“有限范围”（Limited Range）。</p>
             <p>到了数字时代，电视厂商都使用 HDMI 协议的显示信号接口，电脑厂商则使用 DisplayPort 的显示信号接口，所以在“电脑接电视”，和“游戏主机接显示器”时往往需要额外的输入和输出设置，才能得到明暗过渡正常的画面。</p>
             <ul class="text-gray-side overflow-auto">
                 <li>一般在显示器的 OSD 设置界面上看到，写作兼容/有限/模拟/电视范围 </li>
@@ -472,7 +473,7 @@
                     <li>视频编码器必须用慢速、精确的帧间搜索冗余，否则压缩率不但不提升，还有可能会下降</li>
                     <li>播放器需要为高位深内容增加缓冲区大小以储存解码内容，否则容易卡住，但则会极大影响低网速的情况</li>
                 </ol>
-                <p>同时，10bit 位深的图片永远比 8bit 位深的同一张图片大，尽管它们在解码后/未压缩状态的大小差距在 20% 左右（1920x1080 YUV4:2:0 格式）。</p>
+                <p>同时，10bit 位深的图片往往 8bit 位深的同一张图片大，尽管它们在解码后/未压缩状态的大小差距在 20% 左右（1920x1080 YUV4:2:0 格式）。不过在现代图片编码器（HEIC/AVIF）中，这个差距也有可能会被追平。</p>
                 <table class="table-center">
                     <thead>
                         <tr>
@@ -504,15 +505,15 @@
             <ul class="text-smaller overflow-auto">
                 <li><b>生理伽马映射</b>：人眼对于亮度的感知与物理亮度的线性变化所异
                     <ul class="text-gray-side">
-                        <li>人眼敏感于低至中等亮度的变化，而对中高亮度的变化则相对不太敏感。因此，当内容的亮度变化呈直线关系时，人们会感觉到“发白”</li>
+                        <li>人眼敏感于低至中等亮度的变化，而对中高亮度的变化则相对不太敏感。因此，当内容的亮度变化呈直线关系时，人眼会感觉到“发黑”</li>
                         <li>许多游戏的初始设置中，“将滑块调节到能清晰看到左侧暗部图像”实际上就是在调节生理伽马曲线</li>
-                        <li>相机 CMOS 捕获的线性亮度（RAW 直出格式）在人眼看来会显得过亮“发白”，需要进行“黑化”校正</li>
+                        <li>相机 CMOS 捕获的线性亮度（RAW 直出）在人眼看来会显得“发黑”，需要“白化”校正</li>
                     </ul>
                 </li>
                 <li><b>软硬件伽马映射</b>：屏幕电压与线性亮度变化之间的关系并非线性
                     <ul class="text-gray-side">
                         <li>CRT 显示屏一般需要放大电压到 <span class="text-blue-math">\( v^{2.2} \)</span> 才能够直线地显示亮度变化</li>
-                        <li>sRGB 标准则因为 CRT 显示器的特性相当于已经对图像进行了“黑化”处理，因此在录制过程中就会将图像进行“白化”处理：<span class="text-blue-math">\( \gamma^{\frac{1}{2.2}} \)</span></li>
+                        <li>sRGB 标准则因为 CRT 显示器的物理特性自带约 2.2 的伽马值会导致画面“黑化”，因此在录制过程中，相机才需要预先对图像进行伽马校正“白化”处理：<span class="text-blue-math">\( \gamma^{\frac{1}{2.2}} \)</span></li>
                         <li>若编辑 RAW 直出图像的软件未打开 Adobe 软件默认关闭的“按伽马系数混合 RGB 颜色，伽马值为 1”的设定，图层透明通道之间的过渡会显得杂乱不堪。</li>
                     </ul>
                 </li>
@@ -537,7 +538,7 @@
             </div>
 
             <h3>饱和度（Saturation）</h3>
-            <p>一般指液体在特定压力和温度下溶解了某种成分的程度，达到最高时会沉积而不再溶解。图像中则代表颜色接近 100% 纯色的程度或“彩度”，饱和度越高则图像越鲜艳，为零时得到灰阶图像；最大时得到纯色图像。对比度接近饱和度，但不是饱和度，从图中可见并没有白色溢出。</p>
+            <p>色彩饱和度（Saturation）的概念来源于光学和色彩学，表示色彩的纯度。有几分类似于化学溶解度，饱和度越高则图像越鲜艳，为零时得到灰阶图像；最大时得到纯色图像。对比度接近饱和度，但不是饱和度（从图中可见没有白色溢出）。</p>
             <div class="align-items-center">
                 <img src="files/basics/Saturation.webp" alt="Saturation" class="img-medium">
                 <p class="text-gray-side mt-0">图：饱和度，来源：<a href="https://developer.apple.com/documentation/accelerate/adjusting-saturation-and-applying-tone-mapping">developer.apple.com</a>。</p>
@@ -595,7 +596,7 @@
                                 style="color:yellow">Y</span><span style="color:black">K</span></td>
                         <td class="px-1">湛 zhàn 洋黄黑</td>
                         <td class="px-1">减法色彩</td>
-                        <td class="px-1">卖墨盒</td>
+                        <td class="px-1">节约暗场彩色墨</td>
                         <td class="px-1">打印纸</td>
                     </tr>
                     <tr>
@@ -724,7 +725,7 @@
             </div>
 
             <h4>小数帧率 / 丢帧、剪辑素材对齐问题</h4>
-            <p>NTSC 模拟电视每个频道的标准带宽大约为 6MHz（但实际宽度仅为 4.5MHz）。接下来发生的事谁都没有预料到——彩色电视出现了。结果是原本的频宽完全放不下彩色电视台信号，而且由于电视机已经售出，不可能更改用户家里电视的频宽和扫描线的数量。最终解决方案是在每秒 30 帧的基础上丢掉一帧，并加速 1 秒到 1.1001 秒，以保持与帧率的对齐（同时也引入了 YUV 4:2:0 色彩空间）。经过这般折腾，码率/频宽总算被压缩了下来，但后继影响了数字视频的丢帧帧率标准——为了与模拟电视兼容<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji</a>。</p>
+            <p>NTSC 模拟电视每个频道的标准带宽大约为 6MHz（但实际宽度仅为 4.5MHz）。接下来发生的事谁都没有预料到——彩色电视出现了。结果是原本的频宽完全放不下彩色电视台信号，而且由于电视机已经售出，不可能更改用户家里电视的频宽和扫描线的数量。最终解决方案是将原本的帧率除以 1.001（即 30 ÷ 1.001 ≈ 29.970029...）以保持与帧率的对齐（同时也引入了 YUV 4:2:0 色彩空间）。经过这般折腾，码率/频宽总算被压缩了下来，但后继影响了数字视频的丢帧帧率标准——为了与模拟电视兼容<a href="https://www.reddit.com/r/finalcutpro/comments/mm58qp/why_on_earth_do_we_have_2997fps_what_madness_is/">Reddit: GhostOfSorabji</a>。</p>
             <div class="align-items-center">
                 <img src="files/basics/Aligning-framerates.jpg" alt="Aligning-framerates" class="img-small">
                 <p class="text-gray-side mt-0">图：不同帧率的对齐问题，如果素材的帧率不统一就会出现的“快慢帧”问题，见<a href="https://www.youtube.com/watch?v=p3Jb3UPAw-w">Taran Van Hemert</a></p>
@@ -965,7 +966,7 @@
             <p>通常用于过滤水和净化空气。在信号中代表处理一维音频和二维视频信号的算法。滤镜工具代表能够将滤镜应用到信号上的软件或插件，比如 Adobe Premiere Pro，After Effects，<a href="https://ffmpeg.org/">ffmpeg</a>，<a href="https://www.blackmagicdesign.com">DaVinci Resolve</a>，<a href="https://www.screentogif.com/">ScreenToGIF</a>，<a href="https://www.image-line.com">FL Studio</a>，<a href="https://www.reaper.fm/">Reaper</a>，<a href="https://www.ableton.com/">Ableton</a>，Audition，<a href="https://www.gimp.org/">GIMP</a>，Photoshop，<a href="https://www.faststone.org/FSCaptureDetail.htm">FSCapture</a>，LightRoom，OpenCV 等编辑图像、视频和音频的工具。<a href="https://avs-plus.net/">AviSynth(+)</a>和 VapourSynth 严格上称为帧服务器，因为需要连接一个编码器才能导出视音频。</p>
 
             <h3>噪声 Noise 与颗粒 Grain</h3>
-            <p>电影胶片（卤化银晶体）被投影灯放大得到胶片颗粒 Film Grain，在单独一帧胶片画面上是一种比较自然静态噪声。更广义且不自然的噪声来自于电视信号接收器或相机使用放大电路 amplifier 放大无信号频段，或黑暗场景产生的“雪花”画面和声音。以及根据厂家镀膜工艺水平而定的显示器屏幕磨砂表面“静态噪声”等等。</p>
+            <p>电影胶片（卤化银晶体）被投影灯放大得到胶片颗粒 Film Grain，在单独一帧胶片画面上是一种比较自然动态噪声。更广义且不自然的噪声来自于电视信号接收器或相机使用放大电路 amplifier 放大无信号频段，或黑暗场景产生的“雪花”画面和声音。以及根据厂家镀膜工艺水平而定的显示器屏幕磨砂表面“静态噪声”等等。</p>
             <p>一般来说，如果噪点的边角尖锐，缺乏渐变，则是“难看的噪声”。另一种比较极端的判断方法是——只有影视导演亲手保留，或游戏美工专门根据显示技术适配处理过的噪声才是好看的噪声、由第三方私自添加的噪声是“难看的噪声”。</p>
             <p class="text-gray-side">实际上，人眼的“成像技术”也决定了人看到的画面本来就有很多噪点，而且是动态噪点，只是未注意的时候都是大脑的实时降噪和幻觉在抑制而已。</p>
             <div class="align-items-center">
@@ -2393,14 +2394,8 @@
                 <p class="text-gray-side">图：四叉树的分块。见<a href="https://en.wikipedia.org/wiki/Quadtree">维基百科</a></p>
             </div>
 
-            <h3>DCT 归零优化 Decimate</h3>
-            <p>由上可知，录像与电影片源中的动态噪点会直接干扰编码器的分块，导致熵编码总是要处理系子数量少的 8x8，4x4 分块，而 x264 设计时面向了 640x480 分辨率的视频，所以就有了专门用于避免无效分块，避免性能和熵编码压缩率被浪费的系子归零处理（现已淘汰但默认开启）。具体是：</p>
-            <ol class="text-smaller">
-                <li>8x8 亮度块中分量为 -3~3 的 DCT 系子归零</li>
-                <li>16x16 亮度块中分量为 -5~5 的 DCT 系子归零</li>
-                <li>色度块中分量为 -6~6 的 DCT 系子归零</li>
-                <li>优化后的块回到原来的编码步骤——量化中</li>
-            </ol>
+            <h3>DCT 归零优化（DCT Decimate）</h3>
+            <p>由上可知，录像与电影片源中的动态噪点会直接干扰编码器的分块，导致熵编码总是要处理系子数量少的 8x8，4x4 分块，而 x264 设计时面向了 640x480 分辨率的视频，所以就有了专门用于避免无效分块，避免性能和熵编码压缩率被浪费的系子归零处理（现已淘汰但默认开启）。具体是评估整个 16x16、8x8 或 4x4 块的能量，如果该块的整体残差数据耗费的码率与视觉收益不成正比则将整个块的系数全部抛弃（归零）。</p>
             <code class="code-bold">--no-dct-decimate</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关&gt;关闭 DCT 变换的低强度系子归零操作，以减少细节损失，降低有损压缩。适合幻灯片录屏等画面极其干净，或经过大量滤镜过滤噪声，<code>--crf &lt; 17</code>或 ABR <code>--bitrate &gt; 500000</code> 编码策略的源视频</p>
             
@@ -2728,7 +2723,7 @@
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;开关，默认关，推荐关&gt;逐条带分配多线程。x264 r1607 前的多线程分配机制，后来因为问题太多而改成了逐帧分配多线程</p>
             
             <p>退一步讲，只要一个程序能吃满全部 CPU 核心，那么多线程优化自然会到位。因此，对于多线程优化一般的程序，只要多打开几个，并限制每个程序的线程数，就能提高最终的效率。例如 <a href="https://stackoverflow.com/questions/1449188/running-windows-batch-file-commands-asynchronously">Windows 批处理提供的 <code>START</code> 命令实现异步并行（多开些编码）</a>，搭配上述的 <code>--threads</code> 命令限制每个编码的进程数实现。</p>
-            <p>x264/5 中，理论画质与性能最平衡的多线程数实际是 4，所以若设定 <code>--threads 4</code>，则 <code>--lookahead-threads</code> 等于 1。得到共 5 个线程占用。</p>
+            <p>x264 默认的前瞻线程数（<code>--lookahead-threads</code>）一般为计算线程数（threads）的 1/6</p>
             
             <h3>x264 内置滤镜</h3>
             <h4>降噪滤镜</h4>
