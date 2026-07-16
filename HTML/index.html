@@ -2222,25 +2222,6 @@
             </div>
             <p>只追求“抹平码率波动”容易产生“时而清晰时而糊”的画面——反而会破坏沉浸感，因此不推荐“锁死”。同时，考虑到量化值缩限是种局部快速处理，不管“该帧是否受到其它帧参考”的关系，因此会降低码率分配的均衡性，但也有着“提高暂停画质”的作用（前提是用户刚好在那一瞬间暂停）。</p>
 
-            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：qComp 的计算</button>
-            <div class="coll-content">
-                <ol class="overflow-auto">
-                    <li>（ABR 模式）根据宏块的数量与 <code>--qcomp</code> 值设置初始复杂度百分比：
-                        <span class="text-blue-math">\[ \text{Complexity} = \left( \frac{\text{Count}_{MB}}{2} \right) ×700000^{\left( \frac{qcomp}{100} \right)} \div 100 \]</span>
-                    </li>
-                    <li>获取当前场景的长度 <span class="text-blue-math">\( \text{Duration}_{clip} \)</span></li>
-                    <li>当前帧与下一帧间的图像模糊后做 SATD，获得「模糊复杂度 <span class="text-blue-math">\( \text{Complexity}_{blurred} \)</span>」</li>
-                </ol>
-                <ul class="overflow-auto">
-                    <li>（关 MBTree 时）使用 <code>--qcomp</code> 缩放模糊复杂度，以换算出当前帧的 qScale：
-                        <span class="text-blue-math">\[ \text{qScale} = \left( \text{Complexity}_{blurred} \right)^{1-qcomp} \]</span>
-                    </li>
-                    <li>（开 MBTree 时）据 I 帧在当前片段的权重设单帧量化强度（基准单帧用时 ÷ 当前场景用时 × I 帧用时 ÷ 帧率）：
-                        <span class="text-blue-math">\[ \text{qScale} = Duration_{frame} \div Duration_{clip}\times Duration_{iframe} \div \text{fps} \]</span>
-                    </li>
-                </ul>
-            </div>
-
             <code class="code-bold">--qcomp</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0.5~1，推荐默认 0.6&gt;模糊复杂度 <code>cplxBlur</code> 以及宏块树迭代每帧量化强度范围的曲线抑制参数。越小则复杂度迭代越符合实际状况，抑制 CRF，宏块树/CU 树（MBTree/CUTree），bframes 影响的效果就越弱，搭配高 CRF 能使码率控制接近 VBV 的程度。越大则 CRF，mb-cutree，bframes 越没用，越接近 CQP</p>
             <ul class="font-monospace pl-5 text-smaller">
