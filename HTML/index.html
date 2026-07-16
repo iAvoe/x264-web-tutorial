@@ -2197,7 +2197,7 @@
                         <td class="px-1">ABR</td>
                         <td class="px-1">锁死（1）</td>
                         <td class="px-1">小/稳</td>
-                        <td class="px-1">极大/失控（与 CQP 模式效果相同）</td>
+                        <td class="px-1">混乱（隐藏暴力降噪、丢帧限码机制常态化）</td>
                     </tr>
                     <tr>
                         <td class="px-1">ABR</td>
@@ -2225,8 +2225,8 @@
             <code class="code-bold">--qcomp</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0.5~1，推荐默认 0.6&gt;模糊复杂度 <code>cplxBlur</code> 以及宏块树迭代每帧量化强度范围的曲线抑制参数。越小则复杂度迭代越符合实际状况，抑制 CRF，宏块树/CU 树（MBTree/CUTree），bframes 影响的效果就越弱，搭配高 CRF 能使码率控制接近 VBV 的程度。越大则 CRF，mb-cutree，bframes 越没用，越接近 CQP</p>
             <ul class="font-monospace pl-5 text-smaller">
-                <li><span class="text-blue-emph">小于 0.5，中~强 MBTree</span> CRF/ABR低延迟逐帧迭代qp; 画面主前景动时用，允许宏块树导致零星宏块欠码</li>
-                <li><span class="text-blue-emph">0.5~0.7 中 MBTree</span> CRF/ABR中延迟逐帧迭代qp, 画面含背景动，或混合情况用，平衡优先</li>
+                <li><span class="text-blue-emph">小于 0.5，中~强 MBTree</span> CRF/ABR 低延迟逐帧迭代量化值（QP）；画面主前景动时用，允许宏块树导致零星宏块欠码</li>
+                <li><span class="text-blue-emph">0.5~0.7 中 MBTree</span> CRF/ABR 中延迟逐帧迭代量化值（QP），画面含背景动，或混合情况用，平衡优先</li>
                 <li><span class="text-blue-emph">大于 0.7 中~弱 MBTree</span> CRF，ABR 中到高延迟逐帧迭代量化强度，保留重噪点，或 FPS/STG 游戏录屏场景用</li>
                 <li><span class="text-blue-emph">小于 0.5 关 MBTree</span> 画面不分前背景，如静态图像，PPT/桌面录屏节约性能用</li>
                 <li><span class="text-blue-emph">大于 0.5 关 MBTree</span> 动态画面，不分前背景时节约性能用</li>
