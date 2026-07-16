@@ -2156,24 +2156,91 @@
                 <p class="text-gray-side">图：心理视觉优化保留高频信号，同时压缩周围和其中的非高频信号</p>
             </div>
 
-            <h3>宏块树与量化值曲线缩放 qComp</h3>
-            <p>源自 libavcodec 实现同码率下整体画质更高结果的逻辑：“复杂动态场景的帧间参考少。所以分配更少码率（增加量化压缩），更多码率应该分给参考多而远的简单动态场景”。这样做在码率受到很大限制时能保护多数场景的画质，但缺点则是大多时候，动漫场景等「背景不动前景动」的场景（如人物脸部）画面被压缩太多的问题。x264 中所做的改进是“逐宏块应用这套逻辑”——即 <a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">Marcoblock Tree (MBTree)</a>。量化值曲线缩放 quantizer curve compression 则被“贬为”控制 MBTree 等一系列量化强度分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
-            <h4>qComp 的用途</h4>
-            <ol class="overflow-auto">
-                <li>（ABR 模式）根据宏块的数量与 <code>--qcomp</code> 值设置初始复杂度百分比：
-                    <span class="text-blue-math">\[ \text{Complexity} = \left( \frac{\text{Count}_{MB}}{2} \right) ×700000^{\left( \frac{qcomp}{100} \right)} \div 100 \]</span>
-                </li>
-                <li>获取当前场景的长度 <span class="text-blue-math">\( \text{Duration}_{clip} \)</span></li>
-                <li>当前帧与下一帧间的图像模糊后做 SATD，获得「模糊复杂度 <span class="text-blue-math">\( \text{Complexity}_{blurred} \)</span>」</li>
-            </ol>
-            <ul class="overflow-auto">
-                <li>（关 MBTree 时）使用 <code>--qcomp</code> 缩放模糊复杂度，以换算出当前帧的 qScale：
-                    <span class="text-blue-math">\[ \text{qScale} = \left( \text{Complexity}_{blurred} \right)^{1-qcomp} \]</span>
-                </li>
-                <li>（开 MBTree 时）据 I 帧在当前片段的权重设单帧量化强度（基准单帧用时 ÷ 当前场景用时 × I 帧用时 ÷ 帧率）：
-                    <span class="text-blue-math">\[ \text{qScale} = Duration_{frame} \div Duration_{clip}\times Duration_{iframe} \div \text{fps} \]</span>
-                </li>
-            </ul>
+            <h3>宏块树（MacroBlock Tree）</h3>
+            <p>源自 libavcodec 实现同码率下整体画质更高结果的逻辑：“复杂动态场景的帧间参考少。所以分配更少码率（增加量化压缩），更多码率应该分给参考多而远的简单动态场景”。这样做在码率受到很大限制时能保护多数场景的画质，但缺点则是大多时候，动漫场景等「背景不动前景动」的场景（如人物脸部）画面被压缩太多的问题。x264 中所做的改进是“逐宏块应用这套逻辑”——即 <a href="https://web.archive.org/web/20150224032942/http:/x264dev.multimedia.cx/archives/98">MBTree</a>。量化值曲线压缩则被“贬为”控制 MBTree 等一系列量化强度分配算法中的一个缩放参数，见 <a href="https://www.desmos.com/calculator/aa7rsjuxkr">desmos 互动例</a>。</p>
+            
+            <h3>量化值缩限/量化值曲线压缩（Quantizer Curve Compression）</h3>
+            <p>这里的缩限代表<i>乘入一个函数（曲线）来压缩数据点整体的空间分布范围，使得数据点的变化更平稳</i>。视频编码中，“空间范围”实际上是前后帧的量化值波动（即时间范围），“压缩”实际做的是限制量化值的波动烈度，从而起到提高剧烈变化场景量化强度的作用——避免过早耗尽 GOP 码率“经费”，最终防止 GOP 末尾完全糊掉、维稳网络串流带宽波动——减少卡顿和丢包的作用。</p>
+            <div class="align-items-center">
+                <table class="table-center">
+                    <tr>
+                        <th class="px-3">编码模式</th>
+                        <th class="px-3">缩限（qcomp）设置</th>
+                        <th class="px-3">瞬时码率波动</th>
+                        <th class="px-3">画质波动</th>
+                    </tr>
+                    <tr class="t-light-gray">
+                        <td class="px-1">CRF</td>
+                        <td class="px-1">锁死（1）</td>
+                        <td class="px-1">小/稳</td>
+                        <td class="px-1">极大/失控（与 CQP 模式效果相同）</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1">CRF</td>
+                        <td class="px-1">强（0.7~0.9）</td>
+                        <td class="px-1">小/稳</td>
+                        <td class="px-1">大/不稳</td>
+                    </tr>
+                    <tr class="t-light-gray">
+                        <td class="px-1">CRF</td>
+                        <td class="px-1">弱（0.2~0.4）</td>
+                        <td class="px-1">大/不稳</td>
+                        <td class="px-1">小/稳</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1">CRF</td>
+                        <td class="px-1">关（0）</td>
+                        <td class="px-1">极大/失控</td>
+                        <td class="px-1">小/稳</td>
+                    </tr>
+                    <tr class="t-light-gray">
+                        <td class="px-1">ABR</td>
+                        <td class="px-1">锁死（1）</td>
+                        <td class="px-1">小/稳</td>
+                        <td class="px-1">极大/失控（与 CQP 模式效果相同）</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1">ABR</td>
+                        <td class="px-1">强（0.7~0.9）</td>
+                        <td class="px-1">小/稳</td>
+                        <td class="px-1">大/不稳</td>
+                    </tr>
+                    <tr class="t-light-gray">
+                        <td class="px-1">ABR</td>
+                        <td class="px-1">弱（0.2~0.4）</td>
+                        <td class="px-1">极大/失控</td>
+                        <td class="px-1">极大/失控（前半段好，后半段糊）</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1">ABR</td>
+                        <td class="px-1">关（0）</td>
+                        <td class="px-1">极大/失控</td>
+                        <td class="px-1">极大/失控（前半段好，后半段糊）</td>
+                    </tr>
+                </table>
+                <p class="text-gray-side mt-0">表：量化值缩限的影响。</p>
+            </div>
+            <p>只追求“抹平码率波动”容易产生“时而清晰时而糊”的画面——反而会破坏沉浸感，因此不推荐“锁死”。同时，考虑到量化值缩限是种局部快速处理，不管“该帧是否受到其它帧参考”的关系，因此会降低码率分配的均衡性，但也有着“提高暂停画质”的作用（前提是用户刚好在那一瞬间暂停）。</p>
+
+            <button type="button" class="collapsible border-main rounded-3">点击展开/折叠内容：qComp 的计算</button>
+            <div class="coll-content">
+                <ol class="overflow-auto">
+                    <li>（ABR 模式）根据宏块的数量与 <code>--qcomp</code> 值设置初始复杂度百分比：
+                        <span class="text-blue-math">\[ \text{Complexity} = \left( \frac{\text{Count}_{MB}}{2} \right) ×700000^{\left( \frac{qcomp}{100} \right)} \div 100 \]</span>
+                    </li>
+                    <li>获取当前场景的长度 <span class="text-blue-math">\( \text{Duration}_{clip} \)</span></li>
+                    <li>当前帧与下一帧间的图像模糊后做 SATD，获得「模糊复杂度 <span class="text-blue-math">\( \text{Complexity}_{blurred} \)</span>」</li>
+                </ol>
+                <ul class="overflow-auto">
+                    <li>（关 MBTree 时）使用 <code>--qcomp</code> 缩放模糊复杂度，以换算出当前帧的 qScale：
+                        <span class="text-blue-math">\[ \text{qScale} = \left( \text{Complexity}_{blurred} \right)^{1-qcomp} \]</span>
+                    </li>
+                    <li>（开 MBTree 时）据 I 帧在当前片段的权重设单帧量化强度（基准单帧用时 ÷ 当前场景用时 × I 帧用时 ÷ 帧率）：
+                        <span class="text-blue-math">\[ \text{qScale} = Duration_{frame} \div Duration_{clip}\times Duration_{iframe} \div \text{fps} \]</span>
+                    </li>
+                </ul>
+            </div>
+
             <code class="code-bold">--qcomp</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;浮点范围 0.5~1，推荐默认 0.6&gt;模糊复杂度 <code>cplxBlur</code> 以及宏块树迭代每帧量化强度范围的曲线抑制参数。越小则复杂度迭代越符合实际状况，抑制 CRF，宏块树/CU 树（MBTree/CUTree），bframes 影响的效果就越弱，搭配高 CRF 能使码率控制接近 VBV 的程度。越大则 CRF，mb-cutree，bframes 越没用，越接近 CQP</p>
             <ul class="font-monospace pl-5 text-smaller">
