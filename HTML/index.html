@@ -2487,14 +2487,14 @@
             <p>HDR 信息分为硬件、软件、以及数据，共 3 类不统一的标准。为保证色彩正确，压制时应额外检查并确保与视频源的一致性。如：</p>
             <div class="align-items-center">
                 <img src="files/video-usability-information/Metadata-for-VUI-HDR-1.png" alt="Metadata-for-VUI-HDR-1" class="">
-                <p class="text-gray-side">图 1: cll 1000,640. master-display 由 G(13250…) 开头，L(10000000,1) 结尾</p>
+                <p class="text-gray-side">图 1: cll 1000,640. mastering-display 由 G(13250…) 开头，L(10000000,1) 结尾</p>
                 <img src="files/video-usability-information/Metadata-for-VUI-HDR-2.png" alt="Metadata-for-VUI-HDR-2" class="img-medium">
                 <p class="text-gray-side">图 2: cll 1655,117/L(40000000,50)/colorprim bt2020/colormatrix bt2020nc/transfer smpte2084</p>
             </div>
-            <code class="code-bold">--master-display</code>
+            <code class="code-bold">--mastering-display</code>
             <p class="font-monospace pl-5 m-0 overflow-auto">&lt;G(x,y)B(,)R(,)WP(,)L(,)（绿，蓝，红，白点，光强）&gt;写进 SEI 信息里，告诉解码端色彩空间/色域信息用</p>
             <ul class="font-monospace pl-5 text-smaller">
-                <li>HDR 标准设立时还没有 HDR 电视，所以就把 master-display 写成必须参数了，而最重要的信息反而是 cll。</li>
+                <li>HDR 标准设立时还没有 HDR 电视，所以就把 mastering-display 写成必须参数了，而最重要的信息反而是 cll。</li>
                 <li>绿蓝红 GBR 和白点 WP 指马蹄形色域的三角 + 白点 4 个位置的值×50000</li>
                 <li>光强 L 的单位是 candela×10000</li>
                 <li>SDR 视频的 L 是 1000,1。压制 HDR 视频前一定要看视频信息再设 L，见上图
