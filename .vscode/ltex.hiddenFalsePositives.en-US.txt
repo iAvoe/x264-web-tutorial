@@ -1,0 +1,9 @@
+{"rule":"GERMAN_QUOTES","sentence":"^\\Q图像中的“木条”就是在 n 个“铁钉”构成的 n-1 个区间里各画一条曲线\\E$"}
+{"rule":"GITHUB","sentence":"^\\Qiavoe.github.io\\E$"}
+{"rule":"ONE_PLURAL","sentence":"^\\Q1 ns\\E$"}
+{"rule":"NON_STANDARD_WORD","sentence":"^\\Q其中，“H.264”的 H 代表国际电信联盟——电信标准化部门（ITU‑T）中的\\E$"}
+{"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\Q--zones 0,449,crf=32,me=dia,bframes=10/450,779,b=0.6,crf=8,trellis=1\\E$"}
+{"rule":"UNLIKELY_OPENING_PUNCTUATION","sentence":"^\\Q:\\E$"}
+{"rule":"NUMBERS_IN_WORDS","sentence":"^\\Q--vf hqdn3d\\E$"}
+{"rule":"NUMBERS_IN_WORDS","sentence":"^\\Q&lt;crop:[←],[↑],[→],[↓]/pad: [←],[↑],[→],[↓]/resize:[宽，高]，[变宽比]，[装盒]，[色度采样]，[缩放算法/select_every:步，帧，帧…]/hqdn3d:[空域 Y 降噪强度]，[空域 C 降噪强度]，[降噪时域 Y 强度]，[时域 C 降噪强度]/yadif[模式],[顺序]&gt;裁剪，加边，缩放/更改分辨率，删除/保留视频帧，降噪，色彩空间转换滤镜。例：\\E$"}
+{"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Qresize:1280,720,,i444,spline\\E$"}
